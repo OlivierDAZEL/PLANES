@@ -1,0 +1,142 @@
+create_temporary_FEM_matrices
+
+for ie=1:nb_elements
+    
+    nodes_elements = nodes(elements(ie,1:6),1:2)';
+    
+    if element_label(ie)==0
+        [vh,vq]=TR6_fluid(nodes_elements);
+        index_p=p(elements(ie,1:6));
+        H_acou(index_p,index_p)=H_acou(index_p,index_p)+vh;
+        Q_acou(index_p,index_p)=Q_acou(index_p,index_p)+vq;     
+        
+    elseif floor(element_label(ie)/1000)==1
+        [vm,vk0,vk1]=TR6_elas(nodes_elements);
+        index_e=uxy(elements(ie,1:6));
+        insert_temporary_matrices_elas
+        
+        
+    elseif floor(element_label(ie)/1000)==2
+        [vh,vq]=TR6_fluid(nodes_elements);
+        index_p=p(elements(ie,1:6));
+        insert_temporary_matrices_eqf
+
+     elseif floor(element_label(ie)/1000)==3
+        [vh,vq]=TR6_fluid(nodes_elements);
+        index_p=p(elements(ie,1:6));
+        insert_temporary_matrices_limp       
+        
+        
+        
+    elseif floor(element_label(ie)/1000)==4
+        [vm,vk0,vk1,vc,vh,vq]=TR6_pem98(nodes_elements);
+        index_e=uxy(elements(ie,1:6));
+        index_p=p(elements(ie,1:6));
+        insert_temporary_matrices_pem1998
+        
+    elseif floor(element_label(ie)/1000)==5
+        [vm,vk0,vk1,vc,vcp,vh,vq]=TR6_pem01(nodes_elements);
+        index_e=uxy(elements(ie,1:6));
+        index_p=p(elements(ie,1:6));
+        insert_temporary_matrices_pem2001
+        
+        
+        
+    else
+        disp('Subroutine parameter_element')
+        disp('Unknwon fluid type of element')
+        stop
+    end
+    
+end
+
+size_global_matrices=3*nb_nodes;
+
+discard_l1_temporary_FEM_matrices
+
+
+
+H_acou=H_acou(list_dof_valid,list_dof_valid);
+Q_acou=Q_acou(list_dof_valid,list_dof_valid);
+
+
+for i_mat=1:nb_media.elas
+    
+    eval(['K0_elas_',num2str(i_mat),'=sparse( i_k0_elas,j_k0_elas,v_k0_elas(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['K1_elas_',num2str(i_mat),'=sparse( i_k1_elas,j_k1_elas,v_k1_elas(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['M_elas_',num2str(i_mat),'=sparse( i_m_elas,  j_m_elas,  v_m_elas(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    
+    eval(['K0_elas_',num2str(i_mat),'=K0_elas_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['K1_elas_',num2str(i_mat),'=K1_elas_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['M_elas_',num2str(i_mat),'=M_elas_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    
+end
+
+for i_mat=1:nb_media.eqf
+    
+    eval(['Q_eqf_',num2str(i_mat),'=sparse( i_q_eqf,j_q_eqf,v_q_eqf(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['H_eqf_',num2str(i_mat),'=sparse( i_h_eqf,j_h_eqf,v_h_eqf(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    
+    eval(['Q_eqf_',num2str(i_mat),'=Q_eqf_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['H_eqf_',num2str(i_mat),'=H_eqf_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    
+end
+
+for i_mat=1:nb_media.limp
+    
+    eval(['Q_limp_',num2str(i_mat),'=sparse( i_q_limp,j_q_limp,v_q_limp(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['H_limp_',num2str(i_mat),'=sparse( i_h_limp,j_h_limp,v_h_limp(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    
+    eval(['Q_limp_',num2str(i_mat),'=Q_limp_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['H_limp_',num2str(i_mat),'=H_limp_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    
+end
+
+
+for i_mat=1:nb_media.pem98
+    
+    eval(['K0_pem98_',num2str(i_mat),'=sparse( i_k0_pem98,j_k0_pem98,v_k0_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['K1_pem98_',num2str(i_mat),'=sparse( i_k1_pem98,j_k1_pem98,v_k1_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['M_pem98_',num2str(i_mat),'=sparse( i_m_pem98,  j_m_pem98,  v_m_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['H_pem98_',num2str(i_mat),' =sparse( i_h_pem98,  j_h_pem98,  v_h_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['Q_pem98_',num2str(i_mat),' =sparse( i_q_pem98,  j_q_pem98,  v_q_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['C_pem98_',num2str(i_mat),' =sparse( i_c_pem98,  j_c_pem98,  v_c_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    
+    eval(['K0_pem98_',num2str(i_mat),'=K0_pem98_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['K1_pem98_',num2str(i_mat),'=K1_pem98_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['M_pem98_',num2str(i_mat),'=M_pem98_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['H_pem98_',num2str(i_mat),'=H_pem98_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['Q_pem98_',num2str(i_mat),'=Q_pem98_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['C_pem98_',num2str(i_mat),'=C_pem98_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    
+    
+end
+
+
+
+
+
+
+for i_mat=1:nb_media.pem01
+    
+    eval(['K0_pem01_',num2str(i_mat),'=sparse( i_k0_pem01,j_k0_pem01,v_k0_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['K1_pem01_',num2str(i_mat),'=sparse( i_k1_pem01,j_k1_pem01,v_k1_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['M_pem01_',num2str(i_mat),'=sparse( i_m_pem01,  j_m_pem01,  v_m_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['H_pem01_',num2str(i_mat),' =sparse( i_h_pem01,  j_h_pem01,  v_h_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['Q_pem01_',num2str(i_mat),' =sparse( i_q_pem01,  j_q_pem01,  v_q_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['C_pem01_',num2str(i_mat),' =sparse( i_c_pem01,  j_c_pem01,  v_c_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    eval(['Cp_pem01_',num2str(i_mat),'=sparse(i_cp_pem01,j_cp_pem01,   v_cp_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
+    
+    eval(['K0_pem01_',num2str(i_mat),'=K0_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['K1_pem01_',num2str(i_mat),'=K1_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['M_pem01_',num2str(i_mat),'=M_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['H_pem01_',num2str(i_mat),'=H_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['Q_pem01_',num2str(i_mat),'=Q_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['C_pem01_',num2str(i_mat),'=C_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    eval(['Cp_pem01_',num2str(i_mat),'=Cp_pem01_',num2str(i_mat),'(list_dof_valid,list_dof_valid);']);
+    
+    
+end
+
+
+clear_temporary_FEM_matrices

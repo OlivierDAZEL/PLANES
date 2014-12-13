@@ -1,0 +1,74 @@
+function    F_plus=transfer_force(k_x,omega,F_moins,media)
+
+
+lambda=media(1).lambda;
+mu=media(1).mu;
+rho=media(1).rho;
+d=media(1).thickness;
+
+P=lambda+2*mu;
+
+
+delta_P=omega*sqrt(rho/(P));
+delta_s=omega*sqrt(rho/(mu));
+
+beta_P=sqrt(delta_P^2-k_x^2);
+beta_s=sqrt(delta_s^2-k_x^2);
+
+
+alpha_P=-j*lambda*delta_P^2-j*2*mu*beta_P^2;
+alpha_s= 2*j*mu*beta_s*k_x;
+
+ V_0=diag([j*beta_P,-j*beta_P,j*beta_s,-j*beta_s]);
+
+
+Phi_0(1,1)=-2*j*mu*beta_P*k_x;
+Phi_0(1,2)=2*j*mu*beta_P*k_x;
+Phi_0(1,3)=j*mu*(beta_s^2-k_x^2);
+Phi_0(1,4)=j*mu*(beta_s^2-k_x^2);
+
+
+Phi_0(2,1)= beta_P;
+Phi_0(2,2)=-beta_P;
+Phi_0(2,3)= k_x;
+Phi_0(2,4)= k_x;
+
+Phi_0(3,1)=alpha_P;
+Phi_0(3,2)=alpha_P;
+Phi_0(3,3)=-alpha_s;
+Phi_0(3,4)=alpha_s;
+
+
+Phi_0(4,1)=k_x;
+Phi_0(4,2)=k_x;
+Phi_0(4,3)=-beta_s;
+Phi_0(4,4)=beta_s;
+
+
+% for iiii=1:4
+%     [(-A)*Phi_0(:,iiii) V_0(iiii,iiii)*Phi_0(:,iiii) (-A)*Phi_0(:,iiii)-V_0(iiii,iiii)*Phi_0(:,iiii)]
+% end
+% pause
+
+
+[a,indice]=sort(diag(real(V_0)),'descend');
+
+
+
+
+for i_m=1:4
+    Phi(:,i_m)=Phi_0(:,indice(4+1-i_m));
+    lamda(i_m)=-V_0(indice(4+1-i_m),indice(4+1-i_m));
+end
+
+
+
+Psi=inv(Phi);
+MM=exp(lamda(1)*d)*(Phi(:,1)*Psi(1,:)+exp((lamda(2)-lamda(1))*d)*Phi(:,2)*Psi(2,:)+exp((lamda(3)-lamda(1))*d)*Phi(:,3)*Psi(3,:)+exp((lamda(4)-lamda(1))*d)*Phi(:,4)*Psi(4,:));
+
+
+X_plus=exp(lamda(1)*d)*Psi(1,:)*F_moins;
+
+F_plus=Phi(:,1)+(exp((lamda(2)-lamda(1))*d)*Phi(:,2)*Psi(2,:)+exp((lamda(3)-lamda(1))*d)*Phi(:,3)*Psi(3,:)+exp((lamda(4)-lamda(1))*d)*Phi(:,4)*Psi(4,:))*F_moins/(Psi(1,:)*F_moins);
+
+F_plus=F_plus*X_plus;

@@ -1,0 +1,15 @@
+dxair=5e-1;
+dyair=2e-1;
+nx=5;
+labelexcitation=10045;
+labelelement=2001;
+ny=ceil(nx*dyair/dxair);
+fid=fopen(nom_fichier_input_FreeFem,'w');
+fprintf(fid,'%s\n',nom_fichier_msh);
+fprintf(fid,'%12.8f\n',dxair);
+fprintf(fid,'%12.8f\n',dyair);
+fprintf(fid,'%d\n',nx);
+fprintf(fid,'%d\n',ny);
+fprintf(fid,'%d\n',labelexcitation);
+fprintf(fid,'%d\n',labelelement);
+fclose(fid);

@@ -1,0 +1,10 @@
+phi=0.989;
+sig=8060;
+alpha=1.00;
+LCV=2.15e-4;
+LCT=LCV;
+rho_1=6.1000;
+nu=0.24000E+00;
+cisaill=2.28e4;
+young=2*cisaill*(1+nu);
+eta=0.02;

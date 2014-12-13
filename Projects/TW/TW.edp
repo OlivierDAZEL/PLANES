@@ -1,0 +1,61 @@
+real period; 
+real thicknessporous;
+real radius;
+int nx;
+string fileoutput;
+int labelporous;
+int labelinclusion;
+
+ifstream entree("FF.inp");
+entree >> fileoutput;
+entree >> period;
+entree >> thicknessporous;
+entree >> labelporous;
+entree >> labelinclusion;
+entree >> radius;
+entree >> nx;
+
+int ny=nx*thicknessporous/period;
+
+
+
+
+real xA=0,yA=0;
+real xB=period,yB=0;
+real xC=period,yC=thicknessporous;
+real xD=0,yD=thicknessporous;
+
+// ABCD = porous
+
+
+
+// ABCD = bottom cavity
+// Excitation on AB periodicity conditions on BC & DA 
+// CD= cavity plate 1 coupling
+border AB(t=0,1){ x=xA+(xB-xA)*t; y=yA+(yB-yA)*t;label=12;}
+border BC(t=0,1){ x=xB+(xC-xB)*t; y=yB+(yC-yB)*t;label=99;}
+border CD(t=0,1){ x=xC+(xD-xC)*t; y=yC+(yD-yC)*t;label=6;}
+border DA(t=0,1){ x=xD+(xA-xD)*t; y=yD+(yA-yD)*t;label=98;}
+
+border inclusion(t=0,2*pi){ x=(period/2.)+radius*cos(t); y=(thicknessporous/2.)+radius*sin(t);label=0;}
+
+plot (AB(nx)+BC(ny)+CD(nx)+DA(ny)+inclusion(-20));
+
+mesh Thporous=buildmesh (AB(nx)+BC(ny)+CD(nx)+DA(ny)+inclusion(-20),fixeborder=1);
+mesh Thinclusion=buildmesh (inclusion(20),fixeborder=1);
+
+int[int] rporous=[0, labelporous];
+Thporous=change(Thporous,region=rporous);
+
+int[int] rinclusion=[0, labelinclusion];
+Thinclusion=change(Thinclusion,region=rinclusion);
+
+mesh Th=Thporous+Thinclusion;
+//mesh Th=Thbottom;
+//plot(Th);
+
+
+
+savemesh(Th,fileoutput);
+
+//plot(Th);

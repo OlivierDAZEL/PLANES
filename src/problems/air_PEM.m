@@ -1,0 +1,15 @@
+d_air=1;
+d_PEM=1;
+n_air=1;
+n_PEM=1;
+n_y=1;
+d_y=(d_PEM+d_air)*(n_y/(n_air+n_PEM));
+fid=fopen(nom_fichier_input_FreeFem,'w');
+fprintf(fid,'%s\n',nom_fichier_msh);
+fprintf(fid,'%12.8f\n',d_air);
+fprintf(fid,'%12.8f\n',d_PEM);
+fprintf(fid,'%12.8f\n',d_y);
+fprintf(fid,'%d\n',n_air);
+fprintf(fid,'%d\n',n_PEM);
+fprintf(fid,'%d\n',n_y);
+fclose(fid);

@@ -43,9 +43,9 @@ subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=-100;%-50;
+nb_frequencies=-50;
 freq_min=100;
-freq_max=3000;
+freq_max=2000;
 export_profiles=0;
 plot_profiles=0;
 export_nrj=1;
@@ -104,26 +104,14 @@ if nb_T~=0
 end
 
 
-vec_theta=45;
-vec_theta_MMT=0;
+theta=45;
+
+disp('FEM Resolution')
+FEM_resolution
 
 
-for i_theta=1:length(vec_theta)
-    i_theta/length(vec_theta)
-    theta=vec_theta(i_theta)*pi/180;
-    
-    for i_theta_MMT=1:length(vec_theta_MMT)
-        
-        theta_MMT=vec_theta_MMT(i_theta_MMT)*pi/180;
-        disp('FEM Resolution')
-        FEM_resolution
-        
-        
-        disp('PW Resolution')
-        PW_resolution
-        
-    end
-end
+disp('PW Resolution')
+PW_resolution
 
 fclose(file_abs_id);
 
@@ -138,7 +126,8 @@ hold on
 semilogx(vec_freq,TL_PW)
 xlabel('Frequency [Hz]')
 ylabel('Transmission Loss [dB]')
-legend('FEM','Plane Waves','Location','SouthEast')
+xlim([min(vec_freq) max(vec_freq)])
+legend('FEM','Plane Waves','Location','NorthWest')
 
 
 eval(['rmpath(' list_path ');'])

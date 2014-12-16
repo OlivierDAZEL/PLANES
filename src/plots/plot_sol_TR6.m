@@ -1,4 +1,4 @@
-% trace_solution_FEM_quadratique.m
+% plot_sol_TR6.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -36,14 +36,32 @@
 
 x=[];
 y=[];
-figure
-hold on
+
+
+if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+    figure(10001)
+    % For displacement
+    hold on
+    
+end
+
+
+if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+    
+    figure(10002)
+    % For pressure
+    hold on
+    
+    
+end
+
+
+
 for ie=1:nb_elements
     
     
-    c=X_EF_fortran(kconec(ie,:));
     
-    vertices=[vcor(kconec(ie,:),:)'];
+    vertices=[nodes(elements(ie,:),:)'];
     
     %changement de base (cart to triangle)
     coord=[];
@@ -60,7 +78,7 @@ for ie=1:nb_elements
     
     faces = [1 2 3]';
     vert=coord(:,[1 3 5]);
-    for i=1:3
+    for i=1:1
         [vert, faces]=linearSubdivision(vert, faces);
     end
     
@@ -69,21 +87,53 @@ for ie=1:nb_elements
     lambda=1-eta-ksi;
     mat_ksi_eta=[-lambda.*(1-2*lambda) 4*ksi.*lambda -ksi.*(1-2*ksi) 4*ksi.*eta -eta.*(1-2*eta) 4*eta.*lambda];
     
-    val_int=mat_ksi_eta*c.';
     
-    for i_faces=1:size(faces,2)
-        figure(0005)
-        patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
+    if ismember(floor(element_label(ie)/1000),[1 4 5])
+        figure(10001)
+        c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
+        
+        val_int=mat_ksi_eta*c.';
+        
+        for i_faces=1:size(faces,2)
+            figure(10001)
+            patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
+        end
     end
     
-    
-    
-    
+    if ismember(floor(element_label(ie)/1000),[0 4 5])
+        figure(10002)
+        c=sol(3*elements(ie,:));
+        
+        val_int=mat_ksi_eta*c.';
+        
+        for i_faces=1:size(faces,2)
+            figure(10002)
+            patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
+        end
+    end
     
 end
-title('Pression EF (module)')
-axis equal
-colorbar
+
+
+
+if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+    figure(10001)
+    axis equal
+    colormap jet
+    colorbar
+    axis off
+end
+
+
+if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+    
+    figure(10002)
+    colormap jet
+    colorbar
+    axis equal
+    axis off
+    
+end
 
 
 

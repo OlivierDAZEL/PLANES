@@ -33,18 +33,19 @@
 %%
 
 
-period=10e-2;
-thicknessplate=5e-3;
+period=5e-2;
+thicknessplate=1e-3;
 thicknessporous=2e-2;
 labelplate=1001;
+Mat_elas_1
 labelporous=5003;
 hbottom=5e-2;
 htop=5e-2;
 ampsinus=0*thicknessporous;
-ampx2=1;
-nboscill=1;
+ampx2=0;
+nboscill=0;
 
-nplate=1;
+nx=10;
 
 
 fid=fopen(name_file_input_FreeFem,'w');
@@ -59,8 +60,22 @@ fprintf(fid,'%12.8f\n',htop);
 fprintf(fid,'%12.8f\n',ampsinus);
 fprintf(fid,'%12.8f\n',ampx2);
 fprintf(fid,'%12.8f\n',nboscill);
-fprintf(fid,'%d\n',nplate);
+fprintf(fid,'%d\n',nx);
 fclose(fid);
+
+
+
+incident(1).typ=1;
+incident(1).lambda=lambda_solide;
+incident(1).mu=mu_solide;
+incident(1).rho=rho_solide;
+incident(1).thickness=thicknessplate;
+
+transmitted(1).typ=1;
+transmitted(1).lambda=lambda_solide;
+transmitted(1).mu=mu_solide;
+transmitted(1).rho=rho_solide;
+transmitted(1).thickness=thicknessplate;
 
 
 nb_layers=3;

@@ -125,8 +125,6 @@ for i_f=1:abs(nb_frequencies)
         end
     end
     
-    %     A_JAP=A;
-    %     F_JAP=F;
     
     if (nb_R+nb_T)>0
         DtN_application
@@ -141,9 +139,7 @@ for i_f=1:abs(nb_frequencies)
     %disp('Resolution of the system')
     X=A\F;
     
-    %  X=A_2\F_2;
-    
-    
+        
     sol(dof_back)=X(1:nb_dof_FEM);
     
     if exist('DtN_plate_R')
@@ -170,12 +166,15 @@ for i_f=1:abs(nb_frequencies)
             rflx_export=[rflx_export rflx.'];
             trans_export=[trans_export trans.'];
         end
-        
-        
-        
+    
         
     end
+
     
+    if plot_profiles==1
+       plot_sol_TR6 
+    end
+
     
     if export_nrj==1
         Ks(i_f)=(omega^2/4)*rho_1*X(1:nb_dof_FEM)'*M_pem01_1*X(1:nb_dof_FEM);
@@ -194,80 +193,15 @@ for i_f=1:abs(nb_frequencies)
     
     R_EF(i_f)=rflx(1);
     abs_EF(i_f)=1-sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
-     
-    %    fprintf(file_abs_id,'%1.15e \t %1.15e \n',freq,abs_EF(i_f));
-    
+         
     if nb_T~=0
         TL_EF(i_f)=full(-10*log10(abs(sum(real(vec_k_z_t).'.*abs(trans(1:size_info_vector_T:end)).^2)/real(k_z))));
         fprintf(file_TL_id,'%1.15e \t %1.15e \n',freq,TL_EF(i_f));
     end
-    
-    
-    
-    
-    
+        
 end
 time_FEM=toc;
 
 info_FEM
 
 
-%close (h);
-
-
-% if export_profiles==1
-%     save([name_directory_profiles,'vec_freq'],'vec_freq');
-%     save([name_directory_profiles,'elements'],'elements');
-%     save([name_directory_profiles,'nodes'],'nodes');
-%     save([name_directory_profiles,'element_label'],'element_label');
-%     displacements_x=sol_export(1:3:end,:);
-%     displacements_y=sol_export(2:3:end,:);
-%     pressures=sol_export(3:3:end,:);
-%     save([name_directory_profiles,'displacements_x'],'displacements_x');
-%     save([name_directory_profiles,'displacements_y'],'displacements_y');
-%     save([name_directory_profiles,'pressures'],'pressures');
-% end
-
-
-
-% x=linspace(0,max(nodes(:,2)),300);
-% p_anal=exp(-j*k_air*(x-1-delta_y_MMT))+exp(j*k_air*(x-1-delta_y_MMT));
-% p_anal=exp(-j*k_air*x)+exp(j*k_air*x)*exp(-2*j*k_air*(1+delta_y_MMT));
-%
-% figure
-% plot(nodes(:,2),abs(pressures),'.')
-% hold on
-% plot(x,abs(p_anal),'r')
-%
-% figure
-% plot(nodes(:,2),angle(-pressures),'.')
-% hold on
-% plot(x,angle(-p_anal),'r')
-
-
-
-% figure
-% plot(vec_freq,abs_EF,'.')
-% hold on
-% maine=load('../../Maine/TCLTK/out.dat');
-% plot(maine(:,1),maine(:,4))
-
-
-% figure
-% plot(vec_freq,real(R_EF),'.')
-% hold on
-% plot(vec_freq,imag(R_EF),'r.')
-% maine=load('../../Maine/TCLTK/out.dat');
-% plot(maine(:,1),maine(:,2))
-% plot(maine(:,1),maine(:,3),'r')
-
-
-
-
-% figure
-% semilogx(vec_freq,TL,'.')
-% hold on
-% maine=load('../../Maine/TCLTK/out.dat');
-% semilogx(maine(:,1),maine(:,2))
-
-%eval(['rmpath(' list_path ');'])

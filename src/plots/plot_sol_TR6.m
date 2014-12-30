@@ -129,11 +129,14 @@ if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
     
     figure(10002)
     colormap jet
-    colorbar
+%     colorbar
     axis equal
     axis off
     
 end
+if export_profiles==1
+    shading interp
+    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
+end
 
-
-
+close(10002)

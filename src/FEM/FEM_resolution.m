@@ -130,6 +130,12 @@ for i_f=1:abs(nb_frequencies)
         DtN_application
     end
     
+    
+    if (nb_loads)>0
+        loads_application
+    end
+    
+    
     if length(periodicity)>0
         periodicity_condition_application
     end
@@ -190,10 +196,11 @@ for i_f=1:abs(nb_frequencies)
         I_inc(i_f)=(period/air.Z)/(2*vec_freq(i_f));
     end
     
-    
+    if nb_R~=0
     R_EF(i_f)=rflx(1);
     abs_EF(i_f)=1-sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
-         
+    end     
+    
     if nb_T~=0
         TL_EF(i_f)=full(-10*log10(abs(sum(real(vec_k_z_t).'.*abs(trans(1:size_info_vector_T:end)).^2)/real(k_z))));
         fprintf(file_TL_id,'%1.15e \t %1.15e \n',freq,TL_EF(i_f));

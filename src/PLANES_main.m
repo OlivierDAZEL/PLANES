@@ -38,25 +38,23 @@ clc
 list_path=['''FEM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='sandwich';
+name_of_project='NY2015';
 subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=-50;
-freq_min=100;
-freq_max=2000;
-export_profiles=0;
-plot_profiles=0;
-export_nrj=1;
-
+nb_frequencies=1;
+freq_min=50;
+freq_max=50;
+export_profiles=1;
+plot_profiles=1;
+export_nrj=0;
 
 %% Initialization of PLANES
 init_PLANES
 air_properties_maine
 init_vec_frequencies
 
-%%
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Call to FreeFEM++ to create the Mesh and importation of the mesh
@@ -111,7 +109,7 @@ FEM_resolution
 
 
 disp('PW Resolution')
-PW_resolution
+%PW_resolution
 
 fclose(file_abs_id);
 
@@ -119,15 +117,15 @@ if nb_T~=0
     fclose(file_TL_id);
 end
 
+% 
+% figure
+% semilogx(vec_freq,TL_EF,'.')
+% hold on
+% semilogx(vec_freq,TL_PW)
+% xlabel('Frequency [Hz]')
+% ylabel('Transmission Loss [dB]')
+% xlim([min(vec_freq) max(vec_freq)])
+% legend('FEM','Plane Waves','Location','NorthWest')
 
-figure
-semilogx(vec_freq,TL_EF,'.')
-hold on
-semilogx(vec_freq,TL_PW)
-xlabel('Frequency [Hz]')
-ylabel('Transmission Loss [dB]')
-xlim([min(vec_freq) max(vec_freq)])
-legend('FEM','Plane Waves','Location','NorthWest')
 
-
-eval(['rmpath(' list_path ');'])
+%eval(['rmpath(' list_path ');'])

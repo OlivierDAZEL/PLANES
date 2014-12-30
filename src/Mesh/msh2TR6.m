@@ -234,9 +234,9 @@ periodicity=boundaries(temp,:);
 boundaries(temp,:)=[];
 temp=find(ismember(boundaries(:,4),[0]));
 boundaries(temp,:)=[];
+
+
 loads=boundaries;
-
-
 
 
 nb_dirichlets=size(dirichlets,1);

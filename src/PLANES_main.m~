@@ -38,13 +38,13 @@ clc
 list_path=['''FEM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='sandwich';
+name_of_project='TW';
 subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=-20;
-freq_min=20;
+nb_frequencies=30;
+freq_min=4000;
 freq_max=4000;
 export_profiles=0;
 plot_profiles=0;
@@ -69,7 +69,7 @@ tic
 disp('Importing Mesh')
 
 [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,...
-    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(name_file_msh,0);
+    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(name_file_msh,1);
 
 
 analyze_mesh
@@ -109,7 +109,7 @@ FEM_resolution
 
 
 disp('PW Resolution')
-PW_resolution
+%PW_resolution
 
 fclose(file_abs_id);
 
@@ -117,15 +117,15 @@ if nb_T~=0
     fclose(file_TL_id);
 end
 
-
-% hold on
-% plot(vec_freq,abs_EF,'m.')
+open('Figure3valpasbon.fig')
+hold on
+plot(vec_freq,abs_EF,'m.')
 
 % 
-figure
-semilogx(vec_freq,TL_EF,'.')
-hold on
-semilogx(vec_freq,TL_PW)
+% figure
+% semilogx(vec_freq,TL_EF,'.')
+% hold on
+% semilogx(vec_freq,TL_PW)
 % xlabel('Frequency [Hz]')
 % ylabel('Transmission Loss [dB]')
 % xlim([min(vec_freq) max(vec_freq)])

@@ -278,15 +278,15 @@ switch tracefigure
         line([nodes(elements(ii,4),1) nodes(elements(ii,5),1)],[nodes(elements(ii,4),2) nodes(elements(ii,5),2)],'Color','r');
         line([nodes(elements(ii,5),1) nodes(elements(ii,6),1)],[nodes(elements(ii,5),2) nodes(elements(ii,6),2)],'Color','r');
         line([nodes(elements(ii,6),1) nodes(elements(ii,1),1)],[nodes(elements(ii,6),2) nodes(elements(ii,1),2)],'Color','r');
-        text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(ii),'Fontsize',15);
+        %text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(ii),'Fontsize',15);
     end
     
     plot(nodes(:,1),nodes(:,2),'.','Markersize',15);
     
     
-    for ii=1:nb_nodes
-        text(nodes(ii,1),nodes(ii,2),num2str(ii),'Fontsize',15);
-    end
+%     for ii=1:nb_nodes
+%         text(nodes(ii,1),nodes(ii,2),num2str(ii),'Fontsize',15);
+%     end
     axis equal
     
     figure

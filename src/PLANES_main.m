@@ -1,6 +1,6 @@
 % PLANES_main.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -43,7 +43,7 @@ subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=-10;
+nb_frequencies=-100;
 freq_min=20;
 freq_max=4000;
 export_profiles=0;
@@ -102,7 +102,7 @@ if nb_T~=0
 end
 
 
-theta=0*pi/180;
+theta=89*pi/180;
 
 disp('FEM Resolution')
 FEM_resolution

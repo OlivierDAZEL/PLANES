@@ -101,7 +101,6 @@ for ie=1:nb_loads
             Omega_moins=[0 0 0;-j*k_z/(air.rho*omega^2) j*k_z/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
             Omega_plus=transfer_force(k_x,omega,Omega_moins(:,1),incident);
 
-
             F3=TR6_PW(length_edge,k_x,a);
             
             index_force=dof_A(ux(node));

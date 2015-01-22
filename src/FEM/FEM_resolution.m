@@ -105,7 +105,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     if nb_MMT~=0
-        
+
         TT=build_FEM_transfer(k_air*sin(theta_MMT),element_MMT_moins,element_MMT_plus,omega,multilayer_femtmm,k_air,air);
         
         

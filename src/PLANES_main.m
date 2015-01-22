@@ -43,7 +43,7 @@ subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=-20;
+nb_frequencies=-10;
 freq_min=20;
 freq_max=4000;
 export_profiles=0;
@@ -102,7 +102,7 @@ if nb_T~=0
 end
 
 
-theta=60*pi/180;
+theta=0*pi/180;
 
 disp('FEM Resolution')
 FEM_resolution

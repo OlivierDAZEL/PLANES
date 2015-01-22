@@ -104,7 +104,7 @@ if k_x~=0
     
 else  % k_x==0
     
-    MM=(Phi(:,1)*Psi(1,:)*exp(lamda(1)*d)+exp((lamda(2))*d)*Phi(:,2)*Psi(2,:)+exp((lamda(3))*d)*Phi(:,3)*Psi(3,:)+exp((lamda(4))*d)*Phi(:,4)*Psi(4,:));
-    F_plus=MM*F_moins;
+    MM    MM=exp(lamda(1)*d)*(Phi(:,1)*Psi(1,:)+exp((lamda(2)-lamda(1))*d)*Phi(:,2)*Psi(2,:)+exp((lamda(3)-lamda(1))*d)*Phi(:,3)*Psi(3,:)+exp((lamda(4)-lamda(1))*d)*Phi(:,4)*Psi(4,:));
+
     
 end

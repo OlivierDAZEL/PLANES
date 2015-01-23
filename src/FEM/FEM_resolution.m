@@ -32,6 +32,12 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+file_abs_id=fopen(name_file_abs,'w');
+if nb_T~=0
+    file_TL_id=fopen(name_file_TL,'w');
+end
+
+
 
 tic
 for i_f=1:abs(nb_frequencies)
@@ -60,7 +66,7 @@ for i_f=1:abs(nb_frequencies)
         end
     end
     
-    
+   
     if (nb_media.eqf~=0)
         for i_mat=1:nb_media.eqf
             eval(['Mat_PEM_' num2str(num_media.eqf(i_mat))])
@@ -140,8 +146,6 @@ for i_f=1:abs(nb_frequencies)
         periodicity_condition_application
     end
     
-    
-    
     %disp('Resolution of the system')
     X=A\F;
     
@@ -172,8 +176,6 @@ for i_f=1:abs(nb_frequencies)
             rflx_export=[rflx_export rflx.'];
             trans_export=[trans_export trans.'];
         end
-    
-        
     end
 
     
@@ -211,4 +213,8 @@ time_FEM=toc;
 
 info_FEM
 
+fclose(file_abs_id);
 
+if nb_T~=0
+    fclose(file_TL_id);
+end

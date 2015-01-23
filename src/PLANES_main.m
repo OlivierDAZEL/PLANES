@@ -46,13 +46,17 @@ subproject=0;
 nb_frequencies=-100;
 freq_min=20;
 freq_max=4000;
+% Angle of incidence 
+theta=0*pi/180;
+
+% 
 export_profiles=0;
 plot_profiles=0;
 export_nrj=0;
 
 %% Initialization of PLANES
 init_PLANES
-air_properties_JPG
+air_properties_maine
 init_vec_frequencies
 
 
@@ -71,9 +75,7 @@ disp('Importing Mesh')
 [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,...
     nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(name_file_msh,0);
 
-
 analyze_mesh
-
 
 disp('End of mesh importation')
 toc
@@ -96,13 +98,6 @@ disp('Assembling the problem')
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-file_abs_id=fopen(name_file_abs,'w');
-if nb_T~=0
-    file_TL_id=fopen(name_file_TL,'w');
-end
-
-
-theta=89*pi/180;
 
 disp('FEM Resolution')
 FEM_resolution
@@ -111,25 +106,11 @@ FEM_resolution
 disp('PW Resolution')
 PW_resolution
 
-fclose(file_abs_id);
 
-if nb_T~=0
-    fclose(file_TL_id);
-end
-
-
-% hold on
-% plot(vec_freq,abs_EF,'m.')
-
-% 
 figure
 semilogx(vec_freq,TL_EF,'.')
 hold on
 semilogx(vec_freq,TL_PW)
-% xlabel('Frequency [Hz]')
-% ylabel('Transmission Loss [dB]')
-% xlim([min(vec_freq) max(vec_freq)])
-% legend('FEM','Plane Waves','Location','NorthWest')
 
 
 %eval(['rmpath(' list_path ');'])

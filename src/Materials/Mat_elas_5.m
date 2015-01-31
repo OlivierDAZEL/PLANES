@@ -1,4 +1,4 @@
-% loads_application.m
+% Mat_elas_4.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,37 +32,22 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-for ie=1:nb_loads
-    typ=floor(loads(ie,4));
-    
-    x1=nodes(loads(ie,1),1);
-    y1=nodes(loads(ie,1),2);
-    x2=nodes(loads(ie,2),1);
-    y2=nodes(loads(ie,2),2);
-    length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
-    if (x1<x2)
-        a=x1;
-        node(1)=loads(ie,1);
-        node(2)=loads(ie,2);
-        node(3)=loads(ie,6);
-    else
-        a=x2;
-        node(2)=loads(ie,1);
-        node(1)=loads(ie,2);
-        node(3)=loads(ie,6);
-    end
-    
-    switch typ
-        case {3}
-            F3=TR6_unit(length_edge);
-            index_force=dof_A(p(node));
-            index_F_elem=find(index_force);
-            index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)+F3(index_F_elem);
-    end
+
+kappa_solide=3.4981e9;
+mu_solide=1.1194e9;
+
+kappa_solide=kappa_solide/1000;
+mu_solide=kappa_solide/1000;
 
 
+eta_solide=0.00;
+rho_solide=1510.00E+00;
 
-end
 
+kappa_solide=kappa_solide/1000;
+mu_solide=kappa_solide/1000;
+
+rho_solide=rho_solide/1000;
+
+lambda_solide=kappa_solide-2*mu_solide;
 

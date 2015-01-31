@@ -33,18 +33,18 @@
 %%
 
 clear all
-close all
+%close all
 clc
 list_path=['''FEM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='sandwich';
+name_of_project='Kundt';
 subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=-100;
-freq_min=20;
+nb_frequencies=1;
+freq_min=100;
 freq_max=4000;
 % Angle of incidence 
 theta=0*pi/180;
@@ -104,13 +104,28 @@ FEM_resolution
 
 
 disp('PW Resolution')
-PW_resolution
+%PW_resolution
 
 
-figure
-semilogx(vec_freq,TL_EF,'.')
-hold on
-semilogx(vec_freq,TL_PW)
+
+
+plot_sol_1D_x
+A=1/(sin(k_air*lx));
+x_analytique=linspace(-lx,0,200);
+sol_analytique=-air.K*k_air*A*cos(k_air*x_analytique);
+figure(10002)
+plot(x_analytique+lx,abs(sol_analytique))
+
+% figure
+% hold on
+% plot(vec_freq,abs_EF,'m.')
+%plot(vec_freq,abs_PW)
+
+
+% figure
+% semilogx(vec_freq,TL_EF,'.')
+% hold on
+% semilogx(vec_freq,TL_PW)
 
 
 %eval(['rmpath(' list_path ');'])

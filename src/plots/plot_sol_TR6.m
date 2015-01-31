@@ -47,19 +47,14 @@ end
 
 
 if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
-    
     figure(10002)
     % For pressure
     hold on
-    
-    
 end
 
 
 
 for ie=1:nb_elements
-    
-    
     
     vertices=[nodes(elements(ie,:),:)'];
     
@@ -110,6 +105,7 @@ for ie=1:nb_elements
             figure(10002)
             patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
         end
+        
     end
     
 end
@@ -134,9 +130,9 @@ if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
     axis off
     
 end
+
 if export_profiles==1
     shading interp
     print('-djpeg',[name_directory_profiles, num2str(i_f)]);
 end
 
-close(10002)

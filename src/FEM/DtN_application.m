@@ -75,9 +75,8 @@ for ie=1:nb_loads
                 index_force=dof_A(p(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                Omega.uy=1j*vec_k_z(i_R)/(air.rho*omega^2);
-                A(index_F_global,nb_dof_FEM+i_R)=A(index_F_global,nb_dof_FEM+i_R)+Omega.uy*F3(index_F_elem);
-                A(nb_dof_FEM+i_R,index_F_global)=A(nb_dof_FEM+i_R,index_F_global)+         F3(index_F_elem)';
+                A(index_F_global,nb_dof_FEM+i_R)=A(index_F_global,nb_dof_FEM+i_R)+F3(index_F_elem)*(1j*vec_k_z(i_R)/(air.rho*omega^2));
+                A(nb_dof_FEM+i_R,index_F_global)=A(nb_dof_FEM+i_R,index_F_global)+F3(index_F_elem)';
             end
         case {11}
             DtN_elas_R=1;
@@ -92,13 +91,12 @@ for ie=1:nb_loads
                 index_force=dof_A(uy(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                Omega.p=-1;
-                A(index_F_global,nb_dof_FEM+i_R)=A(index_F_global,nb_dof_FEM+i_R)+Omega.p*F3(index_F_elem);
-                A(nb_dof_FEM+i_R,index_F_global)=A(nb_dof_FEM+i_R,index_F_global)+        F3(index_F_elem)';
+                A(index_F_global,nb_dof_FEM+i_R)=A(index_F_global,nb_dof_FEM+i_R)-F3(index_F_elem);
+                A(nb_dof_FEM+i_R,index_F_global)=A(nb_dof_FEM+i_R,index_F_global)+F3(index_F_elem)';
             end
         case {13}
             DtN_plate_R=1;
-            Omega_moins=[0 0 0;-j*k_z/(air.rho*omega^2) j*k_z/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
+            Omega_moins=[0 0 0;-1j*k_z/(air.rho*omega^2) 1j*k_z/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
             Omega_plus=transfer_force(k_x,omega,Omega_moins(:,1),incident);
 
             F3=TR6_PW(length_edge,k_x,a);
@@ -118,7 +116,7 @@ for ie=1:nb_loads
                 
                 F3=TR6_PW(length_edge,vec_k_x(i_R),a);
                 
-                Omega_moins=[0 0 0;-j*vec_k_z(i_R)/(air.rho*omega^2) j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
+                Omega_moins=[0 0 0;-1j*vec_k_z(i_R)/(air.rho*omega^2) 1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
                 [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins(:,2:3),1,incident);
 
                 T_back([1:2]+size_info_vector_R*(i_R-1),[1:2]+size_info_vector_R*(i_R-1))=T_back_i;
@@ -196,7 +194,7 @@ for ie=1:nb_loads
             index_force_u=dof_A(uy(node));
             index_F_elem_u=find(index_force_u);
             index_F_global_u=index_force_u(index_F_elem_u);
-            % Signe ok mercredi
+
             A(index_F_global_p,index_F_global_u)=A(index_F_global_p,index_F_global_u)-(FSIe(index_F_elem_p,index_F_elem_u));
         case {20}
             DtN_acou_T=1;
@@ -231,7 +229,7 @@ for ie=1:nb_loads
                 
                 F3=TR6_PW(length_edge,vec_k_x_t(i_T),a);
                 
-                Omega_moins=[0 0 0;-j*vec_k_z_t(i_T)/(air.rho*omega^2) -j*vec_k_z(i_T)/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
+                Omega_moins=[0 0 0;-1j*vec_k_z_t(i_T)/(air.rho*omega^2) -1j*vec_k_z(i_T)/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
                 [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins(:,2:3),-1,incident);
                 T_back_T([1:2]+size_info_vector_T*(i_T-1),[1:2]+size_info_vector_T*(i_T-1))=T_back_i;
                 
@@ -276,12 +274,10 @@ if exist('DtN_elas_R')
     F(nb_dof_FEM+1)=F(nb_dof_FEM+1)-period*(1i*k_z)/(air.rho*omega^2);
 end
 
-
-
 if exist('DtN_plate_R')
     
     
-    Omega_moins=[0;-j*k_z/(air.rho*omega^2);-1 ;0 ];
+    Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1 ;0 ];
     Omega_plus=transfer_force(k_x,omega,Omega_moins,incident);
     
     F(nb_dof_FEM+1)=F(nb_dof_FEM+1)+period*Omega_plus(4);
@@ -289,7 +285,7 @@ if exist('DtN_plate_R')
     
     for i_R=1:nb_R
         
-        Omega_moins=[0 0;j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
+        Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
         [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,incident);
         
 
@@ -307,7 +303,7 @@ if exist('DtN_plate_T')
     
    for i_T=1:nb_T
         
-        Omega_moins=[0 0;-j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
+        Omega_moins=[0 0;-1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
         [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,incident);
         
 
@@ -316,19 +312,15 @@ if exist('DtN_plate_T')
         
         A(nb_dof_FEM+size_info_vector_R*nb_R+2+size_info_vector_T*(i_T-1),nb_dof_FEM+size_info_vector_R*nb_R+1+size_info_vector_T*(i_T-1))=-period*Omega_plus(2,1);
         A(nb_dof_FEM+size_info_vector_R*nb_R+2+size_info_vector_T*(i_T-1),nb_dof_FEM+size_info_vector_R*nb_R+2+size_info_vector_T*(i_T-1))=-period*Omega_plus(2,2);
-                
-        
+                   
     end
 end
-
 
 if exist('DtN_acou_T')
     for i_T=1:nb_T
         A(size_info_vector_R*nb_R+i_T+nb_dof_FEM,size_info_vector_R*nb_R+i_T+nb_dof_FEM)=-period;
     end
 end
-
-
 
 if exist('DtN_elas_T')
     for i_T=1:nb_T

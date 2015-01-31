@@ -1,4 +1,4 @@
-% loads_application.m
+% plot_sol_TR6.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,37 +32,53 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-for ie=1:nb_loads
-    typ=floor(loads(ie,4));
+
+
+x=[];
+y=[];
+
+
+if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+    figure(10001)
+    % For displacement
+    hold on
     
-    x1=nodes(loads(ie,1),1);
-    y1=nodes(loads(ie,1),2);
-    x2=nodes(loads(ie,2),1);
-    y2=nodes(loads(ie,2),2);
-    length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
-    if (x1<x2)
-        a=x1;
-        node(1)=loads(ie,1);
-        node(2)=loads(ie,2);
-        node(3)=loads(ie,6);
-    else
-        a=x2;
-        node(2)=loads(ie,1);
-        node(1)=loads(ie,2);
-        node(3)=loads(ie,6);
-    end
-    
-    switch typ
-        case {3}
-            F3=TR6_unit(length_edge);
-            index_force=dof_A(p(node));
-            index_F_elem=find(index_force);
-            index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)+F3(index_F_elem);
-    end
-
-
-
 end
 
+
+if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+    figure(10002)
+    % For pressure
+    hold on
+end
+
+
+
+for ie=1:nb_elements
+    
+    
+    if ismember(floor(element_label(ie)/1000),[1 4 5])
+        figure(10001)
+        c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
+        x=coooord
+
+        
+    end
+    
+    if ismember(floor(element_label(ie)/1000),[0 4 5])
+        figure(10002)
+       
+        c=sol(3*(elements(ie,:)-1)+3);
+        x=nodes(elements(ie,:),1);
+        plot(x,abs(c),'r.');
+        
+    end
+    
+end
+
+
+if export_profiles==1
+    shading interp
+    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
+end
 

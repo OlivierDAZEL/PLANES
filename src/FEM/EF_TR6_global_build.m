@@ -148,10 +148,6 @@ for i_mat=1:nb_media.pem98
 end
 
 
-
-
-
-
 for i_mat=1:nb_media.pem01
     
     eval(['K0_pem01_',num2str(i_mat),'=sparse( i_k0_pem01,j_k0_pem01,v_k0_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);

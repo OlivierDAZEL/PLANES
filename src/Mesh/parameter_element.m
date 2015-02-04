@@ -35,12 +35,12 @@
 
 
 if element_label(e_edge)==0
-    c_e=c_0;
-    k_e=omega/c_e;
-    Z_e=Z_0;
+    c_e=air.c;
+    k_e=omega/air.c;
+    Z_e=air.Z;
     tau_x=1;
     tau_y=1;
-    M_e=diag([rho_0,rho_0,1/K_0]);
+    M_e=diag([air.rho,air.rho,1/air.K]);
     
 elseif floor(element_label(e_edge)/1000)==2
     

@@ -35,7 +35,7 @@
 clear all
 %close all
 clc
-list_path=['''FEM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
+list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
 name_of_project='Kundt';
@@ -48,6 +48,8 @@ freq_min=100;
 freq_max=4000;
 % Angle of incidence 
 theta=0*pi/180;
+
+nb_theta=2;
 
 % 
 export_profiles=0;
@@ -72,10 +74,12 @@ tic
 
 disp('Importing Mesh')
 
-[nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,...
-    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(name_file_msh,0);
+[nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
+    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2DGM(name_file_msh,1);
 
-analyze_mesh
+
+
+analyze_mesh_DGM
 
 disp('End of mesh importation')
 toc
@@ -86,11 +90,9 @@ toc
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-disp('Building shape matrices')
-
-EF_TR6_global_build
-
-disp('Assembling the problem')
+% disp('Building shape matrices')
+%     EF_TR6_global_build
+% disp('Assembling the problem')
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,21 +101,20 @@ disp('Assembling the problem')
 
 
 
-disp('FEM Resolution')
-FEM_resolution
+% disp('FEM Resolution')
+% FEM_resolution
 
+ disp('DGM Resolution')
+  DGM_resolution
 
-disp('PW Resolution')
+%disp('PW Resolution')
 %PW_resolution
 
-
-
-
-plot_sol_1D_x
-A=1/(sin(k_air*lx));
+%plot_sol_1D_x
+A=1/(j*omega*sin(k_air*lx));
 x_analytique=linspace(-lx,0,200);
 sol_analytique=-air.K*k_air*A*cos(k_air*x_analytique);
-figure(10002)
+%figure(10002)
 plot(x_analytique+lx,abs(sol_analytique))
 
 % figure
@@ -121,11 +122,9 @@ plot(x_analytique+lx,abs(sol_analytique))
 % plot(vec_freq,abs_EF,'m.')
 %plot(vec_freq,abs_PW)
 
-
 % figure
 % semilogx(vec_freq,TL_EF,'.')
 % hold on
 % semilogx(vec_freq,TL_PW)
-
 
 %eval(['rmpath(' list_path ');'])

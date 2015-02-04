@@ -1,6 +1,6 @@
-lx=1.00;
-ly=1e-2;
-nx=30;
+lx=3.00e-2;
+ly=1.00e-2;
+nx=3;
 ny=ceil(nx*ly/lx);
 
 

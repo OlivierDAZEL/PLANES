@@ -1,6 +1,6 @@
-% centre_element.m
+% analyze_mesh_DGM.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -33,9 +33,28 @@
 %%
 
 
-function f=centre_element(ie)
+period=max(nodes(:,1))-min(nodes(:,1));
 
-global vcor
-global kconec
+ondes_element=zeros(nb_elements,1);
+for ie=1:nb_elements
+   switch element_label(ie)
+       case {0,2000:2999,3000:3999}
+           ondes_element(ie)=1;
+       case {1000:1999}
+           ondes_element(ie)=2;   
+       case {4000:5999}
+           ondes_element(ie)=3;
+   end
+end
+dof_start_element=zeros(nb_elements,1);
+dof_start_element(1)=1;
+for ie=2:nb_elements
+   dof_start_element(ie)=dof_start_element(ie-1)+ondes_element(ie-1)*nb_theta; 
+end
 
-f=mean(vcor(kconec(ie,:),1:2))';
+
+nb_dof_DGM=dof_start_element(ie)+ondes_element(ie)*nb_theta-1; 
+
+vec_theta=linspace(0,2*pi,nb_theta+1);
+vec_theta(end)=[];
+

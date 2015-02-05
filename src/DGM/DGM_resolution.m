@@ -32,6 +32,9 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+for ii=1:nb_theta
+    Shift_fluid((ii-1)*3+(1:3),ii)=1;
+end
 
 
 tic
@@ -53,7 +56,9 @@ for i_f=1:abs(nb_frequencies)
         
         if internal(ie,5)==internal(ie,6)
             edge_internal
-            %         elseif (edge(ie,3)==1)
+            
+           %disp('edge_internal')
+           %         elseif (edge(ie,3)==1)
             %             boundary_rigid_wall
             %         elseif (edge(ie,3)==2)
             %             boundary_pressure
@@ -98,8 +103,8 @@ for i_f=1:abs(nb_frequencies)
         plot_sol_TR6
     end
     
-    
-    abs(X)
+%     
+%     abs(X)
     trace_DGM_fluid
     
     %info_DGM

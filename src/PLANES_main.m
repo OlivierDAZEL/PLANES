@@ -49,7 +49,7 @@ freq_max=4000;
 % Angle of incidence 
 theta=0*pi/180;
 
-nb_theta=2;
+nb_theta=4;
 
 % 
 export_profiles=0;

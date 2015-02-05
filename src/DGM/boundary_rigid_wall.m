@@ -54,7 +54,6 @@ R_e=-inv(M_moins)*M_plus;
 %F_e=A_x_fluid*nx+A_y_fluid*ny;
 F_e=M_e*(Lambda_e_plus*W_e_plus+Lambda_e_moins*W_e_moins*R_e)*Omega_e_plus;
 
-
 delta_test=k_e;
 delta_champs=k_e;
 
@@ -67,6 +66,4 @@ MM=kron(II,F_e);
 indice_test  =((1:nb_theta)-1)+dof_start_element(e_edge);  
 indice_champs=((1:nb_theta)-1)+dof_start_element(e_edge);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
-
-
 

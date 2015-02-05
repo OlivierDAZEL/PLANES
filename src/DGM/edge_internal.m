@@ -61,7 +61,8 @@ else
 end
 
 if valid_edge_internal==0
-    BIND
+    disp('Stop in edge internal not a valid internal edge')
+    jkljkkjklj
 end
 
 

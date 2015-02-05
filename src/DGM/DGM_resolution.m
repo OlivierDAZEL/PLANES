@@ -1,4 +1,4 @@
-% FEM_resolution.m
+% DGM_resolution.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -39,12 +39,11 @@ end
 
 tic
 for i_f=1:abs(nb_frequencies)
-    FEM_progress=100*i_f/abs(nb_frequencies)
+    DGM_progress=100*i_f/abs(nb_frequencies)
     
     freq=vec_freq(i_f);
     omega=2*pi*freq;
     k_air=omega/air.c;
-    
     
     % Construction of the linear system
     
@@ -54,57 +53,24 @@ for i_f=1:abs(nb_frequencies)
     
     for ie=1:nb_internal
         
-        if internal(ie,5)==internal(ie,6)
-            edge_internal
-            
-           %disp('edge_internal')
-           %         elseif (edge(ie,3)==1)
-            %             boundary_rigid_wall
-            %         elseif (edge(ie,3)==2)
-            %             boundary_pressure
-            %         elseif (edge(ie,3)==3)
-            %             boundary_normal_velocity
-            %         elseif (edge(ie,3)==5)
-            %             boundary_sliding
-            %         elseif (edge(ie,3)==6)
-            %             boundary_bonded
-            %         elseif (edge(ie,3)==7)
-            %             boundary_pressure_PEM
-            %         elseif (edge(ie,3)==8)
-            %             boundary_normal_velocity_PEM
-            %         elseif (floor(edge(ie,3)/1000)==1)
-            %             boundary_biot_wave
-            %         elseif (floor(edge(ie,3)/1000)==2)
-            %             boundary_biot_wave
-            %         elseif (floor(edge(ie,3)/1000)==3)
-            %             boundary_biot_wave
-            %         end
-        end
-        
+        edge_internal
         
     end
+    
+    
     
     for ie=1:nb_dirichlets
         boundary_rigid_wall
     end
-        
+    
     for ie=1:nb_loads
         boundary_normal_velocity
-    end    
+    end
     
     
     %disp('Resolution of the system')
     X=A\F;
-    
-    
-    
-    
-    if plot_profiles==1
-        plot_sol_TR6
-    end
-    
-%     
-%     abs(X)
+      
     trace_DGM_fluid
     
     %info_DGM

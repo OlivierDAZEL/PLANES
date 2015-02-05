@@ -49,7 +49,7 @@ freq_max=4000;
 % Angle of incidence 
 theta=0*pi/180;
 
-nb_theta=4;
+nb_theta=2;
 
 % 
 export_profiles=0;
@@ -75,7 +75,7 @@ tic
 disp('Importing Mesh')
 
 [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2DGM(name_file_msh,1);
+    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2DGM(name_file_msh,0);
 
 
 
@@ -104,13 +104,14 @@ toc
 % disp('FEM Resolution')
 % FEM_resolution
 
- disp('DGM Resolution')
-  DGM_resolution
+disp('DGM Resolution')
+DGM_resolution
 
 %disp('PW Resolution')
 %PW_resolution
 
 %plot_sol_1D_x
+
 A=1/(j*omega*sin(k_air*lx));
 x_analytique=linspace(-lx,0,200);
 sol_analytique=-air.K*k_air*A*cos(k_air*x_analytique);

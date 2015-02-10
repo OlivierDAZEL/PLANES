@@ -33,12 +33,12 @@
 %%
 
 clear all
-%close all
+close all
 clc
 list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='Kundt';
+name_of_project='air_PEM';
 subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
@@ -46,19 +46,25 @@ subproject=0;
 nb_frequencies=1;
 freq_min=100;
 freq_max=4000;
-% Angle of incidence 
+% Angle of incidence
 theta=0*pi/180;
 
-nb_theta=2;
+solve.FEM=1;
+solve.DGM=0;
+solve.PW=0;
 
-% 
+if solve.DGM
+    nb_theta=4;
+end
+
+%
 export_profiles=0;
-plot_profiles=0;
+plot_profiles=1;
 export_nrj=0;
 
 %% Initialization of PLANES
 init_PLANES
-air_properties_maine
+air_properties_JPG
 init_vec_frequencies
 
 
@@ -74,49 +80,75 @@ tic
 
 disp('Importing Mesh')
 
-[nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-    nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2DGM(name_file_msh,0);
+if solve.DGM
+    
+    [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2DGM(name_file_msh,1);
+    
+    analyze_mesh_DGM
+    
+end
 
+if solve.FEM
+    
+    [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,...
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(name_file_msh,0);
+    analyze_mesh_FEM
+    disp('Building FEM shape matrices')
+    
+    EF_TR6_global_build
+    
+end
 
-
-analyze_mesh_DGM
 
 disp('End of mesh importation')
 toc
-
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Construction of global shape matrices
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% disp('Building shape matrices')
-%     EF_TR6_global_build
-% disp('Assembling the problem')
-
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Frequency loop
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+if solve.FEM
+    disp('FEM Resolution')
+    FEM_resolution
+end
+
+if solve.DGM
+    disp('DGM Resolution')
+    DGM_resolution
+end
+
+if solve.PW
+    disp('PW Resolution')
+    PW_resolution
+end
+
+% plot_sol_1D_r
+% 
+% Amp_cylinder=(2*air.rho*omega^2)/(k_air*(besselh(-1,2,k_air*r1)-besselh(1,2,k_air*r1)));
+% r_plot=linspace(r1,r2,2000);
+% p_plot=Amp_cylinder*besselh(0,2,k_air*r_plot);
+% plot(r_plot,abs(p_plot),'k')
 
 
-% disp('FEM Resolution')
-% FEM_resolution
 
-disp('DGM Resolution')
-DGM_resolution
+ solution_AIR_PEM
 
-%disp('PW Resolution')
-%PW_resolution
 
-%plot_sol_1D_x
 
-A=1/(j*omega*sin(k_air*lx));
-x_analytique=linspace(-lx,0,200);
-sol_analytique=-air.K*k_air*A*cos(k_air*x_analytique);
+
+
+% A=1/(j*omega*sin(k_air*ly));
+% x_analytique=linspace(-ly,0,200);
+% sol_analytique=-air.K*k_air*A*cos(k_air*x_analytique);
 %figure(10002)
-plot(x_analytique+lx,abs(sol_analytique))
+%plot(x_analytique+ly,abs(sol_analytique))
 
 % figure
 % hold on

@@ -111,6 +111,7 @@ v_q_limp=zeros(1,nb_media.limp);
 H_acou=sparse(3*nb_nodes,3*nb_nodes);
 Q_acou=sparse(3*nb_nodes,3*nb_nodes);
 
-
+H_PML=sparse(3*nb_nodes,3*nb_nodes);
+Q_PML=sparse(3*nb_nodes,3*nb_nodes);
 
 

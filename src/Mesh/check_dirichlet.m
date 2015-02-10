@@ -39,7 +39,7 @@ for ie=1:nb_elements
 
 	typ=floor(element_label(ie)/1000);
 	switch typ
-		case {0,2,3,8} %! Acoustic/EF/limep
+		case {0,2,3,8} %! Acoustic/EF/limp/PML
 					isvalidof(3*(elements(ie,1:6)-1)+3)=1;
         case {1} %! Elastic solid
 					isvalidof(3*(elements(ie,1:6)-1)+1)=1;
@@ -79,17 +79,15 @@ for ie=1:nb_dirichlets
 		isvalidof(3*(dirichlets(ie,6)-1)+1)=0;
 		isvalidof(3*(dirichlets(ie,6)-1)+2)=0;
     end
-	if (dirichlets(ie,4)==1) 
-		isvalidof(3*(dirichlets(ie,1)-1)+1)=0;
-		isvalidof(3*(dirichlets(ie,1)-1)+2)=0;
-		isvalidof(3*(dirichlets(ie,2)-1)+1)=0;
-		isvalidof(3*(dirichlets(ie,2)-1)+2)=0;
-		isvalidof(3*(dirichlets(ie,6)-1)+1)=0;
-		isvalidof(3*(dirichlets(ie,6)-1)+2)=0;
-    end	
+% 	if (dirichlets(ie,4)==1) 
+% 		isvalidof(3*(dirichlets(ie,1)-1)+1)=0;
+% 		isvalidof(3*(dirichlets(ie,1)-1)+2)=0;
+% 		isvalidof(3*(dirichlets(ie,2)-1)+1)=0;
+% 		isvalidof(3*(dirichlets(ie,2)-1)+2)=0;
+% 		isvalidof(3*(dirichlets(ie,6)-1)+1)=0;
+% 		isvalidof(3*(dirichlets(ie,6)-1)+2)=0;
+%     end	
 end
-
-
 
 
 

@@ -1,4 +1,4 @@
-% periodicity_condition_application.m
+% radiation_cylinder.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,31 +32,37 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
-%disp('Applying periodicity condtions')
-
+lambda=air.c/max(vec_freq);
 
 
+d_FEM=lambda/24;
+
+
+r1=0.1;
+nr1=ceil(2*pi*r1/d_FEM);
+r2=2*r1;
+nr2=floor(2*pi*r2/d_FEM);
+
+
+dair=3*r1;
+dpml=2*dair;
+nair=ceil(dair/d_FEM);
+npml=ceil(dpml/d_FEM);
 
 
 
-delta=exp(-1i*k_x*period);
 
 
-for ii=1:length(dof_left)
-    
-        A(:,dof_left(ii))=A(:,dof_left(ii))+delta*A(:,dof_right(ii));
-        A(:,dof_right(ii))=0;
 
-        
-        A(dof_left(ii),:)=A(dof_left(ii),:)+A(dof_right(ii),:)/delta;
-        F(dof_left(ii))=F(dof_left(ii))+F(dof_right(ii))/delta;
+fid=fopen(name_file_input_FreeFem,'w');
+fprintf(fid,'%s\n',name_file_msh);
+fprintf(fid,'%12.8f\n',dair);
+fprintf(fid,'%12.8f\n',dpml);
+fprintf(fid,'%d\n',nair);
+fprintf(fid,'%d\n',npml);
+fprintf(fid,'%12.8f\n',r1);
+fprintf(fid,'%d\n',nr1);
+fprintf(fid,'%12.8f\n',r2);
+fprintf(fid,'%d\n',nr2);
+fclose(fid);
 
-        A(dof_right(ii),:)=0;
-        
-        F(dof_right(ii))=0;
-        A(dof_right(ii),dof_left(ii))=delta;
-        A(dof_right(ii),dof_right(ii))=-1;
-        
-    
-end

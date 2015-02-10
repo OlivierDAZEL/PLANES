@@ -1,7 +1,7 @@
 period=55e-3;
 thicknessporous=5.5e-2;
 labelporous=5005;
-labelinclusion=1004;
+labelinclusion=1003;
 radius=1.25e-2;
 nx=30;
 

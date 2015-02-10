@@ -1,4 +1,4 @@
-% periodicity_condition_application.m
+% Mat_elas_3.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,30 +33,12 @@
 %%
 
 
-%disp('Applying periodicity condtions')
+E_solide=2.20E+5;
+nu_solide=0.3E+00;
+eta_solide=0.02;
+rho_solide=28.00E+00;
+
+lambda_solide=(1+1i*eta_solide)*(E_solide*nu_solide)/((1+nu_solide)*(1-2*nu_solide));
+mu_solide=(1+1i*eta_solide)*(E_solide)/(2*(1+nu_solide));
 
 
-
-
-
-
-delta=exp(-1i*k_x*period);
-
-
-for ii=1:length(dof_left)
-    
-        A(:,dof_left(ii))=A(:,dof_left(ii))+delta*A(:,dof_right(ii));
-        A(:,dof_right(ii))=0;
-
-        
-        A(dof_left(ii),:)=A(dof_left(ii),:)+A(dof_right(ii),:)/delta;
-        F(dof_left(ii))=F(dof_left(ii))+F(dof_right(ii))/delta;
-
-        A(dof_right(ii),:)=0;
-        
-        F(dof_right(ii))=0;
-        A(dof_right(ii),dof_left(ii))=delta;
-        A(dof_right(ii),dof_right(ii))=-1;
-        
-    
-end

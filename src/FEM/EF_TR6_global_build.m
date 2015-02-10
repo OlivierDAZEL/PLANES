@@ -32,14 +32,13 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
 create_temporary_FEM_matrices
 
 for ie=1:nb_elements
     
     nodes_elements = nodes(elements(ie,1:6),1:2)';
     
-    if element_label(ie)==0
+    if floor(element_label(ie)/1000)==0
         [vh,vq]=TR6_fluid(nodes_elements);
         index_p=p(elements(ie,1:6));
         H_acou(index_p,index_p)=H_acou(index_p,index_p)+vh;
@@ -50,7 +49,6 @@ for ie=1:nb_elements
         index_e=uxy(elements(ie,1:6));
         insert_temporary_matrices_elas
         
-        
     elseif floor(element_label(ie)/1000)==2
         [vh,vq]=TR6_fluid(nodes_elements);
         index_p=p(elements(ie,1:6));
@@ -60,8 +58,7 @@ for ie=1:nb_elements
         [vh,vq]=TR6_fluid(nodes_elements);
         index_p=p(elements(ie,1:6));
         insert_temporary_matrices_limp       
-        
-        
+      
         
     elseif floor(element_label(ie)/1000)==4
         [vm,vk0,vk1,vc,vh,vq]=TR6_pem98(nodes_elements);
@@ -74,8 +71,27 @@ for ie=1:nb_elements
         index_e=uxy(elements(ie,1:6));
         index_p=p(elements(ie,1:6));
         insert_temporary_matrices_pem2001
+    elseif floor(element_label(ie)/1000)==8
+        temp=element_label(ie);
+        temp_x=floor((temp-8000)/100);
+        temp_y=floor((temp-8000-100*temp_x)/10);
         
+        if temp_x==0;
+            tau_x=1;
+        else
+            tau_x=exp(1j*pi/4);
+        end
+        if temp_y==0;
+            tau_y=1;
+        else
+            tau_y=exp(1j*pi/4);
+        end
+
+        [vh,vq]=TR6_PML(nodes_elements,tau_x,tau_y);
+        index_p=p(elements(ie,1:6));
         
+        H_PML(index_p,index_p)=H_PML(index_p,index_p)+vh;
+        Q_PML(index_p,index_p)=Q_PML(index_p,index_p)+vq;  
         
     else
         disp('Subroutine parameter_element')
@@ -90,10 +106,11 @@ size_global_matrices=3*nb_nodes;
 discard_l1_temporary_FEM_matrices
 
 
-
 H_acou=H_acou(list_dof_valid,list_dof_valid);
 Q_acou=Q_acou(list_dof_valid,list_dof_valid);
 
+H_PML=H_PML(list_dof_valid,list_dof_valid);
+Q_PML=Q_PML(list_dof_valid,list_dof_valid);
 
 for i_mat=1:nb_media.elas
     

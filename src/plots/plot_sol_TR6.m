@@ -50,6 +50,7 @@ if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
     figure(10002)
     % For pressure
     hold on
+    colorbar
 end
 
 
@@ -95,7 +96,7 @@ for ie=1:nb_elements
         end
     end
     
-    if ismember(floor(element_label(ie)/1000),[0 4 5])
+    if ismember(floor(element_label(ie)/1000),[0 4 15 8])
         figure(10002)
         c=sol(3*elements(ie,:));
         
@@ -118,6 +119,7 @@ if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
     colormap jet
     colorbar
     axis off
+    shading interp
 end
 
 

@@ -82,29 +82,27 @@ period=max(nodes(:,1))-min(nodes(:,1));
 
 check_dirichlet
 
-
-
 if exist('incident')
     for ii=1:length(incident)
         if floor(incident(ii).typ/1000)==1
-           eval(['Mat_elas_' num2str(incident(1).typ-1000)])
-           incident(ii).rho=rho_solide;
-           incident(ii).lambda=lambda_solide;
-           incident(ii).mu=mu_solide;
+            eval(['Mat_elas_' num2str(incident(1).typ-1000)])
+            incident(ii).rho=rho_solide;
+            incident(ii).lambda=lambda_solide;
+            incident(ii).mu=mu_solide;
         end
-            
+        
     end
 end
 
 if exist('transmission')
     for ii=1:length(transmission)
         if floor(transmission(ii).typ/1000)==1
-           eval(['Mat_elas_' num2str(transmission(1).typ-1000)])
-           transmission(ii).rho=rho_solide;
-           transmission(ii).lambda=lambda_solide;
-           transmission(ii).mu=mu_solide;
+            eval(['Mat_elas_' num2str(transmission(1).typ-1000)])
+            transmission(ii).rho=rho_solide;
+            transmission(ii).lambda=lambda_solide;
+            transmission(ii).mu=mu_solide;
         end
-            
+        
     end
 end
 
@@ -128,23 +126,23 @@ if nb_MMT~=0
         
         node_moins=edges_MMT(index_MMT_moins(ii),1);
         [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-delta_x_MMT)+1i*(nodes(:,2)-nodes(node_moins,2)-delta_y_MMT)));
-
+        
         node1_plus=find(edges_MMT_plus(ii,1:2)==node_plus);
         
         if (~isempty(node1_plus))
             if node1_plus==2
-               edges_MMT_plus(ii,1:2)=edges_MMT_plus(ii,[2 1]); 
+                edges_MMT_plus(ii,1:2)=edges_MMT_plus(ii,[2 1]);
             end
             
         else
-             stop
+            stop
         end
     end
     
     temp=element_label(edges_MMT_moins(:,3));
     temp=temp-temp(1)*ones(size(temp));
     if norm(temp)==0
-       element_MMT_moins=element_label(edges_MMT_moins(1,3));
+        element_MMT_moins=element_label(edges_MMT_moins(1,3));
     else
         stop
     end
@@ -152,14 +150,37 @@ if nb_MMT~=0
     temp=element_label(edges_MMT_plus(:,3));
     temp=temp-temp(1)*ones(size(temp));
     if norm(temp)==0
-       element_MMT_plus=element_label(edges_MMT_plus(1,3));
+        element_MMT_plus=element_label(edges_MMT_plus(1,3));
     else
         stop
     end
     
-
-
     
-
+    
+    
+    
 end
+
+if nb_periodicity~=0
+    
+    edge_left= find(periodicity(:,4)==98);
+    edge_right=find(periodicity(:,4)==99);
+    
+    node_left=unique([periodicity(edge_left,1);periodicity(edge_left,2);periodicity(edge_left,6)]);
+    [temp,i_left]=sort(nodes(node_left,2));
+    node_left=node_left(i_left);
+    
+    node_right=unique([periodicity(edge_right,1);periodicity(edge_right,2);periodicity(edge_right,6)]);
+    [temp,i_right]=sort(nodes(node_right,2));
+    node_right=node_right(i_right);
+    
+    
+    dof_left= dof_A([3*(node_left -1)+1;3*(node_left -1)+2;3*(node_left -1)+3]);
+    dof_right=dof_A([3*(node_right-1)+1;3*(node_right-1)+2;3*(node_right-1)+3]);
+    
+    dof_left= dof_left (find(dof_left));
+    dof_right=dof_right(find(dof_right));
+    
+end
+
 

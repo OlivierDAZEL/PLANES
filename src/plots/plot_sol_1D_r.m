@@ -1,4 +1,4 @@
-% periodicity_condition_application.m
+% plot_sol_TR6.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,30 +33,55 @@
 %%
 
 
-%disp('Applying periodicity condtions')
+
+x=[];
+y=[];
 
 
-
-
-
-
-delta=exp(-1i*k_x*period);
-
-
-for ii=1:length(dof_left)
-    
-        A(:,dof_left(ii))=A(:,dof_left(ii))+delta*A(:,dof_right(ii));
-        A(:,dof_right(ii))=0;
-
-        
-        A(dof_left(ii),:)=A(dof_left(ii),:)+A(dof_right(ii),:)/delta;
-        F(dof_left(ii))=F(dof_left(ii))+F(dof_right(ii))/delta;
-
-        A(dof_right(ii),:)=0;
-        
-        F(dof_right(ii))=0;
-        A(dof_right(ii),dof_left(ii))=delta;
-        A(dof_right(ii),dof_right(ii))=-1;
-        
+if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+    figure(10001)
+    % For displacement
+    hold on
     
 end
+
+
+if sum(ismember(floor(element_label/1000),[0 2 3 4 5 8]))~=0
+    figure(10002)
+    % For pressure
+    hold on
+end
+
+
+
+for ie=1:nb_elements
+    
+    
+    if ismember(floor(element_label(ie)/1000),[1 4 5])
+        figure(10001)
+        c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
+        x=coooord
+
+        
+    end
+    
+    if ismember(floor(element_label(ie)),[0])%ismember(floor(element_label(ie)/1000),[0 4 5 8])
+        figure(10002)
+       
+        c=sol(3*(elements(ie,:)-1)+3);
+        r=sqrt((nodes(elements(ie,:),1)).^2+(nodes(elements(ie,:),2)).^2);
+        plot(r,abs(c),'r.');
+        
+    end
+    
+end
+
+if export_profiles==1
+    shading interp
+    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
+end
+
+
+
+
+

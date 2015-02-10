@@ -48,8 +48,6 @@ border inclusionext(t=0,2*pi){ x=(period/2.)+(radius                   )*cos(t);
 border inclusionint(t=0,2*pi){ x=(period/2.)+(radius-thicknessinclusion)*cos(t); y=(thicknessporous/2.)+(radius-thicknessinclusion)*sin(t);label=0;}
 
 
-
-
 mesh Thporous=buildmesh (AB(nx)+BC(ny)+CD(nx)+DA(ny)+inclusionext(-ninclusion),fixeborder=1);
 mesh Thinclusion=buildmesh (inclusionext(ninclusion)+inclusionint(-ninclusion),fixeborder=1);
 mesh Thair=buildmesh (inclusionint(ninclusion),fixeborder=1);

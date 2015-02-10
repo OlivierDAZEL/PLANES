@@ -1,0 +1,140 @@
+real dair; 
+real dpml;
+real nair; 
+real npml;
+real r1; 
+real nr1;
+real r2; 
+real nr2;
+string fileoutput;
+
+ifstream entree("FF.inp");
+entree >> fileoutput;
+entree >> dair;
+entree >> dpml;
+entree >> nair;
+entree >> npml;
+entree >> r1;
+entree >> nr1;
+entree >> r2;
+entree >> nr2;
+
+real xa=-dair, ya=-dair;
+real xb= dair, yb=-dair;
+real xc= dair, yc= dair;
+real xd=-dair, yd= dair;
+
+real xe=-dair-dpml, ye=-dair-dpml;
+real xf=-dair     , yf=-dair-dpml;
+real xg= dair     , yg=-dair-dpml;
+real xh= dair+dpml, yh=-dair-dpml;
+
+real xi=-dair-dpml, yi=-dair     ;
+real xj= dair+dpml, yj=-dair     ;
+
+real xk=-dair-dpml, yk= dair     ;
+real xl= dair+dpml, yl= dair     ;
+
+real xm=-dair-dpml, ym= dair+dpml;
+real xn=-dair     , yn= dair+dpml;
+real xo= dair     , yo= dair+dpml;
+real xp= dair+dpml, yp= dair+dpml;
+
+
+real xq=       0.0, yq=-dair     ;
+real xr=-dair     , yr=       0.0;
+real xs= dair     , ys=       0;0;
+real xt=       0.0, yt= dair     ;
+
+
+
+
+border EF(t=0,1){ x=xe*(1-t)+xf*t; y=ye*(1-t)+yf*t;label=1;}
+border FG(t=0,1){ x=xf*(1-t)+xg*t; y=yf*(1-t)+yg*t;label=1;}
+border GH(t=0,1){ x=xg*(1-t)+xh*t; y=yg*(1-t)+yh*t;label=1;}
+border IA(t=0,1){ x=xi*(1-t)+xa*t; y=yi*(1-t)+ya*t;label=0;}
+border AQ(t=0,1){ x=xa*(1-t)+xq*t; y=ya*(1-t)+yq*t;label=0;}
+border QB(t=0,1){ x=xq*(1-t)+xb*t; y=yq*(1-t)+yb*t;label=0;}
+border BJ(t=0,1){ x=xb*(1-t)+xj*t; y=yb*(1-t)+yj*t;label=0;}
+border KD(t=0,1){ x=xk*(1-t)+xd*t; y=yk*(1-t)+yd*t;label=0;}
+border DT(t=0,1){ x=xd*(1-t)+xt*t; y=yd*(1-t)+yt*t;label=0;}
+border TC(t=0,1){ x=xt*(1-t)+xc*t; y=yt*(1-t)+yc*t;label=0;}
+border CL(t=0,1){ x=xc*(1-t)+xl*t; y=yc*(1-t)+yl*t;label=0;}
+border MN(t=0,1){ x=xm*(1-t)+xn*t; y=ym*(1-t)+yn*t;label=1;}
+border NO(t=0,1){ x=xn*(1-t)+xo*t; y=yn*(1-t)+yo*t;label=1;}
+border OP(t=0,1){ x=xo*(1-t)+xp*t; y=yo*(1-t)+yp*t;label=1;}
+
+border EI(t=0,1){ x=xe*(1-t)+xi*t; y=ye*(1-t)+yi*t;label=1;}
+border IK(t=0,1){ x=xi*(1-t)+xk*t; y=yi*(1-t)+yk*t;label=1;}
+border KM(t=0,1){ x=xk*(1-t)+xm*t; y=yk*(1-t)+ym*t;label=1;}
+border FA(t=0,1){ x=xf*(1-t)+xa*t; y=yf*(1-t)+ya*t;label=0;}
+border AR(t=0,1){ x=xa*(1-t)+xr*t; y=ya*(1-t)+yr*t;label=0;}
+border RD(t=0,1){ x=xr*(1-t)+xd*t; y=yr*(1-t)+yd*t;label=0;}
+border DN(t=0,1){ x=xd*(1-t)+xn*t; y=yd*(1-t)+yn*t;label=0;}
+border GB(t=0,1){ x=xg*(1-t)+xb*t; y=yg*(1-t)+yb*t;label=0;}
+border BS(t=0,1){ x=xb*(1-t)+xs*t; y=yb*(1-t)+ys*t;label=0;}
+border SC(t=0,1){ x=xs*(1-t)+xc*t; y=ys*(1-t)+yc*t;label=0;}
+border CO(t=0,1){ x=xc*(1-t)+xo*t; y=yc*(1-t)+yo*t;label=0;}
+border HJ(t=0,1){ x=xh*(1-t)+xj*t; y=yh*(1-t)+yj*t;label=1;}
+border JL(t=0,1){ x=xj*(1-t)+xl*t; y=yj*(1-t)+yl*t;label=1;}
+border LP(t=0,1){ x=xl*(1-t)+xp*t; y=yl*(1-t)+yp*t;label=1;}
+
+
+
+//centre
+border circle1(t=0,2*pi){x=r1*cos(t); y=r1*sin(t);label=3;}
+border circle2(t=0,2*pi){x=r2*cos(t); y=r2*sin(t);label=0;}
+
+
+
+int[int] rchange;
+
+mesh Thairplot = buildmesh (circle1(-nr1)+circle2(nr2),fixeborder=1);
+rchange=[0,0];
+Thairplot=change(Thairplot,region=rchange);
+
+mesh Thairnoplot = buildmesh (AQ(nair)+QB(nair)+BS(nair)+SC(nair)+TC(-nair)+DT(-nair)+RD(-nair)+AR(-nair)+circle2(-nr2),fixeborder=1);
+rchange=[0,1];
+Thairnoplot=change(Thairnoplot,region=rchange);
+
+
+mesh Th1 = buildmesh (EF(npml)+FA(npml)+IA(-npml)+EI(-npml),fixeborder=1);
+rchange=[0,8110];
+Th1=change(Th1,region=rchange);
+
+mesh Th2 = buildmesh (FG(2*nair)+GB(npml)+AQ(-nair)+QB(-nair)+FA(-npml),fixeborder=1);
+rchange=[0,8010];
+Th2=change(Th2,region=rchange);
+
+mesh Th3 = buildmesh (GH(npml)+HJ(npml)+BJ(-npml)+GB(-npml),fixeborder=1);
+rchange=[0,8110];
+Th3=change(Th3,region=rchange);
+
+mesh Th4 = buildmesh (IA(npml)+AR(nair)+RD(nair)+KD(-npml)+IK(-2*nair),fixeborder=1);
+rchange=[0,8100];
+Th4=change(Th4,region=rchange);
+
+mesh Th5 = buildmesh (BJ(npml)+JL(2*nair)+CL(-npml)+BS(-nair)+SC(-nair),fixeborder=1);
+rchange=[0,8100];
+Th5=change(Th5,region=rchange);
+
+mesh Th6 = buildmesh (KD(npml)+DN(npml)+MN(-npml)+KM(-npml),fixeborder=1);
+rchange=[0,8110];
+Th6=change(Th6,region=rchange);
+
+mesh Th7 = buildmesh (DT(nair)+TC(nair)+CO(npml)+NO(-2*nair)+DN(-npml),fixeborder=1);
+rchange=[0,8010];
+Th7=change(Th7,region=rchange);
+
+mesh Th8 = buildmesh (CL(npml)+LP(npml)+OP(-npml)+CO(-npml),fixeborder=1);
+rchange=[0,8110];
+Th8=change(Th8,region=rchange);
+
+
+
+
+
+mesh Th=Thairplot+Thairnoplot+Th1+Th2+Th3+Th4+Th5+Th6+Th7+Th8;
+plot(Th);
+
+savemesh(Th,fileoutput);

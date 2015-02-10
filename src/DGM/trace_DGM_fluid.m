@@ -27,6 +27,6 @@ for ie=1:nb_elements
     c=[Phi_elem(3,1);Phi_elem(3,2);Phi_elem(3,3)];
     c_trace=(c);
 
-    plot(x,abs(c),'r+')
+    plot(y,abs(c),'r+')
 
 end

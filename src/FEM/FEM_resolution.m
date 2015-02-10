@@ -58,6 +58,10 @@ for i_f=1:abs(nb_frequencies)
         A=A+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
     end
     
+    if (nb_media.PML~=0)
+        A=A+H_PML/(air.rho*omega^2)-Q_PML/(air.K);
+    end
+    
     
     if (nb_media.elas~=0)
         for i_mat=1:nb_media.elas
@@ -180,7 +184,8 @@ for i_f=1:abs(nb_frequencies)
 
     
     if plot_profiles==1
-       plot_sol_TR6 
+       %plot_sol_TR6
+       plot_sol_1D_y
     end
 
     

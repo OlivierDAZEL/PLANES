@@ -97,13 +97,21 @@ index_interface=find(segments(:,4)~=0);
 
 boundaries=[segments(index_boundary,:)];
 interfaces=[segments(index_interface,:)];
+
 % interfaces=[node1 node2 #element1 #element2 element_label1 element_label2]
 clear segments
 % Research of interfaces between two similar elements
 temp=find(floor(interfaces(:,5)/1000)==floor(interfaces(:,6)/1000));
 %Suppressions of these interfaces
 interfaces(temp,:)=[];
-
+% Research of interfaces between PML and air
+temp=find((interfaces(:,5)==0)&(floor(interfaces(:,6)/1000)==8)|(interfaces(:,6)==0)&(floor(interfaces(:,5)/1000)==8));
+%Suppressions of these interfaces
+interfaces(temp,:)=[];
+% Research of interfaces between air and Biot 1998
+temp=find((interfaces(:,5)==0)&(floor(interfaces(:,6)/1000)==4)|(interfaces(:,6)==0)&(floor(interfaces(:,5)/1000)==4));
+%Suppressions of these interfaces
+interfaces(temp,:)=[];
 
 
 % Suppression of temporary values for boundaries
@@ -152,14 +160,14 @@ coord_middle=[(nodes(boundaries(:,1),1)+nodes(boundaries(:,2),1))/2 ...
     (nodes(boundaries(:,1),2)+nodes(boundaries(:,2),2))/2];
 
 for ie=1:size(boundaries,1)
-    [temp i_min]=min(abs(nodes(:,1)-coord_middle(ie,1)+1i*(nodes(:,2)-coord_middle(ie,2))));
+    [temp,i_min]=min(abs(nodes(:,1)-coord_middle(ie,1)+1i*(nodes(:,2)-coord_middle(ie,2))));
     boundaries(ie,6)=i_min;
 end
 % boundaries=[node1 node2 #element #label 0 node_middle]
 coord_middle=[(nodes(interfaces(:,1),1)+nodes(interfaces(:,2),1))/2 ...
     (nodes(interfaces(:,1),2)+nodes(interfaces(:,2),2))/2];
 for ie=1:size(interfaces,1)
-    [temp i_min]=min(abs(nodes(:,1)-coord_middle(ie,1)+1i*(nodes(:,2)-coord_middle(ie,2))));
+    [temp,i_min]=min(abs(nodes(:,1)-coord_middle(ie,1)+1i*(nodes(:,2)-coord_middle(ie,2))));
     interfaces(ie,7)=i_min;
 end
 % interfaces=[node1 node2 #element1 #element2 element_label1 element_label2 node_middle]
@@ -196,17 +204,18 @@ temp=unique(element_label(find(floor(element_label/1000)==5)));
 nb_media.pem01=length(temp);
 num_media.pem01(1:nb_media.pem01)=temp-5000;
 
-temp=unique(element_label(find(element_label==0)));
+temp=unique(element_label(find(floor(element_label/1000)==0)));
 nb_media.acou=length(temp);
 
+temp=unique(element_label(find(floor(element_label/1000)==8)));
+nb_media.PML=length(temp);
 
 for ie=1:nb_elements
     
-    if element_label(ie)==0
+    if (floor(element_label(ie)/1000)==0)
         element_num_mat(ie)=0;
     elseif (floor(element_label(ie)/1000)==1)
         element_num_mat(ie)=find(num_media.elas==(element_label(ie)-1000));
-        
     elseif (floor(element_label(ie)/1000)==2)
         element_num_mat(ie)=find(num_media.eqf==(element_label(ie)-2000));
     elseif (floor(element_label(ie)/1000)==3)
@@ -244,8 +253,6 @@ nb_loads=size(loads,1);
 nb_periodicity=size(periodicity,1);
 nb_MMT=size(edges_MMT,1);
 
-
-
 %     figure
 %     hold on
 %
@@ -278,7 +285,7 @@ switch tracefigure
         line([nodes(elements(ii,4),1) nodes(elements(ii,5),1)],[nodes(elements(ii,4),2) nodes(elements(ii,5),2)],'Color','r');
         line([nodes(elements(ii,5),1) nodes(elements(ii,6),1)],[nodes(elements(ii,5),2) nodes(elements(ii,6),2)],'Color','r');
         line([nodes(elements(ii,6),1) nodes(elements(ii,1),1)],[nodes(elements(ii,6),2) nodes(elements(ii,1),2)],'Color','r');
-        %text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(ii),'Fontsize',15);
+        text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(element_label(ii)),'Fontsize',15);
     end
     
     plot(nodes(:,1),nodes(:,2),'.','Markersize',15);

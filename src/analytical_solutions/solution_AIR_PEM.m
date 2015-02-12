@@ -82,11 +82,12 @@ if plot_profiles==1
     
     
     figure(10001)
-    plot(x_PEM+d_air+d_PEM,angle(u_s),'k')
+    plot(x_PEM+d_air+d_PEM,abs(u_s),'k')
     
     figure(10002)
-    plot(x_air+d_air+d_PEM,angle(sigma_a))
-    plot(x_PEM+d_air+d_PEM,angle(sigma_p),'m')
+    hold on
+    plot(x_air+d_air+d_PEM,abs(sigma_a))
+    plot(x_PEM+d_air+d_PEM,abs(sigma_p),'m')
     
     % figure(1000)
     % subplot(3,3,1)

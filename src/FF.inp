@@ -1,8 +1,8 @@
-../Projects/air_PEM/air_PEM.msh
+../Projects/air_PML/air_PML.msh
   0.10000000
   1.00000000
-  1.00000000
-5004
+  0.30000000
+8010
+1
+10
 3
-30
-30

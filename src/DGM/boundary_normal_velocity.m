@@ -22,10 +22,8 @@ if (n_centre'*ne<0)
     ne=-ne;
 end
 
-
 nx=ne(1);
 ny=ne(2);
-
 
 W_e_plus=Phi_fluid(nx,ny,Z_e);
 W_e_moins=Phi_fluid(-nx,-ny,Z_e);
@@ -43,7 +41,7 @@ Lambda_e_plus= diag(c_e);
 Lambda_e_moins=-Lambda_e_plus;
 
 B_e=[0 0 1];
-s_e=1;
+s_e=j*omega;
 
 M_plus =B_e*M_e*W_e_plus *Lambda_e_plus;
 M_moins=B_e*M_e*W_e_moins*Lambda_e_moins;

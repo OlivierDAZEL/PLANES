@@ -29,33 +29,20 @@ nx=ne(1);
 ny=ne(2);
 
 
-W_e_plus=Phi_fluid(nx,ny,Z_e);
-W_e_moins=Phi_fluid(-nx,-ny,Z_e);
-W_e_0=Phi_fluid_0(nx,ny);
+ne=sqrt((nx/tau_x)^2+(ny/tau_y)^2);
 
+F_e(1,1)=-Z_e*(nx^2)/(ne*tau_x^2);
+F_e(1,2)=-Z_e*(nx*ny)/(ne*tau_x*tau_y);
+F_e(1,3)= nx/tau_x;
+F_e(2,1)=-Z_e*(nx*ny)/(ne*tau_x*tau_y);
+F_e(2,2)=-Z_e*(ny^2)/(ne*tau_y^2);
+F_e(2,3)= ny/tau_y;
+F_e(3,1)=(0.00D+00);
+F_e(3,2)=(0.00D+00);
+F_e(3,3)=(0.00D+00);
 
-W_e=[W_e_plus W_e_moins W_e_0];
-Omega_e=inv(W_e);
+F_e_PML=F_e
 
-Omega_e_plus=Omega_e(1,:);
-Omega_e_moins=Omega_e(2,:);
-
-
-Lambda_e_plus=diag(c_e);
-Lambda_e_moins=-Lambda_e_plus;
-
-B_e=[0 0 1];
-
-M_plus =B_e*M_e*W_e_plus *Lambda_e_plus;
-M_moins=B_e*M_e*W_e_moins*Lambda_e_moins;
-
-R_e=-inv(M_moins)*M_plus;
-
-%F_e=A_x_fluid*nx+A_y_fluid*ny;
-F_e=M_e*(Lambda_e_plus*W_e_plus+Lambda_e_moins*W_e_moins*R_e)*Omega_e_plus;
-
-
-F_e_air=F_e
 
 delta_test=k_e;
 delta_champs=k_e;
@@ -64,9 +51,9 @@ nx=cos(vec_theta);
 ny=sin(vec_theta);
 Phi=Phi_fluid_vector(nx,ny,air.Z,Shift_fluid);
 
-II=int_edge_2vectorielle(1j*delta_test*[nx;ny],-1j*delta_champs*[nx;ny],a,b,[c_edge c_edge]);
-MM=kron(II,F_e);
-indice_test  =((1:nb_theta)-1)+dof_start_element(e_edge);  
+II=int_edge_2vectorielle(1j*delta_test*[nx*tau_x;ny*tau_y],-1j*delta_champs*[nx*tau_x;ny*tau_y],a,b,[c_edge c_edge]);
+MM=kron(II,-F_e);
+indice_test  =((1:nb_theta)-1)+dof_start_element(e_edge);
 indice_champs=((1:nb_theta)-1)+dof_start_element(e_edge);
-A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi*tau_x*tau_y;
 

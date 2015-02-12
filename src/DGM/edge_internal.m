@@ -32,7 +32,7 @@ ny=ne(2);
 
 valid_edge_internal=0;
 if (element_label(e_1)==element_label(e_2))
-    if ((element_label(e_1)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
+    if ((floor(element_label(e_edge)/1000)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
         %disp('Lancement internal_fluid')
         internal_fluid
         valid_edge_internal=1;
@@ -40,23 +40,43 @@ if (element_label(e_1)==element_label(e_2))
         %disp('Lancement internal_PEM')
         internal_PEM
         valid_edge_internal=1;
+    elseif (floor(element_label(e_edge)/1000)==8)
+        parameter_element
+        internal_PML
+        valid_edge_internal=1;
     end
+    
+    
 else
     if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[0 2 3]))
-        %disp('Lancement fluid_fluid')
+        disp('Lancement fluid_fluid')
         fluid_fluid
         valid_edge_internal=1;
     end
     if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[4]))
-        %disp('Lancement fluid_PEM')
+        disp('Lancement fluid_PEM')
         fluid_PEM
         valid_edge_internal=1;
     end
     if (sum(floor(element_label(e_2)/1000)==[0 2 3]))*(sum(floor(element_label(e_1)/1000)==[4]))
-        %disp('Lancement PEM_fluid')
+        disp('Lancement PEM_fluid')
         PEM_fluid
         valid_edge_internal=1;
     end
+    
+        if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[8]))
+        disp('Lancement fluid_PEM')
+        PML_PML
+        valid_edge_internal=1;
+    end
+    if (sum(floor(element_label(e_2)/1000)==[0 2 3]))*(sum(floor(element_label(e_1)/1000)==[8]))
+        disp('Lancement PEM_fluid')
+        PML_PML
+        valid_edge_internal=1;
+    end
+    
+    
+    
 
 end
 

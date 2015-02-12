@@ -37,15 +37,16 @@ period=max(nodes(:,1))-min(nodes(:,1));
 
 ondes_element=zeros(nb_elements,1);
 for ie=1:nb_elements
-   switch element_label(ie)
-       case {0,2000:2999,3000:3999}
+   switch floor(element_label(ie)/1000)
+       case {0,2,3,8}
            ondes_element(ie)=1;
-       case {1000:1999}
+       case {1}
            ondes_element(ie)=2;   
-       case {4000:5999}
+       case {4,5}
            ondes_element(ie)=3;
    end
 end
+
 dof_start_element=zeros(nb_elements,1);
 dof_start_element(1)=1;
 for ie=2:nb_elements
@@ -55,7 +56,7 @@ end
 
 nb_dof_DGM=dof_start_element(ie)+ondes_element(ie)*nb_theta-1; 
 
-vec_theta=linspace(0,2*pi,nb_theta+1);
+vec_theta=pi/2+linspace(0,2*pi,nb_theta+1);
 vec_theta(end)=[];
 
 
@@ -66,8 +67,6 @@ if nb_periodicity~=0
     
     y_left=sort([nodes(periodicity(edge_left,1),2) nodes(periodicity(edge_left,2),2)],2);
     y_right=sort([nodes(periodicity(edge_right,1),2) nodes(periodicity(edge_right,2),2)],2);
-
-    qdsqsddsq
     
     [temp,i_left]=sort(nodes(node_left,2));
     node_left=node_left(i_left);
@@ -80,7 +79,7 @@ if nb_periodicity~=0
 end
 
 
-rzeerzezrez
+
 
 
 

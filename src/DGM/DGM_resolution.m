@@ -60,10 +60,20 @@ for i_f=1:abs(nb_frequencies)
     
     
     for ie=1:nb_dirichlets
-        boundary_rigid_wall
+        switch dirichlets(ie,4)
+            case {1}
+                boundary_rigid_wall
+            case {5}
+                boundary_sliding
+            case {6}  
+                boundary_bonded
+            case {9}  
+                
+                boundary_rigid_wall_PML
+                      end
     end
     
-    for ie=1:nb_loads
+    for ie=1:nb_loads  
         boundary_normal_velocity
     end
     
@@ -71,7 +81,7 @@ for i_f=1:abs(nb_frequencies)
     %disp('Resolution of the system')
     X=A\F;
       
-    trace_DGM_fluid
+    trace_DGM_y
     
     %info_DGM
     

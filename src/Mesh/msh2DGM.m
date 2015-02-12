@@ -195,7 +195,7 @@ edges_MMT=boundaries(temp,:);
 boundaries(temp,:)=[];
 
 
-temp=find(ismember(boundaries(:,4),[1 5 6]));
+temp=find(ismember(boundaries(:,4),[1 5 6 9]));
 dirichlets=boundaries(temp,:);
 boundaries(temp,:)=[];
 temp=find(ismember(boundaries(:,4),[98 99]));

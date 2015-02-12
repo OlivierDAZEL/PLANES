@@ -29,33 +29,15 @@ nx=ne(1);
 ny=ne(2);
 
 
-W_e_plus=Phi_fluid(nx,ny,Z_e);
-W_e_moins=Phi_fluid(-nx,-ny,Z_e);
-W_e_0=Phi_fluid_0(nx,ny);
+F_e=zeros(3,3);
 
+F_e(1,1)=-Z_e*(nx^2);
+F_e(1,2)=-Z_e*(nx*ny);
+F_e(1,3)= nx;
+F_e(2,1)=-Z_e*(nx*ny);
+F_e(2,2)=-Z_e*(ny^2);
+F_e(2,3)= ny/tau_y;
 
-W_e=[W_e_plus W_e_moins W_e_0];
-Omega_e=inv(W_e);
-
-Omega_e_plus=Omega_e(1,:);
-Omega_e_moins=Omega_e(2,:);
-
-
-Lambda_e_plus=diag(c_e);
-Lambda_e_moins=-Lambda_e_plus;
-
-B_e=[0 0 1];
-
-M_plus =B_e*M_e*W_e_plus *Lambda_e_plus;
-M_moins=B_e*M_e*W_e_moins*Lambda_e_moins;
-
-R_e=-inv(M_moins)*M_plus;
-
-%F_e=A_x_fluid*nx+A_y_fluid*ny;
-F_e=M_e*(Lambda_e_plus*W_e_plus+Lambda_e_moins*W_e_moins*R_e)*Omega_e_plus;
-
-
-F_e_air=F_e
 
 delta_test=k_e;
 delta_champs=k_e;

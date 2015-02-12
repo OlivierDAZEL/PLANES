@@ -35,19 +35,20 @@
 lambda=air.c/max(vec_freq);
 
 
-d_FEM=lambda/24;
+d_FEM=lambda/12;
 
 
 r1=0.1;
-nr1=ceil(2*pi*r1/d_FEM);
-r2=2*r1;
-nr2=floor(2*pi*r2/d_FEM);
+nr1=ceil(2*pi*r1/d_FEM)
+nr1=12;
+r2=2.5*r1
+nr2=floor(nr1*r2/r1)
 
 
 dair=3*r1;
-dpml=2*dair;
-nair=ceil(dair/d_FEM);
-npml=ceil(dpml/d_FEM);
+dpml=1*dair;
+nair=ceil(dair*nr1/(2*pi*r1))
+npml=ceil(dpml*nr1/(2*pi*r1))
 
 
 

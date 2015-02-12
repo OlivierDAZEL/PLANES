@@ -49,9 +49,9 @@ real xt=       0.0, yt= dair     ;
 
 
 
-border EF(t=0,1){ x=xe*(1-t)+xf*t; y=ye*(1-t)+yf*t;label=1;}
-border FG(t=0,1){ x=xf*(1-t)+xg*t; y=yf*(1-t)+yg*t;label=1;}
-border GH(t=0,1){ x=xg*(1-t)+xh*t; y=yg*(1-t)+yh*t;label=1;}
+border EF(t=0,1){ x=xe*(1-t)+xf*t; y=ye*(1-t)+yf*t;label=9;}
+border FG(t=0,1){ x=xf*(1-t)+xg*t; y=yf*(1-t)+yg*t;label=9;}
+border GH(t=0,1){ x=xg*(1-t)+xh*t; y=yg*(1-t)+yh*t;label=9;}
 border IA(t=0,1){ x=xi*(1-t)+xa*t; y=yi*(1-t)+ya*t;label=0;}
 border AQ(t=0,1){ x=xa*(1-t)+xq*t; y=ya*(1-t)+yq*t;label=0;}
 border QB(t=0,1){ x=xq*(1-t)+xb*t; y=yq*(1-t)+yb*t;label=0;}
@@ -60,13 +60,13 @@ border KD(t=0,1){ x=xk*(1-t)+xd*t; y=yk*(1-t)+yd*t;label=0;}
 border DT(t=0,1){ x=xd*(1-t)+xt*t; y=yd*(1-t)+yt*t;label=0;}
 border TC(t=0,1){ x=xt*(1-t)+xc*t; y=yt*(1-t)+yc*t;label=0;}
 border CL(t=0,1){ x=xc*(1-t)+xl*t; y=yc*(1-t)+yl*t;label=0;}
-border MN(t=0,1){ x=xm*(1-t)+xn*t; y=ym*(1-t)+yn*t;label=1;}
-border NO(t=0,1){ x=xn*(1-t)+xo*t; y=yn*(1-t)+yo*t;label=1;}
-border OP(t=0,1){ x=xo*(1-t)+xp*t; y=yo*(1-t)+yp*t;label=1;}
+border MN(t=0,1){ x=xm*(1-t)+xn*t; y=ym*(1-t)+yn*t;label=9;}
+border NO(t=0,1){ x=xn*(1-t)+xo*t; y=yn*(1-t)+yo*t;label=9;}
+border OP(t=0,1){ x=xo*(1-t)+xp*t; y=yo*(1-t)+yp*t;label=9;}
 
-border EI(t=0,1){ x=xe*(1-t)+xi*t; y=ye*(1-t)+yi*t;label=1;}
-border IK(t=0,1){ x=xi*(1-t)+xk*t; y=yi*(1-t)+yk*t;label=1;}
-border KM(t=0,1){ x=xk*(1-t)+xm*t; y=yk*(1-t)+ym*t;label=1;}
+border EI(t=0,1){ x=xe*(1-t)+xi*t; y=ye*(1-t)+yi*t;label=9;}
+border IK(t=0,1){ x=xi*(1-t)+xk*t; y=yi*(1-t)+yk*t;label=9;}
+border KM(t=0,1){ x=xk*(1-t)+xm*t; y=yk*(1-t)+ym*t;label=9;}
 border FA(t=0,1){ x=xf*(1-t)+xa*t; y=yf*(1-t)+ya*t;label=0;}
 border AR(t=0,1){ x=xa*(1-t)+xr*t; y=ya*(1-t)+yr*t;label=0;}
 border RD(t=0,1){ x=xr*(1-t)+xd*t; y=yr*(1-t)+yd*t;label=0;}
@@ -75,9 +75,9 @@ border GB(t=0,1){ x=xg*(1-t)+xb*t; y=yg*(1-t)+yb*t;label=0;}
 border BS(t=0,1){ x=xb*(1-t)+xs*t; y=yb*(1-t)+ys*t;label=0;}
 border SC(t=0,1){ x=xs*(1-t)+xc*t; y=ys*(1-t)+yc*t;label=0;}
 border CO(t=0,1){ x=xc*(1-t)+xo*t; y=yc*(1-t)+yo*t;label=0;}
-border HJ(t=0,1){ x=xh*(1-t)+xj*t; y=yh*(1-t)+yj*t;label=1;}
-border JL(t=0,1){ x=xj*(1-t)+xl*t; y=yj*(1-t)+yl*t;label=1;}
-border LP(t=0,1){ x=xl*(1-t)+xp*t; y=yl*(1-t)+yp*t;label=1;}
+border HJ(t=0,1){ x=xh*(1-t)+xj*t; y=yh*(1-t)+yj*t;label=9;}
+border JL(t=0,1){ x=xj*(1-t)+xl*t; y=yj*(1-t)+yl*t;label=9;}
+border LP(t=0,1){ x=xl*(1-t)+xp*t; y=yl*(1-t)+yp*t;label=9;}
 
 
 
@@ -129,9 +129,6 @@ Th7=change(Th7,region=rchange);
 mesh Th8 = buildmesh (CL(npml)+LP(npml)+OP(-npml)+CO(-npml),fixeborder=1);
 rchange=[0,8110];
 Th8=change(Th8,region=rchange);
-
-
-
 
 
 mesh Th=Thairplot+Thairnoplot+Th1+Th2+Th3+Th4+Th5+Th6+Th7+Th8;

@@ -65,23 +65,22 @@ for i_f=1:abs(nb_frequencies)
                 boundary_rigid_wall
             case {5}
                 boundary_sliding
-            case {6}  
+            case {6}
                 boundary_bonded
-            case {9}  
-                
+            case {9}
                 boundary_rigid_wall_PML
-                      end
+        end
     end
     
-    for ie=1:nb_loads  
+    for ie=1:nb_loads
         boundary_normal_velocity
     end
     
     
-    %disp('Resolution of the system')
+    disp('Resolution of the system')
     X=A\F;
-      
-    trace_DGM_y
+    
+    %trace_DGM_y
     
     %info_DGM
     

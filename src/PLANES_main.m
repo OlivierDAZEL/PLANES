@@ -39,12 +39,13 @@ list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''pl
 eval(['addpath(' list_path ');'])
 
 name_of_project='air_PML';
+name_of_project='radiation_cylinder';
 subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 nb_frequencies=1;
-freq_min=200;
+freq_min=800;
 freq_max=4000;
 % Angle of incidence
 theta=0*pi/180;
@@ -54,7 +55,7 @@ solve.DGM=1;
 solve.PW=0;
 
 if solve.DGM
-    nb_theta=2;
+    nb_theta=12;
 end
 
 %
@@ -132,13 +133,14 @@ end
 %plot_sol_1D_y
 
 
-trace_DGM_y
-validation_AIR_PML
+trace_DGM_r
 
-% Amp_cylinder=(2*air.rho*omega^2)/(k_air*(besselh(-1,2,k_air*r1)-besselh(1,2,k_air*r1)));
-% r_plot=linspace(r1,r2,2000);
-% p_plot=Amp_cylinder*besselh(0,2,k_air*r_plot);
-% plot(r_plot,abs(p_plot),'k')
+%validation_AIR_PML
+
+Amp_cylinder=(2*air.rho*omega^2)/(k_air*(besselh(-1,2,k_air*r1)-besselh(1,2,k_air*r1)));
+r_plot=linspace(r1,r2,2000);
+p_plot=Amp_cylinder*besselh(0,2,k_air*r_plot);
+plot(r_plot,abs(p_plot),'k')
 
 %solution_AIR_PEM
 

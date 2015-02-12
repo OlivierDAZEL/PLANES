@@ -12,7 +12,7 @@ for ie=1:nb_elements
     x_centre=mean(nodes(elements(ie,:),1:2))';
     
     e_edge=ie;
-    [tau_x,tau_y]=parameter_PML(element_label(e_edge));
+    [tau_x,tau_y]=parameter_PML(element_label(ie));
     
     q=X(dof_start_element(ie)+[0:ondes_element(ie)*nb_theta-1]);
     
@@ -35,7 +35,7 @@ for ie=1:nb_elements
             figure(10002)
             hold on
             c=[Phi_elem(3,1);Phi_elem(3,2);Phi_elem(3,3)];
-            plot(y,abs(c),'r+')
+            plot(sqrt(x.^2+y.^2)',abs(c),'r+')
             
         case {4,5}    
             
@@ -64,7 +64,7 @@ end
                  figure(10001)
             hold on
             c=[Phi_elem(2,1);Phi_elem(2,2);Phi_elem(2,3)]/(j*omega);
-            plot(y,abs(c),'r+')       
+            plot(sqrt(x.^2+y.^2)',abs(c),'r+')       
             
     end
     

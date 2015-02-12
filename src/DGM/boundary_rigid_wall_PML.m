@@ -13,8 +13,7 @@ n_ab=(b-a)/h;
 e_edge=dirichlets(ie,3);
 c_edge=mean(nodes(elements(e_edge,:),1:2))';
 
-parameter_element
-
+[tau_x,tau_y]=parameter_PML(element_label(e_edge));
 
 %%%%% vector normal pointing towards \Omega_e
 
@@ -31,18 +30,14 @@ ny=ne(2);
 
 ne=sqrt((nx/tau_x)^2+(ny/tau_y)^2);
 
+F_e=zeros(3,3);
+
 F_e(1,1)=-Z_e*(nx^2)/(ne*tau_x^2);
 F_e(1,2)=-Z_e*(nx*ny)/(ne*tau_x*tau_y);
 F_e(1,3)= nx/tau_x;
 F_e(2,1)=-Z_e*(nx*ny)/(ne*tau_x*tau_y);
 F_e(2,2)=-Z_e*(ny^2)/(ne*tau_y^2);
 F_e(2,3)= ny/tau_y;
-F_e(3,1)=(0.00D+00);
-F_e(3,2)=(0.00D+00);
-F_e(3,3)=(0.00D+00);
-
-F_e_PML=F_e
-
 
 delta_test=k_e;
 delta_champs=k_e;

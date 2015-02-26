@@ -126,17 +126,11 @@ for e_edge=1:nb_elements
     centre_elem=mean(nodes(elements(e_edge,:),1:2))';
     parameter_element
     e_plus=exp(+1j*k_e*(centre_elem(2)-(d_air+d_EF)));
-    abs(e_plus)
     e_moins=1/e_plus;
     
     if floor(element_label(e_edge)/1000)==2
-        
-        
-        
-        q_theorique(dof_start_element(e_edge)+1)=e_plus*omega*A/2;
+          q_theorique(dof_start_element(e_edge)+1)=e_plus*omega*A/2;
         q_theorique(dof_start_element(e_edge)  )=e_moins*omega*A/2;
-        
-        
     end
     if  floor(element_label(e_edge)/1000)==0
         

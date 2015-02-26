@@ -7,12 +7,6 @@ c_1=centre_element(e_1,nodes,elements);
 
 parameter_element
 
-c_e_p=c_e;
-k_e_p=k_e;
-Z_e_p=Z_e;
-M_e_p=M_e;
-
-
 Z_e1=Z_e;
 k_e1=k_e;
 
@@ -82,8 +76,6 @@ F_e1e2(3,3)=unc/(deuxc*Z_e2);
 
 F_e1e2=Re1e2*F_e1e2;
 
-
-
 nx=cos(vec_theta);
 ny=sin(vec_theta);
 
@@ -97,16 +89,11 @@ indice_champs=((1:nb_theta)-1)+dof_start_element(e_2);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_2.'*MM*Phi_2;
 
         
- II=int_edge_2vectorielle(1j*k_e2*[nx;ny],-1j*k_e1*[nx;ny],a,b,[c_2 c_1]);
-
- 
- 
- MM=kron(II,F_e2e1);
+II=int_edge_2vectorielle(1j*k_e2*[nx;ny],-1j*k_e1*[nx;ny],a,b,[c_2 c_1]);
+MM=kron(II,F_e2e1);
 indice_test  =((1:nb_theta)-1)+dof_start_element(e_2);  
 indice_champs=((1:nb_theta)-1)+dof_start_element(e_1);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_2.'*MM*Phi_1;
-
-
 
 II=int_edge_2vectorielle(1j*k_e1*[nx;ny],-1j*k_e2*[nx;ny],a,b,[c_1 c_2]);
 MM=kron(II,F_e1e2);
@@ -119,10 +106,6 @@ MM=kron(II,F_e1e1);
 indice_test  =((1:nb_theta)-1)+dof_start_element(e_1);  
 indice_champs=((1:nb_theta)-1)+dof_start_element(e_1);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_1.'*MM*Phi_1;
-
-
-
-
 
 
 

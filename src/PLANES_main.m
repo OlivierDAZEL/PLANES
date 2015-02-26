@@ -133,7 +133,10 @@ if solve.PW
     PW_resolution
 end
 
+
+
 trace_DGM_y
+
 
 %plot_sol_1D_y
 solution_AIR_EF
@@ -141,8 +144,7 @@ solution_AIR_EF
 
 
 
-
-%trace_DGM_r
+terertretret
 
 %validation_AIR_PML
 

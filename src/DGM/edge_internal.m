@@ -34,7 +34,6 @@ valid_edge_internal=0;
 if (element_label(e_1)==element_label(e_2))
     if ((floor(element_label(e_edge)/1000)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
         disp('Lancement internal_fluid')
-        %fluid_fluid
         internal_fluid
         valid_edge_internal=1;
     elseif (floor(element_label(e_edge)/1000)==4)

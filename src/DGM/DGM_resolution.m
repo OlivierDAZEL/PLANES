@@ -46,11 +46,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
-    
-%         Mat_parameter(1,2)=0.1*real(Mat_parameter(1,2));
-%         Mat_parameter(2,2)=real(Mat_parameter(2,2));
-        
-   
+              
     % Construction of the linear system
     
     A= sparse(nb_dof_DGM,nb_dof_DGM);
@@ -58,15 +54,12 @@ for i_f=1:abs(nb_frequencies)
     
     
     for ie=1:nb_internal
-        ie
         edge_internal
-        
     end
     
     
     
     for ie=1:nb_dirichlets
-        ie
         switch dirichlets(ie,4)
             case {1}
                 boundary_rigid_wall

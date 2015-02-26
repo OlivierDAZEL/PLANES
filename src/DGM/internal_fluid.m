@@ -2,7 +2,7 @@ e_edge=e_1;
 parameter_element
 
 
-[F_plus,F_moins]=Split_fluid(nx,ny,k_e,Z_e,omega,M_e);
+[F_plus,F_moins]=Split_fluid(nx,ny,Z_e);
 
 delta_test=k_e;
 delta_champs=k_e;

@@ -65,7 +65,7 @@ for ie=1:nb_elements
         
     end
     
-    if ismember(floor(element_label(ie)/1000),[0 4 5 8])
+    if ismember(floor(element_label(ie)/1000),[0 2 4 5 8])
         figure(10002)
        
         c=sol(3*(elements(ie,:)-1)+3);

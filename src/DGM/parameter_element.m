@@ -3,34 +3,21 @@ if floor(element_label(e_edge)/1000)==0
     c_e=air.c;
     k_e=omega/c_e;
     Z_e=air.Z;
+    M_e=diag([air.rho,air.rho,1/air.K]);
+
     tau_x=1;
     tau_y=1;
-    M_e=diag([air.rho,air.rho,1/air.K]);
+    
     
 elseif floor(element_label(e_edge)/1000)==2
     
-    temp=load('../inputs/materials/porous/1.biot');
-    
-    
-    phi=temp(1);
-	sig=temp(2);
-	alpha=temp(3);
-	LCV=temp(4);
-	LCT=temp(5);
-	young=temp(6);
-	poisson=temp(7);
-    eta=temp(8);
-	rho_1=temp(9);
-    
     tau_x=1;
     tau_y=1;
-    calcul_propriete
-    calcul_theorique
-    
-    k_e=delta_eq;
-    c_e=omega/delta_eq;
-    Z_e=rho_eq_til*c_e;
-    M_e=diag([rho_eq_til,rho_eq_til,1/K_eq_til]); 
+        
+    k_e=omega*sqrt(Mat_parameter(1,index_element(e_edge))/Mat_parameter(2,index_element(e_edge)));
+    c_e=omega/k_e;
+    Z_e=Mat_parameter(1,index_element(e_edge))*c_e;
+    M_e=diag([Mat_parameter(1,index_element(e_edge)),Mat_parameter(1,index_element(e_edge)),1/Mat_parameter(2,index_element(e_edge))]); 
     
 
 elseif floor(element_label(e_edge)/1000)==8    
@@ -40,16 +27,12 @@ elseif floor(element_label(e_edge)/1000)==8
     tau_y=1;
     temp=(element_label(e_edge)-8000);
     if (floor(temp/100)==1)
-        tau_x=exp(j*pi/4);
+        tau_x=exp(1j*pi/4);
     end
     temp=temp-100*floor(temp/100);
     if (floor(temp/10)==1)
-        tau_y=exp(j*pi/4);
-    end
-    
-
-    
-    
+        tau_y=exp(1j*pi/4);
+    end    
     
     k_e=omega/c_e;
     Z_e=air.Z;
@@ -58,28 +41,26 @@ elseif floor(element_label(e_edge)/1000)==8
     
 elseif floor(element_label(e_edge)/1000)==4
     
-    temp=load('../inputs/materials/porous/1.biot');
     tau_x=1;
     tau_y=1;
     
-    phi=temp(1);
-	sig=temp(2);
-	alpha=temp(3);
-	LCV=temp(4);
-	LCT=temp(5);
-	young=temp(6);
-	poisson=temp(7);
-    eta=temp(8);
-	rho_1=temp(9);
-    calcul_propriete
-    calcul_theorique
-    
-    M_e=zeros(8,8);
-    M_e=[rho_s_til 0 gamma_til*rho_eq_til 0; 0 rho_s_til 0 gamma_til*rho_eq_til;gamma_til*rho_eq_til 0 rho_eq_til 0 ;0 gamma_til*rho_eq_til 0 rho_eq_til];
-    M_e(5,5)=1/(A_hat+N);
-    M_e(6,6)=1/N;
-    M_e(7,7)=1/N;
-    M_e(8,8)=1/K_eq_til;
+    rho_eq_til=Mat_parameter(1,index_element(e_edge));
+    K_eq_til  =Mat_parameter(2,index_element(e_edge));
+    gamma_til =Mat_parameter(3,index_element(e_edge));
+    A_hat     =Mat_parameter(4,index_element(e_edge));
+    P_hat     =Mat_parameter(5,index_element(e_edge));
+    N         =Mat_parameter(6,index_element(e_edge));
+    rho_s_til =Mat_parameter(7,index_element(e_edge));
+    rho_til   =Mat_parameter(8,index_element(e_edge));
+    phi       =Mat_parameter(9,index_element(e_edge));
+    compute_Biot_waves
+
+     M_e=zeros(8,8);
+     M_e=[rho_s_til 0 gamma_til*rho_eq_til 0; 0 rho_s_til 0 gamma_til*rho_eq_til;gamma_til*rho_eq_til 0 rho_eq_til 0 ;0 gamma_til*rho_eq_til 0 rho_eq_til];
+     M_e(5,5)=1/(A_hat+N);
+     M_e(6,6)=1/N;
+     M_e(7,7)=1/N;
+     M_e(8,8)=1/K_eq_til;
    
 else
     disp('Subroutine parameter_element')

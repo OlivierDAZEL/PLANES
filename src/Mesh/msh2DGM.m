@@ -33,7 +33,8 @@
 %%
 
 
-function [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(nom_fichier,tracefigure)
+function [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,nb_MMT,edges_MMT...
+    ,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(nom_fichier,tracefigure)
 
 fid=fopen(nom_fichier,'r');
 nb_nodes=fscanf(fid,'%i',1);
@@ -214,6 +215,35 @@ nb_periodicity=size(periodicity,1);
 nb_MMT=size(edges_MMT,1);
 
 
+index_element=zeros(nb_elements,1);
+index_label_temp=zeros(nb_elements,1);
+index_element(1)=1;
+index_label_temp(1)=element_label(1);
+nb_mat=1;
+for ielem=2:nb_elements
+	for jj=1:(ielem-1)
+    bool_test=1;
+		if (element_label(ielem)==element_label(jj)) 
+            index_element(ielem)=index_element(jj);
+            bool_test=0;
+        end
+    end
+    if (bool_test) 
+		nb_mat=nb_mat+1;
+        index_element(ielem)=nb_mat;
+        index_label_temp(nb_mat)=element_label(ielem);
+    end
+end
+
+index_label=zeros(nb_mat,1);
+for ii=1:nb_mat
+	index_label(ii)=index_label_temp(ii);
+end
+
+
+
+
+
 
 %     figure
 %     hold on
@@ -244,7 +274,7 @@ switch tracefigure
         line([nodes(elements(ii,1),1) nodes(elements(ii,2),1)],[nodes(elements(ii,1),2) nodes(elements(ii,2),2)],'Color','r');
         line([nodes(elements(ii,2),1) nodes(elements(ii,3),1)],[nodes(elements(ii,2),2) nodes(elements(ii,3),2)],'Color','r');
         line([nodes(elements(ii,3),1) nodes(elements(ii,1),1)],[nodes(elements(ii,3),2) nodes(elements(ii,1),2)],'Color','r');
-        %text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(ii),'Fontsize',15);
+        text(mean(nodes(elements(ii,1:3),1)),mean(nodes(elements(ii,1:3),2)),num2str(ii),'Fontsize',15);
     end
     
     plot(nodes(:,1),nodes(:,2),'.','Markersize',15);

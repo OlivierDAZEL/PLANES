@@ -15,7 +15,7 @@ e_1=internal(ie,3);
 e_2=internal(ie,4);
 c_1=mean(nodes(elements(e_1,:),1:2))';
 c_2=mean(nodes(elements(e_2,:),1:2))';
-e_edge=min([e_1,e_2]);
+e_edge=e_1;
 
 %%%%% vector normal pointing towards \Omega_e'
 
@@ -33,7 +33,8 @@ ny=ne(2);
 valid_edge_internal=0;
 if (element_label(e_1)==element_label(e_2))
     if ((floor(element_label(e_edge)/1000)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
-        %disp('Lancement internal_fluid')
+        disp('Lancement internal_fluid')
+        %fluid_fluid
         internal_fluid
         valid_edge_internal=1;
     elseif (floor(element_label(e_edge)/1000)==4)
@@ -47,25 +48,30 @@ if (element_label(e_1)==element_label(e_2))
     end
     
     
-else
+else % (element_label(e_1)~=element_label(e_2))
+    
+    
+    
+    
     if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[0 2 3]))
-        %disp('Lancement fluid_fluid')
+        disp('Lancement fluid_fluid')
+        
         fluid_fluid
         valid_edge_internal=1;
     end
     if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[4]))
-       % disp('Lancement fluid_PEM')
+        disp('Lancement fluid_PEM')
         fluid_PEM
         valid_edge_internal=1;
     end
     if (sum(floor(element_label(e_2)/1000)==[0 2 3]))*(sum(floor(element_label(e_1)/1000)==[4]))
-        %disp('Lancement PEM_fluid')
+        disp('Lancement PEM_fluid')
         PEM_fluid
         valid_edge_internal=1;
     end
     
         if (sum(floor(element_label(e_1)/1000)==[0 2 3 8]))*(sum(floor(element_label(e_2)/1000)==[8]))
-        %disp('Lancement fluid_PEM')
+        %disp('Lancement PML_PML')
         PML_PML
         valid_edge_internal=1;
     end

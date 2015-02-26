@@ -1,0 +1,46 @@
+real dair; 
+real dEF;
+real dx;
+int nair;
+int nEF; 
+int nx;
+int labelEF;
+
+string fileoutput;
+ifstream entree("FF.inp");
+entree >> fileoutput;
+entree >> dx;
+entree >> dair;
+entree >> dEF;
+entree >> labelEF;
+entree >> nx;
+entree >> nair;
+entree >> nEF;
+
+
+
+border basair(t=0,1){ x=dx*t; y=0;label=3;}
+border rightair(t=0,1){ x=dx; y=t*dair;label=1;}
+border interface(t=0,1){ x=dx*(1-t); y=dair;label=0;}
+border leftair(t=0,1){ x=0; y=(1-t)*dair;label=1;}
+border rightEF(t=0,1){ x=dx; y=t*dEF+dair;label=1;}
+border topEF(t=0,1){ x=dx*(1-t); y=dEF+dair;label=1;}
+border leftEF(t=0,1){ x=0; y=(1-t)*dEF+dair;label=1;}
+
+
+mesh Thair = buildmesh (basair(nx)+rightair(nair)+interface(nx)+leftair(nair),fixeborder=1);
+
+
+mesh ThEF = buildmesh (interface(-nx)+rightEF(nEF)+topEF(nx)+leftEF(nEF),fixeborder=1);
+
+int[int] r1=[0, labelEF];
+ThEF=change(ThEF,region=r1);
+//Thair=change(Thair,region=r1);
+
+
+mesh Th=Thair+ThEF;
+//plot(Th,ps="AIR_POREUX.eps",bw=1);
+
+
+
+savemesh(Th,fileoutput);

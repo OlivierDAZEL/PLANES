@@ -1,8 +1,6 @@
-c_e=air.c;
-k_e=omega/c_e;
-Z_e=air.Z;
+e_edge=e_1;
+parameter_element
 
-M_e=diag([air.rho,air.rho,1/air.K]);
 
 [F_plus,F_moins]=Split_fluid(nx,ny,k_e,Z_e,omega,M_e);
 
@@ -11,7 +9,7 @@ delta_champs=k_e;
 
 nx=cos(vec_theta);
 ny=sin(vec_theta);
-Phi=Phi_fluid_vector(nx,ny,air.Z,Shift_fluid);
+Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 
 II=int_edge_2vectorielle(1j*delta_test*[nx;ny],-1j*delta_champs*[nx;ny],a,b,[c_2 c_2]);
 MM=kron(II,F_plus);

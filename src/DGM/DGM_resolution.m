@@ -36,7 +36,6 @@ for ii=1:nb_theta
     Shift_fluid((ii-1)*3+(1:3),ii)=1;
 end
 
-
 tic
 for i_f=1:abs(nb_frequencies)
     DGM_progress=100*i_f/abs(nb_frequencies)
@@ -45,6 +44,13 @@ for i_f=1:abs(nb_frequencies)
     omega=2*pi*freq;
     k_air=omega/air.c;
     
+    
+    Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
+    
+%         Mat_parameter(1,2)=0.1*real(Mat_parameter(1,2));
+%         Mat_parameter(2,2)=real(Mat_parameter(2,2));
+        
+   
     % Construction of the linear system
     
     A= sparse(nb_dof_DGM,nb_dof_DGM);
@@ -52,7 +58,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     for ie=1:nb_internal
-        
+        ie
         edge_internal
         
     end
@@ -60,6 +66,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     for ie=1:nb_dirichlets
+        ie
         switch dirichlets(ie,4)
             case {1}
                 boundary_rigid_wall
@@ -71,6 +78,8 @@ for i_f=1:abs(nb_frequencies)
                 boundary_rigid_wall_PML
         end
     end
+    
+    
     
     for ie=1:nb_loads
         boundary_normal_velocity

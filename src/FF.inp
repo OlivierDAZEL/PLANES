@@ -1,9 +1,8 @@
-../Projects/radiation_cylinder/radiation_cylinder.msh
-  0.30000000
-  0.30000000
-6
-6
+../Projects/air_EF/air_EF.msh
   0.10000000
-12
-  0.25000000
-30
+  0.80000000
+  0.80000000
+2004
+1
+8
+8

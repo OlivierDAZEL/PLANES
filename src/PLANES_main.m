@@ -57,7 +57,7 @@ solve.DGM=1;
 solve.PW=0;
 
 if solve.DGM
-    nb_theta=4;
+    nb_theta=30;
 end
 
 %
@@ -133,13 +133,9 @@ if solve.PW
     PW_resolution
 end
 
-
-
 trace_DGM_y
 
-
 % Analytical solution (if exists)
-
 
 name_solution=['solution_' , name_of_project];
 if exist(name_solution)==2

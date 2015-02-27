@@ -1,0 +1,8 @@
+.~
+*.jpg
+*.aux
+*.log
+*.m~
+Projects/
+!Projects/Kundt/
+TeX/

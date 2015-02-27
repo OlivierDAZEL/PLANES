@@ -3,6 +3,6 @@
 *.aux
 *.log
 *.m~
-Projects/
+Projects/*
 !Projects/Kundt
 TeX/

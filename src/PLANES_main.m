@@ -57,7 +57,7 @@ solve.DGM=1;
 solve.PW=0;
 
 if solve.DGM
-    nb_theta=2;
+    nb_theta=4;
 end
 
 %
@@ -86,7 +86,7 @@ disp('Importing Mesh')
 if solve.DGM
     
     [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,0);
 
 
     analyze_mesh_DGM
@@ -138,13 +138,18 @@ end
 trace_DGM_y
 
 
-%plot_sol_1D_y
-solution_AIR_EF
-%solution_EF_EF
+% Analytical solution (if exists)
+
+
+name_solution=['solution_' , name_of_project];
+if exist(name_solution)==2
+   eval('eval(name_solution)')
+end
 
 
 
-terertretret
+
+
 
 %validation_AIR_PML
 

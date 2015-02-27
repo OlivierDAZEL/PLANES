@@ -17,11 +17,11 @@ parameter_element
 
 %%%%% vector normal pointing towards \Omega_e
 
-centre_temp=centre_element(e_edge,nodes,elements);
+centre_temp=centre_element(e_edge);
 centre_edge=(a+b)/2;
 n_centre=centre_temp-centre_edge;
 ne=normal_edge(coord_edge);
-if (n_centre'*ne>0)
+if (n_centre'*ne<0)
     ne=-ne;
 end
 nx=ne(1);
@@ -63,9 +63,9 @@ for i_thetapsi=1:nb_theta
         Psi_e=conj(Phi_fluid(cos(theta_psi),sin(theta_psi),Z_e));
         Phi_e=     Phi_fluid(cos(theta_phi),sin(theta_phi),Z_e);
         
-        ii=indice_fluid(e_edge,i_thetapsi,dof_start_element);
-        jj=indice_fluid(e_edge,i_thetaphi,dof_start_element);
-                A(ii,jj)=A(ii,jj)+Psi_e.'*F_e*Phi_e*...
+        ii=indice_fluid(e_edge,i_thetapsi);
+        jj=indice_fluid(e_edge,i_thetaphi);
+                M_DGM(ii,jj)=M_DGM(ii,jj)+Psi_e.'*F_e*Phi_e*...
                     int_edge_2(j*k_e*n_psi,-j*k_e*n_phi,a,b,[c_edge c_edge]);
     end
 end

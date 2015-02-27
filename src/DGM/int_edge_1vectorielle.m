@@ -11,14 +11,11 @@ k1t=k_1.'*t;
 
 temp=(k1t.');
 
+[i_temp,j_temp]=find(abs(temp)<1e-6);
+temp(i_temp,j_temp)=0;
+
 temp0=temp.*temp==0;
 tempn0=temp~=0;
-
-% if (norm(temp)<1e-6*(norm(k_1)))
-%     f=norm(b-a);
-% else
-%     f=(exp(norm(b-a)*temp)-1)/temp;
-% end
 
 temp=temp+temp0; % Pour la division
 
@@ -29,6 +26,7 @@ f=norm(b-a)*temp0+tempn0.*((exp(norm(b-a)*temp)-1)./temp);
 %size(exp((k_1.'*a_1)*ones(1,length(k_2))));
 %ones(length(k_1),1);
 %(k_2.'*a_2);
+
 
 
 f=(f.').*exp((k_1.'*a_1));

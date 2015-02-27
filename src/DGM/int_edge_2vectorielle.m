@@ -13,9 +13,7 @@ k1t=k_1.'*t;
 k2t=k_2.'*t;
 
 temp=(k1t*ones(1,length(k_2))+ones(length(k_1),1)*k2t.');
-
-[i_temp,j_temp]=find(abs(temp)<1e-6);
-temp(i_temp,j_temp)=0;
+temp=temp.*((abs(temp)>1e-6));
 
 temp0=temp.*temp==0;
 tempn0=temp~=0;

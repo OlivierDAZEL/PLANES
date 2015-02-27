@@ -52,16 +52,17 @@ for i_f=1:abs(nb_frequencies)
     A= sparse(nb_dof_DGM,nb_dof_DGM);
     F=zeros(nb_dof_DGM,1);
     
-    
+     disp('Lancement Internal')
+
     for ie=1:nb_internal
         edge_internal
     end
     
-    
-    
+        
     for ie=1:nb_dirichlets
         switch dirichlets(ie,4)
             case {1}
+               %disp('Lancement boundary_rigid_wall')
                 boundary_rigid_wall
             case {5}
                 boundary_sliding
@@ -75,6 +76,8 @@ for i_f=1:abs(nb_frequencies)
     
     
     for ie=1:nb_loads
+        %disp('Lancement boundary_normal_velocity')
+
         boundary_normal_velocity
     end
     

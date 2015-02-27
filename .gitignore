@@ -1,5 +1,6 @@
 
 *~
+*.key
 *.jpg
 *.aux
 *.log
@@ -10,3 +11,4 @@ Projects/*
 !Projects/Kundt
 TeX/
 .DS_*
+sync_PLANES.m

@@ -1,7 +1,8 @@
-
+.gitignore
 *.jpg
 *.aux
 *.log
 *.m~
 Projects/
-!Projects/Kundt
+!Projects/Kundt/
+TeX/

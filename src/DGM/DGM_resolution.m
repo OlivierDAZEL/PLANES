@@ -77,7 +77,6 @@ for i_f=1:abs(nb_frequencies)
     
     for ie=1:nb_loads
         %disp('Lancement boundary_normal_velocity')
-
         boundary_normal_velocity
     end
     

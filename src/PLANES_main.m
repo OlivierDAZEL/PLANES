@@ -57,7 +57,7 @@ solve.DGM=1;
 solve.PW=0;
 
 if solve.DGM
-    nb_theta=30;
+    nb_theta=4;
 end
 
 %

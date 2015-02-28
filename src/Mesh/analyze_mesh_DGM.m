@@ -62,19 +62,25 @@ vec_theta(end)=[];
 
 if nb_periodicity~=0
     
+    % Separation of the left and right edges
+    nb_periodicity=nb_periodicity/2
+
     edge_left= find(periodicity(:,4)==98);
     edge_right=find(periodicity(:,4)==99);
+    periodicity_left=periodicity(edge_left,1:3)
+    periodicity_right=periodicity(edge_right,1:3)
     
-    y_left=sort([nodes(periodicity(edge_left,1),2) nodes(periodicity(edge_left,2),2)],2);
-    y_right=sort([nodes(periodicity(edge_right,1),2) nodes(periodicity(edge_right,2),2)],2);
+    % Ordering of the edge so that they are ordered on both sides from
+    % increasing y coordinate
     
-    [temp,i_left]=sort(nodes(node_left,2));
-    node_left=node_left(i_left);
-    
-    node_right=unique([periodicity(edge_right,1);periodicity(edge_right,2)]);
-    [temp,i_right]=sort(nodes(node_right,2));
-    node_right=node_right(i_right);
-    
+    y_min_left=min(reshape(nodes(periodicity_left(:,1:2),2),nb_periodicity,2),[],2);
+    y_min_right=min(reshape(nodes(periodicity_right(:,1:2),2),nb_periodicity,2),[],2);
+
+    [temp,i_left] =sort(y_min_left);
+    [temp,i_rigtt]=sort(y_min_right);
+
+    periodicity_left=periodicity_left(i_left,:);
+    periodicity_right=periodicity_right(i_left,:);    
     
 end
 

@@ -38,12 +38,12 @@
 %% u^a= C sin(k_0*x)+D cos(k_0*x)
 %% sigma_a=K_0*k_0(C*cos(k_0*x)-D*sin(k_0*x)
 
+if solve.DGM
 rho_eq_til=Mat_parameter(1,2);
 K_eq_til=Mat_parameter(2,2);
+end
 
 delta_eq=omega*sqrt(rho_eq_til/K_eq_til);
-
-
 
 M_an=zeros(3,3);
 F_an=zeros(3,1);
@@ -67,7 +67,6 @@ x=-d_EF-d_air;
 M_an(3,2)= sin(k_air*x);
 M_an(3,3)= cos(k_air*x);
 F_an(3,1)=-1;
-
 
 
 
@@ -155,32 +154,32 @@ end
 
 
 
-for e_edge=1:nb_elements
-    centre_elem=mean(nodes(elements(e_edge,:),1:2))';
-    parameter_element
-    e_plus=exp(+1j*k_e*(centre_elem(2)-(d_air+d_EF)));
-    e_moins=1/e_plus;
-    
-    if floor(element_label(e_edge)/1000)==2
-          q_theorique(dof_start_element(e_edge)+1)=e_plus*omega*A/2;
-        q_theorique(dof_start_element(e_edge)  )=e_moins*omega*A/2;
-    end
-    if  floor(element_label(e_edge)/1000)==0
-        
-
-        q_theorique(dof_start_element(e_edge)+1)=e_plus*omega*((C/2-D/(2*i)));
-        q_theorique(dof_start_element(e_edge)  )=e_moins*omega*((C/2+D/(2*i)));
-        
-    end
-end
-
-
-figure (21)
-hold on
-
-
-plot(abs(X),'r.')
-plot(abs(q_theorique),'k+')
+% for e_edge=1:nb_elements
+%     centre_elem=mean(nodes(elements(e_edge,:),1:2))';
+%     parameter_element
+%     e_plus=exp(+1j*k_e*(centre_elem(2)-(d_air+d_EF)));
+%     e_moins=1/e_plus;
+%     
+%     if floor(element_label(e_edge)/1000)==2
+%           q_theorique(dof_start_element(e_edge)+1)=e_plus*omega*A/2;
+%         q_theorique(dof_start_element(e_edge)  )=e_moins*omega*A/2;
+%     end
+%     if  floor(element_label(e_edge)/1000)==0
+%         
+% 
+%         q_theorique(dof_start_element(e_edge)+1)=e_plus*omega*((C/2-D/(2*i)));
+%         q_theorique(dof_start_element(e_edge)  )=e_moins*omega*((C/2+D/(2*i)));
+%         
+%     end
+% end
+% 
+% 
+% figure (21)
+% hold on
+% 
+% 
+% plot(abs(X),'r.')
+% plot(abs(q_theorique),'k+')
 %plot(abs(q_theorique*X(27)/q_theorique(27)),'k+')
 % 
 % figure (22)

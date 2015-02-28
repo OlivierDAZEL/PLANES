@@ -1,7 +1,7 @@
 d_x=0.1;
 d_air=0.5;
 d_EF=0.5;
-nx=1;
+nx=5;
 n_air=ceil(nx*d_air/d_x);
 n_EF=ceil(nx*d_EF/d_x);
 labelEF=2004;

@@ -45,6 +45,8 @@ for i_f=1:abs(nb_frequencies)
     
     freq=vec_freq(i_f);
     omega=2*pi*freq;
+    
+    
     k_air=omega/air.c;
     create_wave_vectors
     
@@ -70,7 +72,7 @@ for i_f=1:abs(nb_frequencies)
         end
     end
     
-   
+    
     if (nb_media.eqf~=0)
         for i_mat=1:nb_media.eqf
             eval(['Mat_PEM_' num2str(num_media.eqf(i_mat))])
@@ -115,7 +117,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     if nb_MMT~=0
-
+        
         TT=build_FEM_transfer(k_air*sin(theta_MMT),element_MMT_moins,element_MMT_plus,omega,multilayer_femtmm,k_air,air);
         
         
@@ -153,7 +155,7 @@ for i_f=1:abs(nb_frequencies)
     %disp('Resolution of the system')
     X=A\F;
     
-        
+    
     sol(dof_back)=X(1:nb_dof_FEM);
     
     if exist('DtN_plate_R')
@@ -181,13 +183,12 @@ for i_f=1:abs(nb_frequencies)
             trans_export=[trans_export trans.'];
         end
     end
-
     
-    if plot_profiles==1
-       %plot_sol_TR6
-       plot_sol_1D_y
+    if plot_profiles
+        plot_sol_TR6_y
     end
-
+    
+    
     
     if export_nrj==1
         Ks(i_f)=(omega^2/4)*rho_1*X(1:nb_dof_FEM)'*M_pem01_1*X(1:nb_dof_FEM);
@@ -199,20 +200,20 @@ for i_f=1:abs(nb_frequencies)
         W_therm(i_f)=(pi*phi^2*imag(R_til)/abs(R_til)^2)*X(1:nb_dof_FEM)'*Q_pem01_1*X(1:nb_dof_FEM);
         
         W_dis(i_f)=W_vis(i_f)+W_struct(i_f)+W_therm(i_f);
-  
+        
         I_inc(i_f)=(period/air.Z)/(2*vec_freq(i_f));
     end
     
     if nb_R~=0
-    R_EF(i_f)=rflx(1);
-    abs_EF(i_f)=1-sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
-    end     
+        R_EF(i_f)=rflx(1);
+        abs_EF(i_f)=1-sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
+    end
     
     if nb_T~=0
         TL_EF(i_f)=full(-10*log10(abs(sum(real(vec_k_z_t).'.*abs(trans(1:size_info_vector_T:end)).^2)/real(k_z))));
         fprintf(file_TL_id,'%1.15e \t %1.15e \n',freq,TL_EF(i_f));
     end
-        
+    
 end
 time_FEM=toc;
 

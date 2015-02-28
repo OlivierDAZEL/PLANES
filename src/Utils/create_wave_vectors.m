@@ -34,8 +34,8 @@
 
 
 k_air=omega/air.c;
-k_x=k_air*sin(theta);
-k_z=k_air*cos(theta);
+k_x=k_air*sin(theta_inc);
+k_z=k_air*cos(theta_inc);
 
 nb_Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
 

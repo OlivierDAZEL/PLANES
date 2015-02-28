@@ -46,23 +46,23 @@ for i_f=1:abs(nb_frequencies)
     
     
     Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
-              
+    
     % Construction of the linear system
     
     A= sparse(nb_dof_DGM,nb_dof_DGM);
     F=zeros(nb_dof_DGM,1);
     
-     disp('Lancement Internal')
-
+    disp('Lancement Internal')
+    
     for ie=1:nb_internal
         edge_internal
     end
     
-        
+    
     for ie=1:nb_dirichlets
         switch dirichlets(ie,4)
             case {1}
-               %disp('Lancement boundary_rigid_wall')
+                %disp('Lancement boundary_rigid_wall')
                 boundary_rigid_wall
             case {5}
                 boundary_sliding
@@ -81,10 +81,23 @@ for i_f=1:abs(nb_frequencies)
     end
     
     
+    for ie=1:nb_periodicity
+        edge_periodicity
+        
+    end
+    
+    
+    
+    
+    
+    
     disp('Resolution of the system')
     X=A\F;
     
-    %trace_DGM_y
+    if plot_profiles
+        plot_sol_DGM_y
+    end
+    
     
     %info_DGM
     

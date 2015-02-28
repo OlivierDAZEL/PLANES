@@ -38,11 +38,11 @@ clc
 list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='air_EF';
+name_of_project='Kundt';
 %name_of_project='TW';
 
 
-subproject=0;
+subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
@@ -50,7 +50,7 @@ nb_frequencies=1;
 freq_min=100;
 freq_max=4000;
 % Angle of incidence
-theta=0*pi/180;
+theta_inc=0*pi/180;
 
 solve.FEM=0;
 solve.DGM=1;
@@ -86,11 +86,9 @@ disp('Importing Mesh')
 if solve.DGM
     
     [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,0);
-
-
-    analyze_mesh_DGM
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
     
+    analyze_mesh_DGM    
 end
 
 if solve.FEM
@@ -103,6 +101,9 @@ if solve.FEM
     EF_TR6_global_build
     
 end
+
+
+
 
 
 disp('End of mesh importation')
@@ -133,7 +134,10 @@ if solve.PW
     PW_resolution
 end
 
-trace_DGM_y
+%trace_DGM_y
+
+
+
 
 % Analytical solution (if exists)
 

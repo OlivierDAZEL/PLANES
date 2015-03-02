@@ -118,10 +118,10 @@ for i_thetapsi=1:nb_theta
     Psi_e=conj(Phi_fluid(cos(theta_psi),sin(theta_psi),Z_e));
     ii=indice_fluid(e_edge,i_thetapsi,dof_start_element);
     F(ii)=F(ii)-Psi_e'*S_e*...
-        int_edge_2(-1j*k_e*n_excitation,1j*k_e*n_psi,a,b,[0*c_edge c_edge]);
+        int_edge_2(1j*k_e*n_psi,-1j*k_e*n_excitation,a,b,[c_edge 0*c_edge]);
     
     A(ii,nb_dof_DGM+1)=A(ii,nb_dof_DGM+1)-Psi_e'*S_e*...
-        int_edge_2(-1j*k_e*n_excitation,1j*k_e*n_psi,a,b,[0*c_edge c_edge]);
+        int_edge_2(1j*k_e*n_psi,-1j*k_e*n_excitation,a,b,[c_edge 0*c_edge]);
 end
 
 

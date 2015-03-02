@@ -50,7 +50,7 @@ nb_frequencies=1;
 freq_min=1000;
 freq_max=4000;
 % Angle of incidence
-theta_inc=45*pi/180;
+theta_inc=0*pi/180;
 
 solve.FEM=0;
 solve.DGM=1;
@@ -145,7 +145,8 @@ if exist(name_solution)==2
    eval('eval(name_solution)')
 end
 
-
+X(end)
+Reflexion_coefficient
 
 
 

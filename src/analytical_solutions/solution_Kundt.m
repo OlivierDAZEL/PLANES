@@ -32,14 +32,13 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-
-X_an=1/sin(k_air*ly);
-
-
 x_air=linspace(-ly,0,1000);
 
 
-sigma_a=air.K*k_air*X_an*cos(k_air*x_air);
+Z_s=-1j*air.Z*(1/cos(theta_inc))*cot(k_air*cos(theta_inc)*ly);
+Reflexion_coefficient=(Z_s-air.Z)/(Z_s+air.Z);
+sigma_a=((1+Reflexion_coefficient)/(cos(k_air*cos(theta_inc)*ly)))*cos(k_air*cos(theta_inc)*x_air);
+
 
 
 if plot_profiles==1

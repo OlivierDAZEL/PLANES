@@ -38,7 +38,6 @@ k_x=k_air*sin(theta_inc);
 k_z=k_air*cos(theta_inc);
 
 nb_Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
-
 nb_Bloch_waves=0
 
 if nb_R~=0

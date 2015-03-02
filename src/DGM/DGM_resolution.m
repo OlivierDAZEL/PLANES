@@ -37,22 +37,24 @@ for ii=1:nb_theta
 end
 
 tic
-
 for i_f=1:abs(nb_frequencies)
     DGM_progress=100*i_f/abs(nb_frequencies)
     
     freq=vec_freq(i_f);
     omega=2*pi*freq;
     k_air=omega/air.c;
-    create_wave_vectors
-    
+    if nb_R~=0
+       create_wave_vectors
+           delta=exp(-1i*k_x*period); 
+
+    end
     
     Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
     
     % Construction of the linear system
     
-    A= sparse(nb_dof_DGM+nb_R+nb_T,nb_dof_DGM+nb_R+nb_T);
-    F=zeros(nb_dof_DGM+nb_R+nb_T,1);
+    A= sparse(nb_dof_DGM+nb_R,nb_dof_DGM+nb_R);
+    F=zeros(nb_dof_DGM+nb_R,1);
     
     disp('Lancement Internal')
     
@@ -75,15 +77,16 @@ for i_f=1:abs(nb_frequencies)
         end
     end
     
-
+    
+    
     for ie=1:nb_loads
+        %disp('Lancement boundary_normal_velocity')   
         switch loads(ie,4)
             case {3}
-                %disp('Lancement boundary_normal_velocity')
-                boundary_normal_velocity
-            case {10}
+        boundary_normal_velocity
+            case{10}
                 boundary_10
-        end
+             end
     end
     
     

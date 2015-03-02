@@ -130,4 +130,8 @@ end
 
 
 
+period=max(nodes(:,1))-min(nodes(:,1));
+
+
+
 

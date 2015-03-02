@@ -32,7 +32,7 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %%%%% Coordinates of the edge's vertices
 
-n_excitation=[cos(theta_inc); sin(theta_inc)];
+n_excitation=[sin(theta_inc); cos(theta_inc)];
 
 
 coord_edge(1:2,1)=nodes(loads(ie,1),1:2)';
@@ -135,5 +135,3 @@ for i_thetaphi=(1:nb_theta)
 end
 A(nb_dof_DGM+1,nb_dof_DGM+1)=-period;
 F(nb_dof_DGM+1)=period;
-
-

@@ -47,7 +47,7 @@ subproject=1;
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 nb_frequencies=1;
-freq_min=1000;
+freq_min=100;
 freq_max=4000;
 % Angle of incidence
 theta_inc=0*pi/180;
@@ -105,6 +105,7 @@ end
 
 
 
+
 disp('End of mesh importation')
 toc
 
@@ -140,7 +141,7 @@ end
 
 % Analytical solution (if exists)
 
-name_solution=['solution_' , name_of_project_full];
+name_solution=['solution_' , name_of_project];
 if exist(name_solution)==2
    eval('eval(name_solution)')
 end

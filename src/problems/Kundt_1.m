@@ -1,5 +1,5 @@
 lx=1.00e-2;
-ly=10.00e-2;
+ly=30.00e-2;
 nx=1;
 ny=ceil(nx*ly/lx);
 

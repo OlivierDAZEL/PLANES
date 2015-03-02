@@ -56,7 +56,7 @@ end
 
 nb_dof_DGM=dof_start_element(ie)+ondes_element(ie)*nb_theta-1; 
 
-vec_theta=pi/2+linspace(0,2*pi,nb_theta+1);
+vec_theta=theta_inc+pi/2+linspace(0,2*pi,nb_theta+1);
 vec_theta(end)=[];
 
 
@@ -85,7 +85,48 @@ if nb_periodicity~=0
 end
 
 
+is_pw=(ismember(loads(:,4),[10 11 12]));
+is_pw_R=is_pw;
+if sum(is_pw)~=0
+    plot_abs=1;
+    nb_R=1;
+    size_info_vector_R=1;
+else
+    plot_abs=0;
+    nb_R=0;
+    size_info_vector_R=1;
+end
 
+is_pw=(ismember(loads(:,4),[13]));
+is_pw_R=is_pw;
+if sum(is_pw)~=0
+    plot_abs=1;
+    nb_R=1;
+    size_info_vector_R=2;
+end
+
+
+is_pw=(ismember(loads(:,4),[20 21 22]));
+is_pw_T=is_pw;
+if sum(is_pw)~=0
+    is_pw_T=find(is_pw);
+    plot_TL=1;
+    nb_T=1;
+    size_info_vector_T=1;
+else
+    plot_TL=0;
+    nb_T=0;
+    size_info_vector_T=1;
+end
+
+is_pw=(ismember(loads(:,4),23));
+is_pw_T=is_pw;
+if sum(is_pw)~=0
+    is_pw_T=find(is_pw);
+    plot_TL=1;
+    nb_T=1;
+    size_info_vector_T=2;
+end
 
 
 

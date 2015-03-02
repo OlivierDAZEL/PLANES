@@ -32,6 +32,12 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+% Spatial phase shift for Bloch's conditions
+
+delta=exp(-1i*k_x*period);
+
+
+
 %%%%% Coordinates of the edge's vertices on the right and left edges
 
 coord_edge_left(1:2,1)=nodes(periodicity_left(ie,1),1:2)';

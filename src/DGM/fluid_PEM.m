@@ -52,8 +52,8 @@ Omega_e_p_moins=Omega_e_p(2,:);
 Lambda_e_p_moins=omega/k_e;
 Lambda_e_p_plus=-Lambda_e_p_moins;
 
-k_e_p=k_e;
-Z_e_p=Z_e;
+k_e1=k_e;
+Z_e1=Z_e;
 
 e_edge=e_2;
 parameter_element
@@ -98,58 +98,38 @@ R_epe=Refl(4,1:3);
 R_epep=Refl(4,4);
 
 
-F_ee=  M_e*(W_e_plus*Lambda_e_plus+W_e_moins*Lambda_e_moins*R_ee)*Omega_e_plus;
-F_eep= M_e*W_e_moins*Lambda_e_moins*R_eep*Omega_e_p_plus;
-F_epe=-M_e_p*W_e_p_moins*Lambda_e_p_moins*R_epe*Omega_e_plus;
-F_epep=-M_e_p*(W_e_p_moins*Lambda_e_p_moins*R_epep+W_e_p_plus*Lambda_e_p_plus)*Omega_e_p_plus;
+F_e2e2=  M_e*(W_e_plus*Lambda_e_plus+W_e_moins*Lambda_e_moins*R_ee)*Omega_e_plus;
+F_e2e1= M_e*W_e_moins*Lambda_e_moins*R_eep*Omega_e_p_plus;
+F_e1e2=-M_e_p*W_e_p_moins*Lambda_e_p_moins*R_epe*Omega_e_plus;
+F_e1e1=-M_e_p*(W_e_p_moins*Lambda_e_p_moins*R_epep+W_e_p_plus*Lambda_e_p_plus)*Omega_e_p_plus;
 
+nx=cos(vec_theta);
+ny=sin(vec_theta);
 
-for i_theta_test=1:nb_theta
-    theta_test=vec_theta(i_theta_test);
-    n_psi=[cos(theta_test);sin(theta_test)];
-    for  i_theta_champs=(1:nb_theta)
-        theta_champs=vec_theta(i_theta_champs);
-        n_phi=[cos(theta_champs);sin(theta_champs)];
-        % e'=e_1
-        % e=e_2
-        % Champs direct et test
-        Psi_e_p=conj(Phi_fluid(cos(theta_test),sin(theta_test),Z_e_p));
-        Phi_e_p=     Phi_fluid(cos(theta_champs),sin(theta_champs),Z_e_p);
-        Psi_e=conj(Phi_Biot(cos(theta_test),sin(theta_test),delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega));
-        Phi_e=     Phi_Biot(cos(theta_champs),sin(theta_champs),delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega);
-     % ve^H F11 ue
+Phi_1=Phi_fluid_vector(nx,ny,Z_e1,Shift_fluid);
+Phi_2=Phi_Biot_vector(nx,ny,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega,Shift_Biot);
 
-        for i_test=1:3
-            for i_champs=1:3
-                indice_test  =indice_Biot(e_2,i_theta_test,i_test,dof_start_element);
-                indice_champs=indice_Biot(e_2,i_theta_champs,i_champs,dof_start_element);
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_2 c_2]);
+MM=kron(II,F_e2e2);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_2.'*MM*Phi_2;
 
-                A(indice_test,indice_champs)=A(indice_test,indice_champs)+Psi_e(:,i_test)'*F_ee *Phi_e(:,i_champs)...
-                    *int_edge_2(j*k_e(i_test)*n_psi,-j*k_e(i_champs)*n_phi,a,b,[c_2 c_2]);
+        
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*k_e1*[nx;ny],a,b,[c_2 c_1]);
+MM=kron(II,F_e2e1);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1; 
+indice_champs=((1:nb_theta)-1)+dof_start_element(e_1);
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_2.'*MM*Phi_1;
 
-            end
-        end
-        % ve^H Feep ue'
-        for i_test=1:3
-            indice_test  =indice_Biot(e_2,i_theta_test,i_test,dof_start_element);
-            indice_champs=indice_fluid(e_1,i_theta_champs,dof_start_element);
+II=int_edge_2vectorielle(1j*k_e1*[nx;ny],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_1 c_2]);
+MM=kron(II,F_e1e2);
+indice_test  =((1:nb_theta)-1)+dof_start_element(e_1);  
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_1.'*MM*Phi_2;
 
-            A(indice_test,indice_champs)=A(indice_test,indice_champs)+Psi_e(:,i_test)'*F_eep *Phi_e_p...
-                *int_edge_2(j*k_e(i_test)*n_psi,-j*k_e_p*n_phi,a,b,[c_2 c_1]);
-        end
-
-        % -ve'^H F+ ue
-        for i_champs=1:3
-            indice_test  =indice_fluid(e_1,i_theta_test,dof_start_element);
-            indice_champs=indice_Biot(e_2,i_theta_champs,i_champs,dof_start_element);
-            A(indice_test,indice_champs)=A(indice_test,indice_champs)+Psi_e_p'*F_epe *Phi_e(:,i_champs)...
-                *int_edge_2(j*k_e_p*n_psi,-j*k_e(i_champs)*n_phi,a,b,[c_1 c_2]);
-            % -ve'^H F- ue'
-        end
-
-        indice_test  =indice_fluid(e_1,i_theta_test,dof_start_element);
-        indice_champs=indice_fluid(e_1,i_theta_champs,dof_start_element);
-        A(indice_test,indice_champs)=A(indice_test,indice_champs)+Psi_e_p'*F_epep *Phi_e_p...
-            *int_edge_2(j*k_e_p*n_psi,-j*k_e_p*n_phi,a,b,[c_1 c_1]);
-    end
-end
+II=int_edge_2vectorielle(1j*k_e1*[nx;ny],-1j*k_e1*[nx;ny],a,b,[c_1 c_1]);
+MM=kron(II,F_e1e1);
+indice_test  =((1:nb_theta)-1)+dof_start_element(e_1);  
+indice_champs=((1:nb_theta)-1)+dof_start_element(e_1);
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi_1.'*MM*Phi_1;

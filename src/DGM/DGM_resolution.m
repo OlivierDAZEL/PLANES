@@ -34,6 +34,12 @@
 
 for ii=1:nb_theta
     Shift_fluid((ii-1)*3+(1:3),ii)=1;
+    % Biot wave 1
+    Shift_Biot((ii-1)*8*3+(1:8),1+(ii-1)*3)=1;
+    % Biot wave 2
+    Shift_Biot((ii-1)*8*3+8+(1:8),2+(ii-1)*3)=1;
+    % Biot wave 3
+    Shift_Biot((ii-1)*8*3+16+(1:8),3+(ii-1)*3)=1;
 end
 
 tic
@@ -45,10 +51,12 @@ for i_f=1:abs(nb_frequencies)
     k_air=omega/air.c;
     if nb_R~=0
        create_wave_vectors
-           delta=exp(-1i*k_x*period); 
+               delta_Bloch=exp(-1i*k_x*period); 
 
     end
-    
+                   delta_Bloch=1
+
+
     Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
     
     % Construction of the linear system

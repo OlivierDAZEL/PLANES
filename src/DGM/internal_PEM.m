@@ -50,92 +50,31 @@ F_moins=M_e*W_e_moins*Lambda_e_moins*Omega_e_moins;
 
 %F_plus+F_moins
 
+nx=cos(vec_theta);
+ny=sin(vec_theta);
+Phi=Phi_Biot_vector(nx,ny,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega,Shift_Biot);
+
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_2 c_2]);
+MM=kron(II,F_plus);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
+
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_2 c_1]);
+MM=kron(II,F_moins);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_1)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
 
 
-delta=[delta_1 delta_2 delta_3];
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_1 c_2]);
+MM=kron(II,-F_plus);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_1)-1;
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_2)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
 
-
-for i_thetapsi=1:nb_theta
-    theta_test=vec_theta(i_thetapsi);
-    n_psi=[cos(theta_test);sin(theta_test)];
-    Psi_e=conj(Phi_Biot(cos(theta_test)  ,sin(theta_test)  ,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega));
-    for  i_thetaphi=(1:nb_theta)
-        theta_champs=vec_theta(i_thetaphi);
-        n_phi=[cos(theta_champs);sin(theta_champs)];
-
-        Phi_e=     Phi_Biot(cos(theta_champs),sin(theta_champs),delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega);
-        i_test=1:3; % Balayage des ondes de Biot champs test
-        i_champs=1:3;
-
-        
-        integrale_border11=int_edge_2vectorielle(j*(ones(2,1)*delta).*(n_psi*ones(1,3)),-j*(ones(2,1)*delta).*(n_phi*ones(1,3)),a,b,[c_1 c_1]);
-        integrale_border12=int_edge_2vectorielle(j*(ones(2,1)*delta).*(n_psi*ones(1,3)),-j*(ones(2,1)*delta).*(n_phi*ones(1,3)),a,b,[c_1 c_2]);
-        integrale_border21=int_edge_2vectorielle(j*(ones(2,1)*delta).*(n_psi*ones(1,3)),-j*(ones(2,1)*delta).*(n_phi*ones(1,3)),a,b,[c_2 c_1]);
-        integrale_border22=int_edge_2vectorielle(j*(ones(2,1)*delta).*(n_psi*ones(1,3)),-j*(ones(2,1)*delta).*(n_phi*ones(1,3)),a,b,[c_2 c_2]);
-
-        
-        %ve^H F+ ue
-        ii=indice_Biot(e_2,i_thetapsi,i_test,dof_start_element);
-        jj=indice_Biot(e_2,i_thetaphi,i_champs,dof_start_element);
-        A(ii,jj)=A(ii,jj)+(Psi_e(:,i_test)'*F_plus *Phi_e(:,i_champs)).*integrale_border22;
-        %ve^H F- ue'
-        ii=indice_Biot(e_2,i_thetapsi,i_test,dof_start_element);
-        jj=indice_Biot(e_1,i_thetaphi,i_champs,dof_start_element);
-        A(ii,jj)=A(ii,jj)+Psi_e(:,i_test)'*F_moins *Phi_e(:,i_champs).*integrale_border21;
-        %-ve'^H F+ ue
-        ii=indice_Biot(e_1,i_thetapsi,i_test,dof_start_element);
-        jj=indice_Biot(e_2,i_thetaphi,i_champs,dof_start_element);
-        A(ii,jj)=A(ii,jj)-Psi_e(:,i_test)'*F_plus *Phi_e(:,i_champs).*integrale_border12;
-        %-ve'^H F- ue'
-        ii=indice_Biot(e_1,i_thetapsi,i_test,dof_start_element);
-        jj=indice_Biot(e_1,i_thetaphi,i_champs,dof_start_element);
-        A(ii,jj)=A(ii,jj)-Psi_e(:,i_test)'*F_moins *Phi_e(:,i_champs).*integrale_border11;
-
-
-
-
-    end
-end
-
-
-
-
-% for i_thetapsi=1:nb_theta
-%     theta_test=vec_theta(i_thetapsi);
-%     n_psi=[cos(theta_test);sin(theta_test)];
-%     for  i_thetaphi=(1:nb_theta)
-%         theta_champs=vec_theta(i_thetaphi);
-%         n_phi=[cos(theta_champs);sin(theta_champs)];
-%         Psi_e=conj(Phi_Biot(cos(theta_test)  ,sin(theta_test)  ,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega));
-%         Phi_e=     Phi_Biot(cos(theta_champs),sin(theta_champs),delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega);
-%         
-%         integrale_border22=int_edge_2vectorielle(j*(ones(2,1)*delta).*(n_psi*ones(1,3)),-j*(ones(2,1)*delta).*(n_phi*ones(1,3)),a,b,[c_2 c_2])
-%         
-%         
-%         for i_test=1:3 % Balayage des ondes de Biot champs test
-%             for i_champs=1:3 % Balayage des ondes de Biot champs inconnu
-%                 % ve^H F+ ue
-%                 ii=indice_Biot(e_2,i_thetapsi,i_test);
-%                 jj=indice_Biot(e_2,i_thetaphi,i_champs);
-%                 M_DGM(ii,jj)=M_DGM(ii,jj)+Psi_e(:,i_test)'*F_plus *Phi_e(:,i_champs)...
-%                         *int_edge_2(j*delta(i_test)*n_psi,-j*delta(i_champs)*n_phi,a,b,[c_2 c_2]);
-%                 % ve^H F- ue'
-%                 ii=indice_Biot(e_2,i_thetapsi,i_test);
-%                 jj=indice_Biot(e_1,i_thetaphi,i_champs);
-%                 M_DGM(ii,jj)=M_DGM(ii,jj)+Psi_e(:,i_test)'*F_moins *Phi_e(:,i_champs)...
-%                         *int_edge_2(j*delta(i_test)*n_psi,-j*delta(i_champs)*n_phi,a,b,[c_2 c_1]);
-%                 % -ve'^H F+ ue
-%                 ii=indice_Biot(e_1,i_thetapsi,i_test);
-%                 jj=indice_Biot(e_2,i_thetaphi,i_champs);
-%                 M_DGM(ii,jj)=M_DGM(ii,jj)-Psi_e(:,i_test)'*F_plus *Phi_e(:,i_champs)...
-%                         *int_edge_2(j*delta(i_test)*n_psi,-j*delta(i_champs)*n_phi,a,b,[c_1 c_2]);
-%                 % -ve'^H F- ue'
-%                 ii=indice_Biot(e_1,i_thetapsi,i_test);
-%                 jj=indice_Biot(e_1,i_thetaphi,i_champs);
-%                 M_DGM(ii,jj)=M_DGM(ii,jj)-Psi_e(:,i_test)'*F_moins *Phi_e(:,i_champs)...
-%                     *int_edge_2(j*delta(i_test)*n_psi,-j*delta(i_champs)*n_phi,a,b,[c_1 c_1]);
-% 
-%             end
-%         end
-%     end
-% end
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_1 c_1]);
+MM=kron(II,-F_moins);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_1)-1;
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_1)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;

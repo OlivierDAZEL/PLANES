@@ -1,4 +1,4 @@
-% indice_Biot.m
+% indice_Biot_vector.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,7 +30,7 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
-function ind=indice_Biot(i_elem,i_theta,i_onde,dof_start_element)
+function ind=indice_Biot_vector(i_elem,i_theta,i_onde,dof_start_element)
 
 
 

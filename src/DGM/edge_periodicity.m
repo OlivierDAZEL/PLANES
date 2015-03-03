@@ -63,17 +63,20 @@ c_right=mean(nodes(elements(e_right,:),1:2))';
 nx=-1;
 ny=0;
 
+e_edge=e_right;
+parameter_element
+
 
 valid_edge_internal=0;
 if (element_label(e_1)==element_label(e_2))
     if ((floor(element_label(e_edge)/1000)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
         %disp('Lancement internal_fluid')
-        internal_fluid_periodic
+        fluid_periodic
         valid_edge_internal=1;
-%     elseif (floor(element_label(e_edge)/1000)==4)
+     elseif (floor(element_label(e_edge)/1000)==4)
 %         %disp('Lancement internal_PEM')
-%         internal_PEM
-%         valid_edge_internal=1;
+         PEM_periodic
+         valid_edge_internal=1;
 %     elseif (floor(element_label(e_edge)/1000)==8)
 %         parameter_element
 %         internal_PML

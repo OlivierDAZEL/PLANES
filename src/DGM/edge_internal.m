@@ -97,7 +97,15 @@ else % (element_label(e_1)~=element_label(e_2))
     end
     if (sum(floor(element_label(e_2)/1000)==[0 2 3]))*(sum(floor(element_label(e_1)/1000)==[4]))
         %disp('Lancement PEM_fluid')
-        PEM_fluid
+        temp=e_1;
+        e_1=e_2;
+        e_2=temp;
+        nx=-nx;
+        ny=-ny;
+        temp=c_1;
+        c_1=c_2;
+        c_2=temp;
+        fluid_PEM
         valid_edge_internal=1;
     end
     

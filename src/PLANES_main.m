@@ -38,7 +38,7 @@ clc
 list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='Kundt';
+name_of_project='air_PEM';
 %name_of_project='TW';
 
 
@@ -86,7 +86,7 @@ disp('Importing Mesh')
 if solve.DGM
     
     [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,0);
     
     analyze_mesh_DGM    
 end
@@ -101,9 +101,6 @@ if solve.FEM
     EF_TR6_global_build
     
 end
-
-
-
 
 
 disp('End of mesh importation')
@@ -136,9 +133,6 @@ end
 
 %trace_DGM_y
 
-
-
-
 % Analytical solution (if exists)
 
 name_solution=['solution_' , name_of_project];
@@ -149,7 +143,7 @@ end
 X(end)
 Reflexion_coefficient
 
-
+X(end)-Reflexion_coefficient
 
 
 %validation_AIR_PML

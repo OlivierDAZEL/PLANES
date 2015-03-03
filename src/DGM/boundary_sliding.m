@@ -54,7 +54,7 @@ centre_temp=mean(nodes(elements(e_edge,:),1:2))';
 centre_edge=(a+b)/2;
 n_centre=centre_temp-centre_edge;
 ne=normal_edge(coord_edge);
-if (n_centre'*ne<0)
+if (n_centre'*ne>0)
     ne=-ne;
 end
 nx=ne(1);
@@ -72,10 +72,6 @@ Omega_e=inv(W_e);
 Omega_e_plus=Omega_e(1:3,:);
 Omega_e_moins=Omega_e(4:6,:);
 
-
-
-delta=[delta_1 delta_2 delta_3];
-
 Lambda_e_plus=diag([omega/delta_1 omega/delta_2 omega/delta_3]);
 Lambda_e_moins=-Lambda_e_plus;
 
@@ -89,23 +85,11 @@ R_e=-inv(M_moins)*M_plus;
 %F_e=A_x_fluid*nx+A_y_fluid*ny;
 F_e=M_e*(W_e_plus*Lambda_e_plus+W_e_moins*Lambda_e_moins*R_e)*Omega_e_plus;
 
-
-for i_thetapsi=1:nb_theta
-    theta_test=vec_theta(i_thetapsi);
-    n_psi=[cos(theta_test);sin(theta_test)];
-    for  i_thetaphi=(1:nb_theta)
-        theta_champs=vec_theta(i_thetaphi);
-        n_phi=[cos(theta_champs);sin(theta_champs)];
-        Psi_e=conj(Phi_Biot(cos(theta_test),sin(theta_test),delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega));
-        Phi_e=Phi_Biot(cos(theta_champs),sin(theta_champs),delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega);
-        for i_test=1:3
-            for i_champs=1:3
-                % ve^H F+ ue
-                ii=indice_Biot(e_edge,i_thetapsi,i_test,dof_start_element);
-                jj=indice_Biot(e_edge,i_thetaphi,i_champs,dof_start_element);
-                A(ii,jj)=A(ii,jj)+Psi_e(:,i_test)'*F_e*Phi_e(:,i_champs)...
-                    *int_edge_2(j*delta(i_test)*n_psi,-j*delta(i_champs)*n_phi,a,b,[c_edge c_edge]);
-            end
-        end
-    end
-end
+nx=cos(vec_theta);
+ny=sin(vec_theta);
+Phi=Phi_Biot_vector(nx,ny,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega,Shift_Biot);
+II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_edge c_edge]);
+MM=kron(II,F_e);
+indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_edge)-1;
+indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_edge)-1;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;

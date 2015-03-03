@@ -1,4 +1,4 @@
-% indice_Biot.m
+% Phi_Biot_vector.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,12 +30,29 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
-function ind=indice_Biot(i_elem,i_theta,i_onde,dof_start_element)
+function M=Phi_Biot_vector(nx,ny,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til,omega,Shift)
+
+n=length(nx);
+
+M=[nx;ny ;mu_1*nx;mu_1*ny ;-(delta_1/omega)*(A_hat+2*N*nx.^2);   -(delta_1/omega)*(2*N*nx.*ny)    ; -(delta_1/omega)*(A_hat+2*N*ny.^2);-(delta_1/omega)*(K_eq_til*mu_1)*ones(1,length(nx))];
+M=[M [nx;ny ;mu_2*nx;mu_2*ny ;-(delta_2/omega)*(A_hat+2*N*nx.^2);-(delta_2/omega)*(2*N*nx.*ny)    ; -(delta_2/omega)*(A_hat+2*N*ny.^2);-(delta_2/omega)*(K_eq_til*mu_2)*ones(1,length(nx))]];
+M=[M [ny;-nx;mu_3*ny;-mu_3*nx;-(delta_3/omega)*(2*N*nx.*ny)     ; (delta_3/omega)*(N*(nx.^2-ny.^2)); (delta_3/omega)*(2*N*nx.*ny)                         ;0*ones(1,length(nx))]];
 
 
+% M(3,4)=ny;
+% M(4,4)=-nx;
+%
+% M(5,5)=ny^2;
+% M(6,5)=-nx*ny;
+% M(7,5)=nx^2;
 
+M5=(M(5,:)+M(7,:))/2;
+M7=(M(5,:)-M(7,:))/2;
 
-ind=i_onde+(i_theta-1)*3+dof_start_element(i_elem)-1;
+M(5,:)=M5;
+M(7,:)=M7;
 
+M=repmat(M,3*n,1);
 
-% ondes dans angles dans elements
+M=Shift.*M;
+

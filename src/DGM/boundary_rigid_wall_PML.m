@@ -54,7 +54,7 @@ centre_temp=mean(nodes(elements(e_edge,:),1:2))';
 centre_edge=(a+b)/2;
 n_centre=centre_temp-centre_edge;
 ne=normal_edge(coord_edge);
-if (n_centre'*ne<0)
+if (n_centre'*ne>0)
     ne=-ne;
 end
 nx=ne(1);

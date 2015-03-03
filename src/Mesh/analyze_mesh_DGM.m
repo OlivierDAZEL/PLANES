@@ -54,7 +54,7 @@ for ie=2:nb_elements
 end
 
 
-nb_dof_DGM=dof_start_element(ie)+ondes_element(ie)*nb_theta-1; 
+nb_dof_DGM=dof_start_element(end)+ondes_element(end)*nb_theta-1; 
 
 vec_theta=theta_inc+pi/2+linspace(0,2*pi,nb_theta+1);
 vec_theta(end)=[];

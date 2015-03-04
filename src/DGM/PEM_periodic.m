@@ -79,7 +79,6 @@ M2=[ B_e*M_e*W_e_moins*Lambda_e_moins -B_e_p*M_e*W_e_p_moins*Lambda_e_p_moins];
 
 Refl=inv(M2)*M1;
 
-
 R_ee=Refl(1:3,1:3);
 R_eep=Refl(1:3,4:6);
 R_epe=Refl(4:6,1:3);

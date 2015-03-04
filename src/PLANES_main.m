@@ -38,11 +38,11 @@ clc
 list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='air_PEM';
+name_of_project='PEM';
 %name_of_project='TW';
 
 
-subproject=1;
+subproject=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
@@ -86,7 +86,7 @@ disp('Importing Mesh')
 if solve.DGM
     
     [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,0);
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
     
     analyze_mesh_DGM    
 end

@@ -1,4 +1,4 @@
-% PW_resolution.m
+% Mat_elas_7.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,23 +33,15 @@
 %%
 
 
-for i_f=1:abs(nb_frequencies)
-    omega=2*pi*vec_freq(i_f);
-    k_air=omega/air.c;
-    k_x=k_air*sin(theta_inc);
-    
-    Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
-    
-    
-    F_PW=-Mat_PW(:,1);
-    Mat_PW(:,1)=[];
-    
-    X_PW=Mat_PW\F_PW;
-    
-    abs_PW(i_f)=1-abs(X_PW(1))^2;
-    reflex_PW(i_f)=X_PW(1);
-    if termination~=0
-        TL_PW(i_f)=-20*log10(abs(X_PW(end)));
-    end
-    
-end
+%E_solide=1.9d6-im*w(iw)*7.96d2;
+
+
+E_solide=1.9d6;
+nu_solide=0.48E+00;
+eta_solide=omega*7.96d2/1.9d6;
+rho_solide=1800;
+
+lambda_solide=(1+1i*eta_solide)*(E_solide*nu_solide)/((1+nu_solide)*(1-2*nu_solide));
+mu_solide=(1+1i*eta_solide)*(E_solide)/(2*(1+nu_solide));
+
+

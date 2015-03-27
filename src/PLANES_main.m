@@ -33,35 +33,41 @@
 %%
 
 clear all
-close all
+%close all
 clc
 list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-name_of_project='PEM';
-%name_of_project='TW';
+abs_JPG=load('Abs_d55_angpi90_type3.dat');
 
 
-subproject=0;
+%name_of_project='IJNME_DGM';
+%name_of_project='PEM';
+%name_of_project='air_PEM';
+%name_of_project='Kundt';
+name_of_project='TW';
+
+
+subproject=5;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=1;
-freq_min=100;
-freq_max=4000;
+nb_frequencies=200;
+freq_min=10;
+freq_max=5000;
 % Angle of incidence
 theta_inc=0*pi/180;
 
-solve.FEM=0;
-solve.DGM=1;
+solve.FEM=1;
+solve.DGM=0;
 solve.PW=0;
 
 if solve.DGM
-    nb_theta=4;
+    nb_theta=32;
 end
 
 %
-export_profiles=0;
+export_profiles=1;
 plot_profiles=1;
 export_nrj=0;
 
@@ -83,12 +89,15 @@ tic
 
 disp('Importing Mesh')
 
+
+
+
 if solve.DGM
     
     [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
+        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,0);
     
-    analyze_mesh_DGM    
+    analyze_mesh_DGM
 end
 
 if solve.FEM
@@ -101,6 +110,8 @@ if solve.FEM
     EF_TR6_global_build
     
 end
+
+
 
 
 disp('End of mesh importation')
@@ -136,39 +147,53 @@ end
 % Analytical solution (if exists)
 
 name_solution=['solution_' , name_of_project];
-if exist(name_solution)==2
-   eval('eval(name_solution)')
+if ((exist(name_solution)==2)&(plot_profiles))
+    eval('eval(name_solution)')
 end
 
-X(end)
-Reflexion_coefficient
-
-X(end)-Reflexion_coefficient
 
 
-%validation_AIR_PML
 
-% Amp_cylinder=(2*air.rho*omega^2)/(k_air*(besselh(-1,2,k_air*r1)-besselh(1,2,k_air*r1)));
-% r_plot=linspace(r1,r2,2000);
-% p_plot=Amp_cylinder*besselh(0,2,k_air*r_plot);
-% plot(r_plot,abs(p_plot),'k')
+open('essai.fig')
+hold on
+plot(vec_freq,abs_EF,'k.-')
 
-%solution_AIR_PEM
-
-% A=1/(j*omega*sin(k_air*ly));
-% x_analytique=linspace(-ly,0,200);
-% sol_analytique=-air.K*k_air*A*cos(k_air*x_analytique);
-%figure(10002)
-%plot(x_analytique+ly,abs(sol_analytique))
-
-% figure
+% 
+% open('abs_coque_corr.fig')
 % hold on
-% plot(vec_freq,abs_EF,'m.')
-%plot(vec_freq,abs_PW)
+% plot(vec_freq,abs_EF,'.')
 
-% figure
-% semilogx(vec_freq,TL_EF,'.')
-% hold on
-% semilogx(vec_freq,TL_PW)
+% X(end)
+% Reflexion_coefficient
+%
+% X(end)-Reflexion_coefficient
 
-%eval(['rmpath(' list_path ');'])
+%
+% disp('Modules')
+% disp('DGM')
+% abs(reflex_DGM)
+% disp('PW')
+% abs(reflex_PW)
+%
+% disp('Angles')
+% disp('DGM')
+% angle(reflex_DGM)
+% disp('PW')
+% angle(reflex_PW)
+%
+% %
+% error_DGM=abs((X(end)-reflex_PW)/X(end))
+%
+% sol_maine=load('../../../Programmation/Maine/TCLTK/out.dat');
+
+% 
+% if solve.FEM
+% sol=zeros(3*nb_nodes);
+% sol(dof_back)=X(1:end-1);
+% save('-v7.3','../../../../Desktop/additional_example/DGM_additional_example_FEM','nodes','elements','sol','reflex_FEM','reflex_PW','nb_dof_FEM','omega')
+% end
+% 
+% if solve.DGM
+% save('-v7.3','../../../../Desktop/additional_example/DGM_additional_example_DGM','nodes','elements','X','reflex_DGM','reflex_PW','nb_dof_DGM',...
+%     'delta_1','delta_2','delta_3','mu_1','mu_2','mu_3','N','A_hat','K_eq_til','omega','dof_start_element','ondes_element','nb_theta','vec_theta')
+% end

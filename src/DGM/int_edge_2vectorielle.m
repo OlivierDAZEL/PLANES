@@ -45,7 +45,9 @@ t=(b-a)/norm(b-a);
 k1t=k_1.'*t;
 k2t=k_2.'*t;
 
-temp=(k1t*ones(1,length(k_2))+ones(length(k_1),1)*k2t.');
+
+temp=(k1t*ones(1,length(k2t))+ones(length(k1t),1)*k2t.');
+
 temp=temp.*((abs(temp)>1e-6));
 
 temp0=temp.*temp==0;
@@ -55,5 +57,5 @@ temp=temp+temp0; % Pour la division
 
 f=norm(b-a)*temp0+tempn0.*((exp(norm(b-a)*temp)-1)./temp);
 
-f=f.*exp((k_1.'*a_1)*ones(1,length(k_2))).*exp(ones(length(k_1),1)*(k_2.'*a_2).');
+f=f.*exp((k_1.'*a_1)*ones(1,length(k2t))).*exp(ones(length(k1t),1)*(k_2.'*a_2).');
 

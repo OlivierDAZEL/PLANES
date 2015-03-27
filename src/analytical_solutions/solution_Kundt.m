@@ -36,9 +36,8 @@ x_air=linspace(-ly,0,1000);
 
 
 Z_s=-1j*air.Z*(1/cos(theta_inc))*cot(k_air*cos(theta_inc)*ly);
-Reflexion_coefficient=(Z_s-air.Z)/(Z_s+air.Z);
-sigma_a=((1+Reflexion_coefficient)/(cos(k_air*cos(theta_inc)*ly)))*cos(k_air*cos(theta_inc)*x_air);
-
+Reflexion_coefficient(i_f)=(Z_s-air.Z*(1/cos(theta_inc)))/(Z_s+air.Z*(1/cos(theta_inc)));
+sigma_a=((1+Reflexion_coefficient(i_f))/(cos(k_air*cos(theta_inc)*ly)))*cos(k_air*cos(theta_inc)*x_air);
 
 
 if plot_profiles==1
@@ -52,6 +51,13 @@ if plot_profiles==1
     figure(10002)
     hold on
     plot(x_air+ly,abs(sigma_a))
+    
+    
+%     figure(10003)
+%     hold on
+%     plot(x_air+ly,angle(sigma_a))
+    
+    
     
     % figure(1000)
     % subplot(3,3,1)

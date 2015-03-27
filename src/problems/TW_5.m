@@ -1,10 +1,10 @@
-period=55e-3;
-thicknessporous=5.5e-2;
+period=20e-3;
+thicknessporous=2.0e-2;
 labelporous=5005;
-labelinclusion=1007;
-radius=1.25e-2;
-thicknessinclusion=2e-3;
-nx=5;
+labelinclusion=1008;
+radius=7.5e-3;
+thicknessinclusion=2e-4;
+nx=10;
 nepaisseurinclusion=1;
 ninclusion=ceil(nepaisseurinclusion*2*pi*radius/thicknessinclusion);
 

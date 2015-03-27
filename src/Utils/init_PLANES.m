@@ -54,6 +54,11 @@ name_file_TL=           [name_file '.TL'];
 name_file_PW=           [name_file '.PW'];
 name_file_info=         [name_file '.info'];
 
+name_file_FEM=          [name_file '.FEM'];
+
+if solve.DGM
+    name_file_DGM=          [name_file '_Nw=' num2str(nb_theta) '.DGM'];
+end
 
 if export_profiles==1
     name_directory_profiles= [name_project_directory '/Profiles/'];

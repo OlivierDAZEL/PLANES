@@ -50,13 +50,12 @@ for i_f=1:abs(nb_frequencies)
     omega=2*pi*freq;
     k_air=omega/air.c;
     if nb_R~=0
-       create_wave_vectors
-               delta_Bloch=exp(-1i*k_x*period); 
-
+        create_wave_vectors
+        delta_Bloch=exp(-1i*k_x*period);
+        
     end
-                   delta_Bloch=1
-
-
+    
+    
     Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
     
     % Construction of the linear system
@@ -88,13 +87,13 @@ for i_f=1:abs(nb_frequencies)
     
     
     for ie=1:nb_loads
-        %disp('Lancement boundary_normal_velocity')   
+        %disp('Lancement boundary_normal_velocity')
         switch loads(ie,4)
             case {3}
-        boundary_normal_velocity
+                boundary_normal_velocity
             case{10}
                 boundary_10
-             end
+        end
     end
     
     
@@ -114,8 +113,10 @@ for i_f=1:abs(nb_frequencies)
     if plot_profiles
         plot_sol_DGM_y
     end
-    
-    
+
+    if nb_R~=0
+       reflex_DGM(i_f)=X(end); 
+    end
     %info_DGM
     
 end

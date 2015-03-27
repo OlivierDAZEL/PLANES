@@ -34,7 +34,8 @@
 
 figure(10002)
 hold on
-
+% figure(10003)
+% hold on
 
 
 
@@ -65,6 +66,12 @@ for ie=1:nb_elements
             hold on
             c=[Phi_elem(3,1);Phi_elem(3,2);Phi_elem(3,3)];
             plot(y,abs(c),'r+')
+%             figure(10003)
+%             hold on
+%             c=[Phi_elem(3,1);Phi_elem(3,2);Phi_elem(3,3)];
+%             plot(y,angle(c),'r+')
+            
+            
             
         case {4,5}
             

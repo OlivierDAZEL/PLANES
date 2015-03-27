@@ -8,8 +8,14 @@
 *.info
 *.abs
 *.dat
+PLANES_IJNME.m
 Projects/*
 !Projects/Kundt
 TeX/
 .DS_*
 sync_PLANES.m
+*.fig
+
+*.inp
+
+*.mat

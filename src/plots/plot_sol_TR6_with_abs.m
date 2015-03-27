@@ -38,8 +38,15 @@ x=[];
 y=[];
 
 
+figure(10004)
+
+
+
 if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
-    figure(10001)
+    subplot(221)
+    % For displacement
+    hold on
+    subplot(222)
     % For displacement
     hold on
     
@@ -47,12 +54,13 @@ end
 
 
 if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
-    figure(10002)
+    subplot(223)
     % For pressure
     hold on
-    colorbar
 end
-
+subplot(224)
+% For displacement
+hold on
 
 
 for ie=1:nb_elements
@@ -85,25 +93,29 @@ for ie=1:nb_elements
     
     
     if ismember(floor(element_label(ie)/1000),[1 4 5])
-        figure(10001)
-        c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
         
-        val_int=mat_ksi_eta*c.';
+        c_1=sol(3*(elements(ie,:)-1)+1);
+        c_2=sol(3*(elements(ie,:)-1)+2);
+        
+        val_int_1=mat_ksi_eta*c_1.';
+        val_int_2=mat_ksi_eta*c_2.';
         
         for i_faces=1:size(faces,2)
-            figure(10001)
-            patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
+            subplot(221)
+            patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int_1(faces(:,i_faces))));
+            
+            subplot(222)
+            patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int_2(faces(:,i_faces))));
         end
     end
     
     if ismember(floor(element_label(ie)/1000),[0 4 5 8])
-        figure(10002)
+        subplot(223)
         c=sol(3*elements(ie,:));
         
         val_int=mat_ksi_eta*c.';
         
         for i_faces=1:size(faces,2)
-            figure(10002)
             patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
         end
         
@@ -114,28 +126,47 @@ end
 
 
 if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
-    figure(10001)
+    subplot(221)
     axis equal
     colormap jet
     colorbar
     axis off
     shading interp
+    
+    subplot(222)
+    axis equal
+    colormap jet
+    colorbar
+    axis off
+    shading interp
+    
+    
 end
+
 
 
 if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
     
-    figure(10002)
+    subplot(223)
     colormap jet
-%     colorbar
+    colorbar
     axis equal
     axis off
     shading interp
-
+    
 end
 
+
+subplot(224)
+hold on
+plot(abs_JPG(:,1),abs_JPG(:,2))
+line([vec_freq(i_f) vec_freq(i_f)],[0 1])
+plot(vec_freq(i_f),abs_EF(i_f),'r.')
+
+
+
 if export_profiles==1
-    shading interp
     print('-djpeg',[name_directory_profiles, num2str(i_f)]);
 end
 
+close(10004)

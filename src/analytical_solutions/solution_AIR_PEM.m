@@ -70,10 +70,11 @@ x=-d_PEM-d_air;
 
 
 % Unite displacement
-
+%if subproject==0
 M_an(4,3)= sin(k_air*x);
 M_an(4,4)= cos(k_air*x);
 F_an(4,1)=-1;
+%end
 
 
 

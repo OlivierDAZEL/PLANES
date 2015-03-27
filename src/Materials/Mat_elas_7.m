@@ -1,4 +1,4 @@
-% Mat_elas_3.m
+% Mat_elas_7.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %

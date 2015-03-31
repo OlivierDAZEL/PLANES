@@ -110,8 +110,14 @@ for i_f=1:abs(nb_frequencies)
     disp('Resolution of the system')
     X=A\F;
     
-    if plot_profiles
-        plot_sol_DGM_y
+    if profiles.on==1
+        disp('plotting the solution')
+        if profiles.y==1
+            plot_sol_DGM_y
+        end
+        if profiles.custom~=0
+            eval(['plot_sol_DGM_custom_' , num2str(profiles.custom)]);
+        end 
     end
 
     if nb_R~=0

@@ -37,7 +37,7 @@ A(nb_dof_FEM+size_info_vector_R*nb_R+size_info_vector_T*nb_T,nb_dof_FEM+size_inf
 F(nb_dof_FEM+size_info_vector_R*nb_R+size_info_vector_T*nb_T)=0;
 
 
-for ie=1:nb_loads
+for ie=1:nb.loads
     typ=floor(loads(ie,4));
     
     x1=nodes(loads(ie,1),1);

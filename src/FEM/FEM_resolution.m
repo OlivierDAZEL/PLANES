@@ -56,40 +56,40 @@ for i_f=1:abs(nb_frequencies)
     F=zeros(nb_dof_FEM,1);
     
     
-    if (nb_media.acou~=0)
+    if (nb.media.acou~=0)
         A=A+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
     end
     
-    if (nb_media.PML~=0)
+    if (nb.media.PML~=0)
         A=A+H_PML/(air.rho*omega^2)-Q_PML/(air.K);
     end
     
     
-    if (nb_media.elas~=0)
-        for i_mat=1:nb_media.elas
+    if (nb.media.elas~=0)
+        for i_mat=1:nb.media.elas
             eval(['Mat_elas_' num2str(num_media.elas(i_mat))])
             eval(['A=A+(lambda_solide+2*mu_solide)*K0_elas_',num2str(i_mat),'+mu_solide*K1_elas_',num2str(i_mat),'-omega^2*rho_solide*M_elas_',num2str(i_mat),';']);
         end
     end
     
     
-    if (nb_media.eqf~=0)
-        for i_mat=1:nb_media.eqf
+    if (nb.media.eqf~=0)
+        for i_mat=1:nb.media.eqf
             eval(['Mat_PEM_' num2str(num_media.eqf(i_mat))])
             properties_jca
             eval(['A=A+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
         end
     end
     
-    if (nb_media.limp~=0)
-        for i_mat=1:nb_media.limp
+    if (nb.media.limp~=0)
+        for i_mat=1:nb.media.limp
             eval(['Mat_PEM_' num2str(num_media.limp(i_mat))])
             properties_limp
             eval(['A=A+H_limp_',num2str(i_mat),'/(rho_limp*omega^2)-Q_limp_',num2str(i_mat),'/(K_eq_til);']);
         end
     end
-    if (nb_media.pem98~=0)
-        for i_mat=1:nb_media.pem98
+    if (nb.media.pem98~=0)
+        for i_mat=1:nb.media.pem98
             eval(['Mat_PEM_' num2str(num_media.pem98(i_mat))])
             properties_jca
             properties_PEM
@@ -98,8 +98,8 @@ for i_f=1:abs(nb_frequencies)
             eval(['A=A-gamma_til*(C_pem98_',num2str(i_mat),'+C_pem98_',num2str(i_mat),'.'');']);
         end
     end
-    if (nb_media.pem01~=0)
-        for i_mat=1:nb_media.pem01
+    if (nb.media.pem01~=0)
+        for i_mat=1:nb.media.pem01
             eval(['Mat_PEM_' num2str(num_media.pem01(i_mat))])
             properties_jca
             properties_PEM
@@ -110,13 +110,13 @@ for i_f=1:abs(nb_frequencies)
     end
     
     
-    if nb_interfaces~=0
+    if nb.interfaces~=0
         apply_FSI
     end
     
     
     
-    if nb_MMT~=0
+    if nb.MMT~=0
         
         TT=build_FEM_transfer(k_air*sin(theta_MMT),element_MMT_moins,element_MMT_plus,omega,multilayer_femtmm,k_air,air);
         
@@ -143,7 +143,7 @@ for i_f=1:abs(nb_frequencies)
     end
     
     
-    if (nb_loads)>0
+    if (nb.loads)>0
         loads_application
     end
     
@@ -188,6 +188,9 @@ for i_f=1:abs(nb_frequencies)
     
     
     if export_nrj==1
+        
+        I_inc(i_f)=(period/air.Z)/(2*vec_freq(i_f));
+        
         Ks(i_f)=(omega^2/4)*rho_1*X(1:nb_dof_FEM)'*M_pem01_1*X(1:nb_dof_FEM);
         Kf(i_f)=(omega^2/4)*(real(rho_f_til)*X(1:nb_dof_FEM)'*M_pem01_1*X(1:nb_dof_FEM)+real(1/conj(rho_eq_til*omega^4))*X(1:nb_dof_FEM)'*H_pem01_1*X(1:nb_dof_FEM)-(2/omega^2)*imag(phi/alpha_til)*imag(X(1:nb_dof_FEM)'*C_pem01_1*X(1:nb_dof_FEM)));
         Wdef(i_f)=(1/4)*(real(P_hat)*X(1:nb_dof_FEM)'*K0_pem01_1*X(1:nb_dof_FEM)+real(N)*X(1:nb_dof_FEM)'*K1_pem01_1*X(1:nb_dof_FEM)+(phi^2*real(R_til)/abs(R_til)^2)*X(1:nb_dof_FEM)'*Q_pem01_1*X(1:nb_dof_FEM));
@@ -195,10 +198,16 @@ for i_f=1:abs(nb_frequencies)
         W_vis(i_f)=(-pi*omega^2)*(imag(rho_til)*X(1:nb_dof_FEM)'*M_pem01_1*X(1:nb_dof_FEM)-imag(1/(rho_eq_til*omega^4))*X(1:nb_dof_FEM)'*H_pem01_1*X(1:nb_dof_FEM)+(2/omega^2)*imag(phi/alpha_til)*real(X(1:nb_dof_FEM)'*C_pem01_1*X(1:nb_dof_FEM)));
         W_struct(i_f)=pi*(imag(P_hat)*X(1:nb_dof_FEM)'*K0_pem01_1*X(1:nb_dof_FEM)+imag(N)*X(1:nb_dof_FEM)'*K1_pem01_1*X(1:nb_dof_FEM));
         W_therm(i_f)=(pi*phi^2*imag(R_til)/abs(R_til)^2)*X(1:nb_dof_FEM)'*Q_pem01_1*X(1:nb_dof_FEM);
+        W_elas(i_f)=pi*(imag(lambda_solide+2*mu_solide)*X(1:nb_dof_FEM)'*K0_elas_1*X(1:nb_dof_FEM)+imag(mu_solide)*X(1:nb_dof_FEM)'*K1_elas_1*X(1:nb_dof_FEM));
         
-        W_dis(i_f)=W_vis(i_f)+W_struct(i_f)+W_therm(i_f);
+        abs_vis(i_f)=W_vis(i_f)/I_inc(i_f);
+        abs_struct(i_f)=W_struct(i_f)/I_inc(i_f);
+        abs_therm(i_f)=W_therm(i_f)/I_inc(i_f);
+        abs_elas(i_f)=W_elas(i_f)/I_inc(i_f);
         
-        I_inc(i_f)=(period/air.Z)/(2*vec_freq(i_f));
+        abs_dis(i_f)=(abs_vis(i_f)+abs_struct(i_f)+abs_therm(i_f)+abs_elas(i_f));
+        
+        
     end
     
     if nb_R~=0
@@ -211,9 +220,14 @@ for i_f=1:abs(nb_frequencies)
         fprintf(file_TL_id,'%1.15e \t %1.15e \n',freq,TL_EF(i_f));
     end
     
-    if plot_profiles
+    if profiles.on==1
         disp('plotting the solution')
-        plot_sol_TR6_with_abs
+        if profiles.y==1
+            plot_sol_TR6_y
+        end
+        if profiles.custom~=0
+            eval(['plot_sol_TR6_custom_' , num2str(profiles.custom)]);
+        end
     end
     
     

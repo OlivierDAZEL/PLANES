@@ -33,32 +33,33 @@
 %%
 
 
-function [nb_nodes,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_interfaces,interfaces,nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity]=msh2TR6(nom_fichier,tracefigure)
+function [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,edges_MMT,loads,dirichlets,periodicity]=msh2TR6(nom_fichier,tracefigure)
 
 fid=fopen(nom_fichier,'r');
-nb_nodes=fscanf(fid,'%i',1);
-nb_elements=fscanf(fid,'%i',1);
-nb_edges=fscanf(fid,'%i',1);
+nb.vertices=fscanf(fid,'%i',1);
+nb.nodes=nb.vertices;
+nb.elements=fscanf(fid,'%i',1);
+nb.edges=fscanf(fid,'%i',1);
 
-nodes=zeros(nb_nodes,2);
-node_label=zeros(nb_nodes);
-elements=zeros(nb_elements,3);
-element_label=zeros(nb_elements,1);
-edges=zeros(nb_edges,3);
+nodes=zeros(nb.nodes,2);
+node_label=zeros(nb.nodes);
+elements=zeros(nb.elements,3);
+element_label=zeros(nb.elements,1);
+edges=zeros(nb.edges,3);
 
 
-for ii=1:nb_nodes
+for ii=1:nb.nodes
     nodes(ii,1)=fscanf(fid,'%f',1);
     nodes(ii,2)=fscanf(fid,'%f',1);
     node_label(ii)=fscanf(fid,'%f',1);
 end
-for ii=1:nb_elements
+for ii=1:nb.elements
     elements(ii,1)=fscanf(fid,'%i',1);
     elements(ii,2)=fscanf(fid,'%i',1);
     elements(ii,3)=fscanf(fid,'%i',1);
     element_label(ii,1)=fscanf(fid,'%f',1);
 end
-for ii=1:nb_edges
+for ii=1:nb.edges
     edges(ii,1)=fscanf(fid,'%i',1);
     edges(ii,2)=fscanf(fid,'%i',1);
     edges(ii,3)=fscanf(fid,'%i',1);
@@ -68,9 +69,9 @@ fclose(fid);
 
 % Creation of 3 segments by element
 % segments=[node1 node2 #element1 0 element_label1]
-segments=[         elements(:,1) elements(:,2) (1:nb_elements)' zeros(nb_elements,1) element_label];
-segments=[segments;elements(:,2) elements(:,3) (1:nb_elements)' zeros(nb_elements,1) element_label];
-segments=[segments;elements(:,3) elements(:,1) (1:nb_elements)' zeros(nb_elements,1) element_label];
+segments=[         elements(:,1) elements(:,2) (1:nb.elements)' zeros(nb.elements,1) element_label];
+segments=[segments;elements(:,2) elements(:,3) (1:nb.elements)' zeros(nb.elements,1) element_label];
+segments=[segments;elements(:,3) elements(:,1) (1:nb.elements)' zeros(nb.elements,1) element_label];
 % Ordering of nodes so that node 1 < node 2
 segments(:,1:2)=sort(segments(:,1:2),2);
 % Research of double segments
@@ -153,8 +154,8 @@ node_supp=[(nodes(elements(:,1),1)+nodes(elements(:,2),1))/2 (nodes(elements(:,1
 [node_supp, ia, ic] = unique(node_supp,'rows');
 
 nodes=[nodes;node_supp];
-elements=[elements(:,1) nb_nodes+ic(1:nb_elements') elements(:,2) nb_nodes+ic(nb_elements+(1:nb_elements)') elements(:,3) nb_nodes+ic(2*nb_elements+(1:nb_elements)')] ;
-nb_nodes=size(nodes,1);
+elements=[elements(:,1) nb.nodes+ic(1:nb.elements') elements(:,2) nb.nodes+ic(nb.elements+(1:nb.elements)') elements(:,3) nb.nodes+ic(2*nb.elements+(1:nb.elements)')] ;
+nb.nodes=size(nodes,1);
 
 coord_middle=[(nodes(boundaries(:,1),1)+nodes(boundaries(:,2),1))/2 ...
     (nodes(boundaries(:,1),2)+nodes(boundaries(:,2),2))/2];
@@ -179,38 +180,38 @@ interfaces(find(typ_of_interface),:)=[];
 interfaces(:,5)=0;
 interfaces(:,6)=[];
 % interfaces=[node1 node2 #element1 #element2 0 node_middle]
-nb_interfaces=size(interfaces,1);
+nb.interfaces=size(interfaces,1);
 
 
 
 
 temp=unique(element_label(find(floor(element_label/1000)==1)));
-nb_media.elas=length(temp);
-num_media.elas(1:nb_media.elas)=temp-1000;
+nb.media.elas=length(temp);
+num_media.elas(1:nb.media.elas)=temp-1000;
 
 temp=unique(element_label(find(floor(element_label/1000)==2)));
-nb_media.eqf=length(temp);
-num_media.eqf(1:nb_media.eqf)=temp-2000;
+nb.media.eqf=length(temp);
+num_media.eqf(1:nb.media.eqf)=temp-2000;
 
 temp=unique(element_label(find(floor(element_label/1000)==3)));
-nb_media.limp=length(temp);
-num_media.limp(1:nb_media.limp)=temp-3000;
+nb.media.limp=length(temp);
+num_media.limp(1:nb.media.limp)=temp-3000;
 
 temp=unique(element_label(find(floor(element_label/1000)==4)));
-nb_media.pem98=length(temp);
-num_media.pem98(1:nb_media.pem98)=temp-4000;
+nb.media.pem98=length(temp);
+num_media.pem98(1:nb.media.pem98)=temp-4000;
 
 temp=unique(element_label(find(floor(element_label/1000)==5)));
-nb_media.pem01=length(temp);
-num_media.pem01(1:nb_media.pem01)=temp-5000;
+nb.media.pem01=length(temp);
+num_media.pem01(1:nb.media.pem01)=temp-5000;
 
 temp=unique(element_label(find(floor(element_label/1000)==0)));
-nb_media.acou=length(temp);
+nb.media.acou=length(temp);
 
 temp=unique(element_label(find(floor(element_label/1000)==8)));
-nb_media.PML=length(temp);
+nb.media.PML=length(temp);
 
-for ie=1:nb_elements
+for ie=1:nb.elements
     
     if (floor(element_label(ie)/1000)==0)
         element_num_mat(ie)=0;
@@ -248,21 +249,21 @@ boundaries(temp,:)=[];
 loads=boundaries;
 
 
-nb_dirichlets=size(dirichlets,1);
-nb_loads=size(loads,1);
-nb_periodicity=size(periodicity,1);
-nb_MMT=size(edges_MMT,1);
+nb.dirichlets=size(dirichlets,1);
+nb.loads=size(loads,1);
+nb.periodicity=size(periodicity,1);
+nb.MMT=size(edges_MMT,1);
 
 %     figure
 %     hold on
 %
-%     for ii=1:nb_loads
+%     for ii=1:nb.loads
 %         line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)],'Color','r');
 %         line([nodes(loads(ii,2),1) nodes(loads(ii,6),1)],[nodes(loads(ii,2),2) nodes(loads(ii,6),2)],'Color','r');
 %         line([nodes(loads(ii,6),1) nodes(loads(ii,1),1)],[nodes(loads(ii,6),2) nodes(loads(ii,1),2)],'Color','r');
 %         text(mean(nodes(loads(ii,1:2),1)),mean(nodes(loads(ii,1:2),2)),num2str(loads(ii,3)),'Fontsize',15);
 %     end
-%         for ii=1:nb_periodicity
+%         for ii=1:nb.periodicity
 %         line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)],'Color','r');
 %         line([nodes(periodicity(ii,2),1) nodes(periodicity(ii,6),1)],[nodes(periodicity(ii,2),2) nodes(periodicity(ii,6),2)],'Color','r');
 %         line([nodes(periodicity(ii,6),1) nodes(periodicity(ii,1),1)],[nodes(periodicity(ii,6),2) nodes(periodicity(ii,1),2)],'Color','r');
@@ -278,7 +279,7 @@ switch tracefigure
     figure
     hold on
     
-    for ii=1:nb_elements
+    for ii=1:nb.elements
         line([nodes(elements(ii,1),1) nodes(elements(ii,2),1)],[nodes(elements(ii,1),2) nodes(elements(ii,2),2)],'Color','r');
         line([nodes(elements(ii,2),1) nodes(elements(ii,3),1)],[nodes(elements(ii,2),2) nodes(elements(ii,3),2)],'Color','r');
         line([nodes(elements(ii,3),1) nodes(elements(ii,4),1)],[nodes(elements(ii,3),2) nodes(elements(ii,4),2)],'Color','r');
@@ -291,7 +292,7 @@ switch tracefigure
     plot(nodes(:,1),nodes(:,2),'.','Markersize',15);
     
     
-%     for ii=1:nb_nodes
+%     for ii=1:nb.nodes
 %         text(nodes(ii,1),nodes(ii,2),num2str(ii),'Fontsize',15);
 %     end
     axis equal
@@ -299,21 +300,21 @@ switch tracefigure
     figure
     hold on
     
-    for ii=1:nb_loads
+    for ii=1:nb.loads
         line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)]);
         text((nodes(loads(ii,1),1)+nodes(loads(ii,2),1))/2,(nodes(loads(ii,1),2)+nodes(loads(ii,2),2))/2,num2str(loads(ii,4)),'Fontsize',15);
     end
-    for ii=1:nb_periodicity
+    for ii=1:nb.periodicity
         line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)]);
         text((nodes(periodicity(ii,1),1)+nodes(periodicity(ii,2),1))/2,(nodes(periodicity(ii,1),2)+nodes(periodicity(ii,2),2))/2,num2str(periodicity(ii,4)),'Fontsize',15);
         
     end
-    for ii=1:nb_MMT
+    for ii=1:nb.MMT
         line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
         text((nodes(edges_MMT(ii,1),1)+nodes(edges_MMT(ii,2),1))/2,(nodes(edges_MMT(ii,1),2)+nodes(edges_MMT(ii,2),2))/2,num2str(edges_MMT(ii,4)),'Fontsize',15);
         
     end
-    for ii=1:nb_dirichlets
+    for ii=1:nb.dirichlets
         line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
         text((nodes(dirichlets(ii,1),1)+nodes(dirichlets(ii,2),1))/2,(nodes(dirichlets(ii,1),2)+nodes(dirichlets(ii,2),2))/2,num2str(dirichlets(ii,4)),'Fontsize',15);
         
@@ -328,23 +329,23 @@ switch tracefigure
     figure
     hold on
     
-    for ii=1:nb_loads
+    for ii=1:nb.loads
         line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)],'Color','red');
     end
-    for ii=1:nb_periodicity
+    for ii=1:nb.periodicity
         line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)],'Color','k');
         
     end
-    for ii=1:nb_MMT
+    for ii=1:nb.MMT
         line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
         
     end
-        for ii=1:nb_interfaces
+        for ii=1:nb.interfaces
         line([nodes(interfaces(ii,1),1) nodes(interfaces(ii,2),1)],[nodes(interfaces(ii,1),2) nodes(interfaces(ii,2),2)]);
         
     end
     
-    for ii=1:nb_dirichlets
+    for ii=1:nb.dirichlets
         line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
         
     end

@@ -1,4 +1,4 @@
-% init_PLANES.m
+% plot_sol_1D_y.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,41 +33,52 @@
 %%
 
 
-warning('off','MATLAB:nearlySingularMatrix')
+
+x=[];
+y=[];
 
 
-name_project_directory=['../Projects/' name_of_project '/'];
-
-if subproject==0
-    name_file=[name_project_directory name_of_project];
-    name_of_project_full=name_of_project;
-else
-    name_file=[name_project_directory name_of_project '_' num2str(subproject) ];
-    name_of_project_full=[name_of_project '_' num2str(subproject)];
+if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+    figure(10001)
+    % For displacement
+    hold on
+    
 end
 
-name_file_msh=          [name_file '.msh'];
-name_file_edp=          [name_file '.edp'];
-name_file_input_FreeFem=['FF.inp'];
-name_file_abs=          [name_file '.abs'];
-name_file_TL=           [name_file '.TL'];
-name_file_PW=           [name_file '.PW'];
-name_file_info=         [name_file '.info'];
 
-name_file_FEM=          [name_file '.FEM'];
-
-if solve.DGM
-    name_file_DGM=          [name_file '_Nw=' num2str(nb_theta) '.DGM'];
+if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+    figure(10002)
+    % For pressure
+    hold on
 end
+
+
+
+for ie=1:nb_elements
+    
+    
+    if ismember(floor(element_label(ie)/1000),[1 4 5])
+        figure(10001)
+        c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
+        x=coooord
+
+        
+    end
+    
+    if ismember(floor(element_label(ie)/1000),[0 4 5])
+        figure(10002)
+       
+        c=sol(3*(elements(ie,:)-1)+3);
+        y=nodes(elements(ie,:),2);
+        plot(y,abs(c),'r.');
+        
+    end
+    
+end
+
 
 if export_profiles==1
-    name_directory_profiles= [name_project_directory '/Profiles/'];
-    if ~exist(name_directory_profiles,'dir')
-        mkdir(name_directory_profiles)
-    end
+    shading interp
+    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
 end
 
-set(0,'DefaultLineMarkerSize',15);
-set(0,'Defaultlinelinewidth',2);
-set(0,'DefaultAxesFontSize',15)
-set(0,'DefaultAxeslinewidth',2);

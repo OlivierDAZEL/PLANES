@@ -32,7 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-for ie=1:nb_loads
+for ie=1:nb.loads
     typ=floor(loads(ie,4));
     
     x1=nodes(loads(ie,1),1);

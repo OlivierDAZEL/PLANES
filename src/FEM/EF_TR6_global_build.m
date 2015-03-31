@@ -34,7 +34,7 @@
 
 create_temporary_FEM_matrices
 
-for ie=1:nb_elements
+for ie=1:nb.elements
     
     nodes_elements = nodes(elements(ie,1:6),1:2)';
     
@@ -101,7 +101,7 @@ for ie=1:nb_elements
     
 end
 
-size_global_matrices=3*nb_nodes;
+size_global_matrices=3*nb.nodes;
 
 discard_l1_temporary_FEM_matrices
 
@@ -112,7 +112,7 @@ Q_acou=Q_acou(list_dof_valid,list_dof_valid);
 H_PML=H_PML(list_dof_valid,list_dof_valid);
 Q_PML=Q_PML(list_dof_valid,list_dof_valid);
 
-for i_mat=1:nb_media.elas
+for i_mat=1:nb.media.elas
     
     eval(['K0_elas_',num2str(i_mat),'=sparse( i_k0_elas,j_k0_elas,v_k0_elas(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
     eval(['K1_elas_',num2str(i_mat),'=sparse( i_k1_elas,j_k1_elas,v_k1_elas(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
@@ -124,7 +124,7 @@ for i_mat=1:nb_media.elas
     
 end
 
-for i_mat=1:nb_media.eqf
+for i_mat=1:nb.media.eqf
     
     eval(['Q_eqf_',num2str(i_mat),'=sparse( i_q_eqf,j_q_eqf,v_q_eqf(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
     eval(['H_eqf_',num2str(i_mat),'=sparse( i_h_eqf,j_h_eqf,v_h_eqf(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
@@ -134,7 +134,7 @@ for i_mat=1:nb_media.eqf
     
 end
 
-for i_mat=1:nb_media.limp
+for i_mat=1:nb.media.limp
     
     eval(['Q_limp_',num2str(i_mat),'=sparse( i_q_limp,j_q_limp,v_q_limp(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
     eval(['H_limp_',num2str(i_mat),'=sparse( i_h_limp,j_h_limp,v_h_limp(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
@@ -145,7 +145,7 @@ for i_mat=1:nb_media.limp
 end
 
 
-for i_mat=1:nb_media.pem98
+for i_mat=1:nb.media.pem98
     
     eval(['K0_pem98_',num2str(i_mat),'=sparse( i_k0_pem98,j_k0_pem98,v_k0_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
     eval(['K1_pem98_',num2str(i_mat),'=sparse( i_k1_pem98,j_k1_pem98,v_k1_pem98(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
@@ -165,7 +165,7 @@ for i_mat=1:nb_media.pem98
 end
 
 
-for i_mat=1:nb_media.pem01
+for i_mat=1:nb.media.pem01
     
     eval(['K0_pem01_',num2str(i_mat),'=sparse( i_k0_pem01,j_k0_pem01,v_k0_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);
     eval(['K1_pem01_',num2str(i_mat),'=sparse( i_k1_pem01,j_k1_pem01,v_k1_pem01(:,',num2str(i_mat),'),size_global_matrices,size_global_matrices);']);

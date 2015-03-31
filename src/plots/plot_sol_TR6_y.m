@@ -42,7 +42,9 @@ if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
     figure(10001)
     % For displacement
     hold on
-    
+    title('Solid displacement')
+    xlabel('y')
+    ylabel('abs(u)')
 end
 
 
@@ -50,11 +52,14 @@ if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
     figure(10002)
     % For pressure
     hold on
+    title('Pressure')
+    xlabel('y')
+    ylabel('abs(P)')
 end
 
 
 
-for ie=1:nb_elements
+for ie=1:nb.elements
     
     
     if ismember(floor(element_label(ie)/1000),[1 4 5])
@@ -81,4 +86,13 @@ if export_profiles==1
     shading interp
     print('-djpeg',[name_directory_profiles, num2str(i_f)]);
 end
+
+% if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+%     close(10001)
+% end
+% 
+% 
+% if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+%     close(10002)
+% end
 

@@ -33,9 +33,9 @@
 %%
 
 
-isvalidof=zeros(3*nb_nodes,1);
+isvalidof=zeros(3*nb.nodes,1);
 
-for ie=1:nb_elements
+for ie=1:nb.elements
 
 	typ=floor(element_label(ie)/1000);
 	switch typ
@@ -57,7 +57,7 @@ end
 
 
 
-for ie=1:nb_dirichlets
+for ie=1:nb.dirichlets
 	if (dirichlets(ie,4)==5) % Sliding
 		xx=abs(nodes(dirichlets(ie,1),1)-nodes(dirichlets(ie,2),1));
 		yy=abs(nodes(dirichlets(ie,1),2)-nodes(dirichlets(ie,2),2));
@@ -91,7 +91,7 @@ end
 
 
 
-dof_A=zeros(3*nb_nodes,1);
+dof_A=zeros(3*nb.nodes,1);
 
 
 dof_back=[];
@@ -99,7 +99,7 @@ dof_back=[];
 
 
 itemp=0;
-for ii=1:3*nb_nodes
+for ii=1:3*nb.nodes
 	if (isvalidof(ii)) 
 		itemp=itemp+1;
 		dof_A(ii)=itemp;

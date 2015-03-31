@@ -107,7 +107,7 @@ if exist('transmission')
 end
 
 %node_MMT=[];
-if nb_MMT~=0
+if nb.MMT~=0
     
     index_MMT_moins=find(edges_MMT(:,4)<0);
     
@@ -161,7 +161,7 @@ if nb_MMT~=0
     
 end
 
-if nb_periodicity~=0
+if nb.periodicity~=0
     
     edge_left= find(periodicity(:,4)==98);
     edge_right=find(periodicity(:,4)==99);

@@ -33,7 +33,7 @@
 %%
 
 
-for ie=1:nb_interfaces
+for ie=1:nb.interfaces
     
     x1=nodes(interfaces(ie,1),1);
     y1=nodes(interfaces(ie,1),2);

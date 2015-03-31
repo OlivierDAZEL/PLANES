@@ -1,4 +1,4 @@
-% plot_sol_uxuyp.m
+% plot_sol_TR6_1.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -62,7 +62,7 @@ subplot(224)
 hold on
 
 
-for ie=1:nb_elements
+for ie=1:nb.elements
     
     vertices=[nodes(elements(ie,:),:)'];
     
@@ -141,12 +141,6 @@ if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
     
     
 end
-
-subplot(224)
-hold on
-plot(abs_JPG(:,1),abs_JPG(:,2))
-line([vec_freq(i_f) vec_freq(i_f)],[0 1])
-plot(vec_freq(i_f),abs_EF(i_f),'r.')
 
 
 if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0

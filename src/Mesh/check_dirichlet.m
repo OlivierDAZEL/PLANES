@@ -107,6 +107,6 @@ for ii=1:3*nb.nodes
     end
 end
 
-nb_dof_FEM=itemp;
+nb.dof_FEM=itemp;
 list_dof_valid=find(isvalidof);
 

@@ -95,13 +95,13 @@ if (element_label(e_edge)==0)
     S_e=M_e*                        Lambda_e_moins*W_e_moins*S_e;
     
     
-    for i_thetapsi=1:nb_theta
+    for i_thetapsi=1:nb_thetaDGM
         theta_psi=vec_theta(i_thetapsi);
         n_psi=[cos(theta_psi);sin(theta_psi)];
         Psi_e=conj(Phi_fluid(cos(theta_psi),sin(theta_psi),Z_e));
         ii=indice_fluid(e_edge,i_thetapsi,dof_start_element);
         
-        for i_thetaphi=(1:nb_theta)
+        for i_thetaphi=(1:nb_thetaDGM)
             theta_phi=vec_theta(i_thetaphi);
             n_phi=[cos(theta_phi);sin(theta_phi)];
             Phi_e=     Phi_fluid(cos(theta_phi),sin(theta_phi),Z_e) ;
@@ -112,7 +112,7 @@ if (element_label(e_edge)==0)
     end
     
     
-    for i_thetapsi=1:nb_theta
+    for i_thetapsi=1:nb_thetaDGM
         theta_psi=vec_theta(i_thetapsi);
         n_psi=[cos(theta_psi);sin(theta_psi)];
         Psi_e=conj(Phi_fluid(cos(theta_psi),sin(theta_psi),Z_e));
@@ -120,21 +120,21 @@ if (element_label(e_edge)==0)
         F(ii)=F(ii)-Psi_e'*S_e*...
             int_edge_2(1j*k_e*n_psi,-1j*k_e*n_excitation,a,b,[c_edge 0*c_edge]);
         
-        A(ii,nb_dof_DGM+1)=A(ii,nb_dof_DGM+1)-Psi_e'*S_e*...
+        A(ii,nb.dof_DGM+1)=A(ii,nb.dof_DGM+1)-Psi_e'*S_e*...
             int_edge_2(1j*k_e*n_psi,-1j*k_e*n_excitation,a,b,[c_edge 0*c_edge]);
     end
     
     
-    for i_thetaphi=(1:nb_theta)
+    for i_thetaphi=(1:nb_thetaDGM)
         theta_phi=vec_theta(i_thetaphi);
         n_phi=[cos(theta_phi);sin(theta_phi)];
         Phi_e=     Phi_fluid(cos(theta_phi),sin(theta_phi),Z_e) ;
         jj=indice_fluid(e_edge,i_thetaphi,dof_start_element);
-        A(nb_dof_DGM+1,jj)=A(nb_dof_DGM+1,jj)+Phi_e(3)*...
+        A(nb.dof_DGM+1,jj)=A(nb.dof_DGM+1,jj)+Phi_e(3)*...
             int_edge_2(1j*k_e*n_excitation,-1j*k_e*n_phi,a,b,[0*c_edge c_edge]);
     end
-    A(nb_dof_DGM+1,nb_dof_DGM+1)=-period;
-    F(nb_dof_DGM+1)=period;
+    A(nb.dof_DGM+1,nb.dof_DGM+1)=-period;
+    F(nb.dof_DGM+1)=period;
     
 end
 
@@ -182,29 +182,29 @@ if (floor(element_label(e_edge)/1000)==4)
     
     II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[c_edge c_edge]);
     MM=kron(II,F_e);
-    indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_edge)-1;
-    indice_champs=[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_edge)-1;
+    indice_test  =[1+3*(0:nb_thetaDGM-1) 2+3*(0:nb_thetaDGM-1) 3+3*(0:nb_thetaDGM-1)]+dof_start_element(e_edge)-1;
+    indice_champs=[1+3*(0:nb_thetaDGM-1) 2+3*(0:nb_thetaDGM-1) 3+3*(0:nb_thetaDGM-1)]+dof_start_element(e_edge)-1;
     A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
     
     
     II=int_edge_2vectorielle(1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],-1j*k_air*n_excitation,a,b,[c_edge 0*c_edge]);
     MM=kron(II,S_e);
-    indice_test  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_edge)-1;
+    indice_test  =[1+3*(0:nb_thetaDGM-1) 2+3*(0:nb_thetaDGM-1) 3+3*(0:nb_thetaDGM-1)]+dof_start_element(e_edge)-1;
     F(indice_test)=F(indice_test)-Phi.'*MM;
-    A(indice_test,nb_dof_DGM+1)=A(indice_test,nb_dof_DGM+1)-Phi.'*MM;
+    A(indice_test,nb.dof_DGM+1)=A(indice_test,nb.dof_DGM+1)-Phi.'*MM;
     
     II=int_edge_2vectorielle(1j*k_air*n_excitation,-1j*[delta_1*[nx;ny] delta_2*[nx;ny] delta_3*[nx;ny]],a,b,[0*c_edge c_edge]);
     
     % Matrix to filter sigma_p
-    S_filter=zeros(1,3*nb_theta*8);
-    S_filter(1,8*[1:3*nb_theta])=1;
+    S_filter=zeros(1,3*nb_thetaDGM*8);
+    S_filter(1,8*[1:3*nb_thetaDGM])=1;
     Phi=S_filter*Phi;
     
-    indice_champs  =[1+3*(0:nb_theta-1) 2+3*(0:nb_theta-1) 3+3*(0:nb_theta-1)]+dof_start_element(e_edge)-1;
-    A(nb_dof_DGM+1,indice_champs)=A(nb_dof_DGM+1,indice_champs)+Phi.*II;
+    indice_champs  =[1+3*(0:nb_thetaDGM-1) 2+3*(0:nb_thetaDGM-1) 3+3*(0:nb_thetaDGM-1)]+dof_start_element(e_edge)-1;
+    A(nb.dof_DGM+1,indice_champs)=A(nb.dof_DGM+1,indice_champs)+Phi.*II;
 
-    A(nb_dof_DGM+1,nb_dof_DGM+1)=-period;
-    F(nb_dof_DGM+1)=period;
+    A(nb.dof_DGM+1,nb.dof_DGM+1)=-period;
+    F(nb.dof_DGM+1)=period;
     
 end
 

@@ -2,11 +2,14 @@ period=20e-3;
 thicknessporous=2.0e-2;
 labelporous=5005;
 labelinclusion=1008;
-radius=7.5e-3;
+radius=9e-3;
 thicknessinclusion=2e-4;
-nx=5;
+nx=10;
 nepaisseurinclusion=1;
 ninclusion=ceil(nepaisseurinclusion*2*pi*radius/thicknessinclusion);
+name_file_TW_export='FEM_Abs_d20_angpi90_type3h02Shengr9.dat'
+
+
 
 fid=fopen(name_file_input_FreeFem,'w');
 fprintf(fid,'%s\n',name_file_msh);

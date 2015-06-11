@@ -55,41 +55,40 @@ hold on
 for ie=1:nb.interfaces
     node=interfaces(ie,1);
     theta_1=angle((nodes(node,1)-center_inclusion(1))+1j*(nodes(node,2)-center_inclusion(2)));
-    
-    
-    
     ux_1=sol(ux(node));
     uy_1=sol(uy(node));
     u_1=sqrt(abs(sol(ux(node)))^2+abs(sol(uy(node)))^2);
     ur_1=[ux_1 uy_1]*[cos(theta_1);sin(theta_1)];
     utheta_1=[ux_1 uy_1]*[-sin(theta_1);cos(theta_1)];
+    p_1=sol(p(node));
+    
     node=interfaces(ie,2);
     theta_2=angle((nodes(node,1)-center_inclusion(1))+1j*(nodes(node,2)-center_inclusion(2)));
-    
-    
-    
     ux_2=sol(ux(node));
     uy_2=sol(uy(node));
     u_2=sqrt(abs(sol(ux(node)))^2+abs(sol(uy(node)))^2);
     ur_2=[ux_2 uy_2]*[cos(theta_2);sin(theta_2)];
     utheta_2=[ux_2 uy_2]*[-sin(theta_2);cos(theta_2)];
-    
+    p_2=sol(p(node));
+        
+        
+        
     node=interfaces(ie,6);
-    
-    
     theta_3=angle((nodes(node,1)-center_inclusion(1))+1j*(nodes(node,2)-center_inclusion(2)));
     ux_3=sol(ux(node));
     uy_3=sol(uy(node));
     u_3=sqrt(abs(sol(ux(node)))^2+abs(sol(uy(node)))^2);
     ur_3=[ux_3 uy_3]*[cos(theta_3);sin(theta_3)];
     utheta_3=[ux_3 uy_3]*[-sin(theta_3);cos(theta_3)];
-    
+    p_3=sol(p(node));
+        
     figure(10055)
     subplot(221)
     polar([theta_1 theta_3 theta_2],abs([u_1 u_3 u_2]),'k.')
     subplot(222)
-    polar([theta_1 theta_3 theta_2],abs([ux_1 ux_3 ux_2]),'r.')
-    polar([theta_1 theta_3 theta_2],abs([uy_1 uy_3 uy_2]),'m.')
+    polar([theta_1 theta_3 theta_2],abs([p_1 p_3 p_2]),'m.')
+    %polar([theta_1 theta_3 theta_2],abs([ux_1 ux_3 ux_2]),'r.')
+    %polar([theta_1 theta_3 theta_2],abs([uy_1 uy_3 uy_2]),'m.')
     
     
     subplot(223)

@@ -35,8 +35,8 @@
 
 period=max(nodes(:,1))-min(nodes(:,1));
 
-ondes_element=zeros(nb_elements,1);
-for ie=1:nb_elements
+ondes_element=zeros(nb.elements,1);
+for ie=1:nb.elements
    switch floor(element_label(ie)/1000)
        case {0,2,3,8}
            ondes_element(ie)=1;
@@ -47,23 +47,23 @@ for ie=1:nb_elements
    end
 end
 
-dof_start_element=zeros(nb_elements,1);
+dof_start_element=zeros(nb.elements,1);
 dof_start_element(1)=1;
-for ie=2:nb_elements
-   dof_start_element(ie)=dof_start_element(ie-1)+ondes_element(ie-1)*nb_theta; 
+for ie=2:nb.elements
+    dof_start_element(ie)=dof_start_element(ie-1)+ondes_element(ie-1)*nb_thetaDGM; 
 end
 
 
-nb_dof_DGM=dof_start_element(end)+ondes_element(end)*nb_theta-1; 
+nb.dof_DGM=dof_start_element(end)+ondes_element(end)*nb_thetaDGM-1; 
 
-vec_theta=theta_inc+pi/2+linspace(0,2*pi,nb_theta+1);
+vec_theta=theta_inc+pi/2+linspace(0,2*pi,nb_thetaDGM+1);
 vec_theta(end)=[];
 
 
-if nb_periodicity~=0
+if nb.periodicity~=0
     
     % Separation of the left and right edges
-    nb_periodicity=nb_periodicity/2
+    nb.periodicity=nb.periodicity/2
 
     edge_left= find(periodicity(:,4)==98);
     edge_right=find(periodicity(:,4)==99);
@@ -73,8 +73,8 @@ if nb_periodicity~=0
     % Ordering of the edge so that they are ordered on both sides from
     % increasing y coordinate
     
-    y_min_left=min(reshape(nodes(periodicity_left(:,1:2),2),nb_periodicity,2),[],2);
-    y_min_right=min(reshape(nodes(periodicity_right(:,1:2),2),nb_periodicity,2),[],2);
+    y_min_left=min(reshape(nodes(periodicity_left(:,1:2),2),nb.periodicity,2),[],2);
+    y_min_right=min(reshape(nodes(periodicity_right(:,1:2),2),nb.periodicity,2),[],2);
 
     [temp,i_left] =sort(y_min_left);
     [temp,i_rigtt]=sort(y_min_right);
@@ -89,11 +89,11 @@ is_pw=(ismember(loads(:,4),[10 11 12]));
 is_pw_R=is_pw;
 if sum(is_pw)~=0
     plot_abs=1;
-    nb_R=1;
+    nb.R=1;
     size_info_vector_R=1;
 else
     plot_abs=0;
-    nb_R=0;
+    nb.R=0;
     size_info_vector_R=1;
 end
 
@@ -101,7 +101,7 @@ is_pw=(ismember(loads(:,4),[13]));
 is_pw_R=is_pw;
 if sum(is_pw)~=0
     plot_abs=1;
-    nb_R=1;
+    nb.R=1;
     size_info_vector_R=2;
 end
 
@@ -111,11 +111,11 @@ is_pw_T=is_pw;
 if sum(is_pw)~=0
     is_pw_T=find(is_pw);
     plot_TL=1;
-    nb_T=1;
+    nb.T=1;
     size_info_vector_T=1;
 else
     plot_TL=0;
-    nb_T=0;
+    nb.T=0;
     size_info_vector_T=1;
 end
 
@@ -124,7 +124,7 @@ is_pw_T=is_pw;
 if sum(is_pw)~=0
     is_pw_T=find(is_pw);
     plot_TL=1;
-    nb_T=1;
+    nb.T=1;
     size_info_vector_T=2;
 end
 

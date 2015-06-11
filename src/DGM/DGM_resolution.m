@@ -32,7 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-for ii=1:nb_theta
+for ii=1:nb_thetaDGM
     Shift_fluid((ii-1)*3+(1:3),ii)=1;
     % Biot wave 1
     Shift_Biot((ii-1)*8*3+(1:8),1+(ii-1)*3)=1;
@@ -49,7 +49,7 @@ for i_f=1:abs(nb_frequencies)
     freq=vec_freq(i_f);
     omega=2*pi*freq;
     k_air=omega/air.c;
-    if nb_R~=0
+    if nb.R~=0
         create_wave_vectors
         delta_Bloch=exp(-1i*k_x*period);
         
@@ -60,17 +60,15 @@ for i_f=1:abs(nb_frequencies)
     
     % Construction of the linear system
     
-    A= sparse(nb_dof_DGM+nb_R,nb_dof_DGM+nb_R);
-    F=zeros(nb_dof_DGM+nb_R,1);
+    A= sparse(nb.dof_DGM+nb.R,nb.dof_DGM+nb.R);
+    F=zeros(nb.dof_DGM+nb.R,1);
     
-    disp('Lancement Internal')
-    
-    for ie=1:nb_internal
+        for ie=1:nb.internal
         edge_internal
     end
     
     
-    for ie=1:nb_dirichlets
+    for ie=1:nb.dirichlets
         switch dirichlets(ie,4)
             case {1}
                 %disp('Lancement boundary_rigid_wall')
@@ -86,7 +84,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     
-    for ie=1:nb_loads
+    for ie=1:nb.loads
         %disp('Lancement boundary_normal_velocity')
         switch loads(ie,4)
             case {3}
@@ -97,7 +95,7 @@ for i_f=1:abs(nb_frequencies)
     end
     
     
-    for ie=1:nb_periodicity
+    for ie=1:nb.periodicity
         edge_periodicity
         
     end
@@ -120,7 +118,7 @@ for i_f=1:abs(nb_frequencies)
         end 
     end
 
-    if nb_R~=0
+    if nb.R~=0
        reflex_DGM(i_f)=X(end); 
     end
     %info_DGM

@@ -39,11 +39,11 @@ hold on
 
 
 
-for ie=1:nb_elements
+for ie=1:nb.elements
     coord_elem=nodes(elements(ie,:),1:2)';
     x_centre=mean(nodes(elements(ie,:),1:2))';
     
-    q=X(dof_start_element(ie)+[0:ondes_element(ie)*nb_theta-1]);
+    q=X(dof_start_element(ie)+[0:ondes_element(ie)*nb_thetaDGM-1]);
     
     switch floor(element_label(ie)/1000)
         case {0,2,8}
@@ -51,7 +51,7 @@ for ie=1:nb_elements
             parameter_element
             
             Phi_elem=zeros(3,3);
-            for i_thetaphi=1:nb_theta
+            for i_thetaphi=1:nb_thetaDGM
                 theta_phi=vec_theta(i_thetaphi);
                 n_phi=[cos(theta_phi)*tau_x;sin(theta_phi)*tau_y];
                 Phi_e=Phi_fluid(cos(theta_phi),sin(theta_phi),Z_e);

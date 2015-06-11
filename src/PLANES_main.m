@@ -41,42 +41,41 @@ eval(['addpath(' list_path ');'])
 load('abs_jpg.mat');
 
 
-
-
-
 %name_of_project='PEM';
 %name_of_project='air_PEM';
 name_of_project='Kundt';
-
 %name_of_project='TW';
-%subproject=5;
+%name_of_project='sandwich_meta';
+subproject=0;
 
-subproject=1;
+%subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 nb_frequencies=1;
-freq_min=1000;
-freq_max=5000;
+freq_min=100;
+freq_max=4000;
 % Angle of incidence
 theta_inc=0*pi/180;
 
-solve.FEM=0;
-solve.DGM=1;
+solve.TR6=1;
+solve.DGM=0;
 solve.PW=0;
+solve.FEMDGM=0;
 
-if solve.DGM
-    nb_theta=32;
+if (solve.DGM|solve.FEMDGM)
+    nb_thetaDGM=2;
 end
 
 %
-export_profiles=1;
+export_profiles=0;
 
 profiles.on=1;
 profiles.x=0;
 profiles.y=1;
 profiles.custom=0;
-export_nrj=0;
+profiles.custom=55;
+export_nrj=1;
 
 %% Initialization of PLANES
 init_PLANES
@@ -91,14 +90,43 @@ eval([name_of_project_full])
 
 system(['/usr/local/bin/FreeFem++ ' name_file_edp])
 
-tic
-
-disp('Importing Mesh')
 
 if solve.DGM
     
-    [nb,nb_elements,nb_edges,nodes,elements,element_label,edges,nb_media,num_media,element_num_mat,nb_internal,internal,...
-        nb_MMT,edges_MMT,nb_loads,loads,nb_dirichlets,dirichlets,nb_periodicity,periodicity,index_label,index_element]=msh2DGM(name_file_msh,0);
+    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,internal,...
+        edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
+    
+
+    analyze_mesh_DGM
+    
+    disp('DGM Resolution')
+    DGM_resolution
+    
+end
+
+
+
+
+
+if solve.TR6
+    
+    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,...
+        edges_MMT,loads,dirichlets,periodicity]=msh2TR6(name_file_msh,0); 
+    
+    analyze_mesh_TR6
+    disp('Building FEM shape matrices')
+
+    EF_TR6_global_build
+    
+    disp('FEM Resolution')
+    FEM_resolution
+    
+end
+
+if solve.FEMDGM
+    
+        [nb,nodes,elements,element_label,edges,num_media,element_num_mat,internal,...
+        edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2FEMDGM(name_file_msh,1);
     
     analyze_mesh_DGM
     
@@ -107,24 +135,8 @@ if solve.DGM
     
 end
 
-if solve.FEM
-    
-    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,...
-        edges_MMT,loads,dirichlets,periodicity]=msh2TR6(name_file_msh,0);
-    analyze_mesh_FEM
-    disp('Building FEM shape matrices')
-    
-    EF_TR6_global_build
-    
-    disp('FEM Resolution')
-    FEM_resolution
-    
-end
 
 
-
-disp('End of mesh importation')
-toc
 
 
 if solve.PW
@@ -140,3 +152,17 @@ if ((exist(name_solution)==2)&(profiles.on))
     eval('eval(name_solution)')
 end
 
+%  figure
+%  semilogx(vec_freq,TL_EF)
+% hold on
+% semilogx(vec_freq,TL_PW,'r.')
+
+% hold on
+% plot(vec_freq,real(abs_vis),'r--')
+% plot(vec_freq,real(abs_vis+abs_therm),'m-.')
+% plot(vec_freq,real(abs_vis+abs_therm+abs_struct),'m-.')
+%file_JPG=fopen(['../../../../Desktop/Figures_TW/' name_file_TW_export],'w')
+%for i_f=1:nb_frequencies
+%fprintf(file_JPG,'%1.15e \t %1.15e \n',vec_freq(i_f),abs_EF(i_f));
+%end
+%fclose(file_JPG)

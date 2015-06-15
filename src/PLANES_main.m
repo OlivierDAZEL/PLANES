@@ -46,19 +46,20 @@ load('abs_jpg.mat');
 name_of_project='Kundt';
 %name_of_project='TW';
 %name_of_project='sandwich_meta';
-subproject=0;
+subproject=2;
 
 %subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 nb_frequencies=1;
-freq_min=100;
+freq_min=1000;
 freq_max=4000;
 % Angle of incidence
 theta_inc=0*pi/180;
 
-solve.TR6=1;
+solve.TR6=0;
+solve.H16=1;
 solve.DGM=0;
 solve.PW=0;
 solve.FEMDGM=0;
@@ -74,7 +75,7 @@ profiles.on=1;
 profiles.x=0;
 profiles.y=1;
 profiles.custom=0;
-profiles.custom=55;
+profiles.custom=0;
 export_nrj=1;
 
 %% Initialization of PLANES
@@ -88,14 +89,15 @@ init_vec_frequencies
 
 eval([name_of_project_full])
 
-system(['/usr/local/bin/FreeFem++ ' name_file_edp])
+if (solve.TR6+solve.DGM)>0
+    system(['/usr/local/bin/FreeFem++ ' name_file_edp])
+end
 
 
 if solve.DGM
     
     [nb,nodes,elements,element_label,edges,num_media,element_num_mat,internal,...
         edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
-    
 
     analyze_mesh_DGM
     
@@ -122,6 +124,24 @@ if solve.TR6
     FEM_resolution
     
 end
+
+if solve.H16
+    
+    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,...
+        edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,ly,nx,ny,1); 
+    
+     analyze_mesh_H16
+     disp('Building FEM shape matrices')
+ 
+     EF_H16_global_build
+    
+    disp('FEM Resolution')
+    FEM_resolution
+    
+end
+
+
+
 
 if solve.FEMDGM
     

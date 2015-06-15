@@ -38,7 +38,7 @@ x_air=linspace(-ly,0,1000);
 Z_s=-1j*air.Z*(1/cos(theta_inc))*cot(k_air*cos(theta_inc)*ly);
 Reflexion_coefficient(i_f)=(Z_s-air.Z*(1/cos(theta_inc)))/(Z_s+air.Z*(1/cos(theta_inc)));
 sigma_a=((1+Reflexion_coefficient(i_f))/(cos(k_air*cos(theta_inc)*ly)))*cos(k_air*cos(theta_inc)*x_air);
-
+sigma_a=(omega*Z_s/(cos(k_air*cos(theta_inc)*ly)))*cos(k_air*cos(theta_inc)*x_air);
 
 if profiles.on==1
     

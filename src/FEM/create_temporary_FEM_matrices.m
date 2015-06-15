@@ -108,10 +108,10 @@ i_q_limp=zeros(1,nb.media.limp);
 j_q_limp=zeros(1,nb.media.limp);
 v_q_limp=zeros(1,nb.media.limp);
 
-H_acou=sparse(3*nb.nodes,3*nb.nodes);
-Q_acou=sparse(3*nb.nodes,3*nb.nodes);
+H_acou=sparse(3*nb_dof_node*nb.nodes,3*nb_dof_node*nb.nodes);
+Q_acou=sparse(3*nb_dof_node*nb.nodes,3*nb_dof_node*nb.nodes);
 
-H_PML=sparse(3*nb.nodes,3*nb.nodes);
-Q_PML=sparse(3*nb.nodes,3*nb.nodes);
+H_PML=sparse(3*nb_dof_node*nb.nodes,3*nb_dof_node*nb.nodes);
+Q_PML=sparse(3*nb_dof_node*nb.nodes,3*nb_dof_node*nb.nodes);
 
 

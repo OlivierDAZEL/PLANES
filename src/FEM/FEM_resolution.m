@@ -159,7 +159,12 @@ for i_f=1:abs(nb_frequencies)
     
     
     if (nb.loads)>0
-        loads_application
+        if solve.H16
+            loads_application_H16
+        end
+        if solve.TR6
+            loads_application_TR6
+        end
     end
     
     
@@ -172,7 +177,7 @@ for i_f=1:abs(nb_frequencies)
     
     sol=[];
     sol(dof_back)=X(1:nb.dof_FEM);
-    
+
     if exist('DtN_plate_R')
         rflx=T_back*  X(nb.dof_FEM+(1:size_info_vector_R*nb.R));
     else
@@ -243,7 +248,12 @@ for i_f=1:abs(nb_frequencies)
     if profiles.on==1
         disp('plotting the solution')
         if profiles.y==1
+            if solve.TR6
             plot_sol_TR6_y
+            end
+                        if solve.H16
+            plot_sol_H16_y
+            end
         end
         if profiles.custom~=0
             eval(['plot_sol_TR6_custom_' , num2str(profiles.custom)]);

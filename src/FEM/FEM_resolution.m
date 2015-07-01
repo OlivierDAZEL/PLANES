@@ -51,10 +51,10 @@ abs_therm=zeros(nb_frequencies,1);
 abs_elas=zeros(nb_frequencies,1);
 TL_EF=zeros(nb_frequencies,1);
 abs_EF=zeros(nb_frequencies,1);
-   
+
 
 for i_f=1:abs(nb_frequencies)
-    nb=nb;
+
     FEM_progress=100*i_f/abs(nb_frequencies)
     
     freq=vec_freq(i_f);
@@ -63,7 +63,7 @@ for i_f=1:abs(nb_frequencies)
     
     k_air=omega/air.c;
     [k_air,k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period);
-
+    
     
     % Construction of the linear system
     
@@ -159,8 +159,8 @@ for i_f=1:abs(nb_frequencies)
     
     
     if (nb.loads)>0
-        if solve.H16
-            loads_application_H16
+        if solve.H12
+            loads_application_H12_flux
         end
         if solve.TR6
             loads_application_TR6
@@ -175,9 +175,11 @@ for i_f=1:abs(nb_frequencies)
     %disp('Resolution of the system')
     X=A\F;
     
+    
+    
     sol=[];
     sol(dof_back)=X(1:nb.dof_FEM);
-
+    
     if exist('DtN_plate_R')
         rflx=T_back*  X(nb.dof_FEM+(1:size_info_vector_R*nb.R));
     else
@@ -204,34 +206,34 @@ for i_f=1:abs(nb_frequencies)
         end
     end
     
-
+    
     
     
     if export_nrj==1
         
         I_inc(i_f)=(period/air.Z)/(2*vec_freq(i_f));
         if num_media.pem01~=0
-        Ks(i_f)=(omega^2/4)*rho_1*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM);
-        Kf(i_f)=(omega^2/4)*(real(rho_f_til)*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM)+real(1/conj(rho_eq_til*omega^4))*X(1:nb.dof_FEM)'*H_pem01_1*X(1:nb.dof_FEM)-(2/omega^2)*imag(phi/alpha_til)*imag(X(1:nb.dof_FEM)'*C_pem01_1*X(1:nb.dof_FEM)));
-        Wdef(i_f)=(1/4)*(real(P_hat)*X(1:nb.dof_FEM)'*K0_pem01_1*X(1:nb.dof_FEM)+real(N)*X(1:nb.dof_FEM)'*K1_pem01_1*X(1:nb.dof_FEM)+(phi^2*real(R_til)/abs(R_til)^2)*X(1:nb.dof_FEM)'*Q_pem01_1*X(1:nb.dof_FEM));
-        
-        W_vis(i_f)=(-pi*omega^2)*(imag(rho_til)*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM)-imag(1/(rho_eq_til*omega^4))*X(1:nb.dof_FEM)'*H_pem01_1*X(1:nb.dof_FEM)+(2/omega^2)*imag(phi/alpha_til)*real(X(1:nb.dof_FEM)'*C_pem01_1*X(1:nb.dof_FEM)));
-        W_struct(i_f)=pi*(imag(P_hat)*X(1:nb.dof_FEM)'*K0_pem01_1*X(1:nb.dof_FEM)+imag(N)*X(1:nb.dof_FEM)'*K1_pem01_1*X(1:nb.dof_FEM));
-        W_therm(i_f)=(pi*phi^2*imag(R_til)/abs(R_til)^2)*X(1:nb.dof_FEM)'*Q_pem01_1*X(1:nb.dof_FEM);
-        W_elas(i_f)=pi*(imag(lambda_solide+2*mu_solide)*X(1:nb.dof_FEM)'*K0_elas_1*X(1:nb.dof_FEM)+imag(mu_solide)*X(1:nb.dof_FEM)'*K1_elas_1*X(1:nb.dof_FEM));
-        
-        abs_vis(i_f)=W_vis(i_f)/I_inc(i_f);
-        abs_struct(i_f)=W_struct(i_f)/I_inc(i_f);
-        abs_therm(i_f)=W_therm(i_f)/I_inc(i_f);
-        abs_elas(i_f)=W_elas(i_f)/I_inc(i_f);
-        
-        abs_dis(i_f)=(abs_vis(i_f)+abs_struct(i_f)+abs_therm(i_f)+abs_elas(i_f));
-        
+            Ks(i_f)=(omega^2/4)*rho_1*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM);
+            Kf(i_f)=(omega^2/4)*(real(rho_f_til)*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM)+real(1/conj(rho_eq_til*omega^4))*X(1:nb.dof_FEM)'*H_pem01_1*X(1:nb.dof_FEM)-(2/omega^2)*imag(phi/alpha_til)*imag(X(1:nb.dof_FEM)'*C_pem01_1*X(1:nb.dof_FEM)));
+            Wdef(i_f)=(1/4)*(real(P_hat)*X(1:nb.dof_FEM)'*K0_pem01_1*X(1:nb.dof_FEM)+real(N)*X(1:nb.dof_FEM)'*K1_pem01_1*X(1:nb.dof_FEM)+(phi^2*real(R_til)/abs(R_til)^2)*X(1:nb.dof_FEM)'*Q_pem01_1*X(1:nb.dof_FEM));
+            
+            W_vis(i_f)=(-pi*omega^2)*(imag(rho_til)*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM)-imag(1/(rho_eq_til*omega^4))*X(1:nb.dof_FEM)'*H_pem01_1*X(1:nb.dof_FEM)+(2/omega^2)*imag(phi/alpha_til)*real(X(1:nb.dof_FEM)'*C_pem01_1*X(1:nb.dof_FEM)));
+            W_struct(i_f)=pi*(imag(P_hat)*X(1:nb.dof_FEM)'*K0_pem01_1*X(1:nb.dof_FEM)+imag(N)*X(1:nb.dof_FEM)'*K1_pem01_1*X(1:nb.dof_FEM));
+            W_therm(i_f)=(pi*phi^2*imag(R_til)/abs(R_til)^2)*X(1:nb.dof_FEM)'*Q_pem01_1*X(1:nb.dof_FEM);
+            W_elas(i_f)=pi*(imag(lambda_solide+2*mu_solide)*X(1:nb.dof_FEM)'*K0_elas_1*X(1:nb.dof_FEM)+imag(mu_solide)*X(1:nb.dof_FEM)'*K1_elas_1*X(1:nb.dof_FEM));
+            
+            abs_vis(i_f)=W_vis(i_f)/I_inc(i_f);
+            abs_struct(i_f)=W_struct(i_f)/I_inc(i_f);
+            abs_therm(i_f)=W_therm(i_f)/I_inc(i_f);
+            abs_elas(i_f)=W_elas(i_f)/I_inc(i_f);
+            
+            abs_dis(i_f)=(abs_vis(i_f)+abs_struct(i_f)+abs_therm(i_f)+abs_elas(i_f));
+            
         end
         
-%         if num_media.~=0
-%         L2_p_air(i_f)=X(1:nb.dof_FEM)'*Q_acou*X(1:nb.dof_FEM);
-%         end
+        %         if num_media.~=0
+        %         L2_p_air(i_f)=X(1:nb.dof_FEM)'*Q_acou*X(1:nb.dof_FEM);
+        %         end
         
     end
     
@@ -249,10 +251,10 @@ for i_f=1:abs(nb_frequencies)
         disp('plotting the solution')
         if profiles.y==1
             if solve.TR6
-            plot_sol_TR6_y
+                plot_sol_TR6_y
             end
-                        if solve.H16
-            plot_sol_H16_y
+            if solve.H12
+                plot_sol_H12_y
             end
         end
         if profiles.custom~=0

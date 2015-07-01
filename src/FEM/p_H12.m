@@ -1,6 +1,6 @@
-% loads_application_H16.m
+% p_H.m
 %
-% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -32,45 +32,17 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-for ie=1:nb.loads
-    typ=floor(loads(ie,4));
-    
-    
-    
-    node_1=loads(ie,1);
-    node_2=loads(ie,2);
-    
-    x1=nodes(loads(ie,1),1);
-    y1=nodes(loads(ie,1),2);
-    x2=nodes(loads(ie,2),1);
-    y2=nodes(loads(ie,2),2);
-    length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
-    lx=length_edge;
-    
-    load_Hermite_2D
 
-    index_p=dof_A(p_H(elements(loads(ie,3),:)));
-    indice_test=index_p([1 2 6 5]);
-    indice_champs_0=index_p([1 2 6 5]);
-    indice_champs_1=index_p([3 4 16 7]);
-    
-    switch typ
-        case {3}
-            if sort(loads(ie,1:2))==sort(elements(loads(ie,3),1:2))
-                y=0;
+function f=p_H12(node)
 
-                for i_test=1:4
-                    eval(['Psi_test=Psi_',num2str(i_test),'_x'])
-                    F(indice_test(i_test))=integrate_polynom(Psi_test,lx);                    
-                end
-    
-            else    
-               aezezaezaezeazezaeazezaeazezaeza 
-                
-                
-            end
-            
-    end
-end
+f(1:3:3*length(node))=9*(node-1)+7;
+f(2:3:3*length(node))=9*(node-1)+8;
+f(3:3:3*length(node))=9*(node-1)+9;
+
+
+
+
+
+
 
 

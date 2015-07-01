@@ -33,8 +33,32 @@
 e_edge=e_1;
 parameter_element
 
-[F_plus,F_moins]=Split_fluid(nx,ny,Z_e);
+[F_moins,F_plus]=Split_fluid(nx,ny,Z_e)
 
+
+C_e2=[0 1 0;0 0 1];
+C_e1=[0 1 0;0 0 1];
+W_e2=[nx -ny -nx;ny nx -ny;air.Z 0 air.Z];
+Omega_e2=[nx/2 ny/2 1/(2*air.Z);-ny nx 0;-nx/2 -ny/2 1/(2*air.Z)];
+W_e2_plus=W_e2(:,3);
+W_e2_moins=W_e2(:,1);
+Omega_e2_plus=Omega_e2(3,:);
+Omega_e2_moins=Omega_e2(1,:);
+
+W_e1=W_e2;
+Omega_e1=Omega_e2;
+
+W_e1_moins=W_e1(:,1);
+W_e1_plus=W_e1(:,3);
+Omega_e1_moins=Omega_e1(1,:);
+Omega_e1_plus=Omega_e1(3,:);
+
+
+
+% F_e=ny*[0 0 0 ;0 0 1/air.rho;0 air.K 0];
+% 
+% 
+% dfgdgfdfggdf
 
 nx=cos(vec_theta);
 ny=sin(vec_theta);
@@ -45,7 +69,6 @@ MM=kron(II,F_plus);
 indice_test  =((1:nb_thetaDGM)-1)+dof_start_element(e_2);  
 indice_champs=((1:nb_thetaDGM)-1)+dof_start_element(e_2);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
-
         
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_2 c_1]);
 MM=kron(II,F_moins);
@@ -64,4 +87,3 @@ MM=kron(II,-F_moins);
 indice_test  =((1:nb_thetaDGM)-1)+dof_start_element(e_1);  
 indice_champs=((1:nb_thetaDGM)-1)+dof_start_element(e_1);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
-

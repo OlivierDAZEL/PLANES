@@ -38,31 +38,28 @@ clc
 list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
 eval(['addpath(' list_path ');'])
 
-load('abs_jpg.mat');
-
-
 %name_of_project='PEM';
 %name_of_project='air_PEM';
 name_of_project='Kundt';
-%name_of_project='TW';
+name_of_project='CFM';
 %name_of_project='sandwich_meta';
-subproject=2;
+subproject=0;
 
 %subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 nb_frequencies=1;
-freq_min=1000;
+freq_min=5000;
 freq_max=4000;
 % Angle of incidence
 theta_inc=0*pi/180;
 
 solve.TR6=0;
-solve.H16=1;
+solve.H12=0;
 solve.DGM=0;
 solve.PW=0;
-solve.FEMDGM=0;
+solve.FEMDGM=1;
 
 if (solve.DGM|solve.FEMDGM)
     nb_thetaDGM=2;
@@ -93,12 +90,11 @@ if (solve.TR6+solve.DGM)>0
     system(['/usr/local/bin/FreeFem++ ' name_file_edp])
 end
 
-
 if solve.DGM
     
-    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,internal,...
+    [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,...
         edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
-
+    
     analyze_mesh_DGM
     
     disp('DGM Resolution')
@@ -106,18 +102,14 @@ if solve.DGM
     
 end
 
-
-
-
-
 if solve.TR6
     
     [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,...
-        edges_MMT,loads,dirichlets,periodicity]=msh2TR6(name_file_msh,0); 
+        edges_MMT,loads,dirichlets,periodicity]=msh2TR6(name_file_msh,0);
     
     analyze_mesh_TR6
     disp('Building FEM shape matrices')
-
+    
     EF_TR6_global_build
     
     disp('FEM Resolution')
@@ -125,52 +117,54 @@ if solve.TR6
     
 end
 
-if solve.H16
+if solve.H12
     
-    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,...
-        edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,ly,nx,ny,1); 
+    [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,interfaces,...
+        edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,ly,nx,ny,0);
     
-     analyze_mesh_H16
-     disp('Building FEM shape matrices')
- 
-     EF_H16_global_build
+    analyze_mesh_H12
+    disp('Building FEM shape matrices')
+    
+    EF_H12_global_build
     
     disp('FEM Resolution')
     FEM_resolution
     
 end
 
-
-
-
 if solve.FEMDGM
     
-        [nb,nodes,elements,element_label,edges,num_media,element_num_mat,internal,...
-        edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2FEMDGM(name_file_msh,1);
+    [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,...
+        edges_MMT,loads,dirichlets,periodicity,index_label,index_element,lx_H12,ly_H12]=createmshH12DGM(lx,lyFEM,lyDGM,nx,nyFEM,nyDGM,1);
+    %element_model=ones(size(element_model));
     
+    analyze_mesh_H12
     analyze_mesh_DGM
     
-    disp('DGM Resolution')
-    DGM_resolution
+    EF_H12_global_build
     
+    
+    FEMDGM_resolution
+ 
 end
-
-
-
 
 
 if solve.PW
     disp('PW Resolution')
-    PW_resolution
+     PW_resolution
 end
 
 
 % Analytical solution (if exists)
 
 name_solution=['solution_' , name_of_project];
+if subproject~=0
+    name_solution=[name_solution,'_',num2str(subproject)];
+end
 if ((exist(name_solution)==2)&(profiles.on))
     eval('eval(name_solution)')
 end
+%solution_Kundt
 
 %  figure
 %  semilogx(vec_freq,TL_EF)

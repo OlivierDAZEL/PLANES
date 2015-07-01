@@ -33,7 +33,7 @@
 %%
 
 
-function [nb,nodes,elements,element_label,edges,num_media,element_num_mat,internal,edges_MMT...
+function [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,edges_MMT...
     ,loads,dirichlets,periodicity,index_label,index_element]=msh2DGM(nom_fichier,tracefigure)
 
 fid=fopen(nom_fichier,'r');
@@ -45,6 +45,7 @@ nodes=zeros(nb.nodes,2);
 node_label=zeros(nb.nodes);
 elements=zeros(nb.elements,3);
 element_label=zeros(nb.elements,1);
+element_model=zeros(nb.elements,1);
 edges=zeros(nb.edges,3);
 
 

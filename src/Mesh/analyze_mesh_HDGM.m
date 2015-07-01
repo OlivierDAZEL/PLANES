@@ -50,30 +50,17 @@ for ie=1:nb.elements
 end
 
 dof_start_element=zeros(nb.elements,1);
-if element_model(1)==1
-    dof_start_element(1)=1;
-end
+dof_start_element(1)=1;
 for ie=2:nb.elements
-    if element_model(ie)==1
-        dof_start_element(ie)=max(dof_start_element)+ondes_element(ie-1)*nb_thetaDGM;
-    end
+    dof_start_element(ie)=dof_start_element(ie-1)+ondes_element(ie-1)*nb_thetaDGM;
 end
 
 
-if sum(dof_start_element)>0
-    temp=find(dof_start_element);
-    
-    index_dof=temp(end);
-    nb.dof_DGM=dof_start_element(index_dof)+ondes_element(index_dof)*nb_thetaDGM-1
-    
-    dof_start_element=dof_start_element+nb.dof_FEM*(element_model==1);
-    
-    vec_theta=theta_inc+pi/2+linspace(0,2*pi,nb_thetaDGM+1);
-    vec_theta(end)=[];
-    
-else
-    nb.dof_DGM=0;
-end
+nb.dof_DGM=dof_start_element(end)+ondes_element(end)*nb_thetaDGM-1;
+
+vec_theta=theta_inc+pi/2+linspace(0,2*pi,nb_thetaDGM+1);
+vec_theta(end)=[];
+
 
 if nb.periodicity~=0
     
@@ -145,6 +132,7 @@ end
 
 
 
+period=max(nodes(:,1))-min(nodes(:,1));
 
 
 

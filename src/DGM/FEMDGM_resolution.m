@@ -1,4 +1,4 @@
-% DGM_resolution.m
+% FEMDGM_resolution.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -57,65 +57,75 @@ for i_f=1:abs(nb_frequencies)
     
     % Construction of the linear system
     
-    A= sparse(nb.dof_DGM+nb.R,nb.dof_DGM+nb.R);
-    F=zeros(nb.dof_DGM+nb.R,1);
+    A= sparse(nb.dof_FEM+nb.dof_DGM+nb.R,nb.dof_FEM+nb.dof_DGM+nb.R);
+    F=zeros(nb.dof_FEM+nb.dof_DGM+nb.R,1);
     
     for ie=1:nb.internal
-        edge_internal
+            edge_internal
     end
     
     
     for ie=1:nb.dirichlets
-        switch dirichlets(ie,4)
-            case {1}
-                %disp('Lancement boundary_rigid_wall')
-                boundary_rigid_wall
-            case {5}
-                boundary_sliding
-            case {6}
-                boundary_bonded
-            case {9}
-                boundary_rigid_wall_PML
+        if element_model(dirichlets(ie,3))
+            switch dirichlets(ie,4)
+                case {1}
+                    %disp('Lancement boundary_rigid_wall')
+                    boundary_rigid_wall
+                case {5}
+                    boundary_sliding
+                case {6}
+                    boundary_bonded
+                case {9}
+                    boundary_rigid_wall_PML
+            end
         end
     end
     
     
     
     for ie=1:nb.loads
-        %disp('Lancement boundary_normal_velocity')
-        switch loads(ie,4)
-            case {3}
-                boundary_normal_displacement
-            case{10}
-                boundary_10
+        if element_model(loads(ie,3))==1
+            %disp('Lancement boundary_normal_velocity')
+            switch loads(ie,4)
+                case {3}
+                    boundary_normal_displacement
+                case{10}
+                    boundary_10
+            end
         end
     end
     
     
     for ie=1:nb.periodicity
-        edge_periodicity  
+        if element_model(loads(ie,3))==1
+            edge_periodicity
+        end
     end
     
+   if (nb.media.acou~=0)
+        A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+(H_acou/(air.rho*omega^2)-Q_acou/(air.K));
+   end
     
-    
-    
-    
-    
+        
     disp('Resolution of the system')
     X=A\F;
+    sol=[];
+    sol(dof_back)=X(1:nb.dof_FEM);
+   
     
     if profiles.on==1
         disp('plotting the solution')
         if profiles.y==1
             plot_sol_DGM_y_Q
+            plot_sol_H12_y
         end
         if profiles.custom~=0
             eval(['plot_sol_DGM_custom_' , num2str(profiles.custom)]);
-        end 
+        end
     end
-
+    
     if nb.R~=0
-       reflex_DGM(i_f)=X(end); 
+        reflex_DGM(i_f)=X(end);
     end
     %info_DGM
     

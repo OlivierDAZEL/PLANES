@@ -51,7 +51,7 @@ parameter_element
 centre_edge=(a+b)/2;
 n_centre=c_edge-centre_edge;
 ne=normal_edge(coord_edge);
-if (n_centre'*ne>0)
+if (n_centre'*ne<0)
     ne=-ne;
 end
 nx=ne(1);

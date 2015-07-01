@@ -33,8 +33,9 @@
 %%
 
 
-function [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,interfaces,edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,ly,nx,ny,tracefigure)
+function [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,edges_MMT,loads,dirichlets,periodicity,index_label,index_element,Delta_x,Delta_yFEM]=createmshH16(lx,lyFEM,lyDGM,nx,nyFEM,nyDGM,tracefigure)
 
+ny=nyFEM+nyDGM;
 nb.nodes=(nx+1)*(ny+1);
 nb.elements=nx*ny;
 nb.edges=2*(nx+ny);
@@ -46,12 +47,24 @@ element_label=zeros(nb.elements,1);
 element_model=zeros(nb.elements,1);
 edges=zeros(nb.edges,3);
 
+element_model(1:nx*nyDGM)=1;
+
 temp=0;
 Delta_x=lx/nx;
-Delta_y=ly/ny;
-for iy=1:ny+1
-    ynode=(iy-1)*Delta_y;
-    
+Delta_yDGM=lyDGM/nyDGM;
+Delta_yFEM=lyFEM/nyFEM;
+for iy=1:nyDGM+1
+    ynode=(iy-1)*Delta_yDGM;    
+    for ix=1:nx+1
+        xnode=(ix-1)*Delta_x;
+        temp=temp+1;
+        nodes(temp,1)=xnode;
+        nodes(temp,2)=ynode;
+        node_label(temp)=0;
+    end
+end
+for iy=1:nyFEM
+    ynode=(iy)*Delta_yFEM+lyDGM;    
     for ix=1:nx+1
         xnode=(ix-1)*Delta_x;
         temp=temp+1;
@@ -154,27 +167,16 @@ index_boundary=find(segments(:,4)==0);
 index_interface=find(segments(:,4)~=0);
 
 boundaries=[segments(index_boundary,:)];
-interfaces=[segments(index_interface,:)];
 
+% check for internal that #element1<#element2
 
+internal=[segments(index_interface,:)];
+i_temp=find(internal(:,3)>internal(:,4));
+temp=internal(i_temp,3);
+internal(i_temp,3)=internal(i_temp,4);
+internal(i_temp,4)=temp;
 
-
-% interfaces=[node1 node2 #element1 #element2 element_label1 element_label2]
-clear segments
-% Research of interfaces between two similar elements
-temp=find(floor(interfaces(:,5)/1000)==floor(interfaces(:,6)/1000));
-%Suppressions of these interfaces
-interfaces(temp,:)=[];
-% Research of interfaces between PML and air
-temp=find((interfaces(:,5)==0)&(floor(interfaces(:,6)/1000)==8)|(interfaces(:,6)==0)&(floor(interfaces(:,5)/1000)==8));
-%Suppressions of these interfaces
-interfaces(temp,:)=[];
-% Research of interfaces between air and Biot 1998
-temp=find((interfaces(:,5)==0)&(floor(interfaces(:,6)/1000)==4)|(interfaces(:,6)==0)&(floor(interfaces(:,5)/1000)==4));
-%Suppressions of these interfaces
-interfaces(temp,:)=[]
-nb.interfaces=size(interfaces,1);
-
+nb.internal=size(internal,1);
 
 % Suppression of temporary values for boundaries
 boundaries(:,4:6)=[];
@@ -308,6 +310,34 @@ nb.MMT=size(edges_MMT,1);
 %     end
 %
 %    axis equal
+
+
+index_element=zeros(nb.elements,1);
+index_label_temp=zeros(nb.elements,1);
+index_element(1)=1;
+index_label_temp(1)=element_label(1);
+nb.mat=1;
+for ielem=2:nb.elements
+    for jj=1:(ielem-1)
+        bool_test=1;
+        if (element_label(ielem)==element_label(jj))
+            index_element(ielem)=index_element(jj);
+            bool_test=0;
+        end
+    end
+    if (bool_test)
+        nb.mat=nb.mat+1;
+        index_element(ielem)=nb.mat;
+        index_label_temp(nb.mat)=element_label(ielem);
+    end
+end
+
+index_label=zeros(nb.mat,1);
+for ii=1:nb.mat
+    index_label(ii)=index_label_temp(ii);
+end
+
+
 
 
 

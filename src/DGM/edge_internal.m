@@ -49,77 +49,82 @@ c_1=mean(nodes(elements(e_1,:),1:2))';
 c_2=mean(nodes(elements(e_2,:),1:2))';
 e_edge=e_1;
 
-%%%%% vector normal pointing towards \Omega_e'
+%%%%% vector normal pointing towards \Omega_e2
 
-centre_temp=mean(nodes(elements(e_edge,:),1:2))'; 
+centre_temp=mean(nodes(elements(e_edge,:),1:2))' ;
 centre_edge=(a+b)/2;
 n_centre=centre_temp-centre_edge;
 ne=normal_edge(coord_edge);
-if (n_centre'*ne>0)
+if (n_centre'*ne<0)
     ne=-ne;
 end
 nx=ne(1);
 ny=ne(2);
 
 
-valid_edge_internal=0;
-if (element_label(e_1)==element_label(e_2))
-    if ((floor(element_label(e_edge)/1000)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
-        %disp('Lancement internal_fluid')
-        internal_fluid
-        valid_edge_internal=1;
-    elseif (floor(element_label(e_edge)/1000)==4)
-        %disp('Lancement internal_PEM')
-        internal_PEM
-        valid_edge_internal=1;
-    elseif (floor(element_label(e_edge)/1000)==8)
-        parameter_element
-        internal_PML
-        valid_edge_internal=1;
-    end
-    
-    
-else % (element_label(e_1)~=element_label(e_2))
-    
-    
-    
-    
-    if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[0 2 3]))
-        %disp('Lancement fluid_fluid')
+if ((element_model(e_1)==1)&(element_model(e_2)==1))
+    valid_edge_internal=0;
+    if (element_label(e_1)==element_label(e_2))
+        if ((floor(element_label(e_edge)/1000)==0)|(floor(element_label(e_edge)/1000)==2)|(floor(element_label(e_edge)/1000)==3))
+            %disp('Lancement internal_fluid')
+            internal_fluid
+            valid_edge_internal=1;
+        elseif (floor(element_label(e_edge)/1000)==4)
+            %disp('Lancement internal_PEM')
+            internal_PEM
+            valid_edge_internal=1;
+        elseif (floor(element_label(e_edge)/1000)==8)
+            parameter_element
+            internal_PML
+            valid_edge_internal=1;
+        end
         
-        fluid_fluid
-        valid_edge_internal=1;
-    end
-    if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[4]))
-        %disp('Lancement fluid_PEM')
-        fluid_PEM
-        valid_edge_internal=1;
-    end
-    if (sum(floor(element_label(e_2)/1000)==[0 2 3]))*(sum(floor(element_label(e_1)/1000)==[4]))
-        %disp('Lancement PEM_fluid')
-        temp=e_1;
-        e_1=e_2;
-        e_2=temp;
-        nx=-nx;
-        ny=-ny;
-        temp=c_1;
-        c_1=c_2;
-        c_2=temp;
-        fluid_PEM
-        valid_edge_internal=1;
+        
+    else % (element_label(e_1)~=element_label(e_2))
+        
+        
+        
+        
+        if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[0 2 3]))
+            %disp('Lancement fluid_fluid')
+            
+            fluid_fluid
+            valid_edge_internal=1;
+        end
+        if (sum(floor(element_label(e_1)/1000)==[0 2 3]))*(sum(floor(element_label(e_2)/1000)==[4]))
+            %disp('Lancement fluid_PEM')
+            fluid_PEM
+            valid_edge_internal=1;
+        end
+        if (sum(floor(element_label(e_2)/1000)==[0 2 3]))*(sum(floor(element_label(e_1)/1000)==[4]))
+            %disp('Lancement PEM_fluid')
+            temp=e_1;
+            e_1=e_2;
+            e_2=temp;
+            nx=-nx;
+            ny=-ny;
+            temp=c_1;
+            c_1=c_2;
+            c_2=temp;
+            fluid_PEM
+            valid_edge_internal=1;
+        end
+        
+        if (sum(floor(element_label(e_1)/1000)==[0 2 3 8]))*(sum(floor(element_label(e_2)/1000)==[8]))
+            %disp('Lancement PML_PML')
+            PML_PML
+            valid_edge_internal=1;
+        end
+        
     end
     
-        if (sum(floor(element_label(e_1)/1000)==[0 2 3 8]))*(sum(floor(element_label(e_2)/1000)==[8]))
-        %disp('Lancement PML_PML')
-        PML_PML
-        valid_edge_internal=1;
+    if valid_edge_internal==0
+        disp('Stop in edge internal not a valid internal edge')
+        jkljkkjklj
     end
-
-end
-
-if valid_edge_internal==0
-    disp('Stop in edge internal not a valid internal edge')
-    jkljkkjklj
 end
 
 
+if ((element_model(e_1)==1)&(element_model(e_2)==0))
+    internal_fluid_DGM_FEM
+end

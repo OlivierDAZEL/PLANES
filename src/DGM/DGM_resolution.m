@@ -109,6 +109,12 @@ for i_f=1:abs(nb_frequencies)
         if profiles.y==1
             plot_sol_DGM_y_Q
         end
+        
+        if profiles.map==1
+            plot_sol_DGM_map_Q
+        end
+        
+        
         if profiles.custom~=0
             eval(['plot_sol_DGM_custom_' , num2str(profiles.custom)]);
         end 

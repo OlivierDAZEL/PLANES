@@ -1,17 +1,43 @@
-lx=1.00e-2;
-lyFEM=10.00e-2;
+lAB=1.00e0;
+lBC=1.00e0;
+lCDhori=1.00e0;
+lCDvert=1.00e0;
+lDE=1.00e0;
+lFE=lAB+lCDhori;
+lGFvert=1.00e0;
+lHG=1.00e0;
+lAH=lBC+lCDvert+lDE-lGFvert;
 
-lyDGM=lyFEM;
-nx=1;
-nyFEM=ceil(nx*lyFEM/lx);
-nyDGM=ceil(nx*lyDGM/lx);
+nAB=15;
+nBC=nAB*ceil(lBC/lAB);
+nCD=nAB*ceil(sqrt(lCDhori^2+lCDvert^2)/lAB);
+nDE=nAB*ceil(lDE/lAB);
+nFE=nAB*ceil(lFE/lAB);
+nGF=nAB*ceil(sqrt(lGFvert^2+lAB^2)/lAB);
+nHG=nAB*ceil(lHG/lAB);
+nAH=nAB*ceil(lHG/lAB);
 
-% fid=fopen(name_file_input_FreeFem,'w');
-% fprintf(fid,'%s\n',name_file_msh);
-% fprintf(fid,'%12.8f\n',lx);
-% fprintf(fid,'%12.8f\n',ly);
-% fprintf(fid,'%d\n',nx);
-% fprintf(fid,'%d\n',ny);
-% fclose(fid);
+
+
+fid=fopen(name_file_input_FreeFem,'w');
+fprintf(fid,'%s\n',name_file_msh);
+fprintf(fid,'%12.8f\n',lAB);
+fprintf(fid,'%12.8f\n',lBC);
+fprintf(fid,'%12.8f\n',lCDhori);
+fprintf(fid,'%12.8f\n',lCDvert);
+fprintf(fid,'%12.8f\n',lDE);
+fprintf(fid,'%12.8f\n',lFE);
+fprintf(fid,'%12.8f\n',lGFvert);
+fprintf(fid,'%12.8f\n',lHG);
+
+fprintf(fid,'%d\n',nAB);
+fprintf(fid,'%d\n',nBC);
+fprintf(fid,'%d\n',nCD);
+fprintf(fid,'%d\n',nDE);
+fprintf(fid,'%d\n',nFE);
+fprintf(fid,'%d\n',nGF);
+fprintf(fid,'%d\n',nHG);
+fprintf(fid,'%d\n',nAH);
+fclose(fid);
 
 

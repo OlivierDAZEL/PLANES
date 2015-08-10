@@ -58,7 +58,7 @@ for ie=1:nb.loads
             index_force=dof_A(p(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)-F3(index_F_elem);
+            F(index_F_global)=F(index_F_global)-F3(index_F_elem)/(1j*omega);
     end
 
 

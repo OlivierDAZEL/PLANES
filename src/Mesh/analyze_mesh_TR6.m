@@ -32,7 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
+nb_dof_node=1;
 is_pw=(ismember(loads(:,4),[10 11 12]));
 is_pw_R=is_pw;
 if sum(is_pw)~=0

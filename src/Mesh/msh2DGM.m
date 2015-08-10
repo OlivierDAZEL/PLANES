@@ -45,7 +45,7 @@ nodes=zeros(nb.nodes,2);
 node_label=zeros(nb.nodes);
 elements=zeros(nb.elements,3);
 element_label=zeros(nb.elements,1);
-element_model=zeros(nb.elements,1);
+element_model=ones(nb.elements,1);
 edges=zeros(nb.edges,3);
 
 

@@ -55,7 +55,7 @@ end
 
 
 
-for ie=1:nb_elements
+for ie=1:nb.elements
     
     vertices=[nodes(elements(ie,:),:)'];
     

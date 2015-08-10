@@ -54,7 +54,7 @@ abs_EF=zeros(nb_frequencies,1);
 
 
 for i_f=1:abs(nb_frequencies)
-
+    
     FEM_progress=100*i_f/abs(nb_frequencies)
     
     freq=vec_freq(i_f);
@@ -255,6 +255,14 @@ for i_f=1:abs(nb_frequencies)
             end
             if solve.H12
                 plot_sol_H12_y
+            end
+        end
+        if profiles.map==1
+            if solve.TR6
+                plot_sol_TR6_map
+            end
+            if solve.H12
+                plot_sol_H12_map
             end
         end
         if profiles.custom~=0

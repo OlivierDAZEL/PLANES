@@ -32,7 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
+nb.dof_FEM=0;
 period=max(nodes(:,1))-min(nodes(:,1));
 
 ondes_element=zeros(nb.elements,1);

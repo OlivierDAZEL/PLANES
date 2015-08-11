@@ -8,7 +8,7 @@ lGFvert=1.00e0;
 lHG=1.00e0;
 lAH=lBC+lCDvert+lDE-lGFvert;
 
-nAB=15;
+nAB=5;
 nBC=nAB*ceil(lBC/lAB);
 nCD=nAB*ceil(sqrt(lCDhori^2+lCDvert^2)/lAB);
 nDE=nAB*ceil(lDE/lAB);

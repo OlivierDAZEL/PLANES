@@ -62,8 +62,9 @@ for i_f=1:abs(nb_frequencies)
     
     
     k_air=omega/air.c;
-    [k_air,k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period);
-    
+    if nb.R~=0
+        [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period);
+    end
     
     % Construction of the linear system
     
@@ -247,7 +248,7 @@ for i_f=1:abs(nb_frequencies)
         fprintf(file_TL_id,'%1.15e \t %1.15e \n',freq,TL_EF(i_f));
     end
     
-    if profiles.on==1
+    if profiles.on~=0
         disp('plotting the solution')
         if profiles.y==1
             if solve.TR6

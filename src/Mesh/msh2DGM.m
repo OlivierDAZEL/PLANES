@@ -68,53 +68,6 @@ end
 
 fclose(fid);
 
-% Creation of 3 segments by element
-% segments=[node1 node2 #element1 0 element_label1]
-segments=[         elements(:,1) elements(:,2) (1:nb.elements)' zeros(nb.elements,1) element_label];
-segments=[segments;elements(:,2) elements(:,3) (1:nb.elements)' zeros(nb.elements,1) element_label];
-segments=[segments;elements(:,3) elements(:,1) (1:nb.elements)' zeros(nb.elements,1) element_label];
-% Ordering of nodes so that node 1 < node 2
-segments(:,1:2)=sort(segments(:,1:2),2);
-% Research of double segments
-[~, ~, ic] = unique(segments(:,1:2),'rows');
-segments=[ic segments(:,1:5)];
-% segments=[#segment node1 node2 #element1 0 element_label1]
-% Ordering of the vector along the #of segments (first column)
-[~,index]=sort(segments(:,1));
-segments=segments(index,:);
-% Find dupplicate values
-temp=find(~diff(segments(:,1)));
-% Merging of columns
-segments(temp,5)=segments(temp+1,4);
-segments(temp,7)=segments(temp+1,6);
-% segments=[#segment node1 node2 #element1 #element2 element_label1 element_label2]
-segments(temp+1,:)=[];
-% Suppression of the first column with temporary index of edges
-segments(:,1)=[];
-% segments=[node1 node2 #element1 #element2(if any) element_label1 element_label2(if any)]
-
-% Separation between boundary and internal;
-index_boundary=find(segments(:,4)==0);
-index_interface=find(segments(:,4)~=0);
-
-boundaries=[segments(index_boundary,:)];
-internal=[segments(index_interface,:)];
-
-% check for internal that #element1<#element2
-
-i_temp=find(internal(:,3)>internal(:,4));
-temp=internal(i_temp,3);
-internal(i_temp,3)=internal(i_temp,4);
-internal(i_temp,4)=temp;
-
-
-% internal=[node1 node2 #element1 #element2 element_label1 element_label2]
-clear segments
-
-
-% Suppression of temporary values for boundaries
-boundaries(:,4:6)=[];
-% boundaries=[node1 node2 #element1]
 
 % Ordering of nodes so that column 1 < column 2
 edges(:,1:2)=sort(edges(:,1:2),2);
@@ -147,48 +100,7 @@ boundaries(:,[4 3])=boundaries(:,[3 4]);
 nb.internal=size(internal,1);
 
 
-temp=unique(element_label(find(floor(element_label/1000)==1)));
-nb.media.elas=length(temp);
-num_media.elas(1:nb.media.elas)=temp-1000;
 
-temp=unique(element_label(find(floor(element_label/1000)==2)));
-nb.media.eqf=length(temp);
-num_media.eqf(1:nb.media.eqf)=temp-2000;
-
-temp=unique(element_label(find(floor(element_label/1000)==3)));
-nb.media.limp=length(temp);
-num_media.limp(1:nb.media.limp)=temp-3000;
-
-temp=unique(element_label(find(floor(element_label/1000)==4)));
-nb.media.pem98=length(temp);
-num_media.pem98(1:nb.media.pem98)=temp-4000;
-
-temp=unique(element_label(find(floor(element_label/1000)==5)));
-nb.media.pem01=length(temp);
-num_media.pem01(1:nb.media.pem01)=temp-5000;
-
-temp=unique(element_label(find(element_label==0)));
-nb.media.acou=length(temp);
-
-
-for ie=1:nb.elements
-    
-    if element_label(ie)==0
-        element_num_mat(ie)=0;
-    elseif (floor(element_label(ie)/1000)==1)
-        element_num_mat(ie)=find(num_media.elas==(element_label(ie)-1000));
-        
-    elseif (floor(element_label(ie)/1000)==2)
-        element_num_mat(ie)=find(num_media.eqf==(element_label(ie)-2000));
-    elseif (floor(element_label(ie)/1000)==3)
-        element_num_mat(ie)=find(num_media.limp==(element_label(ie)-3000));
-        
-    elseif (floor(element_label(ie)/1000)==4)
-        element_num_mat(ie)=find(num_media.pem98==(element_label(ie)-4000));
-    elseif (floor(element_label(ie)/1000)==5)
-        element_num_mat(ie)=find(num_media.pem01==(element_label(ie)-5000));
-    end
-end
 
 % boundaries=[node1 node2 #element #label 0]
 

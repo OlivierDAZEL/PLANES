@@ -1,6 +1,6 @@
-% init_vec_frequencies.m
+% msh_import.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -33,12 +33,36 @@
 %%
 
 
-if(frequency.nb>0)
-    if frequency.nb==1
-        frequency.vec=frequency.min;
-    else
-        frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
-    end
-else
-    frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
+function [nb,nodes,elem,edge_msh]=msh_import(nom_fichier)
+
+fid=fopen(nom_fichier,'r');
+nb.nodes=fscanf(fid,'%i',1);
+nb.elements=fscanf(fid,'%i',1);
+nb.edges=fscanf(fid,'%i',1);
+
+nodes=zeros(nb.nodes,2);
+elem.nodes=zeros(nb.elements,3);
+elem.label=zeros(nb.elements,1);
+edge_msh=zeros(nb.edges,3);
+
+
+for ii=1:nb.nodes
+    nodes(ii,1)=fscanf(fid,'%f',1);
+    nodes(ii,2)=fscanf(fid,'%f',1);
+    node_label(ii)=fscanf(fid,'%f',1);
 end
+for ii=1:nb.elements
+    elem.nodes(ii,1)=fscanf(fid,'%i',1);
+    elem.nodes(ii,2)=fscanf(fid,'%i',1);
+    elem.nodes(ii,3)=fscanf(fid,'%i',1);
+    element.label(ii,1)=abs(fscanf(fid,'%f',1));
+end
+for ii=1:nb.edges
+    edge_msh(ii,1)=fscanf(fid,'%i',1);
+    edge_msh(ii,2)=fscanf(fid,'%i',1);
+    edge_msh(ii,3)=fscanf(fid,'%i',1);
+end
+
+fclose(fid);
+
+

@@ -273,89 +273,89 @@ nb.MMT=size(edges_MMT,1);
 %    axis equal
 
 
-
-switch tracefigure
-    case 1
-    figure
-    hold on
-    
-    for ii=1:nb.elements
-        line([nodes(elements(ii,1),1) nodes(elements(ii,2),1)],[nodes(elements(ii,1),2) nodes(elements(ii,2),2)],'Color','r');
-        line([nodes(elements(ii,2),1) nodes(elements(ii,3),1)],[nodes(elements(ii,2),2) nodes(elements(ii,3),2)],'Color','r');
-        line([nodes(elements(ii,3),1) nodes(elements(ii,4),1)],[nodes(elements(ii,3),2) nodes(elements(ii,4),2)],'Color','r');
-        line([nodes(elements(ii,4),1) nodes(elements(ii,5),1)],[nodes(elements(ii,4),2) nodes(elements(ii,5),2)],'Color','r');
-        line([nodes(elements(ii,5),1) nodes(elements(ii,6),1)],[nodes(elements(ii,5),2) nodes(elements(ii,6),2)],'Color','r');
-        line([nodes(elements(ii,6),1) nodes(elements(ii,1),1)],[nodes(elements(ii,6),2) nodes(elements(ii,1),2)],'Color','r');
-        text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(element_label(ii)),'Fontsize',15);
-    end
-    
-    plot(nodes(:,1),nodes(:,2),'.','Markersize',15);
-    
-    
-%     for ii=1:nb.nodes
-%         text(nodes(ii,1),nodes(ii,2),num2str(ii),'Fontsize',15);
+% 
+% switch tracefigure
+%     case 1
+%     figure
+%     hold on
+%     
+%     for ii=1:nb.elements
+%         line([nodes(elements(ii,1),1) nodes(elements(ii,2),1)],[nodes(elements(ii,1),2) nodes(elements(ii,2),2)],'Color','r');
+%         line([nodes(elements(ii,2),1) nodes(elements(ii,3),1)],[nodes(elements(ii,2),2) nodes(elements(ii,3),2)],'Color','r');
+%         line([nodes(elements(ii,3),1) nodes(elements(ii,4),1)],[nodes(elements(ii,3),2) nodes(elements(ii,4),2)],'Color','r');
+%         line([nodes(elements(ii,4),1) nodes(elements(ii,5),1)],[nodes(elements(ii,4),2) nodes(elements(ii,5),2)],'Color','r');
+%         line([nodes(elements(ii,5),1) nodes(elements(ii,6),1)],[nodes(elements(ii,5),2) nodes(elements(ii,6),2)],'Color','r');
+%         line([nodes(elements(ii,6),1) nodes(elements(ii,1),1)],[nodes(elements(ii,6),2) nodes(elements(ii,1),2)],'Color','r');
+%         text(mean(nodes(elements(ii,1:6),1)),mean(nodes(elements(ii,1:6),2)),num2str(element_label(ii)),'Fontsize',15);
 %     end
-    axis equal
-    
-    figure
-    hold on
-    
-    for ii=1:nb.loads
-        line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)]);
-        text((nodes(loads(ii,1),1)+nodes(loads(ii,2),1))/2,(nodes(loads(ii,1),2)+nodes(loads(ii,2),2))/2,num2str(loads(ii,4)),'Fontsize',15);
-    end
-    for ii=1:nb.periodicity
-        line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)]);
-        text((nodes(periodicity(ii,1),1)+nodes(periodicity(ii,2),1))/2,(nodes(periodicity(ii,1),2)+nodes(periodicity(ii,2),2))/2,num2str(periodicity(ii,4)),'Fontsize',15);
-        
-    end
-    for ii=1:nb.MMT
-        line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
-        text((nodes(edges_MMT(ii,1),1)+nodes(edges_MMT(ii,2),1))/2,(nodes(edges_MMT(ii,1),2)+nodes(edges_MMT(ii,2),2))/2,num2str(edges_MMT(ii,4)),'Fontsize',15);
-        
-    end
-    for ii=1:nb.dirichlets
-        line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
-        text((nodes(dirichlets(ii,1),1)+nodes(dirichlets(ii,2),1))/2,(nodes(dirichlets(ii,1),2)+nodes(dirichlets(ii,2),2))/2,num2str(dirichlets(ii,4)),'Fontsize',15);
-        
-    end
-    axis equal
-    
-    case 2
-        
-
-
-    
-    figure
-    hold on
-    
-    for ii=1:nb.loads
-        line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)],'Color','red');
-    end
-    for ii=1:nb.periodicity
-        line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)],'Color','k');
-        
-    end
-    for ii=1:nb.MMT
-        line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
-        
-    end
-        for ii=1:nb.interfaces
-        line([nodes(interfaces(ii,1),1) nodes(interfaces(ii,2),1)],[nodes(interfaces(ii,1),2) nodes(interfaces(ii,2),2)]);
-        
-    end
-    
-    for ii=1:nb.dirichlets
-        line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
-        
-    end
-    axis equal
-        
-        
-        
-        
-        
-        
-end
+%     
+%     plot(nodes(:,1),nodes(:,2),'.','Markersize',15);
+%     
+%     
+% %     for ii=1:nb.nodes
+% %         text(nodes(ii,1),nodes(ii,2),num2str(ii),'Fontsize',15);
+% %     end
+%     axis equal
+%     
+%     figure
+%     hold on
+%     
+%     for ii=1:nb.loads
+%         line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)]);
+%         text((nodes(loads(ii,1),1)+nodes(loads(ii,2),1))/2,(nodes(loads(ii,1),2)+nodes(loads(ii,2),2))/2,num2str(loads(ii,4)),'Fontsize',15);
+%     end
+%     for ii=1:nb.periodicity
+%         line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)]);
+%         text((nodes(periodicity(ii,1),1)+nodes(periodicity(ii,2),1))/2,(nodes(periodicity(ii,1),2)+nodes(periodicity(ii,2),2))/2,num2str(periodicity(ii,4)),'Fontsize',15);
+%         
+%     end
+%     for ii=1:nb.MMT
+%         line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
+%         text((nodes(edges_MMT(ii,1),1)+nodes(edges_MMT(ii,2),1))/2,(nodes(edges_MMT(ii,1),2)+nodes(edges_MMT(ii,2),2))/2,num2str(edges_MMT(ii,4)),'Fontsize',15);
+%         
+%     end
+%     for ii=1:nb.dirichlets
+%         line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
+%         text((nodes(dirichlets(ii,1),1)+nodes(dirichlets(ii,2),1))/2,(nodes(dirichlets(ii,1),2)+nodes(dirichlets(ii,2),2))/2,num2str(dirichlets(ii,4)),'Fontsize',15);
+%         
+%     end
+%     axis equal
+%     
+%     case 2
+%         
+% 
+% 
+%     
+%     figure
+%     hold on
+%     
+%     for ii=1:nb.loads
+%         line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)],'Color','red');
+%     end
+%     for ii=1:nb.periodicity
+%         line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)],'Color','k');
+%         
+%     end
+%     for ii=1:nb.MMT
+%         line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
+%         
+%     end
+%         for ii=1:nb.interfaces
+%         line([nodes(interfaces(ii,1),1) nodes(interfaces(ii,2),1)],[nodes(interfaces(ii,1),2) nodes(interfaces(ii,2),2)]);
+%         
+%     end
+%     
+%     for ii=1:nb.dirichlets
+%         line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
+%         
+%     end
+%     axis equal
+%         
+%         
+%         
+%         
+%         
+%         
+% end
     
 end

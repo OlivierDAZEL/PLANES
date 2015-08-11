@@ -76,8 +76,6 @@ if sum(is_pw)~=0
     size_info_vector_T=2;
 end
 
-
-
 period=max(nodes(:,1))-min(nodes(:,1));
 
 check_dirichlet_H12

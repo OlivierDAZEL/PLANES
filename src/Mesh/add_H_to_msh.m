@@ -1,6 +1,6 @@
-% init_PLANES.m
+% add_H_to_msh.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -33,41 +33,13 @@
 %%
 
 
-warning('off','MATLAB:nearlySingularMatrix')
+
+function add_H_to_msh(name_file,label_list,element_type,height_list)
 
 
-name_project_directory=['../Projects/' name_of_project '/'];
 
-if subproject==0
-    name_file=[name_project_directory name_of_project];
-    name_of_project_full=name_of_project;
-else
-    name_file=[name_project_directory name_of_project '_' num2str(subproject) ];
-    name_of_project_full=[name_of_project '_' num2str(subproject)];
+
+
+for i_label=1:length(label_list)
+    
 end
-
-name_file_msh=          [name_file '.msh'];
-name_file_edp=          [name_file '.edp'];
-name_file_input_FreeFem=['FF.inp'];
-name_file_abs=          [name_file '.abs'];
-name_file_TL=           [name_file '.TL'];
-name_file_PW=           [name_file '.PW'];
-name_file_info=         [name_file '.info'];
-
-name_file_FEM=          [name_file '.FEM'];
-
-if solve.DGM
-    name_file_DGM=          [name_file '_Nw=' num2str(nb_thetaDGM) '.DGM'];
-end
-
-if export_profiles==1
-    name_directory_profiles= [name_project_directory '/Profiles/'];
-    if ~exist(name_directory_profiles,'dir')
-        mkdir(name_directory_profiles)
-    end
-end
-
-set(0,'DefaultLineMarkerSize',15);
-set(0,'Defaultlinelinewidth',2);
-set(0,'DefaultAxesFontSize',15)
-set(0,'DefaultAxeslinewidth',2);

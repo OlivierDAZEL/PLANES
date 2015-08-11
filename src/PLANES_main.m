@@ -40,70 +40,93 @@ eval(['addpath(' list_path ');'])
 
 %name_of_project='PEM';
 %name_of_project='air_PEM';
-name_of_project='Kundt';
-name_of_project='CFM';
+project.name='Kundt';
+%name_of_project='CFM';
 %name_of_project='sandwich_meta';
-subproject=0;
+project.num=0;
 
 %subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-nb_frequencies=1;
-freq_min=500;
-freq_max=4000;
+frequency.nb=1;
+frequency.min=500;
+frequency.max=4000;
 % Angle of incidence
-theta_inc=0*pi/180;
+%theta_inc=0*pi/180;
 
-solve.TR6=1;
-solve.H12=0;
-solve.DGM=0;
-solve.PW=0;
-solve.FEMDGM=0;
 
-if (solve.DGM|solve.FEMDGM)
-    nb_thetaDGM=8;
-    vec_theta=linspace(0,2*pi,nb_thetaDGM+1);
-    vec_theta(end)=[];
-end
 
+% if (solve.DGM|solve.FEMDGM)
+%     nb_thetaDGM=8;
+%     vec_theta=linspace(0,2*pi,nb_thetaDGM+1);
+%     vec_theta(end)=[];
+% end
 %
-export_profiles=0;
 
-profiles.on=1;
+
+profiles.mesh=1;
 profiles.x=0;
-profiles.y=0;
-profiles.map=1;
+profiles.y=1;
+profiles.map=0;
 profiles.custom=0;
-profiles.custom=0;
-export_nrj=1;
+profiles.on=profiles.x+profiles.y+profiles.map+profiles.custom;
+export.nrj=1;
+export.profiles=0;
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES
-init_PLANES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+PLANES_init
 air_properties_JPG
 init_vec_frequencies
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Call to FreeFEM++ to create the Mesh and importation of the mesh
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Call to FreeFEM++ to create the Mesh and importation of the mesh
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+eval([name.project_full]);
 
-eval([name_of_project_full])
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if (solve.TR6+solve.DGM)>0
-    system(['/usr/local/bin/FreeFem++ ' name_file_edp])
-end
+
+
+PLANES_preprocess
+dsqqdsqsd
+display_mesh
+
+
+
+
+
+gfddfgfgdgdfgdffdg
+
+
+
+
+
+
 
 if solve.DGM
     
     [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,...
         edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
-    
+    nb.dof_FEM=0;
     analyze_mesh_DGM
     
     disp('DGM Resolution')
     DGM_resolution
     
 end
+
+
+
+
+
+
+
+
+
 
 if solve.TR6
     
@@ -123,7 +146,7 @@ end
 if solve.H12
     
     [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,interfaces,...
-        edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,lyDGM+lyFEM,nx,nyDGM+nyFEM,0);
+        edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,ly,nx,ny,0);
     
     analyze_mesh_H12
     disp('Building FEM shape matrices')
@@ -138,7 +161,7 @@ end
 if solve.FEMDGM
     
     [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,...
-        edges_MMT,loads,dirichlets,periodicity,index_label,index_element,lx_H12,ly_H12]=createmshH12DGM(lx,lyFEM,lyDGM,nx,nyFEM,nyDGM,1);
+        edges_MMT,loads,dirichlets,periodicity,index_label,index_element,lx_H12,ly_H12]=createmshH12DGM(lx,ly/2,ly/2,nx,ny/2,ny/2,1);
     %element_model=ones(size(element_model));
     
     analyze_mesh_H12
@@ -160,13 +183,13 @@ end
 
 % Analytical solution (if exists)
 
-% name_solution=['solution_' , name_of_project];
-% if subproject~=0
-%     name_solution=[name_solution,'_',num2str(subproject)];
-% end
-% if ((exist(name_solution)==2)&(profiles.on))
-%     eval('eval(name_solution)')
-% end
+name_solution=['solution_' , name_of_project];
+if subproject~=0
+    name_solution=[name_solution,'_',num2str(subproject)];
+end
+if ((exist(name_solution)==2)&(profiles.on))
+    eval('eval(name_solution)')
+end
 %solution_Kundt
 
 %  figure

@@ -1,4 +1,4 @@
-% plot_sol_1D_y.m
+% plot_sol_TR6_y.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -39,22 +39,30 @@ y=[];
 
 
 if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
-    figure(10001)
-    % For displacement
+    figure(2002)
     hold on
     title('Solid displacement')
     xlabel('y')
     ylabel('abs(u)')
+    figure(4002)
+    hold on
+    title('Solid displacement')
+    xlabel('y')
+    ylabel('angle(u)')
 end
 
 
 if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
-    figure(10002)
-    % For pressure
+    figure(2010)
     hold on
     title('Pressure')
     xlabel('y')
     ylabel('abs(P)')
+    figure(4010)
+    hold on
+    title('Pressure')
+    xlabel('y')
+    ylabel('angle(P)')    
 end
 
 
@@ -63,20 +71,21 @@ for ie=1:nb.elements
     
     
     if ismember(floor(element_label(ie)/1000),[1 4 5])
-        figure(10001)
         c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
         y=nodes(elements(ie,:),2);
+        figure(2010)
         plot(y,abs(c),'r.');
-        
+        figure(4010)
+        plot(y,angle(c),'r.');        
     end
     
     if ismember(floor(element_label(ie)/1000),[0 2 4 5 8])
-        figure(10002)
-       
         c=sol(3*(elements(ie,:)-1)+3);
         y=nodes(elements(ie,:),2);
-        plot(y,abs(c),'r.');
-        
+        figure(2010)
+        plot(y,abs(c),'r.');    
+        figure(4010)
+        plot(y,angle(c),'r.');         
     end
     
 end

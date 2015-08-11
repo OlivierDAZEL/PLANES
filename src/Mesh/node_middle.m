@@ -1,6 +1,6 @@
-% init_vec_frequencies.m
+% node_middle.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -33,12 +33,12 @@
 %%
 
 
-if(frequency.nb>0)
-    if frequency.nb==1
-        frequency.vec=frequency.min;
-    else
-        frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
-    end
-else
-    frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
+function index=node_middle(nodes,index_1,index_2)
+
+node_temp=nodes(:,1)+1j*nodes(:,2);
+
+node_temp=node_temp-(node_temp(index_1)+node_temp(index_2))/2;
+
+[~,index]=min(abs(node_temp));
+
 end

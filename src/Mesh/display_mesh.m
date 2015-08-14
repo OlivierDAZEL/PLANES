@@ -41,9 +41,16 @@ hold on
 for ie=1:nb.elements
     if elem.model(ie)==1
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,3),2)],'Color','r');
-        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),2)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','r');
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','r');
         line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','r');
         text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(ie),'Fontsize',15);
+    end
+    if elem.model(ie)==2
+        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
+        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','r');
+        line([nodes(elem.nodes(ie,4),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,4),2) nodes(elem.nodes(ie,1),2)],'Color','r');
+        text(mean(nodes(elem.nodes(ie,1:4),1)),mean(nodes(elem.nodes(ie,1:4),2)),num2str(ie),'Fontsize',15);
     end
     
     if ismember(elem.model(ie),[3,10])
@@ -68,11 +75,17 @@ hold on
 for ie=1:nb.elements
     if elem.model(ie)==1
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,3),2)],'Color','r');
-        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),2)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','r');
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','r');
         line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','r');
         text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(elem.model(ie)),'Fontsize',15);
     end
-    
+    if elem.model(ie)==2
+        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
+        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','r');
+        line([nodes(elem.nodes(ie,4),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,4),2) nodes(elem.nodes(ie,1),2)],'Color','r');
+        text(mean(nodes(elem.nodes(ie,1:4),1)),mean(nodes(elem.nodes(ie,1:4),2)),num2str(elem.model(ie)),'Fontsize',15);
+    end
     if ismember(elem.model(ie),[3,10])
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
         line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
@@ -114,58 +127,24 @@ hold on
 for ie=1:nb.elements
     if elem.model(ie)==1
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,3),2)],'Color','r');
-        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),2)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','r');
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','r');
         line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','r');
-        text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(ie),'Fontsize',15);
+        text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(elem.label(ie)),'Fontsize',15);
     end
-    
+        if elem.model(ie)==2
+        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
+        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','r');
+        line([nodes(elem.nodes(ie,4),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,4),2) nodes(elem.nodes(ie,1),2)],'Color','r');
+        text(mean(nodes(elem.nodes(ie,1:4),1)),mean(nodes(elem.nodes(ie,1:4),2)),num2str(elem.label(ie)),'Fontsize',15);
+    end
     if ismember(elem.model(ie),[3,10])
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
         line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
         line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,1),2)],'Color','r');
-        text(mean(nodes(elem.nodes(ie,1:3),1)),mean(nodes(elem.nodes(ie,1:3),2)),num2str(ie),'Fontsize',15);
+        text(mean(nodes(elem.nodes(ie,1:3),1)),mean(nodes(elem.nodes(ie,1:3),2)),num2str(elem.label(ie)),'Fontsize',15);
     end
 end
-plot(nodes(:,1),nodes(:,2),'b.','Markersize',15);
-for ii=1:nb.nodes
-    text(nodes(ii,1),nodes(ii,2),num2str(ii),'Fontsize',15);
-end
 axis equal
-title('Nodes and Elements')
-
-
-
-%
-%
-%
-%     figure
-%     hold on
-%
-%     for ii=1:nb.loads
-%         line([nodes(loads(ii,1),1) nodes(loads(ii,2),1)],[nodes(loads(ii,1),2) nodes(loads(ii,2),2)],'Color','red');
-%     end
-%     for ii=1:nb.periodicity
-%         line([nodes(periodicity(ii,1),1) nodes(periodicity(ii,2),1)],[nodes(periodicity(ii,1),2) nodes(periodicity(ii,2),2)],'Color','k');
-%
-%     end
-%     for ii=1:nb.MMT
-%         line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
-%
-%     end
-%         for ii=1:nb.interfaces
-%         line([nodes(interfaces(ii,1),1) nodes(interfaces(ii,2),1)],[nodes(interfaces(ii,1),2) nodes(interfaces(ii,2),2)]);
-%
-%     end
-%
-%     for ii=1:nb.dirichlets
-%         line([nodes(dirichlets(ii,1),1) nodes(dirichlets(ii,2),1)],[nodes(dirichlets(ii,1),2) nodes(dirichlets(ii,2),2)]);
-%
-%     end
-%     axis equal
-%
-%
-%
-
-
 
 % end

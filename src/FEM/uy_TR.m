@@ -1,4 +1,4 @@
-% p_H.m
+% uy.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,18 +33,6 @@
 %%
 
 
-function f=p_H(node)
+function f=uy(node)
 
-f(1:4:4*length(node))=12*(node-1)+9;
-f(2:4:4*length(node))=12*(node-1)+10;
-f(3:4:4*length(node))=12*(node-1)+11;
-f(4:4:4*length(node))=12*(node-1)+12;
-
-
-
-
-
-
-
-
-
+f(1:length(node))=12*(node-1)+05;

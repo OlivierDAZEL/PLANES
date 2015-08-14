@@ -1,33 +1,37 @@
-lx=10.00e-2;
-ly=10.00e-2;
-nx=6;
+model_data.lx=1.00e-2;
+model_data.ly=5.00e-2;
+model_data.nx=2;
+model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
 
-ny=ceil(nx*ly/lx);
 
 
-fid=fopen(name_file_input_FreeFem,'w');
-fprintf(fid,'%s\n',name_file_msh);
-fprintf(fid,'%12.8f\n',lx);
-fprintf(fid,'%12.8f\n',ly);
-fprintf(fid,'%d\n',nx);
-fprintf(fid,'%d\n',ny);
+%solve.TR6=1;
+
+fid=fopen(name.file_input_FreeFem,'w');
+fprintf(fid,'%s\n',name.file_msh);
+fprintf(fid,'%12.8f\n',model_data.lx);
+fprintf(fid,'%12.8f\n',model_data.ly);
+fprintf(fid,'%d\n',model_data.nx);
+fprintf(fid,'%d\n',model_data.ny);
 fclose(fid);
 
+% Call to FreeFem++ to create a msh File
+system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 
-nb_layers=1;
-multilayer(1).d=ly;
-multilayer(1).mat=0;
-% Termination condition // 0 for rigid backing 1 for radiation
-termination=0;
 
-% Number of waves (two ways) in each layer
-% For the resolution, the incident waves is included in the system and put to RHS at the
-% end of the procedure
+%Importation of the msh File
 
-% Addition of a new layer for the incident medium
-l0.d=0;
-l0.mat=0;
-multilayer=[l0 multilayer];
-nb_layers=nb_layers+1;
+[nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
 
-compute_number_PW_TMM
+% All the elements are TR6
+
+elem.model=1*ones(nb.elements,1);
+
+label_boundary=51
+label_elem_ajoute=0
+l_supp=0.2
+[nb,nodes,elem,edge_msh] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,edge_msh,nodes,elem,nb)
+
+
+
+%aezeazezaeazaez

@@ -33,29 +33,29 @@
 %%
 
 for ie=1:nb.loads
-    typ=floor(loads(ie,4));
+    typ=floor(edges.loads(ie,4));
     
-    x1=nodes(loads(ie,1),1);
-    y1=nodes(loads(ie,1),2);
-    x2=nodes(loads(ie,2),1);
-    y2=nodes(loads(ie,2),2);
+    x1=nodes(edges.loads(ie,1),1);
+    y1=nodes(edges.loads(ie,1),2);
+    x2=nodes(edges.loads(ie,2),1);
+    y2=nodes(edges.loads(ie,2),2);
     length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
     if (x1<x2)
         a=x1;
-        node(1)=loads(ie,1);
-        node(2)=loads(ie,2);
-        node(3)=loads(ie,6);
+        node(1)=edges.loads(ie,1);
+        node(2)=edges.loads(ie,2);
+        node(3)=edges.loads(ie,6);
     else
         a=x2;
-        node(2)=loads(ie,1);
-        node(1)=loads(ie,2);
-        node(3)=loads(ie,6);
+        node(2)=edges.loads(ie,1);
+        node(1)=edges.loads(ie,2);
+        node(3)=edges.loads(ie,6);
     end
     
     switch typ
         case {3}
             F3=TR6_unit(length_edge);
-            index_force=dof_A(p(node));
+            index_force=dof_A(p_TR(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
             F(index_F_global)=F(index_F_global)-F3(index_F_elem)/(1j*omega);

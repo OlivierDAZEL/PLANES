@@ -35,9 +35,18 @@
 %% First step: identify boudaries and internal edges 
 % Creation of 3 segments by element
 % segments=[node1 node2 #element1 0 elem.label1]
-segments=[         elem.nodes(:,1) elem.nodes(:,2) (1:nb.elements)' zeros(nb.elements,1) elem.label];
-segments=[segments;elem.nodes(:,2) elem.nodes(:,3) (1:nb.elements)' zeros(nb.elements,1) elem.label];
-segments=[segments;elem.nodes(:,3) elem.nodes(:,1) (1:nb.elements)' zeros(nb.elements,1) elem.label];
+
+temp=find(ismember(elem.model,[1 3]));
+segments=[         elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
+segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
+segments=[segments;elem.nodes(temp,3) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
+temp=find(ismember(elem.model,2));
+segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
+segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
+segments=[segments;elem.nodes(temp,3) elem.nodes(temp,4) temp 0*temp elem.label(temp)];
+segments=[segments;elem.nodes(temp,4) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
+
+
 % Ordering of nodes so that node 1 < node 2
 segments(:,1:2)=sort(segments(:,1:2),2);
 % Research of double segments
@@ -63,9 +72,11 @@ segments(:,1)=[];
 edges.internal=[segments(find(segments(:,4)~=0),:)];
 % check for internal that #element1<#element2
 temp=find(edges.internal(:,3)>edges.internal(:,4));
-temp=edges.internal(temp,3);
+v_temp=edges.internal(temp,3);
 edges.internal(temp,3)=edges.internal(temp,4);
-edges.internal(temp,4)=temp;
+edges.internal(temp,4)=v_temp;
+
+
 boundaries=    [segments(find(segments(:,4)==0),:)];
 
 clear segments
@@ -76,16 +87,18 @@ clear segments
 %% Second step: for internal edges : identify for internal edges the boundary with natural coupling
 %%% They correspond to internal edges with FEM in both elements on naturally coupling physical medium  
 
-temp=(ismember(elem.model(edges.internal(:,3)),[1:9]).*ismember(elem.model(edges.internal(:,4)),[1:9]));
+temp_FEM=(ismember(elem.model(edges.internal(:,3)),1).*ismember(elem.model(edges.internal(:,4)),1));
+temp_FEM=temp_FEM+(ismember(elem.model(edges.internal(:,3)),2).*ismember(elem.model(edges.internal(:,4)),2));
+temp_FEM=temp_FEM+(ismember(elem.model(edges.internal(:,3)),3).*ismember(elem.model(edges.internal(:,4)),3));
 %The media on both faces of the internal edge are modelled both by FEM
 % Check of they are of same physical nature
 temp_physical=(ismember(floor(elem.label(edges.internal(:,3))/1000),[0 2 3])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[0 2 3]));
 temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[1])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[1]));
 temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[4])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[4]));
 temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[5])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[5]));
-temp=find(temp.*temp_physical);
+temp=find(temp_FEM.*temp_physical);
 edges.internal(temp,:)=[];
-
+clear temp_physical
 
 
 
@@ -156,6 +169,9 @@ if (sum(elem.model==1)~=0)
     [nb,nodes,elem,edges]=TR32TR6(nb,nodes,elem,edges);
 end
 
+if (sum(elem.model==2)~=0)
+    [elem,H_elem_H12,Q_elem_H12]=create_elementary_H12(nb,nodes,elem);
+end
 
 
 temp=unique(elem.label(find(floor(elem.label/1000)==1)));
@@ -187,30 +203,86 @@ nb.media.PML=length(temp);
 for ie=1:nb.elements
     
     if (floor(elem.label(ie)/1000)==0)
-        element_num_mat(ie)=0;
+        elem.num_mat(ie)=0;
     elseif (floor(elem.label(ie)/1000)==1)
-        element_num_mat(ie)=find(num_media.elas==(elem.label(ie)-1000));
+        elem.num_mat(ie)=find(num_media.elas==(elem.label(ie)-1000));
     elseif (floor(elem.label(ie)/1000)==2)
-        element_num_mat(ie)=find(num_media.eqf==(elem.label(ie)-2000));
+        elem.num_mat(ie)=find(num_media.eqf==(elem.label(ie)-2000));
     elseif (floor(elem.label(ie)/1000)==3)
-        element_num_mat(ie)=find(num_media.limp==(elem.label(ie)-3000));
+        elem.num_mat(ie)=find(num_media.limp==(elem.label(ie)-3000));
         
     elseif (floor(elem.label(ie)/1000)==4)
-        element_num_mat(ie)=find(num_media.pem98==(elem.label(ie)-4000));
+        elem.num_mat(ie)=find(num_media.pem98==(elem.label(ie)-4000));
     elseif (floor(elem.label(ie)/1000)==5)
-        element_num_mat(ie)=find(num_media.pem01==(elem.label(ie)-5000));
+        elem.num_mat(ie)=find(num_media.pem01==(elem.label(ie)-5000));
     end
 end
+
+
+is_pw=(ismember(edges.loads(:,4),[10 11 12]));
+is_pw_R=is_pw;
+if sum(is_pw)~=0
+    plot_abs=1;
+    nb.R=1;
+    size_info_vector_R=1;
+else
+    plot_abs=0;
+    nb.R=0;
+    size_info_vector_R=1;
+end
+
+is_pw=(ismember(edges.loads(:,4),[13]));
+is_pw_R=is_pw;
+if sum(is_pw)~=0
+    plot_abs=1;
+    nb.R=1;
+    size_info_vector_R=2;
+end
+
+
+is_pw=(ismember(edges.loads(:,4),[20 21 22]));
+is_pw_T=is_pw;
+if sum(is_pw)~=0
+    is_pw_T=find(is_pw);
+    plot_TL=1;
+    nb.T=1;
+    size_info_vector_T=1;
+else
+    plot_TL=0;
+    nb.T=0;
+    size_info_vector_T=1;
+end
+
+is_pw=(ismember(edges.loads(:,4),23));
+is_pw_T=is_pw;
+if sum(is_pw)~=0
+    is_pw_T=find(is_pw);
+    plot_TL=1;
+    nb.T=1;
+    size_info_vector_T=2;
+end
+
+period=max(nodes(:,1))-min(nodes(:,1));
+
+
+find_dof_FEM
+
+
+
+
+
+nb.interfaces=0
+
+
+
+
+
 
 
 if profiles.mesh
    display_mesh 
 end
 
-solve.TR6=0;
-solve.H12=0;
-solve.DGM=0;
-solve.PW=0;
-solve.FEMDGM=0;
+
 
 

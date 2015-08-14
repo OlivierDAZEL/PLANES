@@ -58,7 +58,7 @@ W_e1_plus=W_e2_moins;
 Omega_e1_moins=Omega_e2_plus;
 Omega_e1_plus=Omega_e2_moins;
 
-R_tilde=inv([C_e2*W_e2_moins -C_e1*W_e1_plus])*([C_e1*W_e1_moins -C_e2*W_e2_plus])
+R_tilde=inv([C_e2*W_e2_moins -C_e1*W_e1_plus])*([C_e1*W_e1_moins -C_e2*W_e2_plus]);
 
 
 load_Hermite_2D

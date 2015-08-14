@@ -1,4 +1,4 @@
-% ux.m
+% uxy.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,6 +33,8 @@
 %%
 
 
-function f=ux(node)
+function f=uxyp_TR(node)
 
-f=(3*(node-1)+1);
+f(1:3:3*length(node))=12*(node-1)+01;
+f(2:3:3*length(node))=12*(node-1)+05;
+f(3:3:3*length(node))=12*(node-1)+09;

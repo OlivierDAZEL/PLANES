@@ -32,32 +32,32 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-file_abs_id=fopen(name_file_abs,'w');
+file_abs_id=fopen(name.file_abs,'w');
 if nb.T~=0
-    file_TL_id=fopen(name_file_TL,'w');
+    file_TL_id=fopen(name.file_TL,'w');
 end
 
 
 
 tic
-I_inc=zeros(nb_frequencies,1);
-W_vis=zeros(nb_frequencies,1);
-W_struct=zeros(nb_frequencies,1);
-W_therm=zeros(nb_frequencies,1);
-W_elas=zeros(nb_frequencies,1);
-abs_vis=zeros(nb_frequencies,1);
-abs_struct=zeros(nb_frequencies,1);
-abs_therm=zeros(nb_frequencies,1);
-abs_elas=zeros(nb_frequencies,1);
-TL_EF=zeros(nb_frequencies,1);
-abs_EF=zeros(nb_frequencies,1);
+I_inc=zeros(frequency.nb,1);
+W_vis=zeros(frequency.nb,1);
+W_struct=zeros(frequency.nb,1);
+W_therm=zeros(frequency.nb,1);
+W_elas=zeros(frequency.nb,1);
+abs_vis=zeros(frequency.nb,1);
+abs_struct=zeros(frequency.nb,1);
+abs_therm=zeros(frequency.nb,1);
+abs_elas=zeros(frequency.nb,1);
+TL_EF=zeros(frequency.nb,1);
+abs_EF=zeros(frequency.nb,1);
 
 
-for i_f=1:abs(nb_frequencies)
+for i_f=1:abs(frequency.nb)
     
-    FEM_progress=100*i_f/abs(nb_frequencies)
+    FEM_progress=100*i_f/abs(frequency.nb)
     
-    freq=vec_freq(i_f);
+    freq=frequency.vec(i_f);
     omega=2*pi*freq;
     
     
@@ -160,18 +160,19 @@ for i_f=1:abs(nb_frequencies)
     
     
     if (nb.loads)>0
-        if solve.H12
-            loads_application_H12_flux
-        end
-        if solve.TR6
-            loads_application_TR6
-        end
+        
+        loads_application
     end
     
     
-    if length(periodicity)>0
+    if nb.periodicity>0
         periodicity_condition_application
     end
+    
+    if nb.internal>0
+        internal_fluid_FEM_FEM 
+    end
+    
     
     %disp('Resolution of the system')
     X=A\F;
@@ -195,7 +196,7 @@ for i_f=1:abs(nb_frequencies)
     
     
     
-    if export_profiles==1
+    if export.profiles==1
         if i_f==1
             sol_export=sol.';
             rflx_export=rflx.';
@@ -210,9 +211,9 @@ for i_f=1:abs(nb_frequencies)
     
     
     
-    if export_nrj==1
+    if export.nrj==1
         
-        I_inc(i_f)=(period/air.Z)/(2*vec_freq(i_f));
+        I_inc(i_f)=(period/air.Z)/(2*frequency.vec(i_f));
         if num_media.pem01~=0
             Ks(i_f)=(omega^2/4)*rho_1*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM);
             Kf(i_f)=(omega^2/4)*(real(rho_f_til)*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM)+real(1/conj(rho_eq_til*omega^4))*X(1:nb.dof_FEM)'*H_pem01_1*X(1:nb.dof_FEM)-(2/omega^2)*imag(phi/alpha_til)*imag(X(1:nb.dof_FEM)'*C_pem01_1*X(1:nb.dof_FEM)));
@@ -251,6 +252,10 @@ for i_f=1:abs(nb_frequencies)
     if profiles.on~=0
         disp('plotting the solution')
         if profiles.y==1
+            plot_sol_TR6_y
+            
+            
+            
             if solve.TR6
                 plot_sol_TR6_y
             end

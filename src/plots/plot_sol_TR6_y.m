@@ -38,7 +38,7 @@ x=[];
 y=[];
 
 
-if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
     figure(2002)
     hold on
     title('Solid displacement')
@@ -52,7 +52,7 @@ if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
 end
 
 
-if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
     figure(2010)
     hold on
     title('Pressure')
@@ -70,18 +70,18 @@ end
 for ie=1:nb.elements
     
     
-    if ismember(floor(element_label(ie)/1000),[1 4 5])
-        c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
-        y=nodes(elements(ie,:),2);
+    if ismember(floor(elem.label(ie)/1000),[1 4 5])
+        c=sqrt(sol(3*(elem.nodes(ie,:)-1)+1).^2+sol(3*(elem.nodes(ie,:)-1)+2).^2);
+        y=nodes(elem.nodes(ie,:),2);
         figure(2010)
         plot(y,abs(c),'r.');
         figure(4010)
         plot(y,angle(c),'r.');        
     end
     
-    if ismember(floor(element_label(ie)/1000),[0 2 4 5 8])
-        c=sol(3*(elements(ie,:)-1)+3);
-        y=nodes(elements(ie,:),2);
+    if ismember(floor(elem.label(ie)/1000),[0 2 4 5 8])
+        c=sol(p_TR(nonzeros(elem.nodes(ie,:))));
+        y=nodes(nonzeros(elem.nodes(ie,:)),2);
         figure(2010)
         plot(y,abs(c),'r.');    
         figure(4010)
@@ -91,17 +91,17 @@ for ie=1:nb.elements
 end
 
 
-if export_profiles==1
+if export.profiles==1
     shading interp
     print('-djpeg',[name_directory_profiles, num2str(i_f)]);
 end
 
-% if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+% if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
 %     close(10001)
 % end
 % 
 % 
-% if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+% if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
 %     close(10002)
 % end
 

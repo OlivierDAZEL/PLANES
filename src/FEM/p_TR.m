@@ -1,4 +1,4 @@
-% uxy.m
+% p_TR.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,7 +33,7 @@
 %%
 
 
-function f=uxy(node)
+function f=p_TR(node)
 
-f(1:2:2*length(node))=(3*(node-1)+1);
-f(2:2:2*length(node))=(3*(node-1)+2);
+f(1:length(node))=12*(node-1)+09;
+

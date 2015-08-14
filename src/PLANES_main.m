@@ -43,14 +43,14 @@ eval(['addpath(' list_path ');'])
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=0;
+project.num=2;
 
 %subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 frequency.nb=1;
-frequency.min=500;
+frequency.min=2000;
 frequency.max=4000;
 % Angle of incidence
 %theta_inc=0*pi/180;
@@ -92,16 +92,20 @@ eval([name.project_full]);
 
 
 PLANES_preprocess
-dsqqdsqsd
-display_mesh
+
+if profiles.mesh
+    display_mesh
+end
 
 
 
 
+if nb.dof_FEM>0
+    EF_global_build
+end
 
-gfddfgfgdgdfgdffdg
 
-
+FEM_resolution
 
 
 
@@ -183,9 +187,9 @@ end
 
 % Analytical solution (if exists)
 
-name_solution=['solution_' , name_of_project];
-if subproject~=0
-    name_solution=[name_solution,'_',num2str(subproject)];
+name_solution=['solution_' , project.name];
+if project.num~=0
+    name_solution=[name_solution,'_',num2str(project.num)];
 end
 if ((exist(name_solution)==2)&(profiles.on))
     eval('eval(name_solution)')

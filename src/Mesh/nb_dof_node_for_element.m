@@ -1,4 +1,4 @@
-% uy.m
+% nb_dof_node_for_element.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,6 +33,22 @@
 %%
 
 
-function f=uy(node)
 
-f=(3*(node-1)+2);
+function out=nb_dof_node_for_element(element_model)
+
+
+switch floor(element_model)
+    case {1,3}
+        out=1;
+    case 2
+        out=3;
+    case {10,11,20}
+        out=0;
+    otherwise
+        bordel
+end
+    
+    
+end
+
+

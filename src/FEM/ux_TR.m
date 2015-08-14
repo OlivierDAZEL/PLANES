@@ -1,4 +1,4 @@
-% p.m
+% ux.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,6 +33,6 @@
 %%
 
 
-function f=p(node)
+function f=ux_TR(node)
 
-f=3*node;
+f(1:length(node))=12*(node-1)+01;

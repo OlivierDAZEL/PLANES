@@ -1,6 +1,6 @@
-% p_H.m
+% create_elementary_H12.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -33,18 +33,32 @@
 %%
 
 
-function f=p_H12(node)
+function [elem,H_elem_H12,Q_elem_H12]=create_elementary_H12(nb_in,nodes_in,elem_in)
 
-f(1:3:3*length(node))=12*(node-1)+09;
-f(2:3:3*length(node))=12*(node-1)+10;
-f(3:3:3*length(node))=12*(node-1)+11;
+% Find the number of H12
 
 
+elem=elem_in;
+
+index_H12=find(elem_in.model==2);
+
+for ii=1:length(index_H12)
+    lx(ii)=norm(nodes_in(elem_in.nodes(index_H12(ii),1),:)-nodes_in(elem_in.nodes(index_H12(ii),2),:));
+    ly(ii)=norm(nodes_in(elem_in.nodes(index_H12(ii),1),:)-nodes_in(elem_in.nodes(index_H12(ii),4),:));
+end
 
 
+% For roundoff errors
+lc=1e8*(lx+1j*ly);
+lc=round(lc)/1e8;
 
+[lc,~,index] = unique(lc);
 
+H_elem_H12=zeros(12,12,length(lc));
+Q_elem_H12=zeros(12,12,length(lc));
 
-
-
-
+for ii=1:length(lc)
+    [H_elem_H12(1:12,1:12,ii),Q_elem_H12(1:12,1:12,ii)] = H12_fluid(real(lc(ii)),imag(lc(ii)));
+end
+elem.H12(index_H12)=index;
+end

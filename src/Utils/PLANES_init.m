@@ -42,7 +42,7 @@ if project.num==0
     name.file=[name.project_directory project.name];
     name.project_full=project.name;
 else
-    name.file=[name.project_directory project '_' num2str(project.num) ];
+    name.file=[name.project_directory project.name '_' num2str(project.num) ];
     name.project_full=[project.name '_' num2str(project.num)];
 end
 

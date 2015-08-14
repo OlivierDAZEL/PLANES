@@ -33,12 +33,12 @@
 %%
 
 
-function f=p_H12(node)
+function f=p_H16(node)
 
-f(1:3:3*length(node))=12*(node-1)+09;
-f(2:3:3*length(node))=12*(node-1)+10;
-f(3:3:3*length(node))=12*(node-1)+11;
-
+f(1:4:4*length(node))=12*(node-1)+9;
+f(2:4:4*length(node))=12*(node-1)+10;
+f(3:4:4*length(node))=12*(node-1)+11;
+f(4:4:4*length(node))=12*(node-1)+12;
 
 
 

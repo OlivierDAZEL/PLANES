@@ -1,4 +1,4 @@
-% loads_application.m
+% loads_application_TR6.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,36 +33,53 @@
 %%
 
 for ie=1:nb.loads
-    typ=floor(loads(ie,4));
+    typ=floor(edges.loads(ie,4));
     
-    x1=nodes(loads(ie,1),1);
-    y1=nodes(loads(ie,1),2);
-    x2=nodes(loads(ie,2),1);
-    y2=nodes(loads(ie,2),2);
+    x1=nodes(edges.loads(ie,1),1);
+    y1=nodes(edges.loads(ie,1),2);
+    x2=nodes(edges.loads(ie,2),1);
+    y2=nodes(edges.loads(ie,2),2);
     length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
-    if (x1<x2)
-        a=x1;
-        node(1)=loads(ie,1);
-        node(2)=loads(ie,2);
-        node(3)=loads(ie,6);
-    else
-        a=x2;
-        node(2)=loads(ie,1);
-        node(1)=loads(ie,2);
-        node(3)=loads(ie,6);
-    end
     
     switch typ
-        case {3}
-            F3=TR6_unit(length_edge);
-            index_force=dof_A(p(node));
-            index_F_elem=find(index_force);
-            index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)-F3(index_F_elem);
+        case {3}  % Unit
+            
+            if elem.model(edges.loads(ie,4))==1
+                if (x1<x2)
+                    a=x1;
+                    node(1)=edges.loads(ie,1);
+                    node(2)=edges.loads(ie,2);
+                    node(3)=edges.loads(ie,6);
+                else
+                    a=x2;
+                    node(2)=edges.loads(ie,1);
+                    node(1)=edges.loads(ie,2);
+                    node(3)=edges.loads(ie,6);
+                end
+                F3=TR6_unit(length_edge);
+                index_force=dof_A(p_TR(node));
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                F(index_F_global)=F(index_F_global)-F3(index_F_elem)/(1j*omega);
+            elseif  elem.model(edges.loads(ie,4))==2
+                lx=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),2),:));
+                ly=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),4),:));
+                load_Hermite_2D_2
+                index_p=dof_A(p_H12(elem.nodes(edges.loads(ie,3),1:4)));
+                % What is the edge on the element ?
+                if sort(loads(ie,1:2))==sort(elements(loads(ie,3),1:2)) % Bottom
+                    indice_test=index_p([1 2 5 4]);
+                elseif sort(loads(ie,1:2))==sort(elements(loads(ie,3),2:3))
+                    indice_test=index_p([4 6 9 7]);
+                elseif sort(loads(ie,1:2))==sort(elements(loads(ie,3),2:3))
+                    indice_test=index_p([10 11 8 7]);
+                elseif sort(loads(ie,1:2))==sort(elements(loads(ie,3),2:3))
+                    indice_test=index_p([1 3 12 10]);
+                end
+                for i_test=1:4
+                    eval(['Psi_test=Psi_',num2str(i_test),'_x;'])
+                    F(indice_test(i_test))=F(indice_test(i_test))+integrate_polynom(Psi_test,length_edge)/(1j*omega);
+                end
+            end
     end
-
-
-
 end
-
-

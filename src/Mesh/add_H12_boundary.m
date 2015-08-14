@@ -1,8 +1,6 @@
 function [nb_out,nodes_out,elem_out,edge_msh_out] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,edge_msh,nodes,elem,nb)
 
 
-l_supp=0.01
-
 temp=find(edge_msh(:,3)==51)
 num_nodes_edge=unique(reshape(edge_msh(temp,1:2),[],1))
 edge_msh(temp,:)=[];

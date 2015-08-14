@@ -1,13 +1,9 @@
-function f = integrate_polynom_2D_edge(P,coord_edge)
+function f = integrate_polynom_2D_edge(P,a,b)
 
-a=coord_edge(:,1);
-b=coord_edge(:,2);
-length_edge=norm(b-a);
 
-nb_elem=100;
-h=length_edge/nb_elem;
+nb_elem=50;
 delta=(b-a)/nb_elem;
-
+h=norm(delta);
 I_t=0;
 I_rm=0;
 
@@ -23,5 +19,6 @@ I_t=I_t*h/2;
 I_rm=I_rm*h;
 
 f=(I_t+2*I_rm)/3;
+
 end
 

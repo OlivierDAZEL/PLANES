@@ -43,7 +43,7 @@ eval(['addpath(' list_path ');'])
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=2;
+project.num=1;
 
 %subproject=1;
 % Number of frequencies

@@ -32,20 +32,25 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-%% First step: identify boudaries and internal edges 
+%% First step: identify boudaries and internal edges
 % Creation of 3 segments by element
 % segments=[node1 node2 #element1 0 elem.label1]
 
+segments=zeros(1,5); % Line 1 to bermoved at the end
 temp=find(ismember(elem.model,[1 3]));
-segments=[         elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
-segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
-segments=[segments;elem.nodes(temp,3) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
+if length(temp)>0
+    segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
+    segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
+    segments=[segments;elem.nodes(temp,3) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
+end
 temp=find(ismember(elem.model,2));
-segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
-segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
-segments=[segments;elem.nodes(temp,3) elem.nodes(temp,4) temp 0*temp elem.label(temp)];
-segments=[segments;elem.nodes(temp,4) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
-
+if length(temp)>0
+    segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
+    segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
+    segments=[segments;elem.nodes(temp,3) elem.nodes(temp,4) temp 0*temp elem.label(temp)];
+    segments=[segments;elem.nodes(temp,4) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
+end
+segments(1,:)=[];
 
 % Ordering of nodes so that node 1 < node 2
 segments(:,1:2)=sort(segments(:,1:2),2);
@@ -85,7 +90,7 @@ clear segments
 
 
 %% Second step: for internal edges : identify for internal edges the boundary with natural coupling
-%%% They correspond to internal edges with FEM in both elements on naturally coupling physical medium  
+%%% They correspond to internal edges with FEM in both elements on naturally coupling physical medium
 
 temp_FEM=(ismember(elem.model(edges.internal(:,3)),1).*ismember(elem.model(edges.internal(:,4)),1));
 temp_FEM=temp_FEM+(ismember(elem.model(edges.internal(:,3)),2).*ismember(elem.model(edges.internal(:,4)),2));
@@ -280,7 +285,7 @@ nb.interfaces=0
 
 
 if profiles.mesh
-   display_mesh 
+    display_mesh
 end
 
 

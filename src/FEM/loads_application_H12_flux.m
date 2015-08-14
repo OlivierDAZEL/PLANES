@@ -62,8 +62,20 @@ for ie=1:nb.loads
             if sort(loads(ie,1:2))==sort(elements(loads(ie,3),1:2)) % Interface node 1 node 2: bottom edge
                 C=[0 1 0];
                 s=1;
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 nx=0;
                 ny=-1;
+                
+                
+
                 W=[nx -ny -nx;ny nx -ny;air.Z 0 air.Z];
                 Omega=[nx/2 ny/2 1/(2*air.Z);-ny nx 0;-nx/2 -ny/2 1/(2*air.Z)];
                 

@@ -43,7 +43,7 @@ eval(['addpath(' list_path ');'])
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=1;
+project.num=4;
 
 %subproject=1;
 % Number of frequencies
@@ -52,6 +52,11 @@ project.num=1;
 frequency.nb=1;
 frequency.min=2000;
 frequency.max=4000;
+theta_DGM.nb=2;
+vec_theta=linspace(0,2*pi,theta_DGM.nb+1);
+vec_theta(end)=[];
+vec_theta=vec_theta+pi/2;
+
 % Angle of incidence
 %theta_inc=0*pi/180;
 
@@ -93,6 +98,9 @@ eval([name.project_full]);
 
 PLANES_preprocess
 
+
+
+
 if profiles.mesh
     display_mesh
 end
@@ -105,62 +113,11 @@ if nb.dof_FEM>0
 end
 
 
-FEM_resolution
+PLANES_resolution
 
 
 
 
-
-if solve.DGM
-    
-    [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,...
-        edges_MMT,loads,dirichlets,periodicity,index_label,index_element]=msh2DGM(name_file_msh,1);
-    nb.dof_FEM=0;
-    analyze_mesh_DGM
-    
-    disp('DGM Resolution')
-    DGM_resolution
-    
-end
-
-
-
-
-
-
-
-
-
-
-if solve.TR6
-    
-    [nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,...
-        edges_MMT,loads,dirichlets,periodicity]=msh2TR6(name_file_msh,0);
-
-    analyze_mesh_TR6
-    disp('Building FEM shape matrices')
-    
-    EF_TR6_global_build
-    
-    disp('FEM Resolution')
-    FEM_resolution
-    
-end
-
-if solve.H12
-    
-    [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,interfaces,...
-        edges_MMT,loads,dirichlets,periodicity]=createmshH16(lx,ly,nx,ny,0);
-    
-    analyze_mesh_H12
-    disp('Building FEM shape matrices')
-    
-    EF_H12_global_build
-    
-    disp('FEM Resolution')
-    FEM_resolution
-    
-end
 
 if solve.FEMDGM
     
@@ -173,7 +130,7 @@ if solve.FEMDGM
     
     EF_H12_global_build
     
-    
+
     FEMDGM_resolution
  
 end
@@ -194,19 +151,4 @@ end
 if ((exist(name_solution)==2)&(profiles.on))
     eval('eval(name_solution)')
 end
-%solution_Kundt
 
-%  figure
-%  semilogx(vec_freq,TL_EF)
-% hold on
-% semilogx(vec_freq,TL_PW,'r.')
-
-% hold on
-% plot(vec_freq,real(abs_vis),'r--')
-% plot(vec_freq,real(abs_vis+abs_therm),'m-.')
-% plot(vec_freq,real(abs_vis+abs_therm+abs_struct),'m-.')
-%file_JPG=fopen(['../../../../Desktop/Figures_TW/' name_file_TW_export],'w')
-%for i_f=1:nb_frequencies
-%fprintf(file_JPG,'%1.15e \t %1.15e \n',vec_freq(i_f),abs_EF(i_f));
-%end
-%fclose(file_JPG)

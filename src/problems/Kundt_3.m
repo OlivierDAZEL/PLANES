@@ -23,15 +23,9 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 
 [nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
 
-% All the elements are TR6
+% All the elements are DGM on TR6
 
-elem.model=1*ones(nb.elements,1);
-
-label_boundary=51
-label_elem_ajoute=0
-l_supp=0.05
-[nb,nodes,elem,edge_msh] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,edge_msh,nodes,elem,nb)
-model_data.ly=model_data.ly+l_supp;
+elem.model=10*ones(nb.elements,1);
 
 
-%aezeazezaeazaez
+

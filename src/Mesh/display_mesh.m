@@ -45,7 +45,7 @@ for ie=1:nb.elements
         line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','r');
         text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(ie),'Fontsize',15);
     end
-    if elem.model(ie)==2
+    if ismember(elem.model(ie),[2,11])
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
         line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
         line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','r');
@@ -79,7 +79,7 @@ for ie=1:nb.elements
         line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','r');
         text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(elem.model(ie)),'Fontsize',15);
     end
-    if elem.model(ie)==2
+    if ismember(elem.model(ie),[2,11])
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
         line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
         line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','r');
@@ -131,7 +131,7 @@ for ie=1:nb.elements
         line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','r');
         text(mean(nodes(elem.nodes(ie,1:6),1)),mean(nodes(elem.nodes(ie,1:6),2)),num2str(elem.label(ie)),'Fontsize',15);
     end
-        if elem.model(ie)==2
+        if ismember(elem.model(ie),[2,11])
         line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','r');
         line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','r');
         line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','r');

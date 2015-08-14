@@ -80,6 +80,9 @@ for ie=1:nb.loads
                     eval(['Psi_test=Psi_',num2str(i_test),'_x;'])
                     F(indice_test(i_test))=F(indice_test(i_test))+integrate_polynom(Psi_test,length_edge)/(1j*omega);
                 end
+            elseif  ismember(elem.model(edges.loads(ie,3)),[10 11])
+                boundary_normal_displacement
+                
             end
         case {60}
             if sort(edges.loads(ie,1:2))==sort(elem.nodes(edges.loads(ie,3),1:2)) % Interface node 1 node 2: bottom edge
@@ -120,7 +123,7 @@ for ie=1:nb.loads
                 
                 lx=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),2),:));
                 ly=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),4),:));
-%                 load_Hermite_2D_2
+                %                 load_Hermite_2D_2
                 [p_d1,p_d2,p_d3,p_d4,p_d5,p_d6,p_d7,p_d8,p_d9,p_d10,p_d11,p_d12]=H12_shape_functions(lx,ly);
                 
                 vx_d1 =-derive_polynom_2D_x_2(p_d1 )/(1j*omega*rho_e);
@@ -146,7 +149,7 @@ for ie=1:nb.loads
                 vy_d9 =-derive_polynom_2D_x_2(p_d9 )/(1j*omega*rho_e);
                 vy_d10=-derive_polynom_2D_x_2(p_d10)/(1j*omega*rho_e);
                 vy_d11=-derive_polynom_2D_x_2(p_d11)/(1j*omega*rho_e);
-                vy_d12=-derive_polynom_2D_x_2(p_d12)/(1j*omega*rho_e);                
+                vy_d12=-derive_polynom_2D_x_2(p_d12)/(1j*omega*rho_e);
                 
                 
                 
@@ -162,13 +165,13 @@ for ie=1:nb.loads
                 s=1;
                 
                 
-%                 W=[nx -ny -nx;ny nx -ny;air.Z 0 air.Z];
-%                 Omega=[nx/2 ny/2 1/(2*air.Z);-ny nx 0;-nx/2 -ny/2 1/(2*air.Z)];
-%                 
-%                 W0plus=W(:,1)
-%                 Wmoins=W(:,3)
-%                 Omega0plus=Omega(1,:);
-%                 Omegamoins=Omega(3,:);
+                %                 W=[nx -ny -nx;ny nx -ny;air.Z 0 air.Z];
+                %                 Omega=[nx/2 ny/2 1/(2*air.Z);-ny nx 0;-nx/2 -ny/2 1/(2*air.Z)];
+                %
+                %                 W0plus=W(:,1)
+                %                 Wmoins=W(:,3)
+                %                 Omega0plus=Omega(1,:);
+                %                 Omegamoins=Omega(3,:);
                 
                 
                 
@@ -185,11 +188,11 @@ for ie=1:nb.loads
                 temp=W_e_out*S_tilde;
                 Boundary_1F= (temp(1,:)*nx+temp(2,:)*ny)/((1j*omega));
                 
-
-%                 FF=W_e_out*S_tilde;
-%                 PP=(W_e_in+W_e_out*R_tilde)*Omega_e_in;
-       
-                 
+                
+                %                 FF=W_e_out*S_tilde;
+                %                 PP=(W_e_in+W_e_out*R_tilde)*Omega_e_in;
+                
+                
                 
                 for i_test=1:12
                     eval(['Interp_test=p_d',num2str(i_test),';']);
@@ -198,7 +201,7 @@ for ie=1:nb.loads
                         A(index_p(i_test),index_p(i_champs))=A(index_p(i_test),index_p(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
                     end
                     F(index_p(i_test))=F(index_p(i_test))+integrate_polynom_2D_edge(Interp_test,a,b)*Boundary_1F;
-
+                    
                 end
                 
                 

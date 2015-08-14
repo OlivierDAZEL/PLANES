@@ -36,8 +36,6 @@
 isvalidof_FEM=zeros(12*nb.nodes,1);
 dof_A=zeros(12*nb.nodes,1);
 
-
-
 for ie=1:nb.elements
     typ=floor(elem.label(ie)/1000);
     if ismember(elem.model(ie),[1 3])

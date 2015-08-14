@@ -29,11 +29,5 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 
 elem.model=1*ones(nb.elements,1);
 
-for ie=1:nb.elements
-    temp=centre_element(ie,nodes,elem.nodes);
-    if temp(2)>model_data.ly/2
-        elem.model(ie)=3;
-    end
-end
 
 

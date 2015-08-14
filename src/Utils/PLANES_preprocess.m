@@ -37,13 +37,13 @@
 % segments=[node1 node2 #element1 0 elem.label1]
 
 segments=zeros(1,5); % Line 1 to bermoved at the end
-temp=find(ismember(elem.model,[1 3]));
+temp=find(ismember(elem.model,[1 3 10]));
 if length(temp)>0
     segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,3) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
 end
-temp=find(ismember(elem.model,2));
+temp=find(ismember(elem.model,[2 11]));
 if length(temp)>0
     segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
@@ -81,12 +81,26 @@ v_temp=edges.internal(temp,3);
 edges.internal(temp,3)=edges.internal(temp,4);
 edges.internal(temp,4)=v_temp;
 
+% Check if 
+
+temp=find(ismember(elem.model(edges.internal(:,3)),[10 11]).*ismember(elem.model(edges.internal(:,4)),[10 11]));
+
+
+edges.internal_DGM=edges.internal(temp,:);
+
+nb.internal_DGM=length(temp);
+
+edges.internal(temp,:)=[];
+
 
 boundaries=    [segments(find(segments(:,4)==0),:)];
 
 clear segments
 
 % internal=[node1 node2 #element1 #element2 elem.label1 elem.label2]
+
+
+
 
 
 %% Second step: for internal edges : identify for internal edges the boundary with natural coupling
@@ -271,15 +285,7 @@ period=max(nodes(:,1))-min(nodes(:,1));
 
 
 find_dof_FEM
-
-
-
-
-
-nb.interfaces=0
-
-
-
+find_dof_DGM
 
 
 

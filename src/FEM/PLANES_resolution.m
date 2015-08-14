@@ -55,7 +55,7 @@ abs_EF=zeros(frequency.nb,1);
 
 for i_f=1:abs(frequency.nb)
     
-    FEM_progress=100*i_f/abs(frequency.nb)
+    PLANES_resolution_progress=100*i_f/abs(frequency.nb)
     
     freq=frequency.vec(i_f);
     omega=2*pi*freq;
@@ -124,20 +124,16 @@ for i_f=1:abs(frequency.nb)
                 eval(['A=A-(gamma_til+1)*(C_pem01_',num2str(i_mat),'+C_pem01_',num2str(i_mat),'.'')-(Cp_pem01_',num2str(i_mat),'+Cp_pem01_',num2str(i_mat),'.'');']);
             end
         end
+    end 
+    
+    for ie=1:nb.internal_DGM
+       edge_internal_DGM 
     end
     
-    
-    
-    
-    
-    
-    
-    if nb.interfaces~=0
-        apply_FSI
-    end
-    
-    
-    
+%     if nb.interfaces~=0
+%         apply_FSI
+%     end
+
     if nb.MMT~=0
         
         TT=build_FEM_transfer(k_air*sin(theta_MMT),element_MMT_moins,element_MMT_plus,omega,multilayer_femtmm,k_air,air);
@@ -165,11 +161,14 @@ for i_f=1:abs(frequency.nb)
     end
     
     
-    if (nb.loads)>0
-        
+    if (nb.loads>0)
         loads_application
     end
-    
+    if (nb.dirichlets>0)
+        for ie=1:nb.dirichlets
+            boundary_rigid_wall
+        end
+    end
     
     if nb.periodicity>0
         periodicity_condition_application
@@ -182,7 +181,7 @@ for i_f=1:abs(frequency.nb)
     
     %disp('Resolution of the system')
     X=A\F;
-    
+
     
     
     sol=[];
@@ -258,16 +257,16 @@ for i_f=1:abs(frequency.nb)
     if profiles.on~=0
         disp('plotting the solution')
         if profiles.y==1
-            plot_sol_TR6_y
+            plot_sol_PLANES_y
             
             
             
-            if solve.TR6
-                plot_sol_TR6_y
-            end
-            if solve.H12
-                plot_sol_H12_y
-            end
+%             if solve.TR6
+%                 plot_sol_TR6_y
+%             end
+%             if solve.H12
+%                 plot_sol_H12_y
+%             end
         end
         if profiles.map==1
             if solve.TR6

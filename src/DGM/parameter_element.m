@@ -31,7 +31,7 @@
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if floor(element_label(e_edge)/1000)==0
+if floor(elem.label(e_edge)/1000)==0
     c_e=air.c;
     k_e=omega/c_e;
     Z_e=air.Z;

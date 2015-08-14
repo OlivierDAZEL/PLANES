@@ -33,16 +33,16 @@
 
 
 %%%%% Coordinates of the edge's vertices
-coord_edge(1:2,1)=nodes(dirichlets(ie,1),1:2)';
-coord_edge(1:2,2)=nodes(dirichlets(ie,2),1:2)';
+coord_edge(1:2,1)=nodes(edges.dirichlets(ie,1),1:2)';
+coord_edge(1:2,2)=nodes(edges.dirichlets(ie,2),1:2)';
 
 a=coord_edge(:,1);
 b=coord_edge(:,2);
 
 %%%%% Element linked to the edge
 
-e_edge=dirichlets(ie,3);
-c_edge=mean(nodes(elements(e_edge,:),1:2))';
+e_edge=edges.dirichlets(ie,3);
+c_edge=mean(nodes(elem.nodes(e_edge,:),1:2))';
 
 parameter_element
 
@@ -72,6 +72,6 @@ Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_edge c_edge]);
 MM=kron(II,F_e);
-indice_test  =((1:nb_thetaDGM)-1)+dof_start_element(e_edge);
-indice_champs=((1:nb_thetaDGM)-1)+dof_start_element(e_edge);
+indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_edge);
+indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(e_edge);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;

@@ -1,4 +1,4 @@
-% boundary_normal_displacement.m
+% solution_Kundt.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,62 +30,37 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
-%%%%% Coordinates of the edge's vertices
-coord_edge(1:2,1)=nodes(edges.loads(ie,1),1:2)';
-coord_edge(1:2,2)=nodes(edges.loads(ie,2),1:2)';
 
-a=coord_edge(:,1);
-b=coord_edge(:,2);
 
-h=norm(b-a);
-n_ab=(b-a)/h;
+x_air=linspace(-model_data.ly,0,1000);
+x_trace=x_air+model_data.ly;
+%u(x_air)=A cos(k x_air)+B sin (k x_air)
+%u(0)=0 -> A=0
+%v(-ly)=1 -> 
+B=1/(-1j*omega*sin(k_air*model_data.ly));
+u_air=B*sin(k_air*x_air);
+v_air=1j*omega*u_air;
+% p_air=-K_air*u'(x_air)
+p_air=-B*(air.K)*k_air*cos(k_air*x_air);
 
-%%%%% Element linked to the edge
 
-e_edge=edges.loads(ie,3);
-c_edge=mean(nodes(elem.nodes(e_edge,:),1:2))';
+if profiles.on~=0
+    
 
-parameter_element
+    if profiles.y~=0
+        figure(2002)
+        hold on
+        plot(x_air+model_data.ly,abs(v_air),'b')
+        figure(4002)
+        hold on
+        plot(x_air+model_data.ly,angle(v_air),'b')
+        figure(2010)
+        hold on
+        plot(x_trace,abs(p_air),'b')
+        figure(4010)
+        hold on
+        plot(x_air+model_data.ly,angle(p_air),'b')
+    end
+    
 
-%%%%% vector normal pointing towards \Omega_e
-
-centre_edge=(a+b)/2;
-n_centre=c_edge-centre_edge;
-% Vecteur
-
-ne=normal_edge(coord_edge);
-if (n_centre'*ne<0)
-    ne=-ne;
 end
-nx=ne(1);
-ny=ne(2);
-
-F_e=zeros(3,3);
-S_e=zeros(3,1);
-
-F_e(1,1)=-Z_e*(nx^2);
-F_e(1,2)=-Z_e*(nx*ny);
-F_e(1,3)= nx;
-F_e(2,1)=-Z_e*(nx*ny);
-F_e(2,2)=-Z_e*(ny^2);
-F_e(2,3)= ny;
-
-S_e(1)=-Z_e*nx;
-S_e(2)=-Z_e*ny;
-S_e(3)=-1;
-
-nx=cos(vec_theta);
-ny=sin(vec_theta);
-Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
-
-II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_edge c_edge]);
-MM=kron(II,-F_e);
-indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_edge);  
-indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(e_edge);
-A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
-
-
-II=int_edge_1vectorielle(1j*k_e*[nx;ny],a,b,c_edge);
-MM=kron(II,S_e);
-indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_edge);  
-F(indice_test)=F(indice_test)+Phi.'*MM;

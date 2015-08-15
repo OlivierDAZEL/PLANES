@@ -130,7 +130,7 @@ switch elem.model(e_1)
         vy_e1d3=-derive_polynom_2D_y_2(p_e1d3)/(1j*omega*rho_e);
         vy_e1d4=-derive_polynom_2D_y_2(p_e1d4)/(1j*omega*rho_e);
         vy_e1d5=-derive_polynom_2D_y_2(p_e1d5)/(1j*omega*rho_e);
-        vy_e1d6=-derive_polynom_2D_y_2(p_e1d6)/(1j*omega*rho_e);        
+        vy_e1d6=-derive_polynom_2D_y_2(p_e1d6)/(1j*omega*rho_e);
     case 3 % TR3
         index_p_1=dof_A(p_TR(elem.nodes(e_1,1:3)));
         nb_dof_1=3;
@@ -145,7 +145,39 @@ switch elem.model(e_1)
         vy_e1d2=-derive_polynom_2D_y_2(p_e1d2)/(1j*omega*rho_e);
         vy_e1d3=-derive_polynom_2D_y_2(p_e1d3)/(1j*omega*rho_e);
     case 2
-        ezaeazezaeaz
+        index_p_1=dof_A(p_H12(elem.nodes(e_1,1:4)));
+        nb_dof_1=12;
+        
+        lx=norm(nodes(elem.nodes(e_1,1),:)-nodes(elem.nodes(e_1,2),:));
+        ly=norm(nodes(elem.nodes(e_1,1),:)-nodes(elem.nodes(e_1,4),:));
+        [p_e1d1,p_e1d2,p_e1d3,p_e1d4,p_e1d5,p_e1d6,p_e1d7,p_e1d8,p_e1d9,p_e1d10,p_e1d11,p_e1d12]=H12_shape_functions_shifted(lx,ly,nodes(elem.nodes(e_1,1),1),nodes(elem.nodes(e_1,1),2));
+        
+        vx_e1d1 =-derive_polynom_2D_x_2(p_e1d1 )/(1j*omega*rho_e);
+        vx_e1d2 =-derive_polynom_2D_x_2(p_e1d2 )/(1j*omega*rho_e);
+        vx_e1d3 =-derive_polynom_2D_x_2(p_e1d3 )/(1j*omega*rho_e);
+        vx_e1d4 =-derive_polynom_2D_x_2(p_e1d4 )/(1j*omega*rho_e);
+        vx_e1d5 =-derive_polynom_2D_x_2(p_e1d5 )/(1j*omega*rho_e);
+        vx_e1d6 =-derive_polynom_2D_x_2(p_e1d6 )/(1j*omega*rho_e);
+        vx_e1d7 =-derive_polynom_2D_x_2(p_e1d7 )/(1j*omega*rho_e);
+        vx_e1d8 =-derive_polynom_2D_x_2(p_e1d8 )/(1j*omega*rho_e);
+        vx_e1d9 =-derive_polynom_2D_x_2(p_e1d9 )/(1j*omega*rho_e);
+        vx_e1d10=-derive_polynom_2D_x_2(p_e1d10)/(1j*omega*rho_e);
+        vx_e1d11=-derive_polynom_2D_x_2(p_e1d11)/(1j*omega*rho_e);
+        vx_e1d12=-derive_polynom_2D_x_2(p_e1d12)/(1j*omega*rho_e);
+        
+        vy_e1d1 =-derive_polynom_2D_y_2(p_e1d1 )/(1j*omega*rho_e);
+        vy_e1d2 =-derive_polynom_2D_y_2(p_e1d2 )/(1j*omega*rho_e);
+        vy_e1d3 =-derive_polynom_2D_y_2(p_e1d3 )/(1j*omega*rho_e);
+        vy_e1d4 =-derive_polynom_2D_y_2(p_e1d4 )/(1j*omega*rho_e);
+        vy_e1d5 =-derive_polynom_2D_y_2(p_e1d5 )/(1j*omega*rho_e);
+        vy_e1d6 =-derive_polynom_2D_y_2(p_e1d6 )/(1j*omega*rho_e);
+        vy_e1d7 =-derive_polynom_2D_y_2(p_e1d7 )/(1j*omega*rho_e);
+        vy_e1d8 =-derive_polynom_2D_y_2(p_e1d8 )/(1j*omega*rho_e);
+        vy_e1d9 =-derive_polynom_2D_y_2(p_e1d9 )/(1j*omega*rho_e);
+        vy_e1d10=-derive_polynom_2D_y_2(p_e1d10)/(1j*omega*rho_e);
+        vy_e1d11=-derive_polynom_2D_y_2(p_e1d11)/(1j*omega*rho_e);
+        vy_e1d12=-derive_polynom_2D_y_2(p_e1d12)/(1j*omega*rho_e);
+        
         
 end
 switch elem.model(e_2)
@@ -191,7 +223,7 @@ switch elem.model(e_2)
         lx=norm(nodes(elem.nodes(e_2,1),:)-nodes(elem.nodes(e_2,2),:));
         ly=norm(nodes(elem.nodes(e_2,1),:)-nodes(elem.nodes(e_2,4),:));
         [p_e2d1,p_e2d2,p_e2d3,p_e2d4,p_e2d5,p_e2d6,p_e2d7,p_e2d8,p_e2d9,p_e2d10,p_e2d11,p_e2d12]=H12_shape_functions_shifted(lx,ly,nodes(elem.nodes(e_2,1),1),nodes(elem.nodes(e_2,1),2));
-
+        
         vx_e2d1 =-derive_polynom_2D_x_2(p_e2d1 )/(1j*omega*rho_e);
         vx_e2d2 =-derive_polynom_2D_x_2(p_e2d2 )/(1j*omega*rho_e);
         vx_e2d3 =-derive_polynom_2D_x_2(p_e2d3 )/(1j*omega*rho_e);
@@ -204,7 +236,7 @@ switch elem.model(e_2)
         vx_e2d10=-derive_polynom_2D_x_2(p_e2d10)/(1j*omega*rho_e);
         vx_e2d11=-derive_polynom_2D_x_2(p_e2d11)/(1j*omega*rho_e);
         vx_e2d12=-derive_polynom_2D_x_2(p_e2d12)/(1j*omega*rho_e);
-
+        
         vy_e2d1 =-derive_polynom_2D_y_2(p_e2d1 )/(1j*omega*rho_e);
         vy_e2d2 =-derive_polynom_2D_y_2(p_e2d2 )/(1j*omega*rho_e);
         vy_e2d3 =-derive_polynom_2D_y_2(p_e2d3 )/(1j*omega*rho_e);
@@ -216,9 +248,9 @@ switch elem.model(e_2)
         vy_e2d9 =-derive_polynom_2D_y_2(p_e2d9 )/(1j*omega*rho_e);
         vy_e2d10=-derive_polynom_2D_y_2(p_e2d10)/(1j*omega*rho_e);
         vy_e2d11=-derive_polynom_2D_y_2(p_e2d11)/(1j*omega*rho_e);
-        vy_e2d12=-derive_polynom_2D_y_2(p_e2d12)/(1j*omega*rho_e);        
-   
-
+        vy_e2d12=-derive_polynom_2D_y_2(p_e2d12)/(1j*omega*rho_e);
+        
+        
 end
 
 % clear temp;
@@ -291,7 +323,7 @@ end
 %         A(index_p_1(i_test),index_p_2(i_champs))=A(index_p_1(i_test),index_p_2(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
 %     end
 % end
-% 
+%
 % for i_test=1:nb_dof_2
 %     eval(['Interp_test=p_e2d',num2str(i_test),';']);
 %     for i_champs=1:nb_dof_1

@@ -1,12 +1,12 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!                  Output files of PLANES                   !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!! Generated 14-08-2015 at 15-47-25 on laum-dazel2.univ-lemans.fr
+!! Generated 14-08-2015 at 22-06-30 on Oliviers-MacBook-Pro.local
 !! Name of project = Kundt
 !! Subproject # 75
 !! Subproject # 117
 !! Subproject # 110
 !! Subproject # 100
 !! Subproject # 116
-!! #dof = 306
-!! Computation time = 1.155470e+00 s
+!! #dof = 36
+!! Computation time = 5.889488e-01 s

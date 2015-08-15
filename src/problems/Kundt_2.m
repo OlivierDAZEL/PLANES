@@ -29,8 +29,9 @@ elem.model=1*ones(nb.elements,1);
 
 label_boundary=51
 label_elem_ajoute=0
+model_elem_ajoute=2
 l_supp=0.05
-[nb,nodes,elem,edge_msh] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,edge_msh,nodes,elem,nb)
+[nb,nodes,elem,edge_msh] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,model_elem_ajoute,edge_msh,nodes,elem,nb)
 model_data.ly=model_data.ly+l_supp;
 
 

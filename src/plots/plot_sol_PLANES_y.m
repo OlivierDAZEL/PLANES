@@ -76,7 +76,6 @@ for ie=1:nb.elements
             figure(4010)
             plot(y,angle(c),'r.');
         end
-        
         if ismember(floor(elem.label(ie)/1000),[0 2 4 5 8])
             c=sol(p_TR(nonzeros(elem.nodes(ie,:))));
             y=nodes(nonzeros(elem.nodes(ie,:)),2);
@@ -85,6 +84,20 @@ for ie=1:nb.elements
             figure(4010)
             plot(y,angle(c),'r.');
         end
+    elseif ismember(elem.model(ie),2)
+        if ismember(floor(elem.label(ie)/1000),[0 2 4 5 8])
+            c=sol(p_H12(nonzeros(elem.nodes(ie,:))));
+            y=nodes(nonzeros(elem.nodes(ie,:)),2);
+            figure(2010)
+            plot(y,abs(c(1:3:12)),'r.');
+            figure(4010)
+            plot(y,angle(c(1:3:12)),'r.');
+        end
+        
+        
+        
+        
+        
     elseif ismember(elem.model(ie),[10 11])
         coord_elem=nodes(elem.nodes(ie,:),1:2)';
         x_centre=mean(nodes(nonzeros(elem.nodes(ie,:)),1:2))';

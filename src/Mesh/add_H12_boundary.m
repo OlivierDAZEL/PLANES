@@ -1,4 +1,4 @@
-function [nb_out,nodes_out,elem_out,edge_msh_out] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,edge_msh,nodes,elem,nb)
+function [nb_out,nodes_out,elem_out,edge_msh_out] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,model_elem_ajoute,edge_msh,nodes,elem,nb)
 
 
 temp=find(edge_msh(:,3)==51)
@@ -72,7 +72,7 @@ nb.nodes=size(nodes,1);
 nb.elements=size(elem.nodes,1);
 
 elem.label(end+1:nb.elements)=label_elem_ajoute;
-elem.model(end+1:nb.elements)=2;
+elem.model(end+1:nb.elements)=model_elem_ajoute;
 
 nb_out=nb;
 nodes_out=nodes;

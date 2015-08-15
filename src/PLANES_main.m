@@ -43,7 +43,7 @@ eval(['addpath(' list_path ');'])
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=4;
+project.num=5;
 
 %subproject=1;
 % Number of frequencies
@@ -99,8 +99,6 @@ eval([name.project_full]);
 PLANES_preprocess
 
 
-
-
 if profiles.mesh
     display_mesh
 end
@@ -114,32 +112,6 @@ end
 
 
 PLANES_resolution
-
-
-
-
-
-if solve.FEMDGM
-    
-    [nb,nodes,elements,element_label,element_model,edges,num_media,element_num_mat,internal,...
-        edges_MMT,loads,dirichlets,periodicity,index_label,index_element,lx_H12,ly_H12]=createmshH12DGM(lx,ly/2,ly/2,nx,ny/2,ny/2,1);
-    %element_model=ones(size(element_model));
-    
-    analyze_mesh_H12
-    analyze_mesh_DGM
-    
-    EF_H12_global_build
-    
-
-    FEMDGM_resolution
- 
-end
-
-
-if solve.PW
-    disp('PW Resolution')
-     PW_resolution
-end
 
 
 % Analytical solution (if exists)

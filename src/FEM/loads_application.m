@@ -64,7 +64,7 @@ for ie=1:nb.loads
             elseif  elem.model(edges.loads(ie,3))==2
                 lx=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),2),:));
                 ly=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),4),:));
-                load_Hermite_2D_2
+                [Psi_1_x,Psi_2_x,Psi_3_x,Psi_4_x]=Hermite_shape_functions(lx);                
                 index_p=dof_A(p_H12(elem.nodes(edges.loads(ie,3),1:4)));
                 % What is the edge on the element ?
                 if sort(edges.loads(ie,1:2))==sort(elem.nodes(edges.loads(ie,3),1:2)) % Bottom
@@ -78,7 +78,7 @@ for ie=1:nb.loads
                 end
                 for i_test=1:4
                     eval(['Psi_test=Psi_',num2str(i_test),'_x;'])
-                    F(indice_test(i_test))=F(indice_test(i_test))+integrate_polynom(Psi_test,length_edge)/(1j*omega);
+                    F(indice_test(i_test))=F(indice_test(i_test))-integrate_polynom(Psi_test,length_edge)/(1j*omega);
                 end
             elseif  ismember(elem.model(edges.loads(ie,3)),[10 11])
                 boundary_normal_displacement

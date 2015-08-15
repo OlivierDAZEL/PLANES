@@ -81,13 +81,10 @@ v_temp=edges.internal(temp,3);
 edges.internal(temp,3)=edges.internal(temp,4);
 edges.internal(temp,4)=v_temp;
 
-% Check if 
-
+% Check if the elements are both DGM
 temp=find(ismember(elem.model(edges.internal(:,3)),[10 11]).*ismember(elem.model(edges.internal(:,4)),[10 11]));
 
-
 edges.internal_DGM=edges.internal(temp,:);
-
 nb.internal_DGM=length(temp);
 
 edges.internal(temp,:)=[];
@@ -164,10 +161,20 @@ temp=find(ismember(abs(boundaries(:,4)),[101]));
 edges.MMT=boundaries(temp,:);
 boundaries(temp,:)=[];
 
+% Find Dirichlet boundaries : label 1 not FEM or 5 6 9
+temp=      (ismember(boundaries(:,4),[1]));
+temp=temp.*(~ismember(elem.model(boundaries(:,3)),[1 2 3]));
+temp=temp+ (ismember(boundaries(:,4),[5 6 9]));
+temp=find(temp);
 
-temp=find(ismember(boundaries(:,4),[1 5 6 9]));
+
+
+
+
 edges.dirichlets=boundaries(temp,:);
 boundaries(temp,:)=[];
+
+
 temp=find(ismember(boundaries(:,4),[98 99]));
 edges.periodicity=boundaries(temp,:);
 boundaries(temp,:)=[];

@@ -73,18 +73,18 @@ for i_f=1:abs(frequency.nb)
     
     if nb.dof_FEM>0
         if (nb.media.acou~=0)
-            A=A+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
+            A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
         end
         
         if (nb.media.PML~=0)
-            A=A+H_PML/(air.rho*omega^2)-Q_PML/(air.K);
+            A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_PML/(air.rho*omega^2)-Q_PML/(air.K);
         end
         
         
         if (nb.media.elas~=0)
             for i_mat=1:nb.media.elas
                 eval(['Mat_elas_' num2str(num_media.elas(i_mat))])
-                eval(['A=A+(lambda_solide+2*mu_solide)*K0_elas_',num2str(i_mat),'+mu_solide*K1_elas_',num2str(i_mat),'-omega^2*rho_solide*M_elas_',num2str(i_mat),';']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+(lambda_solide+2*mu_solide)*K0_elas_',num2str(i_mat),'+mu_solide*K1_elas_',num2str(i_mat),'-omega^2*rho_solide*M_elas_',num2str(i_mat),';']);
             end
         end
         
@@ -93,7 +93,7 @@ for i_f=1:abs(frequency.nb)
             for i_mat=1:nb.media.eqf
                 eval(['Mat_PEM_' num2str(num_media.eqf(i_mat))])
                 properties_jca
-                eval(['A=A+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
             end
         end
         
@@ -101,7 +101,7 @@ for i_f=1:abs(frequency.nb)
             for i_mat=1:nb.media.limp
                 eval(['Mat_PEM_' num2str(num_media.limp(i_mat))])
                 properties_limp
-                eval(['A=A+H_limp_',num2str(i_mat),'/(rho_limp*omega^2)-Q_limp_',num2str(i_mat),'/(K_eq_til);']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_limp_',num2str(i_mat),'/(rho_limp*omega^2)-Q_limp_',num2str(i_mat),'/(K_eq_til);']);
             end
         end
         if (nb.media.pem98~=0)
@@ -109,9 +109,9 @@ for i_f=1:abs(frequency.nb)
                 eval(['Mat_PEM_' num2str(num_media.pem98(i_mat))])
                 properties_jca
                 properties_PEM
-                eval(['A=A+P_hat*K0_pem98_',num2str(i_mat),'+N*K1_pem98_',num2str(i_mat),'-omega^2*rho_til*M_pem98_',num2str(i_mat),';']);
-                eval(['A=A+H_pem98_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem98_',num2str(i_mat),'/(K_eq_til);']);
-                eval(['A=A-gamma_til*(C_pem98_',num2str(i_mat),'+C_pem98_',num2str(i_mat),'.'');']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+P_hat*K0_pem98_',num2str(i_mat),'+N*K1_pem98_',num2str(i_mat),'-omega^2*rho_til*M_pem98_',num2str(i_mat),';']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_pem98_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem98_',num2str(i_mat),'/(K_eq_til);']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)-gamma_til*(C_pem98_',num2str(i_mat),'+C_pem98_',num2str(i_mat),'.'');']);
             end
         end
         if (nb.media.pem01~=0)
@@ -119,9 +119,9 @@ for i_f=1:abs(frequency.nb)
                 eval(['Mat_PEM_' num2str(num_media.pem01(i_mat))])
                 properties_jca
                 properties_PEM
-                eval(['A=A+P_hat*K0_pem01_',num2str(i_mat),'+N*K1_pem01_',num2str(i_mat),'-omega^2*rho_til*M_pem01_',num2str(i_mat),';']);
-                eval(['A=A+H_pem01_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem01_',num2str(i_mat),'/(K_eq_til);']);
-                eval(['A=A-(gamma_til+1)*(C_pem01_',num2str(i_mat),'+C_pem01_',num2str(i_mat),'.'')-(Cp_pem01_',num2str(i_mat),'+Cp_pem01_',num2str(i_mat),'.'');']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+P_hat*K0_pem01_',num2str(i_mat),'+N*K1_pem01_',num2str(i_mat),'-omega^2*rho_til*M_pem01_',num2str(i_mat),';']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_pem01_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem01_',num2str(i_mat),'/(K_eq_til);']);
+                eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)-(gamma_til+1)*(C_pem01_',num2str(i_mat),'+C_pem01_',num2str(i_mat),'.'')-(Cp_pem01_',num2str(i_mat),'+Cp_pem01_',num2str(i_mat),'.'');']);
             end
         end
     end 
@@ -175,7 +175,16 @@ for i_f=1:abs(frequency.nb)
     end
     
     if nb.internal>0
-        internal_fluid_FEM_FEM
+        for ie=1:nb.internal
+            if ismember(elem.model(edges.internal(ie,3)),[1 2 3])&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
+                internal_fluid_FEM_FEM
+            end
+            if ismember(elem.model(edges.internal(ie,3)),[1 2 3])&ismember(elem.model(edges.internal(ie,4)),[10 11])
+                internal_fluid_FEM_DGM
+            end
+            
+            
+        end
     end
     
     

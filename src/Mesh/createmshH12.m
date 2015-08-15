@@ -89,7 +89,7 @@ for ix=1:nx
     node_base=ix+ny*(nx+1);
     edges(temp,1)=node_base;
     edges(temp,2)=node_base+1;
-    edges(temp,3)=label_boundaries(2);
+    edges(temp,3)=label_boundaries(3);
 end
 
 for iy=1:ny
@@ -97,7 +97,7 @@ for iy=1:ny
     node_base=nx+1+(iy-1)*(nx+1);
     edges(temp,1)=node_base;
     edges(temp,2)=node_base+nx+1;
-    edges(temp,3)=label_boundaries(3);
+    edges(temp,3)=label_boundaries(2);
 end
 
 for iy=1:ny

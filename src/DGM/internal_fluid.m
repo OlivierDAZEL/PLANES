@@ -30,59 +30,75 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
-e_edge=e_1;
+num_element=e_1;
 parameter_element
 
-[F_moins,F_plus]=Split_fluid(nx,ny,Z_e);
+[F_plus,F_moins]=Split_fluid(nx,ny,Z_e);
+
+M_1=M_e;
+M_2=M_e;
+C_2=[nx ny 0;0 0 1];
+C_1=[nx ny 0;0 0 1];
+
+P_1_in=[nx;ny;air.Z];
+Q_1_in=[nx/2 ny/2 1/(2*air.Z)];
+P_1_out=[nx;ny;-air.Z];
+Q_1_out=[nx/2 ny/2 -1/(2*air.Z)];
+
+P_2_in=P_1_out;
+Q_2_in=Q_1_out;
+P_2_out=P_1_in;
+Q_2_out=Q_1_in;
+
+R_tilde=inv([C_1*P_1_out -C_2*P_2_out])*([-C_1*P_1_in C_2*P_2_in]);
+
+A_x=[0 0 1/air.rho;0 0 0; air.K 0 0];
+A_y=[0 0 0;0 0 1/air.rho; 0 air.K 0];
+F_1= (A_x*nx+A_y*ny);
+F_2=-(A_x*nx+A_y*ny);
 
 
-C_e2=[0 1 0;0 0 1];
-C_e1=[0 1 0;0 0 1];
-W_e2=[nx -ny -nx;ny nx -ny;air.Z 0 air.Z];
-Omega_e2=[nx/2 ny/2 1/(2*air.Z);-ny nx 0;-nx/2 -ny/2 1/(2*air.Z)];
-W_e2_plus=W_e2(:,3);
-W_e2_moins=W_e2(:,1);
-Omega_e2_plus=Omega_e2(3,:);
-Omega_e2_moins=Omega_e2(1,:);
+P_11_tilde=(P_1_in+P_1_out*R_tilde(1,1))*Q_1_in;
+P_12_tilde=P_1_out*R_tilde(1,2)*Q_2_in;
+P_21_tilde=P_2_out*R_tilde(2,1)*Q_1_in;
+P_22_tilde=(P_2_in+P_2_out*R_tilde(2,2))*Q_2_in;
 
-W_e1=W_e2;
-Omega_e1=Omega_e2;
-
-W_e1_moins=W_e1(:,1);
-W_e1_plus=W_e1(:,3);
-Omega_e1_moins=Omega_e1(1,:);
-Omega_e1_plus=Omega_e1(3,:);
+F_11_tilde= M_1*F_1*P_11_tilde;
+F_12_tilde= M_1*F_1*P_12_tilde;
+F_21_tilde= M_2*F_2*P_21_tilde;
+F_22_tilde= M_2*F_2*P_22_tilde;
 
 
-% F_e=ny*[0 0 0 ;0 0 1/air.rho;0 air.K 0];
-% 
-% 
-% dfgdgfdfggdf
+F_11= M_e*F_1*P_1_in*Q_1_in;
+F_12= M_e*F_1*P_1_out*Q_2_in;
+F_21=-M_e*F_1*P_2_out*Q_1_in;
+F_22=-M_e*F_1*P_2_in*Q_2_in;
+
 
 nx=cos(vec_theta);
 ny=sin(vec_theta);
 Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_2 c_2]);
-MM=kron(II,F_plus);
+MM=kron(II,F_22_tilde);
 indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_2);  
 indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(e_2);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
         
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_2 c_1]);
-MM=kron(II,F_moins);
+MM=kron(II,F_21_tilde);
 indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_2);  
 indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(e_1);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
 
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_1 c_2]);
-MM=kron(II,-F_plus);
+MM=kron(II,F_12_tilde);
 indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_1);  
 indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(e_2);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
 
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_1 c_1]);
-MM=kron(II,-F_moins);
+MM=kron(II,F_11_tilde);
 indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(e_1);  
 indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(e_1);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;

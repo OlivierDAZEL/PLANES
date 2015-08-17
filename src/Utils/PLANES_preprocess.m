@@ -36,21 +36,24 @@
 % Creation of 3 segments by element
 % segments=[node1 node2 #element1 0 elem.label1]
 
-segments=zeros(1,5); % Line 1 to bermoved at the end
+segments=zeros(1,5); % Line 1 to be removed at the end
 temp=find(ismember(elem.model,[1 3 10]));
+temp=reshape(temp,length(temp),1);
 if length(temp)>0
     segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,3) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
 end
 temp=find(ismember(elem.model,[2 11]));
+temp=reshape(temp,length(temp),1);
+
 if length(temp)>0
     segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,2) elem.nodes(temp,3) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,3) elem.nodes(temp,4) temp 0*temp elem.label(temp)];
     segments=[segments;elem.nodes(temp,4) elem.nodes(temp,1) temp 0*temp elem.label(temp)];
 end
-segments(1,:)=[];
+segments(1,:)=[]; % Line 1 is removed at the end
 
 % Ordering of nodes so that node 1 < node 2
 segments(:,1:2)=sort(segments(:,1:2),2);

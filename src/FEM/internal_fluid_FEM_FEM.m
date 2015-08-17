@@ -45,29 +45,14 @@ c_2=mean(nodes(nonzeros(elem.nodes(e_2,:)),1:2))';
 e_edge=e_1;
 
 
-coord_edge(1:2,1)=nodes(edges.internal(ie,1),1:2)';
-coord_edge(1:2,2)=nodes(edges.internal(ie,2),1:2)';
-
-a=coord_edge(:,1);
-b=coord_edge(:,2);
-
-h=norm(b-a);
-n_ab=(b-a)/h;
-
-%%%%% Elements on both sides of the edge
-
-
+a=nodes(edges.internal(ie,1),1:2)';
+b=nodes(edges.internal(ie,2),1:2)';
 
 %%%%% vector normal pointing out from e_1
 
 centre_edge=(a+b)/2;
 n_centre=c_1-centre_edge;
-ne=normal_edge(coord_edge);
-if (n_centre'*ne>0)
-    ne=-ne;
-end
-nx=ne(1);
-ny=ne(2);
+[nx,ny]=normal_edge_out_element(a,b,c_1);
 
 
 % % u=[vx vy p]
@@ -253,15 +238,7 @@ switch elem.model(e_2)
         
 end
 
-% clear temp;
-% for ii=1:6
-%     ii
-%     for jj=1:6
-%             eval(['temp(',num2str(jj),')=evaluate_polynom_2D(p_e1d',num2str(ii),',vcor(',num2str(jj),',1),vcor(',num2str(jj),',2));'])
-%     end
-%     temp
-% end
-% qdsdsqdqs
+
 
 %normal_displacement_e1=(v_xn_x+x_yn_y)/(j*omega)
 temp=W_e1_in*Omega_e1_in;
@@ -299,42 +276,4 @@ for i_test=1:nb_dof_2
         A(index_p_2(i_test),index_p_2(i_champs))=A(index_p_2(i_test),index_p_2(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
     end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-% for i_test=1:nb_dof_1
-%     eval(['Interp_test=p_e1d',num2str(i_test),';']);
-%     for i_champs=1:nb_dof_1
-%         eval(['Interp_champs=Boundary_11(1)*vx_e1d',num2str(i_champs),'+Boundary_11(2)*vy_e1d',num2str(i_champs),'+Boundary_11(3)*p_e1d',num2str(i_champs),';'])
-%         A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
-%     end
-%     for i_champs=1:nb_dof_2
-%         eval(['Interp_champs=Boundary_12(1)*vx_e2d',num2str(i_champs),'+Boundary_12(2)*vy_e2d',num2str(i_champs),'+Boundary_12(3)*p_e2d',num2str(i_champs),';'])
-%         A(index_p_1(i_test),index_p_2(i_champs))=A(index_p_1(i_test),index_p_2(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
-%     end
-% end
-%
-% for i_test=1:nb_dof_2
-%     eval(['Interp_test=p_e2d',num2str(i_test),';']);
-%     for i_champs=1:nb_dof_1
-%         eval(['Interp_champs=Boundary_21(1)*vx_e1d',num2str(i_champs),'+Boundary_21(2)*vy_e1d',num2str(i_champs),'+Boundary_21(3)*p_e1d',num2str(i_champs),';'])
-%         A(index_p_2(i_test),index_p_1(i_champs))=A(index_p_2(i_test),index_p_1(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
-%     end
-%     for i_champs=1:nb_dof_2
-%         eval(['Interp_champs=Boundary_22(1)*vx_e2d',num2str(i_champs),'+Boundary_22(2)*vy_e2d',num2str(i_champs),'+Boundary_22(3)*p_e2d',num2str(i_champs),';'])
-%         A(index_p_2(i_test),index_p_2(i_champs))=A(index_p_2(i_test),index_p_2(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
-%     end
-% end
-
-
 

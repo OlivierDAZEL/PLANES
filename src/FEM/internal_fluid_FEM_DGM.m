@@ -37,6 +37,8 @@ k_e=omega/c_e;
 Z_e=air.Z;
 rho_e=air.rho;
 M_e=diag([air.rho,air.rho,1/air.K]);
+A_x=[0 0 1;0 0 0; 1 0 0];
+A_y=[0 0 0;0 0 1; 0 1 0];
 
 e_1=edges.internal(ie,3);
 e_2=edges.internal(ie,4);
@@ -45,49 +47,46 @@ c_2=mean(nodes(nonzeros(elem.nodes(e_2,:)),1:2))';
 e_edge=e_1;
 
 
-coord_edge(1:2,1)=nodes(edges.internal(ie,1),1:2)';
-coord_edge(1:2,2)=nodes(edges.internal(ie,2),1:2)';
-
-a=coord_edge(:,1);
-b=coord_edge(:,2);
-
-h=norm(b-a);
-n_ab=(b-a)/h;
-
-%%%%% Elements on both sides of the edge
-
-
+a=nodes(edges.internal(ie,1),1:2)';
+b=nodes(edges.internal(ie,2),1:2)';
 
 %%%%% vector normal pointing out from e_1
 
-centre_edge=(a+b)/2;
-n_centre=c_1-centre_edge;
-ne=normal_edge(coord_edge);
-if (n_centre'*ne>0)
-    ne=-ne;
-end
-nx=ne(1);
-ny=ne(2);
+[nx,ny]=normal_edge_out_element(a,b,c_1);
 
+M_1=M_e;
+M_2=M_e;
+C_2=[nx ny 0;0 0 1];
+C_1=[nx ny 0;0 0 1];
 
-% % u=[vx vy p]
-% %i*omega*u+A_x du/dx+A_y dudy
-%
-A_x=[0 1/air.rho 0;0 0 0; air.K 0 0];
+P_1_in=[nx;ny;air.Z];
+Q_1_in=[nx/2 ny/2 1/(2*air.Z)];
+P_1_out=[nx;ny;-air.Z];
+Q_1_out=[nx/2 ny/2 -1/(2*air.Z)];
+
+P_2_in=P_1_out;
+Q_2_in=Q_1_out;
+P_2_out=P_1_in;
+Q_2_out=Q_1_in;
+
+R_tilde=inv([C_1*P_1_out -C_2*P_2_out])*([-C_1*P_1_in C_2*P_2_in]);
+
+A_x=[0 0 1/air.rho;0 0 0; air.K 0 0];
 A_y=[0 0 0;0 0 1/air.rho; 0 air.K 0];
-F_e=-M_e*(A_x*nx+A_y*ny);
-% %
+F_1= (A_x*nx+A_y*ny);
+F_2=-(A_x*nx+A_y*ny);
 
 
-W_e1_in=[nx;ny;air.Z];
-Omega_e1_in=[nx/2 ny/2 1/(2*air.Z)];
-W_e1_out=[nx;ny;-air.Z];
-Omega_e1_out=[nx/2 ny/2 -1/(2*air.Z)];
+P_11_tilde=(P_1_in+P_1_out*R_tilde(1,1))*Q_1_in;
+P_12_tilde=P_1_out*R_tilde(1,2)*Q_2_in;
+P_21_tilde=P_2_out*R_tilde(2,1)*Q_1_in;
+P_22_tilde=(P_2_in+P_2_out*R_tilde(2,2))*Q_2_in;
 
-W_e2_in=W_e1_out;
-Omega_e2_in=Omega_e1_out;
-W_e2_out=W_e1_in;
-Omega_e2_out=Omega_e1_in;
+F_11_tilde=-(P_11_tilde(1,:)*nx+P_11_tilde(2,:)*ny)/(1j*omega);
+F_12_tilde=-(P_12_tilde(1,:)*nx+P_12_tilde(2,:)*ny)/(1j*omega);
+
+F_21_tilde=M_2*F_2*P_21_tilde;
+F_22_tilde=M_2*F_2*P_22_tilde;
 
 
 switch elem.model(e_1)
@@ -126,7 +125,7 @@ switch elem.model(e_1)
         vy_e1d1=-derive_polynom_2D_y_2(p_e1d1)/(1j*omega*rho_e);
         vy_e1d2=-derive_polynom_2D_y_2(p_e1d2)/(1j*omega*rho_e);
         vy_e1d3=-derive_polynom_2D_y_2(p_e1d3)/(1j*omega*rho_e);
-    case 2
+    case 2 % H12
         index_p_1=dof_A(p_H12(elem.nodes(e_1,1:4)));
         nb_dof_1=12;
         
@@ -164,45 +163,39 @@ switch elem.model(e_1)
 end
 
 indice_DGM  =((1:theta_DGM.nb)-1)+dof_start_element(e_2);
- 
-%normal_displacement_e1=(v_xn_x+x_yn_y)/(j*omega)
-temp=W_e1_in*Omega_e1_in;
-Boundary_11= (temp(1,:)*nx+temp(2,:)*ny)/(1j*omega);
-temp=W_e1_out*Omega_e2_in;
-Boundary_12= (temp(1,:)*nx+temp(2,:)*ny)/(1j*omega);
 
+ 
 
 for i_test=1:nb_dof_1
-    eval(['Interp_test=p_e1d',num2str(i_test),';']);
+    eval(['N_1=p_e1d',num2str(i_test),';']);
     for i_champs=1:nb_dof_1
-        eval(['Interp_champs=Boundary_11(1)*vx_e1d',num2str(i_champs),'+Boundary_11(2)*vy_e1d',num2str(i_champs),'+Boundary_11(3)*p_e1d',num2str(i_champs),';'])
-        A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
+        eval(['I_tilde=F_11_tilde(1)*vx_e1d',num2str(i_champs),'+F_11_tilde(2)*vy_e1d',num2str(i_champs),'+F_11_tilde(3)*p_e1d',num2str(i_champs),';']);
+        A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(multiply_polynom_2D(N_1,I_tilde),a,b,Gauss_points);
     end
     for i_champs=1:theta_DGM.nb
-        delta_exp=int_edge_1vectorielle(-1j*k_e*[cos(vec_theta(i_champs));sin(vec_theta(i_champs))],a,b,c_2)/norm(b-a);
+       jk=-1j*k_e*[cos(vec_theta(i_champs));sin(vec_theta(i_champs))];
+
         Phi_champs=Phi_fluid(cos(vec_theta(i_champs)),sin(vec_theta(i_champs)),Z_e);
-        temp=Boundary_12*Phi_champs;
-        A(index_p_1(i_test),indice_DGM(i_champs))=A(index_p_1(i_test),indice_DGM(i_champs))-delta_exp*temp*integrate_polynom_2D_edge(Interp_test,a,b);
+        I_tilde=F_12_tilde*Phi_champs;
+         A(index_p_1(i_test),indice_DGM(i_champs))=A(index_p_1(i_test),indice_DGM(i_champs))+I_tilde*integrate_polynom_exp_2D_edge(N_1,a,b,jk,c_2,Gauss_points);
     end
 end
+
 
 for i_test=1:theta_DGM.nb
     Phi_test=Phi_fluid(cos(vec_theta(i_test)),sin(vec_theta(i_test)),Z_e);
     for i_champs=1:nb_dof_1
-        delta_exp=int_edge_1vectorielle(1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))],a,b,c_2)/norm(b-a);
-        temp=Phi_test.'*W_e2_out*Omega_e1_in;
-        eval(['Interp_champs=temp(1)*vx_e1d',num2str(i_champs),'+temp(2)*vy_e1d',num2str(i_champs),'+temp(3)*p_e1d',num2str(i_champs),';'])
-        A(indice_DGM(i_test),index_p_1(i_champs))=A(indice_DGM(i_test),index_p_1(i_champs))-delta_exp*integrate_polynom_2D_edge(Interp_champs,a,b);
+        delta_exp=exp(1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))]'*(a-c_2))      ;
+        jk=1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))];
+        temp=Phi_test.'*F_21_tilde;
+        eval(['I_tilde=temp(1)*vx_e1d',num2str(i_champs),'+temp(2)*vy_e1d',num2str(i_champs),'+temp(3)*p_e1d',num2str(i_champs),';'])
+        A(indice_DGM(i_test),index_p_1(i_champs))=A(indice_DGM(i_test),index_p_1(i_champs))+integrate_polynom_exp_2D_edge(I_tilde,a,b,jk,c_2,Gauss_points);
     end
 end
 
-
-
-
-FF=F_e*W_e2_in*Omega_e2_in;
 nx=cos(vec_theta);
 ny=sin(vec_theta);
 Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_2 c_2]);
-MM=kron(II,FF);
-A(indice_DGM,indice_DGM)=A(indice_DGM,indice_DGM)-Phi.'*MM*Phi;
+MM=kron(II,F_22_tilde);
+A(indice_DGM,indice_DGM)=A(indice_DGM,indice_DGM)+Phi.'*MM*Phi;

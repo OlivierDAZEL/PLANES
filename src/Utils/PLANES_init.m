@@ -33,6 +33,7 @@
 %%
 
 
+
 warning('off','MATLAB:nearlySingularMatrix')
 
 
@@ -79,3 +80,4 @@ solve.PW=0;
 solve.FEMDGM=0;
 
 
+Gauss_points=GaussLegendre_points(15);

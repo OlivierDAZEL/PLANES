@@ -36,8 +36,8 @@ x_air=linspace(-model_data.ly,0,1000);
 x_trace=x_air+model_data.ly;
 %u(x_air)=A cos(k x_air)+B sin (k x_air)
 %u(0)=0 -> A=0
-%v(-ly)=1 -> 
-B=1/(-1j*omega*sin(k_air*model_data.ly));
+%v(-ly)=-1 (-1 corresponds to the outgoing normal) ->  
+B=-1/(1j*omega*sin(-k_air*model_data.ly));
 u_air=B*sin(k_air*x_air);
 v_air=1j*omega*u_air;
 % p_air=-K_air*u'(x_air)

@@ -89,9 +89,9 @@ for ie=1:nb.elements
             c=sol(p_H12(nonzeros(elem.nodes(ie,:))));
             y=nodes(nonzeros(elem.nodes(ie,:)),2);
             figure(2010)
-            plot(y,abs(c(1:3:12)),'r.');
+            plot(y,abs(c(1:3:12)),'m.');
             figure(4010)
-            plot(y,angle(c(1:3:12)),'r.');
+            plot(y,angle(c(1:3:12)),'m.');
         end
         
         
@@ -99,7 +99,7 @@ for ie=1:nb.elements
         
         
     elseif ismember(elem.model(ie),[10 11])
-        coord_elem=nodes(elem.nodes(ie,:),1:2)';
+        coord_elem=nodes(nonzeros(elem.nodes(ie,:)),1:2)';
         x_centre=mean(nodes(nonzeros(elem.nodes(ie,:)),1:2))';
         
         q=X(dof_start_element(ie)+[0:ondes_element(ie)*theta_DGM.nb-1]);
@@ -128,9 +128,9 @@ for ie=1:nb.elements
         y=[coord_elem(2,:)];
         c=[Phi_elem(3,:)];
         figure(2010)
-        plot(y,abs(c),'r.');
+        plot(y,abs(c),'b.');
         figure(4010)
-        plot(y,angle(c),'r.');
+        plot(y,angle(c),'b.');
         
     end
     

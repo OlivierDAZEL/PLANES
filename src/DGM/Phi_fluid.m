@@ -32,4 +32,4 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function M=Phi_fluid(nx,ny,Z_e)
 
-M(1:3,1:length(nx))=[-nx;-ny;Z_e*ones(1,length(nx))];
+M(1:3,1:length(nx))=[nx;ny;Z_e*ones(1,length(nx))];

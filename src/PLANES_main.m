@@ -43,7 +43,7 @@ eval(['addpath(' list_path ');'])
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=5;
+project.num=6;
 
 %subproject=1;
 % Number of frequencies
@@ -110,16 +110,16 @@ if nb.dof_FEM>0
     EF_global_build
 end
 
-
+tic 
 PLANES_resolution
-
+toc
 
 % Analytical solution (if exists)
 
 name_solution=['solution_' , project.name];
-if project.num~=0
-    name_solution=[name_solution,'_',num2str(project.num)];
-end
+% if project.num~=0
+%     name_solution=[name_solution,'_',num2str(project.num)];
+% end
 if ((exist(name_solution)==2)&(profiles.on))
     eval('eval(name_solution)')
 end

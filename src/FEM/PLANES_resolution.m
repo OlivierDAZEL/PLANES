@@ -126,9 +126,7 @@ for i_f=1:abs(frequency.nb)
         end
     end 
     
-    for ie=1:nb.internal_DGM
-       edge_internal_DGM 
-    end
+
     
 %     if nb.interfaces~=0
 %         apply_FSI
@@ -166,7 +164,7 @@ for i_f=1:abs(frequency.nb)
     end
     if (nb.dirichlets>0)
         for ie=1:nb.dirichlets
-            boundary_rigid_wall
+            boundary_rigid_wall_fluid
         end
     end
     
@@ -178,13 +176,20 @@ for i_f=1:abs(frequency.nb)
         for ie=1:nb.internal
             if ismember(elem.model(edges.internal(ie,3)),[1 2 3])&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
                 internal_fluid_FEM_FEM
-            end
-            if ismember(elem.model(edges.internal(ie,3)),[1 2 3])&ismember(elem.model(edges.internal(ie,4)),[10 11])
+            elseif ismember(elem.model(edges.internal(ie,3)),[1 2 3])&ismember(elem.model(edges.internal(ie,4)),[10 11])
                 internal_fluid_FEM_DGM
-            end
-            
+            elseif ismember(elem.model(edges.internal(ie,3)),[10 11])&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
+                temp=edges.internal(ie,3);
+                edges.internal(ie,3)=edges.internal(ie,4);
+                edges.internal(ie,4)=temp;
+                internal_fluid_FEM_DGM
+            end            
             
         end
+    end
+    
+    for ie=1:nb.internal_DGM
+       edge_internal_DGM 
     end
     
     

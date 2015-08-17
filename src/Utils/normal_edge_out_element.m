@@ -1,4 +1,4 @@
-% evaluate_polynom_2D.m
+% normal_edge.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,16 +30,21 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
-%%
+function [nx,ny]=normal_edge_out_element(a,b,center_element)
+
+out=b-a;
+out=out/norm(out);
+out=[0 1;-1 0]*out;
+
+center_edge=(a+b)/2;
+n_center=center_element-center_edge;
+
+if (n_center'*out>0)
+    out=-out;
+end
+nx=out(1);
+ny=out(2);
 
 
 
 
-function f=evaluate_polynom_2D(P,x,y)
-
-nx=size(P,2);
-ny=size(P,1);
-    
-Mx=(ones(ny,1)*(0:nx-1));
-My=(ones(nx,1)*(0:ny-1))';
-f=sum(sum(P.*((x.^Mx).*(y.^My))));

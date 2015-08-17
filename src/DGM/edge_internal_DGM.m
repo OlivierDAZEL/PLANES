@@ -32,47 +32,33 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %%%%% Coordinates of the edge's vertices
 
-coord_edge(1:2,1)=nodes(edges.internal_DGM(ie,1),1:2)';
-coord_edge(1:2,2)=nodes(edges.internal_DGM(ie,2),1:2)';
-
-a=coord_edge(:,1);
-b=coord_edge(:,2);
-
-h=norm(b-a);
-n_ab=(b-a)/h;
+a=nodes(edges.internal_DGM(ie,1),1:2)';
+b=nodes(edges.internal_DGM(ie,2),1:2)';
 
 %%%%% Elements on both sides of the edge
 
 e_1=edges.internal_DGM(ie,3);
 e_2=edges.internal_DGM(ie,4);
-c_1=mean(nodes(elem.nodes(e_1,:),1:2))';
-c_2=mean(nodes(elem.nodes(e_2,:),1:2))';
-e_edge=e_1;
+c_1=mean(nodes(nonzeros(elem.nodes(e_1,:)),1:2))';
+c_2=mean(nodes(nonzeros(elem.nodes(e_2,:)),1:2))';
 
-%%%%% vector normal pointing towards \Omega_e2
+%%%%% vector normal pointing towards \Omega_e2 hence going out from
+%%%%% \Omega_e1
 
-centre_temp=mean(nodes(elem.nodes(e_edge,:),1:2))' ;
-centre_edge=(a+b)/2;
-n_centre=centre_temp-centre_edge;
-ne=normal_edge(coord_edge);
-if (n_centre'*ne<0)
-    ne=-ne;
-end
-nx=ne(1);
-ny=ne(2);
+[nx,ny]=normal_edge_out_element(a,b,c_1);
 
 
 valid_edge_internal=0;
 if (elem.label(e_1)==elem.label(e_2))
-    if ((floor(elem.label(e_edge)/1000)==0)|(floor(elem.label(e_edge)/1000)==2)|(floor(elem.label(e_edge)/1000)==3))
+    if ((floor(elem.label(e_1)/1000)==0)|(floor(elem.label(e_1)/1000)==2)|(floor(elem.label(e_1)/1000)==3))
         %disp('Lancement internal_fluid')
         internal_fluid
         valid_edge_internal=1;
-    elseif (floor(elem.label(e_edge)/1000)==4)
+    elseif (floor(elem.label(e_1)/1000)==4)
         %disp('Lancement internal_PEM')
         internal_PEM
         valid_edge_internal=1;
-    elseif (floor(elem.label(e_edge)/1000)==8)
+    elseif (floor(elem.label(e_1)/1000)==8)
         parameter_element
         internal_PML
         valid_edge_internal=1;

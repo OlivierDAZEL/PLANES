@@ -1,4 +1,4 @@
-% evaluate_polynom_2D.m
+% integrate_polynom_2D_edge.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -34,12 +34,20 @@
 
 
 
+function f = integrate_polynom_exp_2D_edge(P,a,b,jk,center_element,Gauss_points)
 
-function f=evaluate_polynom_2D(P,x,y)
 
-nx=size(P,2);
-ny=size(P,1);
-    
-Mx=(ones(ny,1)*(0:nx-1));
-My=(ones(nx,1)*(0:ny-1))';
-f=sum(sum(P.*((x.^Mx).*(y.^My))));
+delta_gauss=(b-a);
+
+points=((a+b)/2)*ones(1,Gauss_points.nb)+delta_gauss*Gauss_points.xi/2;
+
+temp=evaluate_polynom_2D_vectorial(P,points(1,:),points(2,:));
+
+temp=sum(temp.*exp(jk.'*(points-center_element*ones(1,Gauss_points.nb))).*Gauss_points.w);
+f=temp*norm(delta_gauss)/2;
+
+
+end
+
+
+

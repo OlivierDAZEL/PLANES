@@ -34,6 +34,7 @@
 
 temp=find(ismember(elem.model,[10 11]));
 
+
 if length(temp)>0
     for ie=1:length(temp)
         switch elem.label(ie)
@@ -48,22 +49,25 @@ if length(temp)>0
         end
     end
     dof_start_element(temp(1))=nb.dof_FEM+1;
-     for ie=2:length(temp)
-        dof_start_element(temp(ie))=dof_start_element(temp(ie-1))+theta_DGM.nb*ondes_element(temp(ie-1));
-     end   
-    nb.dof_DGM=dof_start_element(temp(ie))+theta_DGM.nb*ondes_element(temp(ie))-1;
+    nb.dof_DGM=dof_start_element(temp(1))+theta_DGM.nb*ondes_element(temp(1))-1;
     
+    if length(temp)>1
+        for ie=2:length(temp)
+            dof_start_element(temp(ie))=dof_start_element(temp(ie-1))+theta_DGM.nb*ondes_element(temp(ie-1));
+        end
+        nb.dof_DGM=dof_start_element(temp(ie))+theta_DGM.nb*ondes_element(temp(ie))-1-nb.dof_FEM;
+    end
+
     for ii=1:theta_DGM.nb
-    Shift_fluid((ii-1)*3+(1:3),ii)=1;
-    % Biot wave 1
-    Shift_Biot((ii-1)*8*3+(1:8),1+(ii-1)*3)=1;
-    % Biot wave 2
-    Shift_Biot((ii-1)*8*3+8+(1:8),2+(ii-1)*3)=1;
-    % Biot wave 3
-    Shift_Biot((ii-1)*8*3+16+(1:8),3+(ii-1)*3)=1;
-end
-    
-    
+        Shift_fluid((ii-1)*3+(1:3),ii)=1;
+        % Biot wave 1
+        Shift_Biot((ii-1)*8*3+(1:8),1+(ii-1)*3)=1;
+        % Biot wave 2
+        Shift_Biot((ii-1)*8*3+8+(1:8),2+(ii-1)*3)=1;
+        % Biot wave 3
+        Shift_Biot((ii-1)*8*3+16+(1:8),3+(ii-1)*3)=1;
+    end
 else
     nb.dof_DGM=0;
 end
+

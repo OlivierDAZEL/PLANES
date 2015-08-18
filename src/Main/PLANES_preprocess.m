@@ -171,9 +171,6 @@ temp=temp+ (ismember(boundaries(:,4),[5 6 9]));
 temp=find(temp);
 
 
-
-
-
 edges.dirichlets=boundaries(temp,:);
 boundaries(temp,:)=[];
 
@@ -291,14 +288,37 @@ if sum(is_pw)~=0
     size_info_vector_T=2;
 end
 
+file_abs_id=fopen(name.file_abs,'w');
+if nb.T~=0
+    file_TL_id=fopen(name.file_TL,'w');
+end
+
+
+
 period=max(nodes(:,1))-min(nodes(:,1));
 
 
 find_dof_FEM
 find_dof_DGM
 
+I_inc=zeros(frequency.nb,1);
+W_vis=zeros(frequency.nb,1);
+W_struct=zeros(frequency.nb,1);
+W_therm=zeros(frequency.nb,1);
+W_elas=zeros(frequency.nb,1);
+abs_vis=zeros(frequency.nb,1);
+abs_struct=zeros(frequency.nb,1);
+abs_therm=zeros(frequency.nb,1);
+abs_elas=zeros(frequency.nb,1);
+TL_EF=zeros(frequency.nb,1);
+abs_EF=zeros(frequency.nb,1);
 
 
+if exist('theta_DGM')
+    vec_theta=linspace(0,2*pi,theta_DGM.nb+1);
+    vec_theta(end)=[];
+    vec_theta=vec_theta+pi/2;
+end
 
 if profiles.mesh
     display_mesh

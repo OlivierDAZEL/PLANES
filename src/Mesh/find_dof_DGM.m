@@ -49,7 +49,7 @@ if length(temp)>0
         end
     end
     dof_start_element(temp(1))=nb.dof_FEM+1;
-    nb.dof_DGM=dof_start_element(temp(1))+theta_DGM.nb*ondes_element(temp(1))-1;
+    nb.dof_DGM=dof_start_element(temp(1))+theta_DGM.nb*ondes_element(temp(1))-1-nb.dof_FEM;
     
     if length(temp)>1
         for ie=2:length(temp)

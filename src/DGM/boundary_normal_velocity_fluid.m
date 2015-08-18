@@ -46,7 +46,7 @@ parameter_element
 
 % (nx,ny) normal vector 
 
-[nx,ny]=normal_edge_out_element(a,b,center_element)
+[nx,ny]=normal_edge_out_element(a,b,center_element);
 
 
 P_e_in=[nx;ny;air.Z];

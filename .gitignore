@@ -12,10 +12,9 @@ PLANES_IJNME.m
 Projects/*
 !Projects/Kundt
 TeX/
+src/Misc/
 .DS_*
 sync_PLANES.m
 *.fig
-
 *.inp
-
 *.mat

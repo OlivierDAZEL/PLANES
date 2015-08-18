@@ -86,7 +86,7 @@ for ie=1:nb.loads
             end
         case {60}
             if sort(edges.loads(ie,1:2))==sort(elem.nodes(edges.loads(ie,3),1:2)) % Interface node 1 node 2: bottom edge
-                
+                stop a revoir
                 c_e=air.c;
                 k_e=omega/c_e;
                 Z_e=air.Z;
@@ -99,7 +99,6 @@ for ie=1:nb.loads
                 a=nodes(edges.loads(ie,1),1:2)';
                 b=nodes(edges.loads(ie,2),1:2)';
                 
-                
                 %%%%% vector normal pointing out from e
                 
                 [nx,ny]=normal_edge_out_element(a,b,c_1);
@@ -109,35 +108,35 @@ for ie=1:nb.loads
                 %  load_Hermite_2D_2
                 [p_d1,p_d2,p_d3,p_d4,p_d5,p_d6,p_d7,p_d8,p_d9,p_d10,p_d11,p_d12]=H12_shape_functions(lx,ly);
                 
-                vx_d1 =-derive_polynom_2D_x_2(p_d1 )/(1j*omega*rho_e);
-                vx_d2 =-derive_polynom_2D_x_2(p_d2 )/(1j*omega*rho_e);
-                vx_d3 =-derive_polynom_2D_x_2(p_d3 )/(1j*omega*rho_e);
-                vx_d4 =-derive_polynom_2D_x_2(p_d4 )/(1j*omega*rho_e);
-                vx_d5 =-derive_polynom_2D_x_2(p_d5 )/(1j*omega*rho_e);
-                vx_d6 =-derive_polynom_2D_x_2(p_d6 )/(1j*omega*rho_e);
-                vx_d7 =-derive_polynom_2D_x_2(p_d7 )/(1j*omega*rho_e);
-                vx_d8 =-derive_polynom_2D_x_2(p_d8 )/(1j*omega*rho_e);
-                vx_d9 =-derive_polynom_2D_x_2(p_d9 )/(1j*omega*rho_e);
-                vx_d10=-derive_polynom_2D_x_2(p_d10)/(1j*omega*rho_e);
-                vx_d11=-derive_polynom_2D_x_2(p_d11)/(1j*omega*rho_e);
-                vx_d12=-derive_polynom_2D_x_2(p_d12)/(1j*omega*rho_e);
-                vy_d1 =-derive_polynom_2D_x_2(p_d1 )/(1j*omega*rho_e);
-                vy_d2 =-derive_polynom_2D_x_2(p_d2 )/(1j*omega*rho_e);
-                vy_d3 =-derive_polynom_2D_x_2(p_d3 )/(1j*omega*rho_e);
-                vy_d4 =-derive_polynom_2D_x_2(p_d4 )/(1j*omega*rho_e);
-                vy_d5 =-derive_polynom_2D_x_2(p_d5 )/(1j*omega*rho_e);
-                vy_d6 =-derive_polynom_2D_x_2(p_d6 )/(1j*omega*rho_e);
-                vy_d7 =-derive_polynom_2D_x_2(p_d7 )/(1j*omega*rho_e);
-                vy_d8 =-derive_polynom_2D_x_2(p_d8 )/(1j*omega*rho_e);
-                vy_d9 =-derive_polynom_2D_x_2(p_d9 )/(1j*omega*rho_e);
-                vy_d10=-derive_polynom_2D_x_2(p_d10)/(1j*omega*rho_e);
-                vy_d11=-derive_polynom_2D_x_2(p_d11)/(1j*omega*rho_e);
-                vy_d12=-derive_polynom_2D_x_2(p_d12)/(1j*omega*rho_e);
+                vx_d1 =-derive_polynom_2D_x(p_d1 )/(1j*omega*rho_e);
+                vx_d2 =-derive_polynom_2D_x(p_d2 )/(1j*omega*rho_e);
+                vx_d3 =-derive_polynom_2D_x(p_d3 )/(1j*omega*rho_e);
+                vx_d4 =-derive_polynom_2D_x(p_d4 )/(1j*omega*rho_e);
+                vx_d5 =-derive_polynom_2D_x(p_d5 )/(1j*omega*rho_e);
+                vx_d6 =-derive_polynom_2D_x(p_d6 )/(1j*omega*rho_e);
+                vx_d7 =-derive_polynom_2D_x(p_d7 )/(1j*omega*rho_e);
+                vx_d8 =-derive_polynom_2D_x(p_d8 )/(1j*omega*rho_e);
+                vx_d9 =-derive_polynom_2D_x(p_d9 )/(1j*omega*rho_e);
+                vx_d10=-derive_polynom_2D_x(p_d10)/(1j*omega*rho_e);
+                vx_d11=-derive_polynom_2D_x(p_d11)/(1j*omega*rho_e);
+                vx_d12=-derive_polynom_2D_x(p_d12)/(1j*omega*rho_e);
+                vy_d1 =-derive_polynom_2D_x(p_d1 )/(1j*omega*rho_e);
+                vy_d2 =-derive_polynom_2D_x(p_d2 )/(1j*omega*rho_e);
+                vy_d3 =-derive_polynom_2D_x(p_d3 )/(1j*omega*rho_e);
+                vy_d4 =-derive_polynom_2D_x(p_d4 )/(1j*omega*rho_e);
+                vy_d5 =-derive_polynom_2D_x(p_d5 )/(1j*omega*rho_e);
+                vy_d6 =-derive_polynom_2D_x(p_d6 )/(1j*omega*rho_e);
+                vy_d7 =-derive_polynom_2D_x(p_d7 )/(1j*omega*rho_e);
+                vy_d8 =-derive_polynom_2D_x(p_d8 )/(1j*omega*rho_e);
+                vy_d9 =-derive_polynom_2D_x(p_d9 )/(1j*omega*rho_e);
+                vy_d10=-derive_polynom_2D_x(p_d10)/(1j*omega*rho_e);
+                vy_d11=-derive_polynom_2D_x(p_d11)/(1j*omega*rho_e);
+                vy_d12=-derive_polynom_2D_x(p_d12)/(1j*omega*rho_e);
                 
                 index_p=dof_A(p_H12(elem.nodes(e_1,:)));
                 
                 C=[nx ny 0];
-                s=1;
+                s=-11;
                                 
                 P_e_in=[nx;ny;air.Z];
                 Q_e_in=[nx/2 ny/2 1/(2*air.Z)];
@@ -157,29 +156,11 @@ for ie=1:nb.loads
                     eval(['Interp_test=p_d',num2str(i_test),';']);
                     for i_champs=1:12
                         eval(['Interp_champs=Boundary_11(1)*vx_d',num2str(i_champs),'+Boundary_11(2)*vy_d',num2str(i_champs),'+Boundary_11(3)*p_d',num2str(i_champs),';'])
-                        A(index_p(i_test),index_p(i_champs))=A(index_p(i_test),index_p(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b);
+                        A(index_p(i_test),index_p(i_champs))=A(index_p(i_test),index_p(i_champs))-integrate_polynom_2D_edge(multiply_polynom_2D(Interp_test,Interp_champs),a,b,Gauss_points);
                     end
-                    F(index_p(i_test))=F(index_p(i_test))+integrate_polynom_2D_edge(Interp_test,a,b)*Boundary_1F;
+                    F(index_p(i_test))=F(index_p(i_test))+integrate_polynom_2D_edge(Interp_test,a,b,Gauss_points)*Boundary_1F;
                     
                 end
-                
-                
-                %                 for i_test=1:4
-                %                     eval(['Psi_test=Psi_',num2str(i_test),'_x;'])
-                %                     F(indice_test(i_test))=F(indice_test(i_test))+integrate_polynom(Psi_test,lx_H12)*FF;
-                %                     for i_champs=1:4
-                %                         eval(['temp_1=PP(3)*Psi_',num2str(i_champs),'_x;']);
-                %                         eval(['temp_2=PP(1)*(-1/(j*air.rho*omega))*derive_polynom(Psi_',num2str(i_champs),'_x);']);
-                %                         temp=add_polynom(temp_1,temp_2);
-                %                         A(indice_test(i_test),indice_champs_0(i_champs))=A(indice_test(i_test),indice_champs_0(i_champs))-integrate_polynom(multiply_polynom(Psi_test,temp),lx_H12);
-                %                     end
-                %                     for i_champs=1:2
-                %                         index_Psi=[1 4];
-                %                         %['temp=(1/ly_H12)*PP(2)*(-1/(j*air.rho*omega))*Psi_',num2str(index_Psi(i_champs)),'_x;']
-                %                         eval(['temp=(1/ly_H12)*PP(2)*(-1/(j*air.rho*omega))*Psi_',num2str(index_Psi(i_champs)),'_x;'])
-                %                         A(indice_test(i_test),indice_champs_y(i_champs))=A(indice_test(i_test),indice_champs_y(i_champs))-integrate_polynom(multiply_polynom(Psi_test,temp),lx_H12);
-                %                     end
-                %                 end
             else
                 aezezaezaezeazezaeazezaeazezaeza
             end

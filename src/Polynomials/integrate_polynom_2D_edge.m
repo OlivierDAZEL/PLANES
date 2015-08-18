@@ -38,25 +38,10 @@ function f = integrate_polynom_2D_edge(P,a,b,Gauss_points)
 
 
 delta=(b-a);
-
 points=((a+b)/2)*ones(1,Gauss_points.nb)+delta*Gauss_points.xi/2;
-
 temp=evaluate_polynom_2D_vectorial(P,points(1,:),points(2,:));
 temp=sum(temp.*Gauss_points.w);
 f=temp*norm(delta)/2;
-
-% points=a*ones(1,nb_elem+1)+delta*[0:nb_elem];
-% I_t_new=h*sum(evaluate_polynom_2D_vectorial(P,points(1,2:end-1),points(2,2:end-1)));
-% I_t_new=I_t_new+(h/2)*evaluate_polynom_2D(P,points(1,1),points(2,1));
-% I_t_new=I_t_new+(h/2)*evaluate_polynom_2D(P,points(1,end),points(2,end));
-% 
-% 
-% points=(a+delta/2)*ones(1,nb_elem)+delta*[0:nb_elem-1];
-% I_rm_new=h*sum(evaluate_polynom_2D_vectorial(P,points(1,:),points(2,:)));
-% 
-% f=(I_t_new+2*I_rm_new)/3;
-
-
 end
 
 

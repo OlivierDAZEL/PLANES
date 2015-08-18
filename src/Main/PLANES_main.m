@@ -35,48 +35,30 @@
 clear all
 close all
 clc
-list_path=['''FEM'',''DGM'',''problems'',''Materials'',''Mesh'',''Physics'',''plots'',''Utils'',''validation'',''PW'',''analytical_solutions'''];
-eval(['addpath(' list_path ');'])
+
 
 %name_of_project='PEM';
-%name_of_project='air_PEM';
+
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=6;
+project.num=7;
 
-%subproject=1;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 frequency.nb=1;
-frequency.min=2000;
+frequency.min=200;
 frequency.max=4000;
-theta_DGM.nb=2;
-vec_theta=linspace(0,2*pi,theta_DGM.nb+1);
-vec_theta(end)=[];
-vec_theta=vec_theta+pi/2;
-
-% Angle of incidence
-%theta_inc=0*pi/180;
-
-
-
-% if (solve.DGM|solve.FEMDGM)
-%     nb_thetaDGM=8;
-%     vec_theta=linspace(0,2*pi,nb_thetaDGM+1);
-%     vec_theta(end)=[];
-% end
-%
-
 
 profiles.mesh=1;
+profiles.solution=1;
 profiles.x=0;
 profiles.y=1;
 profiles.map=0;
 profiles.custom=0;
 profiles.on=profiles.x+profiles.y+profiles.map+profiles.custom;
-export.nrj=1;
+export.nrj=0;
 export.profiles=0;
 
 
@@ -88,22 +70,19 @@ air_properties_JPG
 init_vec_frequencies
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Call to FreeFEM++ to create the Mesh and importation of the mesh
+%% Creation and importation of the mesh
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 eval([name.project_full]);
 
+
+
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
 PLANES_preprocess
-
 
 if profiles.mesh
     display_mesh
 end
-
-
 
 
 if nb.dof_FEM>0
@@ -115,12 +94,8 @@ PLANES_resolution
 toc
 
 % Analytical solution (if exists)
-
-name_solution=['solution_' , project.name];
-% if project.num~=0
-%     name_solution=[name_solution,'_',num2str(project.num)];
-% end
-if ((exist(name_solution)==2)&(profiles.on))
-    eval('eval(name_solution)')
+if ((exist(name.solution)==2)&(profiles.on))
+    eval('eval(name.solution)')
 end
+
 

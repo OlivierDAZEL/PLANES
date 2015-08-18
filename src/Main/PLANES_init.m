@@ -32,12 +32,14 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+list_path=['''../DGM'',''../FEM'',''../Materials'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../Problems'',''../PW'',''../Solutions'',''../Utils'',''../Validation'''];
+eval(['addpath(' list_path ');'])
 
 
 warning('off','MATLAB:nearlySingularMatrix')
 
 
-name.project_directory=['../Projects/' project.name '/'];
+name.project_directory=['../../Projects/' project.name '/'];
 
 if project.num==0
     name.file=[name.project_directory project.name];
@@ -56,9 +58,9 @@ name.file_PW=           [name.file '.PW'];
 name.file_info=         [name.file '.info'];
 name.file_FEM=          [name.file '.FEM'];
 
-% if solve.DGM
-%     name_file_DGM=          [name_file '_Nw=' num2str(nb_thetaDGM) '.DGM'];
-% end
+name.compute_error=['compute_error_' , project.name];
+name.solution=['solution_' , project.name];
+
 
 if export.profiles==1
     name.directory_profiles= [name.project_directory '/Profiles/'];
@@ -78,6 +80,5 @@ solve.H12=0;
 solve.DGM=0;
 solve.PW=0;
 solve.FEMDGM=0;
-
 
 Gauss_points=GaussLegendre_points(15);

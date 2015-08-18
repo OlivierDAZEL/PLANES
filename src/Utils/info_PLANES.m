@@ -1,4 +1,4 @@
-% info_FEM.m
+% info_PLANES.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -37,10 +37,13 @@ fidinfo=fopen(name.file_info,'w');
 fprintf(fidinfo,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n');
 fprintf(fidinfo,'!!                  Output files of PLANES                   !!\n');
 fprintf(fidinfo,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n');
-[~,name]=system('hostname');
-fprintf(fidinfo,'!! Generated %s on %s', datestr(now,'dd-mm-yyyy at HH-MM-SS'),name);
+[~,name_computer]=system('hostname');
+fprintf(fidinfo,'!! Generated %s on %s', datestr(now,'dd-mm-yyyy at HH-MM-SS'),name_computer);
 fprintf(fidinfo,'!! Name of project = %s\n',project.name);
-fprintf(fidinfo,'!! Subproject # %d\n',project.name);
-fprintf(fidinfo,'!! #dof = %d\n',length(X));
-fprintf(fidinfo,'!! Computation time = %d s\n',time_FEM);
+fprintf(fidinfo,'!! Subproject # %d\n',project.num);
+fprintf(fidinfo,'!! #dof FEM= %d\n',nb.dof_FEM);
+fprintf(fidinfo,'!! #dof DGM= %d\n',nb.dof_DGM);
+fprintf(fidinfo,'!! #dof R= %d\n',nb.R);
+fprintf(fidinfo,'!! #dof T= %d\n',nb.T);
+fprintf(fidinfo,'!! Computation time = %d s\n',time_PLANES);
 fclose(fidinfo);

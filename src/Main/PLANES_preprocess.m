@@ -315,7 +315,7 @@ abs_EF=zeros(frequency.nb,1);
 
 
 if exist('theta_DGM')
-    vec_theta=linspace(0,2*pi,theta_DGM.nb+1);
+    vec_theta=tilt+linspace(0,2*pi,theta_DGM.nb+1);
     vec_theta(end)=[];
     vec_theta=vec_theta+pi/2;
 end

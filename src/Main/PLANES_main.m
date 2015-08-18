@@ -42,17 +42,17 @@ clc
 project.name='Kundt';
 %name_of_project='CFM';
 %name_of_project='sandwich_meta';
-project.num=7;
+project.num=0;
 
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 frequency.nb=1;
-frequency.min=200;
+frequency.min=1000;
 frequency.max=4000;
 
-profiles.mesh=1;
-profiles.solution=1;
+profiles.mesh=0;
+profiles.solution=0;
 profiles.x=0;
 profiles.y=1;
 profiles.map=0;
@@ -66,7 +66,7 @@ export.profiles=0;
 %% Initialization of PLANES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 PLANES_init
-air_properties_JPG
+air_properties_maine
 init_vec_frequencies
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,12 +89,13 @@ if nb.dof_FEM>0
     EF_global_build
 end
 
-tic 
+
 PLANES_resolution
-toc
+
+info_PLANES
 
 % Analytical solution (if exists)
-if ((exist(name.solution)==2)&(profiles.on))
+if ((exist(name.solution)==2)&&(profiles.on~=0))
     eval('eval(name.solution)')
 end
 

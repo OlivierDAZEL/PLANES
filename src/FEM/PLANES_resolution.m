@@ -33,7 +33,7 @@
 %%
 
 
-
+tic
 for i_f=1:abs(frequency.nb)
     
     PLANES_resolution_progress=100*i_f/abs(frequency.nb)
@@ -192,5 +192,6 @@ for i_f=1:abs(frequency.nb)
     
 end
 
+time_PLANES=toc;
 
 

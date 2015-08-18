@@ -8,7 +8,8 @@
 *.info
 *.abs
 *.dat
-PLANES_IJNME.m
+src/Main/PLANES_IJNME.m
+src/Main/PLANES_CFM.m
 Projects/*
 !Projects/Kundt
 TeX/
@@ -18,3 +19,4 @@ sync_PLANES.m
 *.fig
 *.inp
 *.mat
+Batch_CFM

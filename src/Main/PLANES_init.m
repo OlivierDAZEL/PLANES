@@ -59,6 +59,10 @@ name.file_info=         [name.file '.info'];
 name.file_FEM=          [name.file '.FEM'];
 
 name.compute_error=['compute_error_' , project.name];
+if ((exist(name.compute_error)==2))
+    name.file_error=          [name.file '.error'];
+end
+
 name.solution=['solution_' , project.name];
 
 

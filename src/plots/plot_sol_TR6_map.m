@@ -38,7 +38,7 @@ x=[];
 y=[];
 
 
-if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
+if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
     figure(10001)
     % For displacement
     hold on
@@ -46,7 +46,7 @@ if sum(ismember(floor(element_label/1000),[1 4 5]))~=0
 end
 
 
-if sum(ismember(floor(element_label/1000),[0 2 3 4 5]))~=0
+if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
     figure(10002)
     % For pressure
     hold on

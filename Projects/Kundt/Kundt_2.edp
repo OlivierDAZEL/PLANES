@@ -30,12 +30,13 @@ border AB(t=0,1){ x=xA+(xB-xA)*t; y=yA+(yB-yA)*t;label=labelboundaries[0];}
 border BC(t=0,1){ x=xB+(xC-xB)*t; y=yB+(yC-yB)*t;label=labelboundaries[1];}
 border CD(t=0,1){ x=xC+(xD-xC)*t; y=yC;label=labelboundaries[2];}
 border DA(t=0,1){ x=xD+(xA-xD)*t; y=yD+(yA-yD)*t;label=labelboundaries[3];}
+mesh Thtube=buildmesh (AB(nx)+BC(ny)+CD(nx)+DA(ny));
+
+//int[int] labs=[labelboundaries[0],labelboundaries[1],labelboundaries[2],labelboundaries[3]];
+//mesh Thtube=square(nx,ny,[xA+(xB-xA)*x,yA+(yD-yA)*y],label=labs);
 
 
 
-
-
-mesh Thtube=buildmesh (AB(nx)+BC(ny)+CD(nx)+DA(ny),fixeborder=1);
 
 savemesh(Thtube,fileoutput);
 

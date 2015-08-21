@@ -55,6 +55,10 @@ if length(temp)>0
 end
 segments(1,:)=[]; % Line 1 is removed at the end
 
+
+
+
+
 % Ordering of nodes so that node 1 < node 2
 segments(:,1:2)=sort(segments(:,1:2),2);
 % Research of double segments
@@ -74,6 +78,7 @@ segments(temp+1,:)=[];
 % Suppression of the first column with temporary index of edges
 segments(:,1)=[];
 % segments=[node1 node2 #element1 #element2(if any) elem.label1 elem.label2(if any)]
+
 
 % Separation between boundary and internal;
 
@@ -95,12 +100,10 @@ edges.internal(temp,:)=[];
 
 boundaries=    [segments(find(segments(:,4)==0),:)];
 
+
 clear segments
 
 % internal=[node1 node2 #element1 #element2 elem.label1 elem.label2]
-
-
-
 
 
 %% Second step: for internal edges : identify for internal edges the boundary with natural coupling
@@ -158,6 +161,12 @@ boundaries(:,[4 3])=boundaries(:,[3 4]);
 nb.internal=size(edges.internal,1);
 
 
+
+
+
+
+
+
 % boundaries=[node1 node2 #element #label 0]
 
 temp=find(ismember(abs(boundaries(:,4)),[101]));
@@ -165,14 +174,37 @@ edges.MMT=boundaries(temp,:);
 boundaries(temp,:)=[];
 
 % Find Dirichlet boundaries : label 1 not FEM or 5 6 9
+
+
 temp=      (ismember(boundaries(:,4),[1]));
-temp=temp.*(~ismember(elem.model(boundaries(:,3)),[1 2 3]));
-temp=temp+ (ismember(boundaries(:,4),[5 6 9]));
+temp=temp.*ismember(elem.model(boundaries(:,3)),[1 2 3]);
 temp=find(temp);
+boundaries(temp,:)=[];
 
 
+
+temp=      (ismember(boundaries(:,4),[1 5 6 9]));
 edges.dirichlets=boundaries(temp,:);
 boundaries(temp,:)=[];
+
+
+
+temp=find(ismember(boundaries(:,4),[25]));
+edges.internal_FEMFEM=boundaries(temp,:);
+boundaries(temp,:)=[];
+
+
+identify_incompatible_mesh
+
+
+
+
+
+
+
+
+
+
 
 
 temp=find(ismember(boundaries(:,4),[98 99]));

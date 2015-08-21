@@ -69,12 +69,7 @@ if profiles.y==1
     plot_sol_PLANES_y
 end
 if profiles.map==1
-    if solve.TR6
-        plot_sol_TR6_map
-    end
-    if solve.H12
-        plot_sol_H12_map
-    end
+        plot_sol_PLANES_map
 end
 if profiles.custom~=0
     eval(['plot_sol_TR6_custom_' , num2str(profiles.custom)]);

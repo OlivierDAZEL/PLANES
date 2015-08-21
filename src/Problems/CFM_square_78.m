@@ -4,6 +4,7 @@ model_data.ly=1/2;
 model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
 label_boundary=25;
 model_data.label_boundaries=[3 1 label_boundary 1];
+theta_DGM.nb=8;
 
 
 fid=fopen(name.file_input_FreeFem,'w');
@@ -27,9 +28,10 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 [nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
 
 
-% All the elements are DGM on TR
+% All the elements are TR6
 
-elem.model=10*ones(nb.elements,1);
+elem.model=1*ones(nb.elements,1);
+
 
 label_elem_ajoute=0;
 model_elem_ajoute=11;
@@ -38,3 +40,4 @@ l_supp=model_data.ly;
 model_data.ly=model_data.ly+l_supp;
 
 
+%aezeazezaeazaez

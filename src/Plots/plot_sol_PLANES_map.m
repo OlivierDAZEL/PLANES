@@ -1,4 +1,4 @@
-% find_dof_DGM.m
+% plot_PLANES_map.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,42 +32,68 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-temp=find(ismember(elem.model,[10 11]));
+x=[];
+y=[];
 
 
-if length(temp)>0
-    for ie=1:length(temp)
-        switch elem.label(ie)
-            case {0,3,8}
-                ondes_element(temp(ie))=1;
-            case {1}
-                ondes_element(temp(ie))=2;
-            case {4,5}
-                ondes_element(temp(ie))=3;
-            otherwise
-                pas_de_nature_connue
-        end
-    end
-    dof_start_element(temp(1))=nb.dof_FEM+1;
-    nb.dof_DGM=dof_start_element(temp(1))+theta_DGM.nb*ondes_element(temp(1))-1-nb.dof_FEM;
+if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
+    figure(10002)
+    hold on
+    title('Solid displacement')
+    xlabel('y')
+    ylabel('abs(u)')
+    figure(11002)
+    hold on
+    title('Solid displacement')
+    xlabel('y')
+    ylabel('angle(u)')
+end
+
+
+if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
+    figure(10010)
+    hold on
+    title('Pressure')
+    xlabel('y')
+    ylabel('abs(P)')
+    figure(11010)
+    hold on
+    title('Pressure')
+    xlabel('y')
+    ylabel('angle(P)')
+end
+
+
+
+for ie=1:nb.elements
     
-    if length(temp)>1
-        for ie=2:length(temp)
-            dof_start_element(temp(ie))=dof_start_element(temp(ie-1))+theta_DGM.nb*ondes_element(temp(ie-1));
-        end
-        nb.dof_DGM=dof_start_element(temp(ie))+theta_DGM.nb*ondes_element(temp(ie))-1-nb.dof_FEM;
+    if ismember(elem.model(ie),[1])
+            plot_sol_TR6_on_element
+   elseif ismember(elem.model(ie),[10 11])
+            plot_sol_DGM_on_element
+    elseif ismember(elem.model(ie),[2])
+            plot_sol_H12_on_element
     end
+    
 
-    for ii=1:theta_DGM.nb
-        Shift_fluid((ii-1)*3+(1:3),ii)=1;
-        % Biot wave 1
-        Shift_Biot((ii-1)*8*3+(1:8),1+(ii-1)*3)=1;
-        % Biot wave 2
-        Shift_Biot((ii-1)*8*3+8+(1:8),2+(ii-1)*3)=1;
-        % Biot wave 3
-        Shift_Biot((ii-1)*8*3+16+(1:8),3+(ii-1)*3)=1;
-    end
-else
-    nb.dof_DGM=0;
+end
+
+if export.profiles==1
+    shading interp
+    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
+end
+
+if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
+    figure(10001)
+end
+
+
+if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
+    figure(10002)
+    colormap jet
+    colorbar
+    figure(11002)
+    colormap jet
+    colorbar
 end
 

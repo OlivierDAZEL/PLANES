@@ -1,4 +1,4 @@
-% FEM_resolution.m
+% PLANES_resolution.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -166,11 +166,17 @@ for i_f=1:abs(frequency.nb)
     end
     
     
+    if nb.flux>0
+        for ie=1:nb.flux
+            internal_fluid_FEM_FEM
+        end
+    end
+    
+    
+    
     if nb.internal>0
         for ie=1:nb.internal
-            if ismember(elem.model(edges.internal(ie,3)),[1 2 3])&&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
-                internal_fluid_FEM_FEM
-            elseif ismember(elem.model(edges.internal(ie,3)),[1 2 3])&&ismember(elem.model(edges.internal(ie,4)),[10 11])
+            if  ismember(elem.model(edges.internal(ie,3)),[1 2 3])&&ismember(elem.model(edges.internal(ie,4)),[10 11])
                 internal_fluid_FEM_DGM
             elseif ismember(elem.model(edges.internal(ie,3)),[10 11])&&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
                 temp=edges.internal(ie,3);
@@ -188,7 +194,7 @@ for i_f=1:abs(frequency.nb)
     
     postprocess_solution
     
-
+    
     
 end
 

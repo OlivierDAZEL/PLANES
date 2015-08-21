@@ -4,6 +4,7 @@ model_data.ly=1/2;
 model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
 label_boundary=25;
 model_data.label_boundaries=[3 1 label_boundary 1];
+theta_DGM.nb=16;
 
 
 fid=fopen(name.file_input_FreeFem,'w');

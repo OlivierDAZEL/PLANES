@@ -1,4 +1,4 @@
-% info_PLANES.m
+% plot_sol_H12_on_element.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,17 +33,31 @@
 %%
 
 
-fidinfo=fopen(name.file_info,'w');
-fprintf(fidinfo,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n');
-fprintf(fidinfo,'!!                  Output files of PLANES                   !!\n');
-fprintf(fidinfo,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n');
-[~,name_computer]=system('hostname');
-fprintf(fidinfo,'!! Generated %s on %s', datestr(now,'dd-mm-yyyy at HH-MM-SS'),name_computer);
-fprintf(fidinfo,'!! Name of project = %s\n',project.name);
-fprintf(fidinfo,'!! Subproject # %d\n',project.num);
-fprintf(fidinfo,'!! #dof FEM= %d\n',nb.dof_FEM);
-fprintf(fidinfo,'!! #dof DGM= %d\n',nb.dof_DGM);
-fprintf(fidinfo,'!! #dof R= %d\n',nb.R);
-fprintf(fidinfo,'!! #dof T= %d\n',nb.T);
-fprintf(fidinfo,'!! Computation time = %d s\n',time_PLANES);
-fclose(fidinfo);
+
+vertices=[nodes(nonzeros(elem.nodes(ie,:)),:)'];
+%changement de base (cart to triangle)
+
+
+if ismember(floor(elem.label(ie)/1000),[0 4 5 8])
+    figure(10002)
+    c=sol(p_H12(nonzeros(elem.nodes(ie,:))));
+
+    
+    
+    for i_faces=1:size(faces,2)
+        figure(10002)
+        patch(vertices(1,:),vertices(2,:),abs(c(1:3:end)));
+    end
+        for i_faces=1:size(faces,2)
+        figure(11002)
+        patch(vertices(1,:),vertices(2,:),angle(c(1:3:end)));
+    end
+    
+end
+
+
+
+
+
+
+

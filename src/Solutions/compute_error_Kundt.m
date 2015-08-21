@@ -4,22 +4,21 @@
 
 % Computation of the reference solution
 B=-1/(1j*omega*sin(-k_air*model_data.ly));
-%p_air=-B_anal*(air.K)*k_air*cos(k_air*x_air);
+%p_air=-B*(air.K)*k_air*cos(k_air*x_air);
 X_ref=zeros(nb.dof_FEM+nb.dof_DGM,1);
 nb_theta_ref=2;
 vec_theta_ref=[pi/2 -pi/2;];
-
-
 
 for ie=1:nb.elements
     if ismember(elem.model(ie),[1 2 3])
         y=nodes(nonzeros(elem.nodes(ie,:)),2);
         p_ref=-B*(air.K)*k_air*cos(k_air*(y-model_data.ly));
         if elem.model(ie)==2
+            ly=norm(nodes(elem.nodes(ie,1),:)-nodes(elem.nodes(ie,4),:));
             index_p=dof_A(p_H12(elem.nodes(ie,1:4)));
             X_ref(index_p(1:3:end))=p_ref;
-            dp_ref_dy=B*(air.K)*k_air^2*sin(k_air*(y-model_data.ly));
-            X_ref(index_p(3:3:end))=dp_ref_dy;
+            dp_ref_dy=ly*B*(air.K)*k_air^2*sin(k_air*(y-model_data.ly));
+            X_ref(index_p(3:3:end))=dp_ref_dy;           
         else
             index_p=dof_A(p_TR(nonzeros(elem.nodes(ie,:))));
             X_ref(index_p)=p_ref;

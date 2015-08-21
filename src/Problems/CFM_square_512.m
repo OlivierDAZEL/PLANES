@@ -1,7 +1,10 @@
 model_data.lx=1;
 model_data.ly=1/2;
-model_data.nx=35;
+
 model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
+
+theta_DGM.nb=12;
+
 label_boundary=25;
 model_data.label_boundaries=[3 1 label_boundary 1];
 
@@ -27,15 +30,14 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 [nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
 
 
-% All the elements are TR6 on the initial mesh
+% All the elements are DGM on TR
 
-elem.model=1*ones(nb.elements,1);
-
-
+elem.model=10*ones(nb.elements,1);
 
 label_elem_ajoute=0;
-model_elem_ajoute=2;
+model_elem_ajoute=11;
 l_supp=model_data.ly;
 [nb,nodes,elem,edge_msh] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,model_elem_ajoute,edge_msh,nodes,elem,nb);
 model_data.ly=model_data.ly+l_supp;
+
 

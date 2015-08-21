@@ -35,39 +35,10 @@
 
 
 
-function f=evaluate_polynom_2D(P,x,y)
+function f=evaluate_polynom_D(P,x)
 
+nx=size(P,2);
 
-nb_v=length(x);
-
-if nb_v==1
-    nx=size(P,2);
-    ny=size(P,1);
     
-    Mx=(ones(ny,1)*(0:nx-1));
-    My=(ones(nx,1)*(0:ny-1)).';
-    f=sum(sum(P.*((x.^Mx).*(y.^My))));
-else
-    
-    nb_x=size(P,2);
-    nb_y=size(P,1);
-    % number of values
-    PP=P(:,:,ones(nb_v,1));
-    
-    XX=kron(x,ones(nb_y,nb_x));
-    XX=reshape(XX,[nb_y nb_x nb_v]);
-    YY=kron(y,ones(nb_y,nb_x));
-    YY=reshape(YY,[nb_y nb_x nb_v]);
-    
-    power_x=reshape(kron(ones(1,nb_v),(ones(nb_y,1)*(0:nb_x-1))),[nb_y nb_x nb_v]);
-    power_y=reshape(kron(ones(1,nb_v),(ones(nb_x,1)*(0:nb_y-1))'),[nb_y nb_x nb_v]);
-    
-    f=PP.*(XX.^power_x).*(YY.^power_y);
-    f=sum(f,1);
-    f=sum(f,2);
-    f=reshape(f,[1 nb_v]);
- end
-
-
-
-
+Mx=((0:nx-1));
+f=sum(P.*((x.^Mx)));

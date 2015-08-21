@@ -1,4 +1,4 @@
-function Gauss_points= GaussLegendre_points(N)
+function Gauss_points= compute_GaussLegendre_points(N)
 
 Gauss_points.nb=N;
 L_n=Legendre_polynomial(N);

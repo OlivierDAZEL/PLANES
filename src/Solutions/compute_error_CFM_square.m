@@ -16,9 +16,10 @@ for ie=1:nb.elements
         y=nodes(nonzeros(elem.nodes(ie,:)),2);
         p_ref=-B*(air.K)*k_air*cos(k_air*(y-model_data.ly));
         if elem.model(ie)==2
+            ly=norm(nodes(elem.nodes(ie,1),:)-nodes(elem.nodes(ie,4),:));
             index_p=dof_A(p_H12(elem.nodes(ie,1:4)));
             X_ref(index_p(1:3:end))=p_ref;
-            dp_ref_dy=B*(air.K)*k_air^2*sin(k_air*(y-model_data.ly));
+            dp_ref_dy=ly*B*(air.K)*k_air^2*sin(k_air*(y-model_data.ly));
             X_ref(index_p(3:3:end))=dp_ref_dy;
         else
             index_p=dof_A(p_TR(nonzeros(elem.nodes(ie,:))));

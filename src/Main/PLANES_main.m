@@ -36,13 +36,9 @@ clear all
 close all
 clc
 
-
-%name_of_project='PEM';
-
 project.name='Kundt';
-%name_of_project='CFM';
-%name_of_project='sandwich_meta';
-project.num=0;
+%project.name='CFM_square';
+project.num=2;
 
 % Number of frequencies
 % If the number is negative then a logscale is chosen
@@ -72,9 +68,8 @@ init_vec_frequencies
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Creation and importation of the mesh
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 eval([name.project_full]);
-
-
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -89,14 +84,13 @@ if nb.dof_FEM>0
     EF_global_build
 end
 
-
 PLANES_resolution
 
-info_PLANES
+PLANES_info
 
 % Analytical solution (if exists)
 if ((exist(name.solution)==2)&&(profiles.on~=0))
     eval('eval(name.solution)')
 end
 
-
+%figure(10002)

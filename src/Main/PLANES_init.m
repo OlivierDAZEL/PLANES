@@ -79,10 +79,6 @@ set(0,'DefaultAxesFontSize',15)
 set(0,'DefaultAxeslinewidth',2);
 
 
-solve.TR6=0;
-solve.H12=0;
-solve.DGM=0;
-solve.PW=0;
-solve.FEMDGM=0;
 
-Gauss_points=GaussLegendre_points(15);
+
+Gauss_points=compute_GaussLegendre_points(10);

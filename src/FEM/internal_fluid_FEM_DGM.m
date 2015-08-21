@@ -37,8 +37,7 @@ k_e=omega/c_e;
 Z_e=air.Z;
 rho_e=air.rho;
 M_e=diag([air.rho,air.rho,1/air.K]);
-A_x=[0 0 1;0 0 0; 1 0 0];
-A_y=[0 0 0;0 0 1; 0 1 0];
+
 
 e_1=edges.internal(ie,3);
 e_2=edges.internal(ie,4);

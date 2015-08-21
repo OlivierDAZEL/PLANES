@@ -1,6 +1,6 @@
-function [Psi_1,Psi_2,Psi_3,Psi_4]=Hermite_shape_functions_shifted(lx,x)
+function [Psi_1,Psi_2,Psi_3,Psi_4]=Hermite_shape_functions_shifted(lx,x_shift)
 
-order_1=[-x 1]/lx;
+order_1=[-x_shift 1]/lx;
 order_2=multiply_polynom(order_1,order_1);
 order_3=multiply_polynom(order_2,order_1);
 

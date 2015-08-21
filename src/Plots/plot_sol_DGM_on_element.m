@@ -1,4 +1,4 @@
-% find_dof_DGM.m
+% plot_sol_DGM_on_element.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,42 +32,43 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-temp=find(ismember(elem.model,[10 11]));
+
+coord_elem=nodes(nonzeros(elem.nodes(ie,:)),1:2)';
+x_centre=mean(nodes(nonzeros(elem.nodes(ie,:)),1:2))';
+
+q=X(dof_start_element(ie)+[0:ondes_element(ie)*theta_DGM.nb-1]);
 
 
-if length(temp)>0
-    for ie=1:length(temp)
-        switch elem.label(ie)
-            case {0,3,8}
-                ondes_element(temp(ie))=1;
-            case {1}
-                ondes_element(temp(ie))=2;
-            case {4,5}
-                ondes_element(temp(ie))=3;
-            otherwise
-                pas_de_nature_connue
-        end
-    end
-    dof_start_element(temp(1))=nb.dof_FEM+1;
-    nb.dof_DGM=dof_start_element(temp(1))+theta_DGM.nb*ondes_element(temp(1))-1-nb.dof_FEM;
-    
-    if length(temp)>1
-        for ie=2:length(temp)
-            dof_start_element(temp(ie))=dof_start_element(temp(ie-1))+theta_DGM.nb*ondes_element(temp(ie-1));
-        end
-        nb.dof_DGM=dof_start_element(temp(ie))+theta_DGM.nb*ondes_element(temp(ie))-1-nb.dof_FEM;
-    end
+e_edge=ie;
+parameter_element
 
-    for ii=1:theta_DGM.nb
-        Shift_fluid((ii-1)*3+(1:3),ii)=1;
-        % Biot wave 1
-        Shift_Biot((ii-1)*8*3+(1:8),1+(ii-1)*3)=1;
-        % Biot wave 2
-        Shift_Biot((ii-1)*8*3+8+(1:8),2+(ii-1)*3)=1;
-        % Biot wave 3
-        Shift_Biot((ii-1)*8*3+16+(1:8),3+(ii-1)*3)=1;
-    end
+if elem.model(ie)==10
+    Phi_elem=zeros(3,3);
 else
-    nb.dof_DGM=0;
+    Phi_elem=zeros(3,4);
 end
+for i_thetaphi=1:theta_DGM.nb
+    theta_phi=vec_theta(i_thetaphi);
+    n_phi=[cos(theta_phi)*tau_x;sin(theta_phi)*tau_y];
+    Phi_e=Phi_fluid(cos(theta_phi),sin(theta_phi),Z_e);
+    Phi_elem(:,1)=Phi_elem(:,1)+Phi_e*exp(-1j*k_e*(n_phi.'*(coord_elem(:,1)-x_centre)))*q(1+ondes_element(ie)*(i_thetaphi-1));
+    Phi_elem(:,2)=Phi_elem(:,2)+Phi_e*exp(-1j*k_e*(n_phi.'*(coord_elem(:,2)-x_centre)))*q(1+ondes_element(ie)*(i_thetaphi-1));
+    Phi_elem(:,3)=Phi_elem(:,3)+Phi_e*exp(-1j*k_e*(n_phi.'*(coord_elem(:,3)-x_centre)))*q(1+ondes_element(ie)*(i_thetaphi-1));
+    if elem.model(ie)==11
+        Phi_elem(:,4)=Phi_elem(:,4)+Phi_e*exp(-1j*k_e*(n_phi.'*(coord_elem(:,4)-x_centre)))*q(1+ondes_element(ie)*(i_thetaphi-1));
+    end
+end
+
+y=[coord_elem(2,:)];
+c=[Phi_elem(3,:)];
+figure(2010)
+plot(y,abs(c),'b.');
+figure(4010)
+plot(y,angle(c),'b.');
+
+
+
+
+
+
 

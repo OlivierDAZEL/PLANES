@@ -42,7 +42,7 @@ u_air=B*sin(k_air*x_air);
 v_air=1j*omega*u_air;
 % p_air=-K_air*u'(x_air)
 p_air=-B*(air.K)*k_air*cos(k_air*x_air);
-
+dp_air=+B*(air.K)*k_air^2*sin(k_air*x_air);
 
 if profiles.on~=0
     
@@ -64,3 +64,4 @@ if profiles.on~=0
     
 
 end
+

@@ -1,4 +1,4 @@
-% analyze_mesh.m
+% analyze_mesh_FEM.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %

@@ -36,7 +36,7 @@
 
 
 for ie=1:nb_elements
-    coord_elem=vcor(kconec(ie,:),1:2)';
+    coord_elem=nodes(elements(ie,:),1:2)';
     x_centre=centre_element(ie);
 
     e_edge=ie;

@@ -33,7 +33,7 @@
 %%
 
 
-for ie=1:nb_interfaces
+for ie=1:nb.interfaces
     
     x1=nodes(interfaces(ie,1),1);
     y1=nodes(interfaces(ie,1),2);
@@ -59,7 +59,7 @@ for ie=1:nb_interfaces
     a2(2)=nodes(node(2),2);
     
     vec_tangent=a2-a1;
-    vec_normal=[vec_tangent(2) vec_tangent(1)];
+    vec_normal=[vec_tangent(2) -vec_tangent(1)];
     vec_normal=vec_normal/norm(vec_normal);
     
     center_e1=mean(nodes(elements(interfaces(ie,3),:),1:2),1);
@@ -69,15 +69,17 @@ for ie=1:nb_interfaces
     if temp<0
         vec_normal=-vec_normal;
     end
-    
-    if floor(element_label(interfaces(ie,3))/1000)==1
-        n_elas=vec_normal;
-        n_acou=-vec_normal;
-    else
+     
+    if floor(element_label(interfaces(ie,3))/1000)==0
         n_elas=-vec_normal;
-        n_acou=vec_normal;
+        n_acou= n_elas;
+    else
+        n_elas= vec_normal;
+        n_acou= n_elas;
     end
-    
+    n_elas=-n_elas;
+    n_acou=-n_acou;
+
     
     FSIe=TR6_FSI(a1,a2);
     

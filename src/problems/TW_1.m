@@ -1,13 +1,12 @@
 period=55e-3;
 thicknessporous=5.5e-2;
-labelporous=5005;
-labelinclusion=1004;
+labelporous=-5005;
+labelinclusion=-1008;
 radius=1.25e-2;
 thicknessinclusion=2e-3;
-nx=20;
+nx=5;
 nepaisseurinclusion=1;
 ninclusion=ceil(nepaisseurinclusion*2*pi*radius/thicknessinclusion);
-
 
 fid=fopen(name_file_input_FreeFem,'w');
 fprintf(fid,'%s\n',name_file_msh);

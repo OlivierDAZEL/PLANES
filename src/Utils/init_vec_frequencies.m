@@ -33,12 +33,12 @@
 %%
 
 
-if(nb_frequencies>0)
-    if nb_frequencies==1
-        vec_freq=freq_min;
+if(frequency.nb>0)
+    if frequency.nb==1
+        frequency.vec=frequency.min;
     else
-        vec_freq=linspace(freq_min,freq_max,nb_frequencies);
+        frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
     end
 else
-    vec_freq=logspace(log10(freq_min),log10(freq_max),abs(nb_frequencies));
+    frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
 end

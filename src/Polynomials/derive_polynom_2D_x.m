@@ -1,0 +1,9 @@
+function Q=derive_polynom_2D_x_2(P)
+
+
+nx=size(P,1);
+
+Mx=(ones(nx,1)*(0:nx-1));
+Q=Mx.*P;
+Q(:,end+1)=0;
+Q(:,1)=[];

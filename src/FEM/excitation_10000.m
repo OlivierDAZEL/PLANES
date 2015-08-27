@@ -66,8 +66,8 @@ for i_R=1:nb_R
     index_force=dof_A(p(node));
     index_F_elem=find(index_force);
     index_F_global=index_force(index_F_elem);
-    A_2(index_F_global,nb_dof_FEM+i_R)=A_2(index_F_global,nb_dof_FEM+i_R)+F3(index_F_elem)*(1i*vec_k_z(i_R))/(rho_0*omega^2);    
-    A_2(nb_dof_FEM+i_R,index_F_global)=A_2(nb_dof_FEM+i_R,index_F_global)+F3(index_F_elem)';
+    A(index_F_global,nb_dof_FEM+i_R)=A(index_F_global,nb_dof_FEM+i_R)+F3(index_F_elem)*(1i*vec_k_z(i_R))/(rho_0*omega^2);    
+    A(nb_dof_FEM+i_R,index_F_global)=A(nb_dof_FEM+i_R,index_F_global)+F3(index_F_elem)';
 end
 
 

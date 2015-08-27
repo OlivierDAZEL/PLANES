@@ -32,23 +32,26 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+function [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period)
+
 
 k_air=omega/air.c;
-k_x=k_air*sin(theta);
-k_z=k_air*cos(theta);
+k_x=k_air*sin(theta_inc);
+k_z=k_air*cos(theta_inc);
 
-nb_Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
+nb.Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
+%nb.Bloch_waves=0
 
-if nb_R~=0
-    nb_R=2*nb_Bloch_waves+1;
+if nb.R~=0
+    nb.R=2*nb.Bloch_waves+1;
 end
-if nb_T~=0
-    nb_T=2*nb_Bloch_waves+1;
+if nb.T~=0
+    nb.T=2*nb.Bloch_waves+1;
 end
 
 temp=[];
-temp(1:2:2*nb_Bloch_waves)=1:nb_Bloch_waves;
-temp(2:2:2*nb_Bloch_waves+1)=-(1:nb_Bloch_waves);
+temp(1:2:2*nb.Bloch_waves)=1:nb.Bloch_waves;
+temp(2:2:2*nb.Bloch_waves+1)=-(1:nb.Bloch_waves);
 temp=[0 temp];
 
 vec_k_x=k_x+temp*(2*pi/period);

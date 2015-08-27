@@ -45,7 +45,6 @@ c_1=mean(nodes(nonzeros(elem.nodes(e_1,:)),1:2))';
 c_2=mean(nodes(nonzeros(elem.nodes(e_2,:)),1:2))';
 e_edge=e_1;
 
-
 a=nodes(edges.flux(ie,1),1:2)';
 b=nodes(edges.flux(ie,2),1:2)';
 
@@ -85,10 +84,10 @@ P_22_tilde=(P_2_in)*Q_2_in;
 
 
 
-F_11_tilde= (P_11_tilde(1,:)*nx+P_11_tilde(2,:)*ny)/(1j*omega);
-F_12_tilde= (P_12_tilde(1,:)*nx+P_12_tilde(2,:)*ny)/(1j*omega);
-F_21_tilde=-(P_21_tilde(1,:)*nx+P_21_tilde(2,:)*ny)/(1j*omega); %- because n2
-F_22_tilde=-(P_22_tilde(1,:)*nx+P_22_tilde(2,:)*ny)/(1j*omega); %- because n2
+F_11_tilde=-(P_11_tilde(1,:)*nx+P_11_tilde(2,:)*ny)/(1j*omega);
+F_12_tilde=-(P_12_tilde(1,:)*nx+P_12_tilde(2,:)*ny)/(1j*omega);
+F_21_tilde=+(P_21_tilde(1,:)*nx+P_21_tilde(2,:)*ny)/(1j*omega); %+ because n2
+F_22_tilde=+(P_22_tilde(1,:)*nx+P_22_tilde(2,:)*ny)/(1j*omega); %+ because n2
 
 
 
@@ -97,7 +96,7 @@ switch elem.model(e_1)
         index_p_1=dof_A(p_TR(elem.nodes(e_1,1:6)));
         nb_dof_1=6;
         vcor=nodes(nonzeros(elem.nodes(e_1,1:6)),1:2);
-        base_e1=0*mean(vcor);
+        base_e1=mean(vcor);
         p_e1d1=Lagrange_TR6(vcor,1,base_e1);
         p_e1d2=Lagrange_TR6(vcor,2,base_e1);
         p_e1d3=Lagrange_TR6(vcor,3,base_e1);
@@ -132,10 +131,11 @@ switch elem.model(e_1)
     case 2
         index_p_1=dof_A(p_H12(elem.nodes(e_1,1:4)));
         nb_dof_1=12;
-        
+        vcor=nodes(nonzeros(elem.nodes(e_1,1:4)),1:2);
+        base_e1=mean(vcor);       
         lx=norm(nodes(elem.nodes(e_1,1),:)-nodes(elem.nodes(e_1,2),:));
         ly=norm(nodes(elem.nodes(e_1,1),:)-nodes(elem.nodes(e_1,4),:));
-        [p_e1d1,p_e1d2,p_e1d3,p_e1d4,p_e1d5,p_e1d6,p_e1d7,p_e1d8,p_e1d9,p_e1d10,p_e1d11,p_e1d12]=H12_shape_functions_shifted(lx,ly,nodes(elem.nodes(e_1,1),1),nodes(elem.nodes(e_1,1),2));
+        [p_e1d1,p_e1d2,p_e1d3,p_e1d4,p_e1d5,p_e1d6,p_e1d7,p_e1d8,p_e1d9,p_e1d10,p_e1d11,p_e1d12]=H12_shape_functions_shifted(lx,ly,0,0);
         
         vx_e1d1 =-derive_polynom_2D_x(p_e1d1 )/(1j*omega*rho_e);
         vx_e1d2 =-derive_polynom_2D_x(p_e1d2 )/(1j*omega*rho_e);
@@ -207,8 +207,8 @@ switch elem.model(e_2)
         base_e2=nodes(elem.nodes(e_2,1),:);
         lx=norm(nodes(elem.nodes(e_2,1),:)-nodes(elem.nodes(e_2,2),:));
         ly=norm(nodes(elem.nodes(e_2,1),:)-nodes(elem.nodes(e_2,4),:));
-        [p_e2d1,p_e2d2,p_e2d3,p_e2d4,p_e2d5,p_e2d6,p_e2d7,p_e2d8,p_e2d9,p_e2d10,p_e2d11,p_e2d12]=H12_shape_functions_shifted(lx,ly,base_e2(1),base_e2(2));
-                base_e2=0*nodes(elem.nodes(e_2,1),:);
+        [p_e2d1,p_e2d2,p_e2d3,p_e2d4,p_e2d5,p_e2d6,p_e2d7,p_e2d8,p_e2d9,p_e2d10,p_e2d11,p_e2d12]=H12_shape_functions(lx,ly);
+
 
         vx_e2d1 =-derive_polynom_2D_x(p_e2d1 )/(1j*omega*rho_e);
         vx_e2d2 =-derive_polynom_2D_x(p_e2d2 )/(1j*omega*rho_e);
@@ -245,12 +245,12 @@ for i_test=1:nb_dof_1
     for i_champs=1:nb_dof_1
         base_champs=base_e1;
         eval(['Interp_champs=F_11_tilde(1)*vx_e1d',num2str(i_champs),'+F_11_tilde(2)*vy_e1d',num2str(i_champs),'+F_11_tilde(3)*p_e1d',num2str(i_champs),';'])
-        A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))-integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
+        A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
     end
     for i_champs=1:nb_dof_2
         base_champs=base_e2;
         eval(['Interp_champs=F_12_tilde(1)*vx_e2d',num2str(i_champs),'+F_12_tilde(2)*vy_e2d',num2str(i_champs),'+F_12_tilde(3)*p_e2d',num2str(i_champs),';'])
-        A(index_p_1(i_test),index_p_2(i_champs))=A(index_p_1(i_test),index_p_2(i_champs))-integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
+        A(index_p_1(i_test),index_p_2(i_champs))=A(index_p_1(i_test),index_p_2(i_champs))+integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
     end
 end
 
@@ -260,12 +260,12 @@ for i_test=1:nb_dof_2
     for i_champs=1:nb_dof_1
         base_champs=base_e1;
         eval(['Interp_champs=F_21_tilde(1)*vx_e1d',num2str(i_champs),'+F_21_tilde(2)*vy_e1d',num2str(i_champs),'+F_21_tilde(3)*p_e1d',num2str(i_champs),';'])
-        A(index_p_2(i_test),index_p_1(i_champs))=A(index_p_2(i_test),index_p_1(i_champs))-integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
+        A(index_p_2(i_test),index_p_1(i_champs))=A(index_p_2(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
     end
     for i_champs=1:nb_dof_2
         base_champs=base_e2;
         eval(['Interp_champs=F_22_tilde(1)*vx_e2d',num2str(i_champs),'+F_22_tilde(2)*vy_e2d',num2str(i_champs),'+F_22_tilde(3)*p_e2d',num2str(i_champs),';'])
-        A(index_p_2(i_test),index_p_2(i_champs))=A(index_p_2(i_test),index_p_2(i_champs))-integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
+        A(index_p_2(i_test),index_p_2(i_champs))=A(index_p_2(i_test),index_p_2(i_champs))+integrate_polynom_2D_edge(Interp_test,base_test,Interp_champs,base_champs,a,b,Gauss_points);
     end
 end
 

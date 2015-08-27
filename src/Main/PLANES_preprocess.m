@@ -92,7 +92,7 @@ edges.internal(temp,4)=v_temp;
 % Check if the elements are both DGM
 temp=find(ismember(elem.model(edges.internal(:,3)),[10 11]).*ismember(elem.model(edges.internal(:,4)),[10 11]));
 
-edges.internal_DGM=edges.internal(temp,:);
+edges.internal_DGM=edges.internal(temp,1:4);
 nb.internal_DGM=length(temp);
 
 edges.internal(temp,:)=[];
@@ -190,7 +190,9 @@ boundaries(temp,:)=[];
 
 
 temp=find(ismember(boundaries(:,4),[25]));
-edges.internal_FEMFEM=boundaries(temp,:);
+edges.incompatible=boundaries(temp,:);
+
+
 boundaries(temp,:)=[];
 
 
@@ -199,9 +201,10 @@ identify_incompatible_mesh
 
 
 
-
-
-
+edges.flux=[edges.flux;edges.internal_DGM];
+nb.flux=size(edges.flux,1);
+nb.internal_DGM=0;
+edges=rmfield(edges,'internal_DGM');
 
 
 
@@ -319,9 +322,10 @@ if sum(is_pw)~=0
     nb.T=1;
     size_info_vector_T=2;
 end
-
-file_abs_id=fopen(name.file_abs,'w');
-if nb.T~=0
+if export.nrj
+    file_abs_id=fopen(name.file_abs,'w');
+end
+if (nb.T~=0)&&(export.nrj)
     file_TL_id=fopen(name.file_TL,'w');
 end
 

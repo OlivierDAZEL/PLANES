@@ -66,19 +66,6 @@ F_e=(A_x*nx+A_y*ny);
 
 F_e_tilde=M_e*F_e*P_e_tilde;
 
-% F_e_tilde=zeros(3,3);
-% S_e_tilde=zeros(3,1);
-% 
-% F_e_tilde(1,1)= Z_e*(nx^2);
-% F_e_tilde(1,2)= Z_e*(nx*ny);
-% F_e_tilde(1,3)=-nx;
-% F_e_tilde(2,1)= Z_e*(nx*ny);
-% F_e_tilde(2,2)=Z_e*(ny^2);
-% F_e_tilde(2,3)=-ny;
-% 
-% S_e_tilde(1)=Z_e*nx;
-% S_e_tilde(2)=Z_e*ny;
-% S_e_tilde(3)=1;
 
 nx=cos(vec_theta);
 ny=sin(vec_theta);

@@ -1,12 +1,9 @@
 model_data.lx=1;
 model_data.ly=1/2;
-
 model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
-
-theta_DGM.nb=8;
-
 label_boundary=25;
 model_data.label_boundaries=[3 1 label_boundary 1];
+theta_DGM.nb=8;
 
 
 fid=fopen(name.file_input_FreeFem,'w');

@@ -75,7 +75,7 @@ end
 if ismember(floor(elem.label(ie)/1000),[0 4 5 8])
     figure(10002)
     c=sol(p_TR(nonzeros(elem.nodes(ie,:))));
-
+    
     
     val_int=mat_ksi_eta*c.';
     
@@ -83,10 +83,10 @@ if ismember(floor(elem.label(ie)/1000),[0 4 5 8])
         figure(10002)
         patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
     end
-        for i_faces=1:size(faces,2)
-        figure(11002)
-        patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',angle(val_int(faces(:,i_faces))));
-    end
+%     for i_faces=1:size(faces,2)
+%         figure(11002)
+%         patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',angle(val_int(faces(:,i_faces))));
+%     end
 end
 
 

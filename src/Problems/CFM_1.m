@@ -1,22 +1,11 @@
-model_data.lx=1;
-model_data.ly=1;
-model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
-theta_DGM.nb=0;
-
-
-%solve.TR6=1;
 
 fid=fopen(name.file_input_FreeFem,'w');
 fprintf(fid,'%s\n',name.file_msh);
-fprintf(fid,'%12.8f\n',model_data.lx);
-fprintf(fid,'%12.8f\n',model_data.ly);
-fprintf(fid,'%d\n',model_data.nx);
-fprintf(fid,'%d\n',model_data.ny);
 fclose(fid);
+
 
 % Call to FreeFem++ to create a msh File
 system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
-
 
 %Importation of the msh File
 
@@ -25,5 +14,10 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 % All the elements are TR6
 elem.model=1*ones(nb.elements,1);
 
-
-
+label_boundary=25;
+label_elem_ajoute=0;
+model_elem_ajoute=11;
+l_supp=6;
+[nb,nodes,elem,edge_msh] = add_H_on_boundary_incompatible(l_supp,label_boundary,8,6,label_elem_ajoute,model_elem_ajoute,edge_msh,nodes,elem,nb);
+theta_DGM.nb=16;
+tilt=0*pi/theta_DGM.nb;

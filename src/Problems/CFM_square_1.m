@@ -7,5 +7,10 @@ theta_DGM.nb=0;
 [nb,nodes,elem,edge_msh]=createmshH12(model_data.lx,model_data.ly,model_data.nx,model_data.ny,model_data.label);
 
 % All the elements are H12
+
 elem.model=2*ones(nb.elements,1);
 
+
+
+
+%aezeazezaeazaez

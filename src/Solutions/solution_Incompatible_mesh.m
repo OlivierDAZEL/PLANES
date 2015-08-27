@@ -1,4 +1,4 @@
-% integrate_polynom_2D_edge.m
+% solution_Kundt.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,27 +30,38 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
-%%
 
 
+x_air=linspace(-model_data.ly,0,1000);
+x_trace=x_air+model_data.ly;
+%u(x_air)=A cos(k x_air)+B sin (k x_air)
+%u(0)=0 -> A=0
+%v(-ly)=-1 (-1 corresponds to the outgoing normal) ->  
+B=-1/(1j*omega*sin(-k_air*model_data.ly));
+u_air=B*sin(k_air*x_air);
+v_air=1j*omega*u_air;
+% p_air=-K_air*u'(x_air)
+p_air=-B*(air.K)*k_air*cos(k_air*x_air);
+dp_air=+B*(air.K)*k_air^2*sin(k_air*x_air);
 
-function f = integrate_polynom_exp_2D_edge(P,base_polynom,jk,center_wave,a,b,Gauss_points)
+if profiles.on~=0
+    
 
-
-delta_gauss=(b-a);
-
-points=((a+b)/2)*ones(1,Gauss_points.nb)+delta_gauss*Gauss_points.xi/2;
-
-points_poly=points-base_polynom'*ones(1,Gauss_points.nb);
-
-
-temp=evaluate_polynom_2D_vectorial(P,points_poly(1,:),points_poly(2,:));
-
-temp=sum(temp.*exp(jk.'*(points-center_wave*ones(1,Gauss_points.nb))).*Gauss_points.w);
-f=temp*norm(delta_gauss)/2;
-
+    if profiles.y~=0
+        figure(2002)
+        hold on
+        plot(x_air+model_data.ly,abs(v_air),'b')
+        figure(4002)
+        hold on
+        plot(x_air+model_data.ly,angle(v_air),'b')
+        figure(2010)
+        hold on
+        plot(x_trace,abs(p_air),'b')
+        figure(4010)
+        hold on
+        plot(x_air+model_data.ly,angle(p_air),'b')
+    end
+    
 
 end
-
-
 

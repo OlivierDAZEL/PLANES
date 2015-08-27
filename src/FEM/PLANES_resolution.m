@@ -35,7 +35,7 @@
 
 tic
 for i_f=1:abs(frequency.nb)
-    
+    close all
     PLANES_resolution_progress=100*i_f/abs(frequency.nb)
     
     freq=frequency.vec(i_f);
@@ -107,49 +107,9 @@ for i_f=1:abs(frequency.nb)
     end
     
     
-    %     if nb.interfaces~=0
-    %         apply_FSI
-    %     end
-    
-    for ie=1:nb.internal_DGM
-        edge_internal_DGM
-    end
-    
-    
-    
-    
-    
-    if nb.MMT~=0
-        
-        TT=build_FEM_transfer(k_air*sin(theta_MMT),element_MMT_moins,element_MMT_plus,omega,multilayer_femtmm,k_air,air);
-        
-        
-        switch floor(element_MMT_moins/1000)
-            case {0 2 3}
-                switch floor(element_MMT_plus/1000)
-                    case {0 2 3}
-                        link_FEMTMM_fluid_fluid
-                end
-            case 1
-                switch floor(element_MMT_plus/1000)
-                    case 1
-                        link_FEMTMM_elas_elas
-                end
-                
-                
-        end
-    end
-    
-    
-    if (nb.R+nb.T)>0
-        DtN_application
-    end
-    
-    
     if (nb.loads>0)
         loads_application
     end
-    
     
     
     if (nb.dirichlets>0)
@@ -159,39 +119,45 @@ for i_f=1:abs(frequency.nb)
     end
     
     
-    
-    
-    if nb.periodicity>0
-        periodicity_condition_application
-    end
-    
-    
     if nb.flux>0
         for ie=1:nb.flux
-            internal_fluid_FEM_FEM
-        end
-    end
-    
-    
-    
-    if nb.internal>0
-        for ie=1:nb.internal
-            if  ismember(elem.model(edges.internal(ie,3)),[1 2 3])&&ismember(elem.model(edges.internal(ie,4)),[10 11])
+            if ((ismember(elem.model(edges.flux(ie,3)),[1 2 3]))&&(ismember(elem.model(edges.flux(ie,4)),[1 2 3])))
+                internal_fluid_FEM_FEM
+            end
+            if ((ismember(elem.model(edges.flux(ie,3)),[10 11]))&&(ismember(elem.model(edges.flux(ie,4)),[10 11])))
+                internal_fluid_DGM_DGM
+            end
+            if  ismember(elem.model(edges.flux(ie,3)),[1 2 3])&&ismember(elem.model(edges.flux(ie,4)),[10 11])
                 internal_fluid_FEM_DGM
-            elseif ismember(elem.model(edges.internal(ie,3)),[10 11])&&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
-                temp=edges.internal(ie,3);
-                edges.internal(ie,3)=edges.internal(ie,4);
-                edges.internal(ie,4)=temp;
+            elseif ismember(elem.model(edges.flux(ie,3)),[10 11])&&ismember(elem.model(edges.flux(ie,4)),[1 2 3])
+                temp=edges.flux(ie,3);
+                edges.flux(ie,3)=edges.flux(ie,4);
+                edges.flux(ie,4)=temp;
                 internal_fluid_FEM_DGM
             end
-            
-        end
+      end
     end
     
     
-    %disp('Resolution of the system')
-    X=A\F;
     
+    %     if nb.internal>0
+    %         for ie=1:nb.internal
+    %             if  ismember(elem.model(edges.internal(ie,3)),[1 2 3])&&ismember(elem.model(edges.internal(ie,4)),[10 11])
+    %                 internal_fluid_FEM_DGM
+    %             elseif ismember(elem.model(edges.internal(ie,3)),[10 11])&&ismember(elem.model(edges.internal(ie,4)),[1 2 3])
+    %                 temp=edges.internal(ie,3);
+    %                 edges.internal(ie,3)=edges.internal(ie,4);
+    %                 edges.internal(ie,4)=temp;
+    %                 internal_fluid_FEM_DGM
+    %             end
+    %
+    %         end
+    %     end
+    
+    
+    disp('Resolution of the system')
+    X=A\F;
+    disp('End of the resolution of the system')
     postprocess_solution
     
     

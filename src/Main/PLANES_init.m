@@ -53,6 +53,7 @@ name.file_msh=          [name.file '.msh'];
 name.file_edp=          [name.file '.edp'];
 name.file_input_FreeFem=['FF.inp'];
 name.file_abs=          [name.file '.abs'];
+name.file_L2=           [name.file '.L2'];
 name.file_TL=           [name.file '.TL'];
 name.file_PW=           [name.file '.PW'];
 name.file_info=         [name.file '.info'];

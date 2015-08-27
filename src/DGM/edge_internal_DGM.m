@@ -32,6 +32,8 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %%%%% Coordinates of the edge's vertices
 
+aze
+
 a=nodes(edges.internal_DGM(ie,1),1:2)';
 b=nodes(edges.internal_DGM(ie,2),1:2)';
 

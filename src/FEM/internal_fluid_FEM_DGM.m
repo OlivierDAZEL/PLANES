@@ -39,15 +39,13 @@ rho_e=air.rho;
 M_e=diag([air.rho,air.rho,1/air.K]);
 
 
-e_1=edges.internal(ie,3);
-e_2=edges.internal(ie,4);
+e_1=edges.flux(ie,3);
+e_2=edges.flux(ie,4);
 c_1=mean(nodes(nonzeros(elem.nodes(e_1,:)),1:2))';
 c_2=mean(nodes(nonzeros(elem.nodes(e_2,:)),1:2))';
-e_edge=e_1;
 
-
-a=nodes(edges.internal(ie,1),1:2)';
-b=nodes(edges.internal(ie,2),1:2)';
+a=nodes(edges.flux(ie,1),1:2)';
+b=nodes(edges.flux(ie,2),1:2)';
 
 %%%%% vector normal pointing out from e_1
 
@@ -72,14 +70,12 @@ R_tilde=inv([C_1*P_1_out -C_2*P_2_out])*([-C_1*P_1_in C_2*P_2_in]);
 
 A_x=[0 0 1/air.rho;0 0 0; air.K 0 0];
 A_y=[0 0 0;0 0 1/air.rho; 0 air.K 0];
-F_1= (A_x*nx+A_y*ny);
 F_2=-(A_x*nx+A_y*ny);
 
-
-P_11_tilde=(P_1_in+P_1_out*R_tilde(1,1))*Q_1_in;
-P_12_tilde=P_1_out*R_tilde(1,2)*Q_2_in;
-P_21_tilde=P_2_out*R_tilde(2,1)*Q_1_in;
-P_22_tilde=(P_2_in+P_2_out*R_tilde(2,2))*Q_2_in;
+P_11_tilde=(P_1_in)*Q_1_in;
+P_12_tilde=P_1_out*Q_2_in;
+P_21_tilde=P_2_out*Q_1_in;
+P_22_tilde=(P_2_in)*Q_2_in;
 
 F_11_tilde=-(P_11_tilde(1,:)*nx+P_11_tilde(2,:)*ny)/(1j*omega);
 F_12_tilde=-(P_12_tilde(1,:)*nx+P_12_tilde(2,:)*ny)/(1j*omega);
@@ -93,12 +89,13 @@ switch elem.model(e_1)
         index_p_1=dof_A(p_TR(elem.nodes(e_1,1:6)));
         nb_dof_1=6;
         vcor=nodes(nonzeros(elem.nodes(e_1,1:6)),1:2);
-        p_e1d1=Lagrange_TR6(vcor,1);
-        p_e1d2=Lagrange_TR6(vcor,2);
-        p_e1d3=Lagrange_TR6(vcor,3);
-        p_e1d4=Lagrange_TR6(vcor,4);
-        p_e1d5=Lagrange_TR6(vcor,5);
-        p_e1d6=Lagrange_TR6(vcor,6);
+        base_e1=mean(vcor);
+        p_e1d1=Lagrange_TR6(vcor,1,base_e1);
+        p_e1d2=Lagrange_TR6(vcor,2,base_e1);
+        p_e1d3=Lagrange_TR6(vcor,3,base_e1);
+        p_e1d4=Lagrange_TR6(vcor,4,base_e1);
+        p_e1d5=Lagrange_TR6(vcor,5,base_e1);
+        p_e1d6=Lagrange_TR6(vcor,6,base_e1);
         vx_e1d1=-derive_polynom_2D_x(p_e1d1)/(1j*omega*rho_e);
         vx_e1d2=-derive_polynom_2D_x(p_e1d2)/(1j*omega*rho_e);
         vx_e1d3=-derive_polynom_2D_x(p_e1d3)/(1j*omega*rho_e);
@@ -124,13 +121,14 @@ switch elem.model(e_1)
         vy_e1d1=-derive_polynom_2D_y(p_e1d1)/(1j*omega*rho_e);
         vy_e1d2=-derive_polynom_2D_y(p_e1d2)/(1j*omega*rho_e);
         vy_e1d3=-derive_polynom_2D_y(p_e1d3)/(1j*omega*rho_e);
-    case 2 % H12
+    case 2
         index_p_1=dof_A(p_H12(elem.nodes(e_1,1:4)));
         nb_dof_1=12;
-        
+        vcor=nodes(nonzeros(elem.nodes(e_1,1:4)),1:2);
+        base_e1=nodes(elem.nodes(e_1,1),:);  
         lx=norm(nodes(elem.nodes(e_1,1),:)-nodes(elem.nodes(e_1,2),:));
         ly=norm(nodes(elem.nodes(e_1,1),:)-nodes(elem.nodes(e_1,4),:));
-        [p_e1d1,p_e1d2,p_e1d3,p_e1d4,p_e1d5,p_e1d6,p_e1d7,p_e1d8,p_e1d9,p_e1d10,p_e1d11,p_e1d12]=H12_shape_functions_shifted(lx,ly,nodes(elem.nodes(e_1,1),1),nodes(elem.nodes(e_1,1),2));
+        [p_e1d1,p_e1d2,p_e1d3,p_e1d4,p_e1d5,p_e1d6,p_e1d7,p_e1d8,p_e1d9,p_e1d10,p_e1d11,p_e1d12]=H12_shape_functions_shifted(lx,ly,0,0);
         
         vx_e1d1 =-derive_polynom_2D_x(p_e1d1 )/(1j*omega*rho_e);
         vx_e1d2 =-derive_polynom_2D_x(p_e1d2 )/(1j*omega*rho_e);
@@ -167,28 +165,30 @@ index_2  =((1:theta_DGM.nb)-1)+dof_start_element(e_2);
 
 for i_test=1:nb_dof_1
     eval(['N_1=p_e1d',num2str(i_test),';']);
+    base_test=base_e1;
     for i_champs=1:nb_dof_1
+        base_champs=base_e1;
         eval(['I_tilde=F_11_tilde(1)*vx_e1d',num2str(i_champs),'+F_11_tilde(2)*vy_e1d',num2str(i_champs),'+F_11_tilde(3)*p_e1d',num2str(i_champs),';']);
-        A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(multiply_polynom_2D(N_1,I_tilde),a,b,Gauss_points);
+        A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(N_1,base_test,I_tilde,base_champs,a,b,Gauss_points);
     end
     for i_champs=1:theta_DGM.nb
        jk=-1j*k_e*[cos(vec_theta(i_champs));sin(vec_theta(i_champs))];
-
-        Phi_champs=Phi_fluid(cos(vec_theta(i_champs)),sin(vec_theta(i_champs)),Z_e);
-        I_tilde=F_12_tilde*Phi_champs;
-         A(index_p_1(i_test),index_2(i_champs))=A(index_p_1(i_test),index_2(i_champs))+I_tilde*integrate_polynom_exp_2D_edge(N_1,a,b,jk,c_2,Gauss_points);
-    end
+       Phi_champs=Phi_fluid(cos(vec_theta(i_champs)),sin(vec_theta(i_champs)),Z_e);
+       I_tilde=F_12_tilde*Phi_champs;
+        A(index_p_1(i_test),index_2(i_champs))=A(index_p_1(i_test),index_2(i_champs))+I_tilde*integrate_polynom_exp_2D_edge(N_1,base_test,jk,c_2,a,b,Gauss_points);
+   end
 end
 
 
 for i_test=1:theta_DGM.nb
     Phi_test=Phi_fluid(cos(vec_theta(i_test)),sin(vec_theta(i_test)),Z_e);
     for i_champs=1:nb_dof_1
+        base_champs=base_e1;
         delta_exp=exp(1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))]'*(a-c_2))      ;
         jk=1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))];
         temp=Phi_test.'*F_21_tilde;
         eval(['I_tilde=temp(1)*vx_e1d',num2str(i_champs),'+temp(2)*vy_e1d',num2str(i_champs),'+temp(3)*p_e1d',num2str(i_champs),';'])
-        A(index_2(i_test),index_p_1(i_champs))=A(index_2(i_test),index_p_1(i_champs))+integrate_polynom_exp_2D_edge(I_tilde,a,b,jk,c_2,Gauss_points);
+        A(index_2(i_test),index_p_1(i_champs))=A(index_2(i_test),index_p_1(i_champs))+integrate_polynom_exp_2D_edge(I_tilde,base_champs,jk,c_2,a,b,Gauss_points);
     end
 end
 

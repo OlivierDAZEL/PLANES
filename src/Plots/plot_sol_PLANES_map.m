@@ -40,27 +40,27 @@ if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
     figure(10002)
     hold on
     title('Solid displacement')
-    xlabel('y')
-    ylabel('abs(u)')
+    xlabel('x')
+    ylabel('y')
     figure(11002)
     hold on
     title('Solid displacement')
-    xlabel('y')
-    ylabel('angle(u)')
+    xlabel('x')
+    ylabel('y')
 end
 
 
 if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
-    figure(10010)
+    figure(10002)
     hold on
     title('Pressure')
-    xlabel('y')
-    ylabel('abs(P)')
-    figure(11010)
-    hold on
-    title('Pressure')
-    xlabel('y')
-    ylabel('angle(P)')
+    xlabel('x')
+    ylabel('y')
+%     figure(11010)
+%     hold on
+%     title('Pressure')
+%     xlabel('y')
+%     ylabel('angle(P)')
 end
 
 
@@ -78,9 +78,21 @@ for ie=1:nb.elements
 
 end
 
+
+
 if export.profiles==1
+    figure(10002)    
     shading interp
-    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
+    colormap jet
+    colorbar
+    print('-djpeg',[name.directory_profiles, num2str(i_f) ,'without_mesh']);
+    display_mesh_light
+    print('-djpeg',[name.directory_profiles, num2str(i_f) ,'with_mesh']);
+    close(10002) 
+    figure(10002)    
+    display_mesh_light
+    print('-djpeg',[name.directory_profiles, num2str(i_f) ,'only_mesh']);
+
 end
 
 if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
@@ -92,8 +104,8 @@ if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
     figure(10002)
     colormap jet
     colorbar
-    figure(11002)
-    colormap jet
-    colorbar
+%     figure(11002)
+%     colormap jet
+%     colorbar
 end
 

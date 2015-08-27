@@ -1,9 +1,7 @@
 model_data.lx=1;
 model_data.ly=1;
-
 model_data.ny=ceil(model_data.nx*model_data.ly/model_data.lx);
 theta_DGM.nb=8;
-
 
 
 %solve.TR6=1;
@@ -24,9 +22,8 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 
 [nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
 
-% All the elements are DGM on TR6
+% All the elements are DGM on TR
 
 elem.model=10*ones(nb.elements,1);
-
 
 

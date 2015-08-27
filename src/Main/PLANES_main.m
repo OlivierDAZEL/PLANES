@@ -37,15 +37,18 @@ close all
 clc
 
 project.name='Kundt';
-%project.name='CFM_square';
-project.num=2;
+project.num=6;
+% project.name='Incompatible_mesh';
+%project.name='CFM';
+%project.name='CFM_refined';
+%project.num=1;
 
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 frequency.nb=1;
-frequency.min=1000;
-frequency.max=4000;
+frequency.min=100;
+frequency.max=750;
 
 profiles.mesh=0;
 profiles.solution=0;
@@ -54,7 +57,7 @@ profiles.y=1;
 profiles.map=0;
 profiles.custom=0;
 profiles.on=profiles.x+profiles.y+profiles.map+profiles.custom;
-export.nrj=0;
+export.nrj=1;
 export.profiles=0;
 
 
@@ -65,6 +68,7 @@ PLANES_init
 air_properties_maine
 init_vec_frequencies
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Creation and importation of the mesh
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,7 +77,15 @@ eval([name.project_full]);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+
+
+
+
 PLANES_preprocess
+
+
 
 if profiles.mesh
     display_mesh
@@ -88,9 +100,9 @@ PLANES_resolution
 
 PLANES_info
 
-% Analytical solution (if exists)
+%Analytical solution (if exists)
 if ((exist(name.solution)==2)&&(profiles.on~=0))
     eval('eval(name.solution)')
 end
 
-%figure(10002)
+

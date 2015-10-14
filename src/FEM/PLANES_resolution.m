@@ -42,14 +42,20 @@ for i_f=1:abs(frequency.nb)
     omega=2*pi*freq;
     k_air=omega/air.c;
     
-    if nb.R~=0
+    if (nb.R+nb.T)~=0
         [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period);
     end
     
     % Construction of the linear system
-    
-    A=  sparse(nb.dof_FEM+nb.dof_DGM,nb.dof_FEM+nb.dof_DGM);
-    F=zeros(nb.dof_FEM+nb.dof_DGM,1);
+    nb.dof_total=nb.dof_FEM+nb.dof_DGM;
+    if nb.R>0
+       nb.dof_total=nb.dof_total+nb.R*size_info_vector_R; 
+    end
+    if nb.T>0
+       nb.dof_total=nb.dof_total+nb.T*size_info_vector_T; 
+    end
+    A=  sparse(nb.dof_total,nb.dof_total);
+    F=zeros(nb.dof_total,1);
     
     if nb.dof_FEM>0
         if (nb.media.acou~=0)
@@ -110,7 +116,9 @@ for i_f=1:abs(frequency.nb)
     if (nb.loads>0)
         loads_application
     end
-    
+    if (nb.DtN>0)
+       DtN_application 
+    end
     
     if (nb.dirichlets>0)
         for ie=1:nb.dirichlets

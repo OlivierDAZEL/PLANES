@@ -55,10 +55,6 @@ if length(temp)>0
 end
 segments(1,:)=[]; % Line 1 is removed at the end
 
-
-
-
-
 % Ordering of nodes so that node 1 < node 2
 segments(:,1:2)=sort(segments(:,1:2),2);
 % Research of double segments
@@ -139,11 +135,13 @@ clear edge_msh
 [~,~,temp] = unique(boundaries(:,1:2),'rows');
 boundaries=[temp boundaries];
 
+
 % boundaries=[#boundary node1 node2 #element OR # label]
 
 % Ordering of the vector along the number of boundaries
 [~,index]=sort(boundaries(:,1));
-boundaries=boundaries(index,:);
+boundaries=boundaries(index,:)
+
 % Find dupplicate values
 temp=find(~diff(boundaries(:,1)));
 % Merging of columns
@@ -159,13 +157,6 @@ boundaries(:,[4 3])=boundaries(:,[3 4]);
 
 % internal=[node1 node2 #element1 #element2 0]
 nb.internal=size(edges.internal,1);
-
-
-
-
-
-
-
 
 % boundaries=[node1 node2 #element #label 0]
 
@@ -207,14 +198,19 @@ nb.internal_DGM=0;
 edges=rmfield(edges,'internal_DGM');
 
 
-
-
-
 temp=find(ismember(boundaries(:,4),[98 99]));
 edges.periodicity=boundaries(temp,:);
 boundaries(temp,:)=[];
+
+temp=find(ismember(boundaries(:,4),[10 11 12 20 21 22 23]));
+edges.DtN=boundaries(temp,:);
+boundaries(temp,:)=[];
+
 temp=find(ismember(boundaries(:,4),[0]));
 boundaries(temp,:)=[];
+
+
+
 
 
 edges.loads=boundaries;
@@ -224,6 +220,7 @@ nb.dirichlets=size(edges.dirichlets,1);
 nb.loads=size(edges.loads,1);
 nb.periodicity=size(edges.periodicity,1);
 nb.MMT=size(edges.MMT,1);
+nb.DtN=size(edges.DtN,1);
 
 
 if (sum(elem.model==1)~=0)
@@ -280,7 +277,7 @@ for ie=1:nb.elements
 end
 
 
-is_pw=(ismember(edges.loads(:,4),[10 11 12]));
+is_pw=(ismember(edges.DtN(:,4),[10 11 12]));
 is_pw_R=is_pw;
 if sum(is_pw)~=0
     plot_abs=1;
@@ -292,7 +289,7 @@ else
     size_info_vector_R=1;
 end
 
-is_pw=(ismember(edges.loads(:,4),[13]));
+is_pw=(ismember(edges.DtN(:,4),[13]));
 is_pw_R=is_pw;
 if sum(is_pw)~=0
     plot_abs=1;
@@ -301,7 +298,7 @@ if sum(is_pw)~=0
 end
 
 
-is_pw=(ismember(edges.loads(:,4),[20 21 22]));
+is_pw=(ismember(edges.DtN(:,4),[20 21 22]));
 is_pw_T=is_pw;
 if sum(is_pw)~=0
     is_pw_T=find(is_pw);
@@ -314,7 +311,7 @@ else
     size_info_vector_T=1;
 end
 
-is_pw=(ismember(edges.loads(:,4),23));
+is_pw=(ismember(edges.DtN(:,4),23));
 is_pw_T=is_pw;
 if sum(is_pw)~=0
     is_pw_T=find(is_pw);

@@ -1,6 +1,6 @@
-% sandwich.m
+% sandwich_meta.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -33,25 +33,25 @@
 %%
 warning('off','all');
 
-period=8e-2;
+period=1e-3;
 thicknessplate=1e-3;
-thicknessporous=3e-2;
+thicknessporous=1e-3;
 labelplate=1001;
 Mat_elas_1
 labelporous=5003;
 labelinclusion=1001;
-hbottom=5e-2;
-htop=5e-2;
+hbottom=1e-3;
+htop=1e-3;
 ampsinus=0*thicknessporous;
 ampx2=0;
 nboscill=0;
 radius=0.7e-2;
 radius2=1.0e-2;
-nx=20;
+nx=2;
 
 
-fid=fopen(name_file_input_FreeFem,'w');
-fprintf(fid,'%s\n',name_file_msh);
+fid=fopen(name.file_input_FreeFem,'w');
+fprintf(fid,'%s\n',name.file_msh);
 fprintf(fid,'%12.8f\n',period);
 fprintf(fid,'%12.8f\n',thicknessplate);
 fprintf(fid,'%12.8f\n',thicknessporous);
@@ -68,6 +68,18 @@ fprintf(fid,'%12.8f\n',radius2);
 fprintf(fid,'%d\n',nx);
 fclose(fid);
 
+% Call to FreeFem++ to create a msh File
+system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
+
+
+%Importation of the msh File
+
+[nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
+
+% All the elements are TR6
+elem.model=1*ones(nb.elements,1);
+
+theta_inc=0;
 
 
 incident(1).typ=1;
@@ -104,3 +116,5 @@ multilayer=[l0 multilayer];
 nb_layers=nb_layers+1;
 
 compute_number_PW_TMM
+
+

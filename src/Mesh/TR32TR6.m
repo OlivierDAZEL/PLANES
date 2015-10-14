@@ -90,6 +90,17 @@ if nb.loads~=0
         end
     end
 end
+
+if nb.DtN~=0
+    for ie=1:nb.DtN
+        if ismember(edges.DtN(ie,3),elements_TR6)
+            edges.DtN(ie,6)=node_middle(nodes,edges.DtN(ie,1),edges.DtN(ie,2));
+        end
+    end
+end
+
+
+
 if nb.periodicity~=0
     for ie=1:nb.periodicity
         if ismember(edges.periodicity(ie,3),elements_TR6)

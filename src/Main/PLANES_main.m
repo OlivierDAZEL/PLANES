@@ -37,7 +37,9 @@ close all
 clc
 
 project.name='Kundt';
-project.num=6;
+project.num=1;
+project.name='sandwich_meta';
+project.num=0;
 % project.name='Incompatible_mesh';
 %project.name='CFM';
 %project.name='CFM_refined';
@@ -50,7 +52,7 @@ frequency.nb=1;
 frequency.min=100;
 frequency.max=750;
 
-profiles.mesh=0;
+profiles.mesh=1;
 profiles.solution=0;
 profiles.x=0;
 profiles.y=1;
@@ -77,15 +79,7 @@ eval([name.project_full]);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-
-
-
 PLANES_preprocess
-
-
 
 if profiles.mesh
     display_mesh

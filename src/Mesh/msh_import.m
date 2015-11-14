@@ -55,7 +55,8 @@ for ii=1:nb.elements
     elem.nodes(ii,1)=fscanf(fid,'%i',1);
     elem.nodes(ii,2)=fscanf(fid,'%i',1);
     elem.nodes(ii,3)=fscanf(fid,'%i',1);
-    element.label(ii,1)=abs(fscanf(fid,'%f',1));
+    elem.label(ii,1)=abs(fscanf(fid,'%f',1));
+    
 end
 for ii=1:nb.edges
     edge_msh(ii,1)=fscanf(fid,'%i',1);

@@ -75,9 +75,7 @@ segments(temp+1,:)=[];
 segments(:,1)=[];
 % segments=[node1 node2 #element1 #element2(if any) elem.label1 elem.label2(if any)]
 
-
 % Separation between boundary and internal;
-
 edges.internal=[segments(find(segments(:,4)~=0),:)];
 % check for internal that #element1<#element2
 temp=find(edges.internal(:,3)>edges.internal(:,4));
@@ -116,6 +114,10 @@ temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000
 temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[5])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[5]));
 temp=find(temp_FEM.*temp_physical);
 edges.internal(temp,:)=[];
+
+% internal=[node1 node2 #element1 #element2 0]
+nb.internal=size(edges.internal,1);
+
 clear temp_physical
 
 
@@ -140,7 +142,7 @@ boundaries=[temp boundaries];
 
 % Ordering of the vector along the number of boundaries
 [~,index]=sort(boundaries(:,1));
-boundaries=boundaries(index,:)
+boundaries=boundaries(index,:);
 
 % Find dupplicate values
 temp=find(~diff(boundaries(:,1)));
@@ -155,17 +157,20 @@ boundaries(:,1)=[];
 boundaries(:,[4 3])=boundaries(:,[3 4]);
 % boundaries=[node1 node2 #element #label]
 
-% internal=[node1 node2 #element1 #element2 0]
-nb.internal=size(edges.internal,1);
 
-% boundaries=[node1 node2 #element #label 0]
+% Suppression of interfaces with FEM and natural coupling
+
+temp=find(ismember(abs(boundaries(:,4)),[0]));
+boundaries(temp,:)=[];
+
+
+
 
 temp=find(ismember(abs(boundaries(:,4)),[101]));
 edges.MMT=boundaries(temp,:);
 boundaries(temp,:)=[];
 
 % Find Dirichlet boundaries : label 1 not FEM or 5 6 9
-
 
 temp=      (ismember(boundaries(:,4),[1]));
 temp=temp.*ismember(elem.model(boundaries(:,3)),[1 2 3]);
@@ -189,9 +194,6 @@ boundaries(temp,:)=[];
 
 identify_incompatible_mesh
 
-
-
-
 edges.flux=[edges.flux;edges.internal_DGM];
 nb.flux=size(edges.flux,1);
 nb.internal_DGM=0;
@@ -202,16 +204,12 @@ temp=find(ismember(boundaries(:,4),[98 99]));
 edges.periodicity=boundaries(temp,:);
 boundaries(temp,:)=[];
 
-temp=find(ismember(boundaries(:,4),[10 11 12 20 21 22 23]));
+temp=find(ismember(boundaries(:,4),[10 11 12 13 20 21 22 23]));
 edges.DtN=boundaries(temp,:);
 boundaries(temp,:)=[];
 
 temp=find(ismember(boundaries(:,4),[0]));
 boundaries(temp,:)=[];
-
-
-
-
 
 edges.loads=boundaries;
 clear boundaries;
@@ -230,6 +228,7 @@ end
 if (sum(elem.model==2)~=0)
     [elem,H_elem_H12,Q_elem_H12]=create_elementary_H12(nb,nodes,elem);
 end
+
 
 
 temp=unique(elem.label(find(floor(elem.label/1000)==1)));

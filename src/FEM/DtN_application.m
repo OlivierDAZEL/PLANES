@@ -32,6 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+nb_dof_temp=nb.dof_FEM+nb.dof_DGM;
 
 for ie=1:nb.DtN
     typ=floor(edges.DtN(ie,4));
@@ -53,8 +54,6 @@ for ie=1:nb.DtN
         node(3)=edges.DtN(ie,6);
     end
     
-    
-    
     switch typ
         case {10}
             DtN_acou_R=1;
@@ -69,65 +68,64 @@ for ie=1:nb.DtN
                 index_force=dof_A(p_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)=A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)+F3(index_F_elem)*(1j*vec_k_z(i_R)/(air.rho*omega^2));
-                A(nb.dof_FEM+nb.dof_DGM+i_R,index_F_global)=A(nb.dof_FEM+nb.dof_DGM+i_R,index_F_global)+F3(index_F_elem)';
+                A(index_F_global,nb_dof_temp+i_R)=A(index_F_global,nb_dof_temp+i_R)+F3(index_F_elem)*(1j*vec_k_z(i_R)/(air.rho*omega^2));
+                A(nb_dof_temp+i_R,index_F_global)=A(nb_dof_temp+i_R,index_F_global)+F3(index_F_elem)';
             end
         case {11}
             DtN_elas_R=1;
             F3=TR6_PW(length_edge,k_x,a);
-            index_force=dof_A(uy(node));
+            index_force=dof_A(uy_TR(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
             Omega_F.p=1;
             F(index_F_global)=F(index_F_global)+Omega_F.p*F3(index_F_elem);
             for i_R=1:nb.R
                 F3=TR6_PW(length_edge,vec_k_x(i_R),a);
-                index_force=dof_A(uy(node));
+                index_force=dof_A(uy_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)=A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)-F3(index_F_elem);
-                A(nb.dof_FEM+nb.dof_DGM+i_R,index_F_global)=A(nb.dof_FEM+nb.dof_DGM+i_R,index_F_global)+F3(index_F_elem)';
+                A(index_F_global,nb_dof_temp+i_R)=A(index_F_global,nb_dof_temp+i_R)-F3(index_F_elem);
+                A(nb_dof_temp+i_R,index_F_global)=A(nb_dof_temp+i_R,index_F_global)+F3(index_F_elem)';
             end
         case {13}
             DtN_plate_R=1;
-            Omega_moins=[0 0 0;-1j*k_z/(air.rho*omega^2) 1j*k_z/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
-            Omega_plus=transfer_force(k_x,omega,Omega_moins(:,1),incident);
-
+            Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1;0];
+            Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,incident);
             F3=TR6_PW(length_edge,k_x,a);
-            
-            index_force=dof_A(ux(node));
+            index_force=dof_A(ux_TR(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)+Omega_plus(1,1)*F3(index_F_elem);
+            F(index_F_global)=F(index_F_global)-Omega_plus(1,1)*F3(index_F_elem);
             
-            
-            index_force=dof_A(uy(node));
+            index_force=dof_A(uy_TR(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
             F(index_F_global)=F(index_F_global)-Omega_plus(3,1)*F3(index_F_elem);
             
             for i_R=1:nb.R
                 
+                temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);
+                
                 F3=TR6_PW(length_edge,vec_k_x(i_R),a);
                 
-                Omega_moins=[0 0 0;-1j*vec_k_z(i_R)/(air.rho*omega^2) 1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
-                [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins(:,2:3),1,incident);
+                Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
+                [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,incident);
+                
 
-                T_back([1:2]+size_info_vector_R*(i_R-1),[1:2]+size_info_vector_R*(i_R-1))=T_back_i;
-                index_force=dof_A(ux(node));
+                index_force=dof_A(ux_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1))-Omega_plus(1,1)*F3(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1))-Omega_plus(1,2)*F3(index_F_elem);
-                A(nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1),index_F_global)=A(nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1),index_F_global)+F3(index_F_elem)';
+                A(index_F_global,temp  )=A(index_F_global,temp  )+Omega_plus(1,1)*F3(index_F_elem);
+                A(index_F_global,temp+1)=A(index_F_global,temp+1)+Omega_plus(1,2)*F3(index_F_elem);
+                A(temp  ,index_F_global)=A(temp,index_F_global)+F3(index_F_elem)';
                 
-                index_force=dof_A(uy(node));
+                index_force=dof_A(uy_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1))+Omega_plus(3,1)*F3(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1))+Omega_plus(3,2)*F3(index_F_elem);
-                A(nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1),index_F_global)=A(nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1),index_F_global)+F3(index_F_elem)';
+                A(index_F_global,temp  )=A(index_F_global,temp  )+Omega_plus(3,1)*F3(index_F_elem);
+                A(index_F_global,temp+1)=A(index_F_global,temp+1)+Omega_plus(3,2)*F3(index_F_elem);
+                A(temp+1,index_F_global)=A(temp+1,index_F_global)+F3(index_F_elem)';
             end
             
         case {12}
@@ -157,7 +155,7 @@ for ie=1:nb.DtN
                 index_force=dof_A(uy(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)=A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)-F3(index_F_elem);
+                A(index_F_global,nb_dof_temp+i_R)=A(index_F_global,nb_dof_temp+i_R)-F3(index_F_elem);
                 
                 
                 % Terme u_a delta p champs reflechi
@@ -165,14 +163,12 @@ for ie=1:nb.DtN
                 index_force=dof_A(p(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)=A(index_F_global,nb.dof_FEM+nb.dof_DGM+i_R)+F3(index_F_elem)*(1i*vec_k_z(i_R))/(air.rho*omega^2);
+                A(index_F_global,nb_dof_temp+i_R)=A(index_F_global,nb_dof_temp+i_R)+F3(index_F_elem)*(1i*vec_k_z(i_R))/(air.rho*omega^2);
                 
                 %%%%%%% Equation suppl?mentare sur la pression
-                A(nb.dof_FEM+nb.dof_DGM+i_R,index_F_global)=A(nb.dof_FEM+nb.dof_DGM+i_R,index_F_global)+F3(index_F_elem)';
+                A(nb_dof_temp+i_R,index_F_global)=A(nb_dof_temp+i_R,index_F_global)+F3(index_F_elem)';
             end
-            
-            
-            
+                        
             a1(1)=nodes(node(1),1);
             a1(2)=nodes(node(1),2);
             a2(1)=nodes(node(2),1);
@@ -188,7 +184,7 @@ for ie=1:nb.DtN
             index_force_u=dof_A(uy(node));
             index_F_elem_u=find(index_force_u);
             index_F_global_u=index_force_u(index_F_elem_u);
-
+            
             A(index_F_global_p,index_F_global_u)=A(index_F_global_p,index_F_global_u)-(FSIe(index_F_elem_p,index_F_elem_u));
         case {20}
             DtN_acou_T=1;
@@ -198,8 +194,8 @@ for ie=1:nb.DtN
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 Omega.uy=1j*vec_k_z_t(i_T)/(air.rho*omega^2);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T)+Omega.uy*F3(index_F_elem);
-                A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T,index_F_global)=A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T,index_F_global)+         F3(index_F_elem)';
+                A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)+Omega.uy*F3(index_F_elem);
+                A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)=A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)+         F3(index_F_elem)';
             end
             
         case {21}
@@ -207,43 +203,41 @@ for ie=1:nb.DtN
             F3=TR6_PW(length_edge,k_x,a);
             for i_T=1:nb.T
                 F3=TR6_PW(length_edge,vec_k_x(i_T),a);
-                index_force=dof_A(uy(node));
+                index_force=dof_A(uy_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 Omega.p=1;
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T)+Omega.p*F3(index_F_elem);
-                A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T,index_F_global)=A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+i_T,index_F_global)+        F3(index_F_elem)';
+                A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)+Omega.p*F3(index_F_elem);
+                A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)=A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)+        F3(index_F_elem)';
             end
-        case {23}   
+        case {23}
             
             DtN_plate_T=1;
             
             for i_T=1:nb.T
+                temp=nb_dof_temp+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1);
                 
                 F3=TR6_PW(length_edge,vec_k_x_t(i_T),a);
                 
-                Omega_moins=[0 0 0;-1j*vec_k_z_t(i_T)/(air.rho*omega^2) -1j*vec_k_z(i_T)/(air.rho*omega^2) 0;-1 -1 0;0 0 1];
-                [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins(:,2:3),-1,incident);
-                T_back_T([1:2]+size_info_vector_T*(i_T-1),[1:2]+size_info_vector_T*(i_T-1))=T_back_i;
+                Omega_moins=[0 0;-1j*vec_k_z(i_T)/(air.rho*omega^2) 0;-1 0;0 1];
+                [Omega_plus]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,transmitted);
                 
-                index_force=dof_A(ux(node));
+                index_force=dof_A(ux_TR(node));
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                A(index_F_global,temp  )=A(index_F_global,temp  )-Omega_plus(1,1)*F3(index_F_elem);
+                A(index_F_global,temp+1)=A(index_F_global,temp+1)-Omega_plus(1,2)*F3(index_F_elem);
+                A(temp,index_F_global)=A(temp,index_F_global)+F3(index_F_elem)';
+                
+                index_force=dof_A(uy_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1))-Omega_plus(1,1)*F3(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1))-Omega_plus(1,2)*F3(index_F_elem);
-                A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1),index_F_global)=A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1),index_F_global)+F3(index_F_elem)';
-
-                    
-                index_force=dof_A(uy(node));
-                index_F_elem=find(index_force);
-                index_F_global=index_force(index_F_elem);
+                A(index_F_global,temp  )=A(index_F_global,temp  )-Omega_plus(3,1)*F3(index_F_elem);
+                A(index_F_global,temp+1)=A(index_F_global,temp+1)-Omega_plus(3,2)*F3(index_F_elem);
                 
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1))-Omega_plus(3,1)*F3(index_F_elem);
-                A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1))=A(index_F_global,nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1))-Omega_plus(3,2)*F3(index_F_elem);
-                                
-                A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1),index_F_global)=A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1),index_F_global)+F3(index_F_elem)';
-
+                A(temp+1,index_F_global)=A(temp+1,index_F_global)+F3(index_F_elem)';
+                
             end
             
             
@@ -255,76 +249,67 @@ end
 
 if exist('DtN_acou_R')
     for i_R=1:nb.R
-        A(i_R+nb.dof_FEM+nb.dof_DGM,i_R+nb.dof_FEM+nb.dof_DGM)=-period;
+        A(i_R+nb_dof_temp,i_R+nb_dof_temp)=-period;
     end
-    F(nb.dof_FEM+nb.dof_DGM+1)=F(nb.dof_FEM+nb.dof_DGM+1)+period;
+    F(nb_dof_temp+1)=F(nb_dof_temp+1)+period;
 end
 
 if exist('DtN_elas_R')
     for i_R=1:nb.R
-        A(i_R+nb.dof_FEM+nb.dof_DGM,i_R+nb.dof_FEM+nb.dof_DGM)=-period*(1i*vec_k_z(i_R))/(air.rho*omega^2);
+        A(i_R+nb_dof_temp,i_R+nb_dof_temp)=-period*(1i*vec_k_z(i_R))/(air.rho*omega^2);
     end
-    F(nb.dof_FEM+nb.dof_DGM+1)=F(nb.dof_FEM+nb.dof_DGM+1)-period*(1i*k_z)/(air.rho*omega^2);
+    F(nb_dof_temp+1)=F(nb_dof_temp+1)-period*(1i*k_z)/(air.rho*omega^2);
 end
 
 if exist('DtN_plate_R')
     
-    
     Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1 ;0 ];
-    Omega_plus=transfer_force(k_x,omega,Omega_moins,incident);
+    Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,incident);
     
-    F(nb.dof_FEM+nb.dof_DGM+1)=F(nb.dof_FEM+nb.dof_DGM+1)+period*Omega_plus(4);
-    F(nb.dof_FEM+nb.dof_DGM+2)=F(nb.dof_FEM+nb.dof_DGM+2)+period*Omega_plus(2);
+    F(nb_dof_temp+1)=F(nb_dof_temp+1)+period*Omega_plus(4);
+    F(nb_dof_temp+2)=F(nb_dof_temp+2)+period*Omega_plus(2);
     
     for i_R=1:nb.R
-        
+        temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);    
         Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
-        [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,incident);
-        
-
-        A(nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1),nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1))=-period*Omega_plus(4,1);
-        A(nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1),nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1))=-period*Omega_plus(4,2);
-        
-        A(nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1),nb.dof_FEM+nb.dof_DGM+1+size_info_vector_R*(i_R-1))=-period*Omega_plus(2,1);
-        A(nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1),nb.dof_FEM+nb.dof_DGM+2+size_info_vector_R*(i_R-1))=-period*Omega_plus(2,2);
-                
-        
+        [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,incident);
+        A(temp  ,temp  )=-period*Omega_plus(4,1);
+        A(temp  ,temp+1)=-period*Omega_plus(4,2);
+        A(temp+1,temp  )=-period*Omega_plus(2,1);
+        A(temp+1,temp+1)=-period*Omega_plus(2,2);
     end
 end
 
 if exist('DtN_plate_T')
     
-   for i_T=1:nb.T
+    for i_T=1:nb.T
+        temp=nb_dof_temp+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1);
+        Omega_moins=[0 0;-1j*vec_k_z_t(i_T)/(air.rho*omega^2) 0;-1 0;0 1];
+        [Omega_plus]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,transmitted);
+        A(temp  ,temp  )=-period*Omega_plus(4,1);
+        A(temp  ,temp+1)=-period*Omega_plus(4,2);
+        A(temp+1,temp  )=-period*Omega_plus(2,1);
+        A(temp+1,temp+1)=-period*Omega_plus(2,2);
         
-        Omega_moins=[0 0;-1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
-        [Omega_plus,T_back_i]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,incident);
-        
-
-        A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1),nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1))=-period*Omega_plus(4,1);
-        A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1),nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1))=-period*Omega_plus(4,2);
-        
-        A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1),nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1))=-period*Omega_plus(2,1);
-        A(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1),nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+2+size_info_vector_T*(i_T-1))=-period*Omega_plus(2,2);
-                   
     end
 end
 
 if exist('DtN_acou_T')
     for i_T=1:nb.T
-        A(size_info_vector_R*nb.R+i_T+nb.dof_FEM+nb.dof_DGM,size_info_vector_R*nb.R+i_T+nb.dof_FEM+nb.dof_DGM)=-period;
+        A(size_info_vector_R*nb.R+i_T+nb_dof_temp,size_info_vector_R*nb.R+i_T+nb_dof_temp)=-period;
     end
 end
 
 if exist('DtN_elas_T')
     for i_T=1:nb.T
-        A(size_info_vector_R*nb.R+i_T+nb.dof_FEM+nb.dof_DGM,size_info_vector_R*nb.R+i_T+nb.dof_FEM+nb.dof_DGM)=period*(1i*vec_k_z_t(i_T))/(air.rho*omega^2);
+        A(size_info_vector_R*nb.R+i_T+nb_dof_temp,size_info_vector_R*nb.R+i_T+nb_dof_temp)=period*(1i*vec_k_z_t(i_T))/(air.rho*omega^2);
     end
 end
 
 if exist('DtN_2001_R')
-    F(nb.dof_FEM+nb.dof_DGM+1)=period;
+    F(nb_dof_temp+1)=period;
     for i_R=1:nb.R
-        A(nb.dof_FEM+nb.dof_DGM+i_R,nb.dof_FEM+nb.dof_DGM+i_R)=A(nb.dof_FEM+nb.dof_DGM+i_R,nb.dof_FEM+nb.dof_DGM+i_R)-period;
+        A(nb_dof_temp+i_R,nb_dof_temp+i_R)=A(nb_dof_temp+i_R,nb_dof_temp+i_R)-period;
     end
 end
 

@@ -35,8 +35,7 @@
 create_temporary_FEM_matrices
 
 for ie=1:nb.elements
-    
-    
+      
     if elem.model(ie)==1 % TR6
         nodes_elements = nodes(elem.nodes(ie,1:6),1:2)';
         if floor(elem.label(ie)/1000)==0
@@ -46,25 +45,25 @@ for ie=1:nb.elements
             Q_acou(index_p,index_p)=Q_acou(index_p,index_p)+vq;
         elseif floor(elem.label(ie)/1000)==1
             [vm,vk0,vk1]=TR6_elas(nodes_elements);
-            index_e=uxy_TR(elements(ie,1:6));
+            index_e=uxy_TR(elem.nodes(ie,1:6));
             insert_temporary_matrices_elas
         elseif floor(elem.label(ie)/1000)==2
             [vh,vq]=TR6_fluid(nodes_elements);
-            index_p=p_TR(elements(ie,1:6));
+            index_p=p_TR(elem.nodes(ie,1:6));
             insert_temporary_matrices_eqf
         elseif floor(elem.label(ie)/1000)==3
             [vh,vq]=TR6_fluid(nodes_elements);
-            index_p=p_TR(elements(ie,1:6));
+            index_p=p_TR(elem.nodes(ie,1:6));
             insert_temporary_matrices_limp
         elseif floor(elem.label(ie)/1000)==4
             [vm,vk0,vk1,vc,vh,vq]=TR6_pem98(nodes_elements);
-            index_e=uxy_TR(elements(ie,1:6));
-            index_p=p_TR(elements(ie,1:6));
+            index_e=uxy_TR(elem.nodes(ie,1:6));
+            index_p=p_TR(elem.nodes(ie,1:6));
             insert_temporary_matrices_pem1998
         elseif floor(elem.label(ie)/1000)==5
             [vm,vk0,vk1,vc,vcp,vh,vq]=TR6_pem01(nodes_elements);
-            index_e=uxy_TR(elements(ie,1:6));
-            index_p=p_TR(elements(ie,1:6));
+            index_e=uxy_TR(elem.nodes(ie,1:6));
+            index_p=p_TR(elem.nodes(ie,1:6));
             insert_temporary_matrices_pem2001
         elseif floor(elem.label(ie)/1000)==8
             temp=element_label(ie);

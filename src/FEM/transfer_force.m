@@ -1,6 +1,6 @@
 % transfer_force.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -42,53 +42,50 @@ d=media(1).thickness;
 
 P=lambda+2*mu;
 
-delta_P=omega*sqrt(rho/(P));
-delta_s=omega*sqrt(rho/(mu));
+delta_P=omega*sqrt(rho/P);
+delta_s=omega*sqrt(rho/mu);
 
-    
-    beta_P=sqrt(delta_P^2-k_x^2);
-    beta_s=sqrt(delta_s^2-k_x^2);
-    
-    
-    alpha_P=-1j*lambda*delta_P^2-1j*2*mu*beta_P^2;
-    alpha_s= 2*1j*mu*beta_s*k_x;
-    
-    V_0=diag([1j*beta_P,-1j*beta_P,1j*beta_s,-1j*beta_s]);
-    
-    
-    Phi_0(1,1)=-2*1j*mu*beta_P*k_x;
-    Phi_0(1,2)=2*1j*mu*beta_P*k_x;
-    Phi_0(1,3)=1j*mu*(beta_s^2-k_x^2);
-    Phi_0(1,4)=1j*mu*(beta_s^2-k_x^2);
-    
-    
-    Phi_0(2,1)= beta_P;
-    Phi_0(2,2)=-beta_P;
-    Phi_0(2,3)= k_x;
-    Phi_0(2,4)= k_x;
-    
-    Phi_0(3,1)=alpha_P;
-    Phi_0(3,2)=alpha_P;
-    Phi_0(3,3)=-alpha_s;
-    Phi_0(3,4)=alpha_s;
-    
-    
-    Phi_0(4,1)=k_x;
-    Phi_0(4,2)=k_x;
-    Phi_0(4,3)=-beta_s;
-    Phi_0(4,4)=beta_s;
-        
-    
-    [a,indice]=sort(diag(real(V_0)),'descend');
-     
-    
-    for i_m=1:4
-        Phi(:,i_m)=Phi_0(:,indice(4+1-i_m));
-        lamda(i_m)=-V_0(indice(4+1-i_m),indice(4+1-i_m));
-    end
-    
-    Psi=inv(Phi);
-   
+
+beta_P=sqrt(delta_P^2-k_x^2);
+beta_s=sqrt(delta_s^2-k_x^2);
+
+
+alpha_P=-1j*lambda*delta_P^2-1j*2*mu*beta_P^2;
+alpha_s= 2*1j*mu*beta_s*k_x;
+
+V_0=diag([1j*beta_P,-1j*beta_P,1j*beta_s,-1j*beta_s]);
+
+
+Phi_0(1,1)=-2*1j*mu*beta_P*k_x;
+Phi_0(1,2)=2*1j*mu*beta_P*k_x;
+Phi_0(1,3)=1j*mu*(beta_s^2-k_x^2);
+Phi_0(1,4)=1j*mu*(beta_s^2-k_x^2);
+
+
+Phi_0(2,1)= beta_P;
+Phi_0(2,2)=-beta_P;
+Phi_0(2,3)= k_x;
+Phi_0(2,4)= k_x;
+
+Phi_0(3,1)=alpha_P;
+Phi_0(3,2)=alpha_P;
+Phi_0(3,3)=-alpha_s;
+Phi_0(3,4)=alpha_s;
+
+Phi_0(4,1)=k_x;
+Phi_0(4,2)=k_x;
+Phi_0(4,3)=-beta_s;
+Phi_0(4,4)=beta_s;
+
+[a,indice]=sort(diag(real(V_0)),'descend');
+
+for i_m=1:4
+    Phi(:,i_m)=Phi_0(:,indice(4+1-i_m));
+    lamda(i_m)=-V_0(indice(4+1-i_m),indice(4+1-i_m));
+end
+
+Psi=inv(Phi);
+
 if k_x~=0
     
     

@@ -5,18 +5,18 @@ sol(dof_back)=X(1:nb.dof_FEM);
 % end
 
 if exist('DtN_plate_R')
-    rflx=T_back*  X(nb.dof_FEM+(1:size_info_vector_R*nb.R));
+  %  rflx=T_back*  X(nb.dof_FEM+nb.dof_DGM+(1:size_info_vector_R*nb.R));
+    rflx=X(nb.dof_FEM+nb.dof_DGM+(1:size_info_vector_R*nb.R));
 else
-    rflx=X(nb.dof_FEM+(1:size_info_vector_R*nb.R));
+    rflx=X(nb.dof_FEM+nb.dof_DGM+(1:size_info_vector_R*nb.R));
 end
 
 if exist('DtN_plate_R')
-    trans=T_back_T*X(nb.dof_FEM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
+   % trans=T_back_T*X(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
+    trans=X(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
 else
-    trans=X(nb.dof_FEM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
+    trans=X(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
 end
-
-
 
 if export.profiles==1
     if i_f==1
@@ -52,10 +52,6 @@ if export.nrj==1
 %         abs_dis(i_f)=(abs_vis(i_f)+abs_struct(i_f)+abs_therm(i_f)+abs_elas(i_f));
 %         
 %     end
-
-    
-
-    
 end
 
 if nb.R~=0

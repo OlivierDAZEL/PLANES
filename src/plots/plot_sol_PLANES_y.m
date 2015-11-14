@@ -69,11 +69,11 @@ for ie=1:nb.elements
     
     if ismember(elem.model(ie),[1 3])
         if ismember(floor(elem.label(ie)/1000),[1 4 5])
-            c=sqrt(sol(3*(elem.nodes(ie,:)-1)+1).^2+sol(3*(elem.nodes(ie,:)-1)+2).^2);
-            y=nodes(elem.nodes(ie,:),2);
-            figure(2010)
-            plot(y,abs(c),'r.');
-            figure(4010)
+            c=sol(uy_TR(nonzeros(elem.nodes(ie,:))));
+            y=nodes(elem.nodes(ie,:),2)
+            figure(2002)
+            plot(y,abs(c),'m+');
+            figure(4002)
             plot(y,angle(c),'r.');
         end
         if ismember(floor(elem.label(ie)/1000),[0 2 4 5 8])

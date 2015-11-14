@@ -33,13 +33,16 @@
 %%
 
 clear all
-close all
+%close all
 clc
 
 project.name='Kundt';
 project.num=1;
 project.name='sandwich_meta';
+project.name='plate';
+project.name='sandwich';
 project.num=0;
+
 % project.name='Incompatible_mesh';
 %project.name='CFM';
 %project.name='CFM_refined';
@@ -48,20 +51,20 @@ project.num=0;
 % Number of frequencies
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
-frequency.nb=1;
-frequency.min=100;
-frequency.max=750;
 
-profiles.mesh=1;
+frequency.nb=-10;
+frequency.min=50;
+frequency.max=10000;
+
+profiles.mesh=0;
 profiles.solution=0;
 profiles.x=0;
-profiles.y=1;
+profiles.y=0;
 profiles.map=0;
 profiles.custom=0;
 profiles.on=profiles.x+profiles.y+profiles.map+profiles.custom;
 export.nrj=1;
 export.profiles=0;
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES
@@ -69,7 +72,6 @@ export.profiles=0;
 PLANES_init
 air_properties_maine
 init_vec_frequencies
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Creation and importation of the mesh
@@ -92,6 +94,7 @@ end
 
 PLANES_resolution
 
+
 PLANES_info
 
 %Analytical solution (if exists)
@@ -99,4 +102,17 @@ if ((exist(name.solution)==2)&&(profiles.on~=0))
     eval('eval(name.solution)')
 end
 
+%Maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
 
+figure(1)
+%semilogx(Maine(:,1),Maine(:,2))
+%hold on
+semilogx(frequency.vec,TL_PW,'r.-')
+hold on
+if project.num==0
+    semilogx(frequency.vec,TL_EF,'k')
+    semilogx(frequency.vec,abs(TL_EF-TL_PW),'k')
+else
+    semilogx(frequency.vec,TL_EF,'m')
+    semilogx(frequency.vec,abs(TL_EF-TL_PW),'m')
+end

@@ -48,7 +48,7 @@ eval(['Mat_elas_' num2str(medium_2-1000*floor(medium_2/1000))])
 delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
 delta_s=omega*sqrt(rho_solide/mu_solide);
 k_z_2=sqrt([delta_P delta_s].^2-k_x^2);
-SV_2=State_elas(k_x,k_z_2,delta_P,delta_s,lambda_solide,mu_solide);
+SV_2=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);
 
 
 % Continuity of normal displacement

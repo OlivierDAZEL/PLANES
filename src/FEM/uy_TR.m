@@ -33,6 +33,6 @@
 %%
 
 
-function f=uy(node)
+function f=uy_TR(node)
 
 f(1:length(node))=12*(node-1)+05;

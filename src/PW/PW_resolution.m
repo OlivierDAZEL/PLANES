@@ -33,8 +33,8 @@
 %%
 
 
-for i_f=1:abs(nb_frequencies)
-    omega=2*pi*vec_freq(i_f);
+for i_f=1:abs(frequency.nb)
+    omega=2*pi*frequency.vec(i_f);
     k_air=omega/air.c;
     k_x=k_air*sin(theta_inc);
     

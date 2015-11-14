@@ -32,7 +32,8 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-period=(10e-2);
+
+period=(5e-2);
 thicknessplate1=1e-3;
 thicknessplate2=2e-2;
 thicknessporous=1e-3;
@@ -52,15 +53,9 @@ nx=ceil(nporous*period/thicknessporous);
 fid=fopen(name.file_input_FreeFem,'w');
 fprintf(fid,'%s\n',name.file_msh);
 fprintf(fid,'%12.8f\n',period);
-fprintf(fid,'%12.8f\n',thicknessplate1);
-fprintf(fid,'%12.8f\n',thicknessplate2);
 fprintf(fid,'%12.8f\n',thicknessporous);
-fprintf(fid,'%d\n',labelplate1);
-fprintf(fid,'%d\n',labelplate2);
 fprintf(fid,'%d\n',labelporous);
 fprintf(fid,'%d\n',nx);
-fprintf(fid,'%d\n',nplate1);
-fprintf(fid,'%d\n',nplate2);
 fprintf(fid,'%d\n',nporous);
 fclose(fid);
 
@@ -76,18 +71,18 @@ elem.model=1*ones(nb.elements,1);
 
 theta_inc=45*pi/180;
 
+Mat_elas_1
+incident(1).typ=1;
+incident(1).lambda=lambda_solide;
+incident(1).mu=mu_solide;
+incident(1).rho=rho_solide;
+incident(1).thickness=thicknessplate1;
 
-% incident(1).typ=1;
-% incident(1).lambda=lambda_solide;
-% incident(1).mu=mu_solide;
-% incident(1).rho=rho_solide;
-% incident(1).thickness=thicknessplate;
-% 
-% transmitted(1).typ=1;
-% transmitted(1).lambda=lambda_solide;
-% transmitted(1).mu=mu_solide;
-% transmitted(1).rho=rho_solide;
-% transmitted(1).thickness=thicknessplate;
+transmitted(1).typ=1;
+transmitted(1).lambda=lambda_solide;
+transmitted(1).mu=mu_solide;
+transmitted(1).rho=rho_solide;
+transmitted(1).thickness=thicknessplate2;
 
 
 nb_layers=3;

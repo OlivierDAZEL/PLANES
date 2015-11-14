@@ -70,7 +70,7 @@ fprintf(fidinfo,'...... #dof FEM= %d\n',nb.dof_FEM);
 fprintf(fidinfo,'...... #dof DGM= %d\n',nb.dof_DGM);
 fprintf(fidinfo,'...... #dof R= %d\n',nb.R);
 fprintf(fidinfo,'...... #dof T= %d\n',nb.T);
-fprintf(fidinfo,'...... Computation time = %d s\n',time_PLANES);
+%fprintf(fidinfo,'...... Computation time = %d s\n',time_PLANES);
 fprintf(fidinfo,'................................................................................\n');
 fprintf(fidinfo,'................................................................................\n');
 

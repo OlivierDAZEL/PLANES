@@ -41,7 +41,9 @@ project.num=1;
 project.name='sandwich_meta';
 project.name='plate';
 project.name='sandwich';
-project.num=0;
+%project.name='sandwich_meta';
+project.name='sandwich_siniat';
+project.num=3;
 
 % project.name='Incompatible_mesh';
 %project.name='CFM';
@@ -56,7 +58,7 @@ frequency.nb=-10;
 frequency.min=50;
 frequency.max=10000;
 
-profiles.mesh=0;
+profiles.mesh=1;
 profiles.solution=0;
 profiles.x=0;
 profiles.y=0;
@@ -80,12 +82,9 @@ init_vec_frequencies
 eval([name.project_full]);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+fds
 PLANES_preprocess
 
-if profiles.mesh
-    display_mesh
-end
 
 
 if nb.dof_FEM>0

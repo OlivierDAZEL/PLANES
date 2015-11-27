@@ -32,21 +32,26 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-period=(10e-2);
-thicknessplate1=1e-3;
-thicknessporous=2e-2;
-thicknessplate2=1e-3;
+period=(12e-2);
+thicknessplate1=18e-3;
+thicknessporous=6e-2;
+thicknessplate2=18e-3;
+radiusinclusion=1.5e-2;
 
 
-labelplate1=1001;
-labelplate2=1001;
+labelplate1=1002;
+labelplate2=1002;
 labelporous=5003;
+labelstud=1001;
+labelinclusion=1001;
+labelintern=0;
 
-nplate1=1;
-nplate2=1;
+nplate1=2;
+nplate2=2;
 nporous=2;
 nx=ceil(nporous*period/thicknessporous);
-
+ninclusion=max([10 ceil(nporous*2*pi*radiusinclusion/thicknessporous)]);
+%ninclusion=10;
 
 fid=fopen(name.file_input_FreeFem,'w');
 fprintf(fid,'%s\n',name.file_msh);
@@ -61,6 +66,12 @@ fprintf(fid,'%d\n',nx);
 fprintf(fid,'%d\n',nplate1);
 fprintf(fid,'%d\n',nplate2);
 fprintf(fid,'%d\n',nporous);
+fprintf(fid,'%d\n',labelstud);
+fprintf(fid,'%12.8f\n',radiusinclusion);
+fprintf(fid,'%d\n',labelinclusion);
+fprintf(fid,'%d\n',ninclusion);
+fprintf(fid,'%d\n',labelintern);
+
 fclose(fid);
 
 % Call to FreeFem++ to create a msh File

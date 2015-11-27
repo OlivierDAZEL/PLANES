@@ -32,17 +32,23 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
 [i_temp,j_temp,s_temp] = find(vk0);
 ll=length(i_temp);
-i_k0_elas=[i_k0_elas(1:end);index_e(i_temp)'];
+i_k0_elas=[i_k0_elas;index_e(i_temp)'];
 j_k0_elas=[j_k0_elas;index_e(j_temp)'];
-v_k0_elas=[v_k0_elas;s_temp];
+v_k0_elas(1:end+ll,elem.num_mat(ie))=[v_k0_elas(:,elem.num_mat(ie));s_temp];
 [i_temp,j_temp,s_temp] = find(vk1);
+ll=length(i_temp);
 i_k1_elas=[i_k1_elas;index_e(i_temp)'];
 j_k1_elas=[j_k1_elas;index_e(j_temp)'];
-v_k1_elas=[v_k1_elas;s_temp];
+v_k1_elas(1:end+ll,elem.num_mat(ie))=[v_k1_elas(:,elem.num_mat(ie));s_temp];
 [i_temp,j_temp,s_temp] = find(vm);
+ll=length(i_temp);
 i_m_elas=[i_m_elas;index_e(i_temp)'];
 j_m_elas=[j_m_elas;index_e(j_temp)'];
-v_m_elas=[v_m_elas;s_temp];
+v_m_elas(1:end+ll,elem.num_mat(ie))=[v_m_elas(:,elem.num_mat(ie));s_temp];
+
+
+
+
+

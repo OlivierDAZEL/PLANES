@@ -33,10 +33,11 @@
 %%
 
 
-period=(5e-2);
+period=(10e-2);
 thicknessplate1=1e-3;
-thicknessplate2=2e-2;
-thicknessporous=1e-3;
+thicknessporous=2e-2;
+thicknessplate2=1e-3;
+
 
 
 
@@ -44,8 +45,7 @@ labelplate1=1001;
 labelplate2=1001;
 labelporous=5003;
 
-nplate1=1;
-nplate2=1;
+
 nporous=2;
 nx=ceil(nporous*period/thicknessporous);
 
@@ -69,7 +69,7 @@ system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
 % All the elements are TR6
 elem.model=1*ones(nb.elements,1);
 
-theta_inc=45*pi/180;
+theta_inc=0*pi/180;
 
 Mat_elas_1
 incident(1).typ=1;

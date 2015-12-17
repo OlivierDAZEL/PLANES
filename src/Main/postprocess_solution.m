@@ -75,6 +75,12 @@ if profiles.custom~=0
     eval(['plot_sol_TR6_custom_' , num2str(profiles.custom)]);
 end
 
+% custom plots
+if isfield(profiles, 'custom_plots') && length(profiles.custom_plots)~=0
+	for i=1:length(profiles.custom_plots)
+		eval(profiles.custom_plots{i});
+	end
+end
 
 
 clear('sol')

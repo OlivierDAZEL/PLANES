@@ -51,7 +51,7 @@ function PLANES(projectdir, expnb)
 	project_info % load project data from project dir
 
 	if nargin<2
-		if exist('project.num')==0
+		if exist('project.num')~=0
 			project.num=0;
 		end
 	else

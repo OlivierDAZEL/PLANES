@@ -37,16 +37,16 @@ y=[];
 
 
 if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
-    figure(10002)
+    figure(10001)
     hold on
     title('Solid displacement')
     xlabel('x')
     ylabel('y')
-    figure(11002)
-    hold on
-    title('Solid displacement')
-    xlabel('x')
-    ylabel('y')
+%     figure(11002)
+%     hold on
+%     title('Solid displacement')
+%     xlabel('x')
+%     ylabel('y')
 end
 
 
@@ -66,7 +66,6 @@ end
 
 
 for ie=1:nb.elements
-    
     if ismember(elem.model(ie),[1])
             plot_sol_TR6_on_element
    elseif ismember(elem.model(ie),[10 11])
@@ -74,8 +73,6 @@ for ie=1:nb.elements
     elseif ismember(elem.model(ie),[2])
             plot_sol_H12_on_element
     end
-    
-
 end
 
 
@@ -97,6 +94,8 @@ end
 
 if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
     figure(10001)
+    colormap jet
+    colorbar
 end
 
 

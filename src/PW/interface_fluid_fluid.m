@@ -38,8 +38,8 @@ if medium_1==0
     k_z_1=sqrt(k_air^2-k_x^2);
     SV_1=State_fluid(k_x,k_z_1,air.K);
 else
-    eval(['Mat_fluid_' num2str(medium_1-1000*floor(medium_1/1000))]);
-    properties_jca
+    eval(['Mat_PEM_' num2str(medium_1-1000*floor(medium_1/1000))]);
+    properties_eqf
     k_z_1=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_1=State_fluid(k_x,k_z_1,K_eq_til);
 end
@@ -47,8 +47,8 @@ if medium_2==0
     k_z_2=sqrt(k_air^2-k_x^2);
     SV_2=State_fluid(k_x,k_z_2,air.K);
 else
-    eval(['Mat_fluid_' num2str(medium_2-1000*floor(medium_2/1000))])
-    properties_jca
+    eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_2/1000))])
+    properties_eqf
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_2=State_fluid(k_x,k_z_2,K_eq_til);
 end

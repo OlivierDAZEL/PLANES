@@ -1,6 +1,6 @@
-% sandwich.m
+% sandwich_4.m
 %
-% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -32,35 +32,42 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-period=(1e-2);
-thicknessplate1=1e-3;
+
+lx=10e-2;
+thicknessplate=1e-3;
 thicknessporous=2e-2;
-thicknessplate2=1e-3;
-
-
-labelplate1=1001;
-labelplate2=1001;
+labelplate=1001;
 labelporous=5003;
+labelbottom=2100;
+labeltop=2101;
 
-nplate1=3;
-nplate2=3;
-nporous=2;
-nx=ceil(nplate1*period/thicknessplate1);
+hbottom=3e-2;
+htop=3e-2;
+
+
+nplate=1;
+nporous=1%ceil(thicknessporous*nplate/thicknessplate);
+nx=ceil(lx*nporous/thicknessporous);
+nbottom=ceil(hbottom*nx/lx);
+ntop=ceil(htop*nx/lx);
 
 
 fid=fopen(name.file_input_FreeFem,'w');
 fprintf(fid,'%s\n',name.file_msh);
-fprintf(fid,'%12.8f\n',period);
-fprintf(fid,'%12.8f\n',thicknessplate1);
-fprintf(fid,'%12.8f\n',thicknessplate2);
+fprintf(fid,'%12.8f\n',lx);
+fprintf(fid,'%12.8f\n',thicknessplate);
 fprintf(fid,'%12.8f\n',thicknessporous);
-fprintf(fid,'%d\n',labelplate1);
-fprintf(fid,'%d\n',labelplate2);
+fprintf(fid,'%d\n',labelplate);
 fprintf(fid,'%d\n',labelporous);
-fprintf(fid,'%d\n',nx);
-fprintf(fid,'%d\n',nplate1);
-fprintf(fid,'%d\n',nplate2);
+fprintf(fid,'%d\n',labelbottom);
+fprintf(fid,'%d\n',labeltop);
+fprintf(fid,'%12.8f\n',hbottom);
+fprintf(fid,'%12.8f\n',htop);
+fprintf(fid,'%d\n',nplate);
 fprintf(fid,'%d\n',nporous);
+fprintf(fid,'%d\n',nx);
+fprintf(fid,'%d\n',nbottom);
+fprintf(fid,'%d\n',ntop);
 fclose(fid);
 
 % Call to FreeFem++ to create a msh File
@@ -76,26 +83,13 @@ elem.model=1*ones(nb.elements,1);
 theta_inc=40*pi/180;
 
 
-% incident(1).typ=1;
-% incident(1).lambda=lambda_solide;
-% incident(1).mu=mu_solide;
-% incident(1).rho=rho_solide;
-% incident(1).thickness=thicknessplate;
-% 
-% transmitted(1).typ=1;
-% transmitted(1).lambda=lambda_solide;
-% transmitted(1).mu=mu_solide;
-% transmitted(1).rho=rho_solide;
-% transmitted(1).thickness=thicknessplate;
-
-
 nb_layers=3;
-multilayer(1).d=thicknessplate1;
-multilayer(1).mat=labelplate1;
+multilayer(1).d=thicknessplate;
+multilayer(1).mat=labelplate;
 multilayer(2).d=thicknessporous;
 multilayer(2).mat=labelporous;
-multilayer(3).d=thicknessplate2;
-multilayer(3).mat=labelplate2;
+multilayer(3).d=thicknessplate;
+multilayer(3).mat=labelplate;
 % Termination condition // 0 for rigid backing 1 for radiation
 termination=1;
 

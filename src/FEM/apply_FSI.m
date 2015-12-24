@@ -33,23 +33,23 @@
 %%
 
 
-for ie=1:nb.interfaces
+for ie=1:nb.internal
     
-    x1=nodes(interfaces(ie,1),1);
-    y1=nodes(interfaces(ie,1),2);
-    x2=nodes(interfaces(ie,2),1);
-    y2=nodes(interfaces(ie,2),2);
+    x1=nodes(edges.internal(ie,1),1);
+    y1=nodes(edges.internal(ie,1),2);
+    x2=nodes(edges.internal(ie,2),1);
+    y2=nodes(edges.internal(ie,2),2);
     length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
     if (x1<x2)
         a=x1;
-        node(1)=interfaces(ie,1);
-        node(2)=interfaces(ie,2);
-        node(3)=interfaces(ie,6);
+        node(1)=edges.internal(ie,1);
+        node(2)=edges.internal(ie,2);
+        node(3)=edges.internal(ie,7);
     else
         a=x2;
-        node(2)=interfaces(ie,1);
-        node(1)=interfaces(ie,2);
-        node(3)=interfaces(ie,6);
+        node(2)=edges.internal(ie,1);
+        node(1)=edges.internal(ie,2);
+        node(3)=edges.internal(ie,7);
     end
     
     
@@ -60,17 +60,18 @@ for ie=1:nb.interfaces
     
     vec_tangent=a2-a1;
     vec_normal=[vec_tangent(2) -vec_tangent(1)];
-    vec_normal=vec_normal/norm(vec_normal);
+    vec_normal=vec_normal/norm(vec_normal); 
+    num_element=edges.internal(ie,3);
+    center_e1=mean(nodes(nonzeros(elem.nodes(num_element,:)),1:2))';
+
     
-    center_e1=mean(nodes(elements(interfaces(ie,3),:),1:2),1);
-    center_e2=mean(nodes(elements(interfaces(ie,4),:),1:2),1);
-    vec_temp=nodes(interfaces(ie,6),1:2)-center_e1;
+    vec_temp=nodes(edges.internal(ie,7),1:2)-center_e1';
     temp=vec_normal*vec_temp';
     if temp<0
         vec_normal=-vec_normal;
     end
      
-    if floor(element_label(interfaces(ie,3))/1000)==0
+    if floor(elem.label(edges.internal(ie,3))/1000)==0
         n_elas=-vec_normal;
         n_acou= n_elas;
     else
@@ -83,16 +84,16 @@ for ie=1:nb.interfaces
     
     FSIe=TR6_FSI(a1,a2);
     
-    index_force_p=dof_A(p(node));
+    index_force_p=dof_A(p_TR(node));
     index_F_elem_p=find(index_force_p);
     index_F_global_p=index_force_p(index_F_elem_p);
     
     
-    index_force_ux=dof_A(ux(node));
+    index_force_ux=dof_A(ux_TR(node));
     index_F_elem_ux=find(index_force_ux);
     index_F_global_ux=index_force_ux(index_F_elem_ux);
    
-    index_force_uy=dof_A(uy(node));
+    index_force_uy=dof_A(uy_TR(node));
     index_F_elem_uy=find(index_force_uy);
     index_F_global_uy=index_force_uy(index_F_elem_uy);
 

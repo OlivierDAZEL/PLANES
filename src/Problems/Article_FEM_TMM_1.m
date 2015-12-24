@@ -33,19 +33,24 @@
 %%
 
 period=(1e-2);
-thicknessplate1=1e-3;
+thicknessplate1=2e-2;
 thicknessporous=2e-2;
-thicknessplate2=1e-3;
+thicknessplate2=2e-2;
+
+
+% labelplate1=2003;
+% labelplate2=2003;
+% labelporous=2003;
 
 
 labelplate1=1001;
 labelplate2=1001;
 labelporous=5003;
 
-nplate1=3;
-nplate2=3;
+nplate1=2;
+nplate2=2;
 nporous=2;
-nx=ceil(nplate1*period/thicknessplate1);
+nx=1%ceil(nplate1*period/thicknessplate1);
 
 
 fid=fopen(name.file_input_FreeFem,'w');
@@ -100,7 +105,13 @@ multilayer(3).mat=labelplate2;
 termination=1;
 
 
+multilayer_ZOD(1).d=multilayer(2).d;
+multilayer_ZOD(1).mat=multilayer(2).mat;
 
+delta_x_ZOD=0;
+delta_y_ZOD=abs(multilayer_ZOD(1).d);
+
+theta_ZOD=40*theta_inc;
 
 % Number of waves (two ways) in each layer
 % For the resolution, the incident waves is included in the system and put to RHS at the

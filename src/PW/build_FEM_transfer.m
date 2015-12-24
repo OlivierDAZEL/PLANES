@@ -55,15 +55,14 @@ switch floor(element_MMT_minus/1000)
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
         k_z_minus=sqrt([delta_P delta_s].^2-k_x^2);
-        SV_minus=State_elas(k_x,k_z_minus,delta_P,delta_s,lambda_solide,mu_solide);    
+        SV_minus=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
         nS_minus=4;
         dof_FEM=[4 2];
         boundary_FEM=[1 3];
     case 2
-        eval(['Mat_fluid_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
-        properties_jca
+        eval(['Mat_PEM_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
+        properties_eqf
         k_z_minus=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
-        SV_minus=State_fluid(k_x,k_z_minus,K_eq_til);
         nS_minus=2;
         dof_FEM=[2];
         boundary_FEM=[1];
@@ -89,17 +88,15 @@ switch floor(element_MMT_plus/1000)
          eval(['Mat_elas_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))])
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
-        k_z_plus=sqrt([delta_P delta_s].^2-k_x^2);
-        SV_plus=State_elas(k_x,k_z_plus,delta_P,delta_s,lambda_solide,mu_solide);    
+        SV_plus=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
         nS_plus=4;
         dof_FEM=[dof_FEM nS_minus+[4 2]];
         boundary_FEM=[boundary_FEM nS_minus+[1 3]];
         normale_plus=diag([-1 -1]);
     case 2
-        eval(['Mat_fluid_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
-        properties_jca
+        eval(['Mat_PEM_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
+        properties_eqf
         k_z_plus=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
-        SV_plus=State_fluid(k_x,k_z_plus,K_eq_til);
         nS_plus=2;
         dof_FEM=[dof_FEM nS_minus+[2]];
         boundary_FEM=[boundary_FEM nS_minus+[1]];
@@ -182,7 +179,6 @@ end
 
 
 for i_interface=1:nb_layers-1
-    
     %Type of media on both sides and attribution of the dof
     medium_1=multilayer(i_interface).mat;
     dof_medium_1=nS_minus+sum(n_w(1:i_interface-1))+(1:n_w(i_interface));
@@ -238,7 +234,9 @@ M33=Mat_PW(nS_minus/2+nb_amplitudes+[1:nS_plus/2],S_plus);
 
 Gamma=-inv(M22)*[M21 M23];
 
+
 GGamma=[[M11 M13]+M12*Gamma;[M31 M33]+M32*Gamma];
+
 
 M_b=GGamma(:,boundary_FEM);
 M_d=GGamma(:,dof_FEM);
@@ -246,5 +244,3 @@ M_d=GGamma(:,dof_FEM);
 T=-inv(M_b)*M_d;
 
 T(nS_minus/2+[1:nS_plus/2],:)=normale_plus*T(nS_minus/2+[1:nS_plus/2],:);
-
-

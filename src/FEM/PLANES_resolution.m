@@ -37,7 +37,7 @@ tic
 
 if (nb.dof_DGM+nb.dof_FEM)>0
     for i_f=1:abs(frequency.nb)
-        PLANES_resolution_progress=100*i_f/abs(frequency.nb);
+        PLANES_resolution_progress=100*i_f/abs(frequency.nb)
         
         freq=frequency.vec(i_f);
         omega=2*pi*freq;
@@ -74,12 +74,10 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+(lambda_solide+2*mu_solide)*K0_elas_',num2str(i_mat),'+mu_solide*K1_elas_',num2str(i_mat),'-omega^2*rho_solide*M_elas_',num2str(i_mat),';']);
                 end
             end
-            
-            
             if (nb.media.eqf~=0)
                 for i_mat=1:nb.media.eqf
                     eval(['Mat_PEM_' num2str(num_media.eqf(i_mat))])
-                    properties_jca
+                    properties_eqf
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
                 end
             end
@@ -94,7 +92,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             if (nb.media.pem98~=0)
                 for i_mat=1:nb.media.pem98
                     eval(['Mat_PEM_' num2str(num_media.pem98(i_mat))])
-                    properties_jca
+                    properties_eqf
                     properties_PEM
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+P_hat*K0_pem98_',num2str(i_mat),'+N*K1_pem98_',num2str(i_mat),'-omega^2*rho_til*M_pem98_',num2str(i_mat),';']);
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_pem98_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem98_',num2str(i_mat),'/(K_eq_til);']);
@@ -112,6 +110,10 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                 end
             end
         end
+
+        if (nb.internal>0)
+            apply_FSI
+        end
         
         
         if (nb.loads>0)
@@ -121,15 +123,32 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             DtN_application
         end
         
-        if (nb.periodicity>0)
-           periodicity_condition_application 
-        end
+
         
         if (nb.dirichlets>0)
             for ie=1:nb.dirichlets
-                boundary_rigid_wall_fluid
+                if ismember(elem.model(edges.dirichlets(ie,3)),[10 11])
+                    boundary_rigid_wall_fluid
+                end
             end
         end
+        
+        if nb.ZOD~=0
+            TT=build_FEM_transfer(k_air*sin(theta_ZOD),elem.ZOD_moins,elem.ZOD_plus,omega,multilayer_ZOD,k_air,air);
+            switch floor(elem.ZOD_moins/1000)
+                case {0 2 3}
+                    switch floor(elem.ZOD_plus/1000)
+                        case {0 2 3}
+                            ZOD_fluid_fluid
+                    end
+                case 1
+                    switch floor(elem.ZOD_plus/1000)
+                        case 1
+                            ZOD_elas_elas
+                    end
+            end
+        end
+                
         
         
         if nb.flux>0
@@ -151,13 +170,17 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             end
         end
         
+ 
+        if (nb.periodicity>0)
+            periodicity_condition_application
+        end
+        
         
         disp('Resolution of the system')
         X=A\F;
         disp('End of the resolution of the system')
         
         postprocess_solution
-        
         
         
     end

@@ -103,9 +103,9 @@ for ii=1:nb.periodicity
     text((nodes(edges.periodicity(ii,1),1)+nodes(edges.periodicity(ii,2),1))/2,(nodes(edges.periodicity(ii,1),2)+nodes(edges.periodicity(ii,2),2))/2,num2str(edges.periodicity(ii,4)),'Fontsize',15);
     
 end
-for ii=1:nb.MMT
-    line([nodes(edges_MMT(ii,1),1) nodes(edges_MMT(ii,2),1)],[nodes(edges_MMT(ii,1),2) nodes(edges_MMT(ii,2),2)]);
-    text((nodes(edges_MMT(ii,1),1)+nodes(edges_MMT(ii,2),1))/2,(nodes(edges_MMT(ii,1),2)+nodes(edges_MMT(ii,2),2))/2,num2str(edges_MMT(ii,4)),'Fontsize',15);
+for ii=1:nb.TMM
+    line([nodes(edges.TMM(ii,1),1) nodes(edges.TMM(ii,2),1)],[nodes(edges.TMM(ii,1),2) nodes(edges.TMM(ii,2),2)]);
+    text((nodes(edges.TMM(ii,1),1)+nodes(edges.TMM(ii,2),1))/2,(nodes(edges.TMM(ii,1),2)+nodes(edges.TMM(ii,2),2))/2,num2str(edges.TMM(ii,4)),'Fontsize',15);
     
 end
 for ii=1:nb.dirichlets
@@ -113,10 +113,14 @@ for ii=1:nb.dirichlets
     text((nodes(edges.dirichlets(ii,1),1)+nodes(edges.dirichlets(ii,2),1))/2,(nodes(edges.dirichlets(ii,1),2)+nodes(edges.dirichlets(ii,2),2))/2,num2str(edges.dirichlets(ii,4)),'Fontsize',15);
     
 end
+for ii=1:nb.DtN
+    line([nodes(edges.DtN(ii,1),1) nodes(edges.DtN(ii,2),1)],[nodes(edges.DtN(ii,1),2) nodes(edges.DtN(ii,2),2)]);
+    text((nodes(edges.DtN(ii,1),1)+nodes(edges.DtN(ii,2),1))/2,(nodes(edges.DtN(ii,1),2)+nodes(edges.DtN(ii,2),2))/2,num2str(edges.DtN(ii,4)),'Fontsize',15);
+    
+end
 for ii=1:nb.internal
     line([nodes(edges.internal(ii,1),1) nodes(edges.internal(ii,2),1)],[nodes(edges.internal(ii,1),2) nodes(edges.internal(ii,2),2)]);
     text((nodes(edges.internal(ii,1),1)+nodes(edges.internal(ii,2),1))/2,(nodes(edges.internal(ii,1),2)+nodes(edges.internal(ii,2),2))/2,num2str(edges.internal(ii,4)),'Fontsize',15);
-    
 end
 axis equal
 

@@ -1,6 +1,6 @@
-% PLANES_main.m
+% PLANES.m
 %
-% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -38,7 +38,7 @@ function PLANES(projectdir, expnb)
 	clc;
 
 	% add project path and load informations
-	name.project_directory=projectdir;
+	name.project_directory=['../../Projects/' projectdir];
 	% add subpaths
 	paths={'','/Plots','/Physics','/Solutions','/Validation'};
 	for i=1:length(paths)
@@ -48,6 +48,11 @@ function PLANES(projectdir, expnb)
 	end
 	clearvars paths
 
+    	eval([name.project_full]);
+        
+        
+        ezrezr
+    
 	project_info % load project data from project dir
 
 	if nargin<2
@@ -70,7 +75,7 @@ function PLANES(projectdir, expnb)
 	%% Creation and importation of the mesh
 	% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	eval([name.project_full]);
+
 
 	%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

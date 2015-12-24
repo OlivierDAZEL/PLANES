@@ -39,8 +39,8 @@ if multilayer(1).mat==0
     SV_2=State_fluid(k_x,k_z_2,air.K);
     dof_medium_2=nS_minus+[1:2];
 else
-    eval(['Mat_fluid_' num2str(multilayer(1).mat-1000*floor(multilayer(1).mat/1000))])
-    properties_jca
+    eval(['Mat_PEM_' num2str(multilayer(1).mat-1000*floor(multilayer(1).mat/1000))])
+    properties_eqf
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_2=State_fluid(k_x,k_z_2,K_eq_til);
     dof_medium_2=nS_minus+[1:2];

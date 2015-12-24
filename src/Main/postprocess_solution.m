@@ -81,6 +81,7 @@ if isfield(profiles, 'custom_plots') && length(profiles.custom_plots)~=0
 		eval(profiles.custom_plots{i});
 	end
 end
+%Db(i_f)=log10(abs(X(1:nb.dof_FEM)'*Q_eqf_1*X(1:nb.dof_FEM))/abs(X(1:nb.dof_FEM)'*Q_eqf_2*X(1:nb.dof_FEM)));
 
 
 clear('sol')

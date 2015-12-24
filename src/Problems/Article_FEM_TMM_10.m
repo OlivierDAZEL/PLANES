@@ -1,4 +1,4 @@
-% State_fluid.m
+% sandwich_1.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,7 +33,57 @@
 %%
 
 
-function M=State_fluid(k_x,k_z,K)
+lx=100e-2;
+thicknessplate=1e-3;
+thicknessporous=1e-2;
+labelplate=1001;
+labelporous=5003;
+labelbottom=2100;
+labeltop=2101;
 
-k=sqrt(k_x^2+k_z^2);
-M=[k_z -k_z;1j*K*k^2 1j*K*k^2];
+hbottom=lx/2;
+htop=lx/2;
+ampsinus=lx/10;
+ampx2=1;
+nboscill=1;
+
+nplate=2;
+nporous=4%ceil(thicknessporous*nplate/thicknessplate);
+nx=40%ceil(lx*nporous/thicknessporous);
+nbottom=ceil(hbottom*nx/lx);
+ntop=ceil(htop*nx/lx);
+%k_x=0
+
+fid=fopen(name.file_input_FreeFem,'w');
+fprintf(fid,'%s\n',name.file_msh);
+fprintf(fid,'%12.8f\n',lx);
+fprintf(fid,'%12.8f\n',thicknessplate);
+fprintf(fid,'%12.8f\n',thicknessporous);
+fprintf(fid,'%d\n',labelplate);
+fprintf(fid,'%d\n',labelporous);
+fprintf(fid,'%d\n',labelbottom);
+fprintf(fid,'%d\n',labeltop);
+fprintf(fid,'%12.8f\n',hbottom);
+fprintf(fid,'%12.8f\n',htop);
+fprintf(fid,'%12.8f\n',ampsinus);
+fprintf(fid,'%12.8f\n',ampx2);
+fprintf(fid,'%12.8f\n',nboscill);
+fprintf(fid,'%d\n',nplate);
+fprintf(fid,'%d\n',nporous);
+fprintf(fid,'%d\n',nx);
+fprintf(fid,'%d\n',nbottom);
+fprintf(fid,'%d\n',ntop);
+fclose(fid);
+
+% Call to FreeFem++ to create a msh File
+system(['/usr/local/bin/FreeFem++ ' name.file_edp]);
+
+%Importation of the msh File
+
+[nb,nodes,elem,edge_msh]=msh_import(name.file_msh);
+
+% All the elements are TR6
+elem.model=1*ones(nb.elements,1);
+
+
+

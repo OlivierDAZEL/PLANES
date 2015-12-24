@@ -51,7 +51,7 @@ for ie=1:nb.elements
                 stop
         end
     end
-        if ismember(elem.model(ie),2)
+    if ismember(elem.model(ie),2)
         switch typ
             case {0,2,3,8} %! Acoustic/EF/limp/PML
                 isvalidof_FEM(p_H12(nonzeros(elem.nodes(ie,1:4))))=1;
@@ -64,22 +64,38 @@ for ie=1:nb.elements
                 stop
         end
     end
- end
+end
 
 
 
 for ie=1:nb.dirichlets
-    if (edges.dirichlets(ie,4)==5) % Sliding
-        xx=abs(nodes(edges.dirichlets(ie,1),1)-nodes(edges.dirichlets(ie,2),1));
-        yy=abs(nodes(edges.dirichlets(ie,1),2)-nodes(edges.dirichlets(ie,2),2));
-        if (xx>yy)
-            isvalidof_FEM(uy_H16(edges.dirichlets(ie,:)))=0;
-        else
-            isvalidof_FEM(ux_H16(edges.dirichlets(ie,:)))=0;
+    if ismember(elem.model(ie),[1 3])
+        if (edges.dirichlets(ie,4)==5) % Sliding
+            xx=abs(nodes(edges.dirichlets(ie,1),1)-nodes(edges.dirichlets(ie,2),1));
+            yy=abs(nodes(edges.dirichlets(ie,1),2)-nodes(edges.dirichlets(ie,2),2));
+            if (xx>yy)
+                isvalidof_FEM(uy_TR(edges.dirichlets(ie,[1 2 6])))=0;
+            else
+                isvalidof_FEM(ux_TR(edges.dirichlets(ie,[1 2 6])))=0;
+            end
+        end
+        if (edges.dirichlets(ie,4)==6) % Bonded
+            isvalidof_FEM(uxy_TR(edges.dirichlets(ie,[1 2 6])))=0;
         end
     end
-    if (edges.dirichlets(ie,4)==6) % Bonded
+    if ismember(elem.model(ie),[2])
+        if (edges.dirichlets(ie,4)==5) % Sliding
+            xx=abs(nodes(edges.dirichlets(ie,1),1)-nodes(edges.dirichlets(ie,2),1));
+            yy=abs(nodes(edges.dirichlets(ie,1),2)-nodes(edges.dirichlets(ie,2),2));
+            if (xx>yy)
+                isvalidof_FEM(uy_H16(edges.dirichlets(ie,:)))=0;
+            else
+                isvalidof_FEM(ux_H16(edges.dirichlets(ie,:)))=0;
+            end
+        end
+        if (edges.dirichlets(ie,4)==6) % Bonded
             isvalidof_FEM(uxy_H16(edges.dirichlets(ie,:)))=0;
+        end
     end
 end
 

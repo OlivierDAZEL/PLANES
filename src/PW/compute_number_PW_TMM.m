@@ -43,6 +43,7 @@ for ii=1:nb_layers
             n_w(ii)=6;
     end
 end
+
 nb_amplitudes=sum(n_w);
 
 

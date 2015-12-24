@@ -33,19 +33,26 @@
 %%
 
 period=(1e-2);
-thicknessplate1=1e-3;
+thicknessplate1=2e-2;
 thicknessporous=2e-2;
-thicknessplate2=1e-3;
+thicknessplate2=2e-2;
 
 
 labelplate1=1001;
 labelplate2=1001;
 labelporous=5003;
 
-nplate1=3;
-nplate2=3;
+
+
+%  labelplate1=2003;
+%  labelplate2=2003;
+%  labelporous=2003;
+
+
+nplate1=2;
+nplate2=2;
 nporous=2;
-nx=ceil(nplate1*period/thicknessplate1);
+nx=1%ceil(nplate1*period/thicknessplate1);
 
 
 fid=fopen(name.file_input_FreeFem,'w');

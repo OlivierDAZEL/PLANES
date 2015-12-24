@@ -108,10 +108,10 @@ if nb.periodicity~=0
         end
     end
 end
-if nb.MMT~=0
-    for ie=1:nb.MMT
-        if ismember(edges.MMT(ie,3),elements_TR6)
-            edges.MMT(ie,6)=node_middle(nodes,edges.MMT(ie,1),edges.MMT(ie,2));
+if nb.ZOD~=0
+    for ie=1:nb.ZOD
+        if ismember(edges.ZOD(ie,3),elements_TR6)
+            edges.ZOD(ie,6)=node_middle(nodes,edges.ZOD(ie,1),edges.ZOD(ie,2));
         end
     end
 end

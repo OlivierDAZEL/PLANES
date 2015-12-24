@@ -1,4 +1,4 @@
-% State_fluid.m
+% Mat_PEM_100.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,7 +33,6 @@
 %%
 
 
-function M=State_fluid(k_x,k_z,K)
-
-k=sqrt(k_x^2+k_z^2);
-M=[k_z -k_z;1j*K*k^2 1j*K*k^2];
+rho_eq_til=air.rho;
+K_eq_til=air.K;
+eqf_model='air';

@@ -62,19 +62,16 @@ mat_ksi_eta=[-lambda.*(1-2*lambda) 4*ksi.*lambda -ksi.*(1-2*ksi) 4*ksi.*eta -eta
 
 if ismember(floor(elem.label(ie)/1000),[1 4 5])
     figure(10001)
-    c=sqrt(sol(3*(elements(ie,:)-1)+1).^2+sol(3*(elements(ie,:)-1)+2).^2);
-    
+    c=sqrt(sol(ux_TR(nonzeros(elem.nodes(ie,:)))).^2+sol(uy_TR(nonzeros(elem.nodes(ie,:)))).^2);
     val_int=mat_ksi_eta*c.';
-    
     for i_faces=1:size(faces,2)
-        figure(10001)
         patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));
     end
 end
 
-if ismember(floor(elem.label(ie)/1000),[0 4 5 8])
+if ismember(floor(elem.label(ie)/1000),[0 2 3 4 5 8])
     figure(10002)
-    c=sol(p_TR(nonzeros(elem.nodes(ie,:))));
+    c=(sol(p_TR(nonzeros(elem.nodes(ie,:)))));
     
     
     val_int=mat_ksi_eta*c.';

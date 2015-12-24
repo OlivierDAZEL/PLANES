@@ -1,4 +1,4 @@
-% link_FEMTMM_fluid_fluid.m
+% link_FEMZOD_fluid_fluid.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,10 +33,10 @@
 %%
 
 
-for ii=1:size(edges_MMT_moins,1)
+for ii=1:size(edges.ZOD_moins,1)
     
-    node_moins=edges_MMT_moins(ii,[1 2 6]);
-    node_plus=edges_MMT_plus(ii,[1 2 6]);
+    node_moins=edges.ZOD_moins(ii,[1 2 6])
+    node_plus=edges.ZOD_plus(ii,[1 2 6])
     
     
     a1(1)=nodes(node_moins(1),1);
@@ -47,12 +47,12 @@ for ii=1:size(edges_MMT_moins,1)
     FSIe=TR6_FSI(a1,a2);
     
     
-    index_force_p_moins=dof_A(p(node_moins));
+    index_force_p_moins=dof_A(p_TR(node_moins));
     index_F_elem_p_moins=find(index_force_p_moins);
     index_F_global_p_moins=index_force_p_moins(index_F_elem_p_moins);
     
     
-    index_force_p_plus=dof_A(p(node_plus));
+    index_force_p_plus=dof_A(p_TR(node_plus));
     index_F_elem_p_plus=find(index_force_p_plus);
     index_F_global_p_plus=index_force_p_plus(index_F_elem_p_plus);
     

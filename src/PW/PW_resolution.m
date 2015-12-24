@@ -47,7 +47,7 @@ for i_f=1:abs(frequency.nb)
     X_PW=Mat_PW\F_PW;
     
     abs_PW(i_f)=1-abs(X_PW(1))^2;
-    reflex_PW(i_f)=X_PW(1);
+    rflx_PW(i_f)=X_PW(1);
     if termination~=0
         TL_PW(i_f)=-20*log10(abs(X_PW(end)));
     end

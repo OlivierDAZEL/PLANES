@@ -134,6 +134,8 @@ edge_msh(:,1:2)=sort(edge_msh(:,1:2),2);
 
 % Merging of boundaries
 boundaries=[edge_msh;boundaries];
+
+
 clear edge_msh
 % Research of double segments
 [~,~,temp] = unique(boundaries(:,1:2),'rows');
@@ -160,17 +162,17 @@ boundaries(:,[4 3])=boundaries(:,[3 4]);
 % boundaries=[node1 node2 #element #label]
 
 
-% Suppression of interfaces with FEM and natural coupling
 
 temp=find(ismember(abs(boundaries(:,4)),[0]));
 boundaries(temp,:)=[];
 
 
-
-
 temp=find(ismember(abs(boundaries(:,4)),[101]));
-edges.MMT=boundaries(temp,:);
+edges.ZOD=boundaries(temp,:);
 boundaries(temp,:)=[];
+
+% Suppression of interfaces with FEM and natural coupling
+
 
 % Find Dirichlet boundaries : label 1 not FEM or 5 6 9
 
@@ -210,8 +212,16 @@ temp=find(ismember(boundaries(:,4),[10 11 12 13 20 21 22 23]));
 edges.DtN=boundaries(temp,:);
 boundaries(temp,:)=[];
 
+
+temp=find(ismember(floor(boundaries(:,4)/100),[4]));
+edges.ZOD=boundaries(temp,:);
+boundaries(temp,:)=[];
+
+
 temp=find(ismember(boundaries(:,4),[0]));
 boundaries(temp,:)=[];
+
+
 
 edges.loads=boundaries;
 clear boundaries;
@@ -219,7 +229,7 @@ clear boundaries;
 nb.dirichlets=size(edges.dirichlets,1);
 nb.loads=size(edges.loads,1);
 nb.periodicity=size(edges.periodicity,1);
-nb.MMT=size(edges.MMT,1);
+nb.ZOD=size(edges.ZOD,1);
 nb.DtN=size(edges.DtN,1);
 
 
@@ -326,6 +336,58 @@ end
 if (nb.T~=0)&&(export.nrj)
     file_TL_id=fopen(name.file_TL,'w');
 end
+
+if nb.ZOD~=0
+    
+    index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1);
+    
+    edges.ZOD_moins=edges.ZOD(index_ZOD_moins,:);
+    for ii=1:length(index_ZOD_moins);
+        
+        % Association of boundaries on plus and on minus by the middle node
+        node_moins=edges.ZOD(index_ZOD_moins(ii),6);
+        [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-delta_x_ZOD)+1i*(nodes(:,2)-nodes(node_moins,2)-delta_y_ZOD)));
+        
+        index_ZOD_plus=find(edges.ZOD(:,6)==node_plus);
+        
+        edges.ZOD_plus(ii,:)=edges.ZOD(index_ZOD_plus,:);
+        
+        
+        node_moins=edges.ZOD(index_ZOD_moins(ii),1);
+        [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-delta_x_ZOD)+1i*(nodes(:,2)-nodes(node_moins,2)-delta_y_ZOD)));
+        
+        node1_plus=find(edges.ZOD_plus(ii,1:2)==node_plus);
+        
+        if (~isempty(node1_plus))
+            if node1_plus==2
+                edges.ZOD_plus(ii,1:2)=edges.ZOD_plus(ii,[2 1]);
+            end
+            
+        else
+            stop
+        end
+    end
+    
+    temp=elem.label(edges.ZOD_moins(:,3));
+    temp=temp-temp(1)*ones(size(temp));
+    if norm(temp)==0
+        elem.ZOD_moins=elem.label(edges.ZOD_moins(1,3));
+    else
+        stop
+    end
+    
+    temp=elem.label(edges.ZOD_plus(:,3));
+    temp=temp-temp(1)*ones(size(temp));
+    if norm(temp)==0
+        elem.ZOD_plus=elem.label(edges.ZOD_plus(1,3));
+    else
+        stop
+    end
+end
+
+
+
+
 
 
 

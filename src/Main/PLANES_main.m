@@ -36,14 +36,17 @@ clear all
 %close all
 clc
 
-project.name='Kundt';
+% project.name='Kundt';
+% project.num=1;
+% project.name='sandwich_meta';
+% project.name='plate';
+% project.name='sandwich';
+project.name='Article_FEM_TMM';
 project.num=1;
-project.name='sandwich_meta';
-project.name='plate';
-project.name='sandwich';
+
 %project.name='sandwich_meta';
-project.name='sandwich_siniat';
-project.num=3;
+%project.name='sandwich_siniat';
+%project.num=3;
 
 % project.name='Incompatible_mesh';
 %project.name='CFM';
@@ -54,11 +57,11 @@ project.num=3;
 % If the number is negative then a logscale is chosen
 % If the number is equal to 1, then the frequency is equal to freq_min
 
-frequency.nb=-10;
-frequency.min=50;
-frequency.max=10000;
+frequency.nb=1;
+frequency.min=10;
+frequency.max=1000;
 
-profiles.mesh=1;
+profiles.mesh=0;
 profiles.solution=0;
 profiles.x=0;
 profiles.y=0;
@@ -82,17 +85,14 @@ init_vec_frequencies
 eval([name.project_full]);
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fds
+
 PLANES_preprocess
-
-
 
 if nb.dof_FEM>0
     EF_global_build
 end
 
 PLANES_resolution
-
 
 PLANES_info
 
@@ -103,15 +103,52 @@ end
 
 %Maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
 
-figure(1)
-%semilogx(Maine(:,1),Maine(:,2))
-%hold on
-semilogx(frequency.vec,TL_PW,'r.-')
-hold on
-if project.num==0
-    semilogx(frequency.vec,TL_EF,'k')
-    semilogx(frequency.vec,abs(TL_EF-TL_PW),'k')
-else
-    semilogx(frequency.vec,TL_EF,'m')
-    semilogx(frequency.vec,abs(TL_EF-TL_PW),'m')
-end
+% figure(1)
+% %semilogx(Maine(:,1),Maine(:,2))
+% %hold on
+% semilogx(frequency.vec,TL_PW,'r.-')
+% hold on
+% if project.num==0
+%     semilogx(frequency.vec,TL_EF,'k')
+%     semilogx(frequency.vec,abs(TL_EF-TL_PW),'k')
+% else
+%     semilogx(frequency.vec,TL_EF,'m')
+%     semilogx(frequency.vec,abs(TL_EF-TL_PW),'m')
+% end
+
+
+figure(666666)
+
+ if project.num==10
+     plot(frequency.vec,Db,'k')
+     hold on
+
+ else
+     plot(frequency.vec,Db,'m.-')
+     hold on
+ end
+ 
+%  TL_PW
+%  TL_EF
+%  abs(TL_PW-TL_EF)
+%  
+%  Db(1)
+% target=0.916939036846682
+
+% figure(2010)
+% k_eq=omega*sqrt(rho_eq_til/K_eq_til);
+% x_m=thicknessplate1+thicknessplate2+thicknessporous;
+% Zs=-j*sqrt(rho_eq_til*K_eq_til)*cot(k_eq*x_m);
+% R=(Zs-air.Z)/(Zs+air.Z)
+% rflx
+% rflx_PW
+% rflx_PW-rflx
+
+%A=-1/sin(k_eq*(x_m))/(j*omega);
+
+% x=linspace(0,x_m,500);
+% 
+% p=1*exp(-1j*k_eq*x)+R*exp(1j*k_eq*x);
+
+
+%plot(x,abs(p),'k')

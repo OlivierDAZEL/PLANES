@@ -33,71 +33,66 @@
 %%
 
 
-function PLANES(projectdir, expnb)
-	close all;
-	clc;
+%function PLANES(projectname, expnb,data_model,frequency,profiles,export)
+clear all;
+%close all;
+%clc;
 
-	% add project path and load informations
-	name.project_directory=['../../Projects/' projectdir];
-	% add subpaths
-	paths={'','/Plots','/Physics','/Solutions','/Validation'};
-	for i=1:length(paths)
-		if exist([name.project_directory paths{i}])==7
-			addpath([name.project_directory paths{i}]);
-		end
-	end
-	clearvars paths
-
-    	eval([name.project_full]);
-        
-        
-        ezrezr
-    
-	project_info % load project data from project dir
-
-	if nargin<2
-		if exist('project.num')~=0
-			project.num=0;
-		end
-	else
-		project.num=expnb;
-	end
-
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%% Initialization of PLANES
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	PLANES_init
-	air_properties_maine
-	init_vec_frequencies
-
-
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%% Creation and importation of the mesh
-	% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-	%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	PLANES_preprocess
-
-	if profiles.mesh
-		display_mesh
-	end
-
-
-	if nb.dof_FEM>0
-		EF_global_build
-	end
-
-	PLANES_resolution
-
-	PLANES_info
-
-	%Analytical solution (if exists)
-	if ((exist(name.solution)==2)&&(profiles.on~=0))
-		eval('eval(name.solution)')
-	end
-
+if ~exist('projectname')==1
+    project.name='David_ZOD';
+    nargin=0;
+else
+    project.name=projectname;
 end
+if exist('expnb')==1
+    project.num=expnb;
+else
+    project.num=11;
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Initialization of PLANES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PLANES_init
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Execution of the data File
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+eval([name.project_full '_data']) % 
+
+
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+PLANES_preprocess
+
+
+if profiles.mesh
+    display_mesh
+end
+
+if nb.dof_FEM>0
+    EF_global_build
+end
+
+
+
+PLANES_resolution
+
+PLANES_info
+
+if (nb.R~=0)
+    fclose(file_abs_id);
+end
+if (nb.T~=0)
+    fclose(file_TL_id);
+end
+
+system('rm FF.inp')
+
+%end
+
 

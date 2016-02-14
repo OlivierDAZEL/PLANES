@@ -41,7 +41,6 @@ termination=0;
 compute_number_PW_TMM
 
 
-
 switch floor(element_MMT_minus/1000)
     
     case 0
@@ -54,6 +53,7 @@ switch floor(element_MMT_minus/1000)
         eval(['Mat_elas_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))])
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
+        
         k_z_minus=sqrt([delta_P delta_s].^2-k_x^2);
         SV_minus=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
         nS_minus=4;
@@ -85,13 +85,14 @@ switch floor(element_MMT_plus/1000)
         boundary_FEM=[boundary_FEM nS_minus+[1]];
         normale_plus=diag([-1]);
     case 1
-         eval(['Mat_elas_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))])
+        eval(['Mat_elas_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))])
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
         SV_plus=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
         nS_plus=4;
         dof_FEM=[dof_FEM nS_minus+[4 2]];
         boundary_FEM=[boundary_FEM nS_minus+[1 3]];
+
         normale_plus=diag([-1 -1]);
     case 2
         eval(['Mat_PEM_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
@@ -131,7 +132,7 @@ elseif floor(element_MMT_minus/1000)==1
         case {0 2 3}
             fhgfghhghgfgfh
         case 1
-            fhgfghhghgfgfh
+            SminusA_elas_elas
         case {4 5}
             SminusA_PEM_elas
     end
@@ -161,7 +162,7 @@ elseif floor(element_MMT_plus/1000)==1
         case {0 2 3}
             fhgfghhghgfgfh
         case 1
-            fhgfghhghgfgfh
+            ASplus_elas_elas
         case {4 5}
             ASplus_PEM_elas
     end

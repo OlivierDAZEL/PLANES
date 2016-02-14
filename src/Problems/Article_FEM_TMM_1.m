@@ -1,4 +1,4 @@
-% sandwich.m
+% Article_ZOD_1.m
 %
 % Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %

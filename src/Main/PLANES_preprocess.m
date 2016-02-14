@@ -36,6 +36,9 @@
 % Creation of 3 segments by element
 % segments=[node1 node2 #element1 0 elem.label1]
 
+init_vec_frequencies
+
+
 segments=zeros(1,5); % Line 1 to be removed at the end
 temp=find(ismember(elem.model,[1 3 10]));
 temp=reshape(temp,length(temp),1);
@@ -164,12 +167,9 @@ boundaries(:,[4 3])=boundaries(:,[3 4]);
 
 
 temp=find(ismember(abs(boundaries(:,4)),[0]));
+
 boundaries(temp,:)=[];
 
-
-temp=find(ismember(abs(boundaries(:,4)),[101]));
-edges.ZOD=boundaries(temp,:);
-boundaries(temp,:)=[];
 
 % Suppression of interfaces with FEM and natural coupling
 
@@ -330,23 +330,21 @@ if sum(is_pw)~=0
     nb.T=1;
     size_info_vector_T=2;
 end
-if export.nrj
-    file_abs_id=fopen(name.file_abs,'w');
-end
-if (nb.T~=0)&&(export.nrj)
-    file_TL_id=fopen(name.file_TL,'w');
-end
+
 
 if nb.ZOD~=0
     
     index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1);
     
     edges.ZOD_moins=edges.ZOD(index_ZOD_moins,:);
+
+    
+    
     for ii=1:length(index_ZOD_moins);
-        
+        number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2;
         % Association of boundaries on plus and on minus by the middle node
         node_moins=edges.ZOD(index_ZOD_moins(ii),6);
-        [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-delta_x_ZOD)+1i*(nodes(:,2)-nodes(node_moins,2)-delta_y_ZOD)));
+        [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-data_model.multilayer_ZOD(number_ZOD).delta_x)+1i*(nodes(:,2)-nodes(node_moins,2)-data_model.multilayer_ZOD(number_ZOD).delta_y)));
         
         index_ZOD_plus=find(edges.ZOD(:,6)==node_plus);
         
@@ -354,7 +352,7 @@ if nb.ZOD~=0
         
         
         node_moins=edges.ZOD(index_ZOD_moins(ii),1);
-        [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-delta_x_ZOD)+1i*(nodes(:,2)-nodes(node_moins,2)-delta_y_ZOD)));
+        [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-data_model.multilayer_ZOD(number_ZOD).delta_x)+1i*(nodes(:,2)-nodes(node_moins,2)-data_model.multilayer_ZOD(number_ZOD).delta_y)));
         
         node1_plus=find(edges.ZOD_plus(ii,1:2)==node_plus);
         
@@ -420,6 +418,12 @@ if profiles.mesh
     display_mesh
 end
 
+if (nb.R~=0)
+    file_abs_id=fopen(name.file_abs,'w');
+end
+if (nb.T~=0)
+    file_TL_id=fopen(name.file_TL,'w');
+end
 
 
 

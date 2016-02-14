@@ -35,8 +35,14 @@
 
 for ii=1:size(edges.ZOD_moins,1)
     
-    node_moins=edges.ZOD_moins(ii,[1 2 6])
-    node_plus=edges.ZOD_plus(ii,[1 2 6])
+    
+    number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2;
+    TT=build_FEM_transfer(k_air*sin(data_model.multilayer_ZOD(number_ZOD).theta_ZOD),elem.ZOD_moins,elem.ZOD_plus,omega,data_model.multilayer_ZOD(number_ZOD),k_air,air);
+
+    
+    
+    node_moins=edges.ZOD_moins(ii,[1 2 6]);
+    node_plus=edges.ZOD_plus(ii,[1 2 6]);
     
     
     a1(1)=nodes(node_moins(1),1);

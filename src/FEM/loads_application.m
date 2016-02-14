@@ -84,6 +84,49 @@ for ie=1:nb.loads
                 boundary_normal_velocity_fluid
                 
             end
+            
+            
+           case {4}  % Unit tangential
+            
+            if elem.model(edges.loads(ie,3))==1
+                if (x1<x2)
+                    a=x1;
+                    node(1)=edges.loads(ie,1);
+                    node(2)=edges.loads(ie,2);
+                    node(3)=edges.loads(ie,6);
+                else
+                    a=x2;
+                    node(2)=edges.loads(ie,1);
+                    node(1)=edges.loads(ie,2);
+                    node(3)=edges.loads(ie,6);
+                end
+                
+                c_1=mean(nodes(nonzeros(edges.loads(ie,4)),1:2))';
+                a=nodes(node(1),1:2)';
+                b=nodes(node(2),1:2)';
+                
+                %%%%% vector normal pointing out from e
+                
+                [nx,ny]=normal_edge_out_element(a,b,c_1);
+                tx=-ny;
+                ty= nx;
+                
+                
+                F3=TR6_unit(length_edge);
+                index_force=dof_A(ux_TR(node));
+                
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                F(index_F_global)=F(index_F_global)+F3(index_F_elem)*tx/(1j*omega);
+                
+                index_force=dof_A(uy_TR(node));
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                F(index_F_global)=F(index_F_global)+F3(index_F_elem)*ty/(1j*omega);
+                
+      
+            end    
+            
         case {60}
             if sort(edges.loads(ie,1:2))==sort(elem.nodes(edges.loads(ie,3),1:2)) % Interface node 1 node 2: bottom edge
                 stop a revoir

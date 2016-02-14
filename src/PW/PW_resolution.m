@@ -32,11 +32,12 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+file_PW_id=fopen(name.file_PW,'w');
 
 for i_f=1:abs(frequency.nb)
     omega=2*pi*frequency.vec(i_f);
     k_air=omega/air.c;
-    k_x=k_air*sin(theta_inc);
+    k_x=k_air*sin(data_model.theta_inc);
     
     Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
     
@@ -51,5 +52,7 @@ for i_f=1:abs(frequency.nb)
     if termination~=0
         TL_PW(i_f)=-20*log10(abs(X_PW(end)));
     end
-    
+    fprintf(file_PW_id,'%1.15e \t %1.15e \n',frequency.vec(i_f),TL_PW(i_f));
+
 end
+fclose(file_PW_id);

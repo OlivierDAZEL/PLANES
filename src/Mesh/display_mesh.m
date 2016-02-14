@@ -103,9 +103,9 @@ for ii=1:nb.periodicity
     text((nodes(edges.periodicity(ii,1),1)+nodes(edges.periodicity(ii,2),1))/2,(nodes(edges.periodicity(ii,1),2)+nodes(edges.periodicity(ii,2),2))/2,num2str(edges.periodicity(ii,4)),'Fontsize',15);
     
 end
-for ii=1:nb.TMM
-    line([nodes(edges.TMM(ii,1),1) nodes(edges.TMM(ii,2),1)],[nodes(edges.TMM(ii,1),2) nodes(edges.TMM(ii,2),2)]);
-    text((nodes(edges.TMM(ii,1),1)+nodes(edges.TMM(ii,2),1))/2,(nodes(edges.TMM(ii,1),2)+nodes(edges.TMM(ii,2),2))/2,num2str(edges.TMM(ii,4)),'Fontsize',15);
+for ii=1:nb.ZOD
+    line([nodes(edges.ZOD(ii,1),1) nodes(edges.ZOD(ii,2),1)],[nodes(edges.ZOD(ii,1),2) nodes(edges.ZOD(ii,2),2)]);
+    text((nodes(edges.ZOD(ii,1),1)+nodes(edges.ZOD(ii,2),1))/2,(nodes(edges.ZOD(ii,1),2)+nodes(edges.ZOD(ii,2),2))/2,num2str(edges.ZOD(ii,4)),'Fontsize',15);
     
 end
 for ii=1:nb.dirichlets

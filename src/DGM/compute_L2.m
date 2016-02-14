@@ -21,4 +21,5 @@ if nb.dof_DGM>0
         end
     end
 end
-fprintf(file_abs_id,'%d\t%1.15e\t%1.15e\n',nb.dof_FEM+nb.dof_DGM,frequency.vec(i_f),L2);
+
+%fprintf(file_abs_id,'%d\t%1.15e\t%1.15e\n',nb.dof_FEM+nb.dof_DGM,frequency.vec(i_f),L2);

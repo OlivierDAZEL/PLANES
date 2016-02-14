@@ -67,10 +67,51 @@ fprintf(fidinfo,'...... Generated %s on %s', datestr(now,'dd-mm-yyyy at HH-MM-SS
 fprintf(fidinfo,'...... Name of project = %s\n',project.name);
 fprintf(fidinfo,'...... Subproject # %d\n',project.num);
 fprintf(fidinfo,'...... #dof FEM= %d\n',nb.dof_FEM);
+if (nb.media.elas~=0)
+    for i_mat=1:nb.media.elas
+        eval(['temp=diag(M_elas_' num2str(i_mat) ');']);
+        temp=length(find(temp));
+        fprintf(fidinfo,'...... \t\t #dof Elastic solid #%d= %d\n',i_mat,temp);
+    end
+end
+if (nb.media.eqf~=0)
+    for i_mat=1:nb.media.eqf
+        eval(['temp=diag(Q_eqf_' num2str(i_mat) ');']);
+        temp=length(find(temp));
+        fprintf(fidinfo,'...... \t\t #dof Equivalent fluid #%d= %d\n',i_mat,temp);
+    end
+end
+if (nb.media.limp~=0)
+    for i_mat=1:nb.media.limp
+        eval(['temp=diag(Q_limp_' num2str(i_mat) ');']);
+        temp=length(find(temp));
+        fprintf(fidinfo,'...... \t\t #dof limp #%d= %d\n',i_mat,temp);
+    end
+end
+if (nb.media.pem98~=0)
+    for i_mat=1:nb.media.pem98
+        eval(['temp=diag(Q_pem98_' num2str(i_mat) '+M_pem98_' num2str(i_mat) ');']);
+        temp=length(find(temp));
+        fprintf(fidinfo,'...... \t\t #dof PEM98 #%d= %d\n',i_mat,temp);
+    end
+end
+if (nb.media.pem01~=0)
+    for i_mat=1:nb.media.pem01
+        eval(['temp=diag(Q_pem01_' num2str(i_mat) '+M_pem01_' num2str(i_mat) ');']);
+        temp=length(find(temp));
+        fprintf(fidinfo,'...... \t\t #dof PEM01 #%d= %d\n',i_mat,temp);
+    end
+end
+temp=length(find(diag(H_acou)));
+fprintf(fidinfo,'...... \t\t #dof acou= %d\n',temp);
+temp=length(find(diag(H_PML)));
+fprintf(fidinfo,'...... \t\t #dof PML = %d\n',temp);
 fprintf(fidinfo,'...... #dof DGM= %d\n',nb.dof_DGM);
 fprintf(fidinfo,'...... #dof R= %d\n',nb.R);
 fprintf(fidinfo,'...... #dof T= %d\n',nb.T);
-%fprintf(fidinfo,'...... Computation time = %d s\n',time_PLANES);
+fprintf(fidinfo,'...... #nnz= %d\n',nnz(A));
+fprintf(fidinfo,'...... Computation time = %d s\n',time_PLANES);
+fprintf(fidinfo,'...... Computation time / freq = %d s\n',time_PLANES/length(frequency.vec));
 fprintf(fidinfo,'................................................................................\n');
 fprintf(fidinfo,'................................................................................\n');
 

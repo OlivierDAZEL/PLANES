@@ -35,6 +35,8 @@
 
 for ii=1:size(edges.ZOD_moins,1)
     
+    number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2;
+    TT=build_FEM_transfer(k_air*sin(data_model.multilayer_ZOD(number_ZOD).theta_ZOD),elem.ZOD_moins,elem.ZOD_plus,omega,data_model.multilayer_ZOD(number_ZOD),k_air,air);
     
     node_moins=edges.ZOD_moins(ii,[1 2 6]);
     node_plus=edges.ZOD_plus(ii,[1 2 6]);
@@ -43,31 +45,7 @@ for ii=1:size(edges.ZOD_moins,1)
     a1(2)=nodes(node_moins(1),2);
     a2(1)=nodes(node_moins(2),1);
     a2(2)=nodes(node_moins(2),2);
-    
-%     if (a1(1)<a2(1))
-%         a=x1;
-%         node_moins(1)=edges.ZOD_moins(ii,1);
-%         node_moins(2)=edges.ZOD_moins(ii,2);
-%         node_moins(3)=edges.ZOD_moins(ii,6);
-%         node_plus(1)=edges.ZOD_plus(ii,1);
-%         node_plus(2)=edges.ZOD_plus(ii,2);
-%         node_plus(3)=edges.ZOD_plus(ii,6);
-%     else
-%         a=x2;
-%         node_moins(2)=edges.ZOD_moins(ii,1);
-%         node_moins(1)=edges.ZOD_moins(ii,2);
-%         node_moins(3)=edges.ZOD_moins(ii,6);
-%         node_plus(2)=edges.ZOD_plus(ii,1);
-%         node_plus(1)=edges.ZOD_plus(ii,2);
-%         node_plus(3)=edges.ZOD_plus(ii,6);
-%         
-%         
-%     end
-    
-    
-    
-    
-    
+  
     vec_tangent=a2-a1;
     vec_normal=[vec_tangent(2) vec_tangent(1)];
     vec_normal=vec_normal/norm(vec_normal);
@@ -78,16 +56,14 @@ for ii=1:size(edges.ZOD_moins,1)
     if temp<0
         vec_normal=-vec_normal;
     end
-    theta_rot=angle(vec_normal(1)+1i*vec_normal(2))-pi/2  ;
+    theta_rot=angle(vec_normal(1)+1i*vec_normal(2))-pi/2;  
     Mat_rot=[cos(theta_rot) sin(theta_rot);-sin(theta_rot) cos(theta_rot)];
     Mat_rot=[Mat_rot 0*Mat_rot;0*Mat_rot Mat_rot];
     Mat_rotm1=[cos(theta_rot) -sin(theta_rot);sin(theta_rot) cos(theta_rot)];
     Mat_rotm1=[Mat_rotm1 0*Mat_rotm1;0*Mat_rotm1 Mat_rotm1];
     TTrot=Mat_rotm1*TT*Mat_rot;
-    
+
     FSIe=TR6_FSI(a1,a2);
-    
-    
     
     index_force_ux_moins=dof_A(ux_TR(node_moins));
     index_F_elem_ux_moins=find(index_force_ux_moins);
@@ -104,7 +80,7 @@ for ii=1:size(edges.ZOD_moins,1)
     
     index_force_uy_plus=dof_A(uy_TR(node_plus));
     index_F_elem_uy_plus=find(index_force_uy_plus);
-    index_F_global_uy_plus=index_force_uy_plus(index_F_elem_uy_plus);
+    index_F_global_uy_plus=index_force_uy_plus(index_F_elem_uy_plus);   
     
     
     
@@ -118,6 +94,7 @@ for ii=1:size(edges.ZOD_moins,1)
     A(index_F_global_uy_moins,index_F_global_ux_plus )=A(index_F_global_uy_moins,index_F_global_ux_plus )-TTrot(2,3)*(FSIe(index_F_elem_uy_moins,index_F_elem_ux_plus ));
     A(index_F_global_uy_moins,index_F_global_uy_plus )=A(index_F_global_uy_moins,index_F_global_uy_plus )-TTrot(2,4)*(FSIe(index_F_elem_uy_moins,index_F_elem_uy_plus ));
     
+  
     A(index_F_global_ux_plus ,index_F_global_ux_moins)=A(index_F_global_ux_plus ,index_F_global_ux_moins)-TTrot(3,1)*(FSIe(index_F_elem_ux_plus ,index_F_elem_ux_moins));
     A(index_F_global_ux_plus ,index_F_global_uy_moins)=A(index_F_global_ux_plus ,index_F_global_uy_moins)-TTrot(3,2)*(FSIe(index_F_elem_ux_plus ,index_F_elem_uy_moins));
     A(index_F_global_ux_plus ,index_F_global_ux_plus )=A(index_F_global_ux_plus ,index_F_global_ux_plus )-TTrot(3,3)*(FSIe(index_F_elem_ux_plus ,index_F_elem_ux_plus ));

@@ -32,59 +32,52 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-list_path=['''../DGM'',''../FEM'',''../Materials'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../Problems'',''../PW'',''../Solutions'',''../Utils'',''../Validation'''];
+list_path=['''../DGM'',''../FEM'',''../Materials'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../PW'',''../Solutions'',''../Utils'',''../Validation'''];
 eval(['addpath(' list_path ');'])
+
 
 
 warning('off','MATLAB:nearlySingularMatrix')
 
 if exist('name')~=1
-	name.project_directory=['../../Projects/' project.name '/'];
+    name.project_directory=['../../Projects/' project.name '/'];
 end
+addpath([name.project_directory '/m/']);
 
+name.project_directory
 if name.project_directory(end)~='/'
-	name.project_directory = [name.project_directory '/'];
+    dqs
+    name.project_directory = [name.project_directory '/'];
 end
 
-if project.num==0
-    name.file=[name.project_directory project.name];
+if (project.num)==0
     name.project_full=project.name;
 else
-    name.file=[name.project_directory project.name '_' num2str(project.num) ];
     name.project_full=[project.name '_' num2str(project.num)];
 end
 
-name.file_msh=          [name.file '.msh'];
-name.file_edp=          [name.file '.edp'];
-name.file_input_FreeFem=['FF.inp'];
-name.file_abs=          [name.file '.abs'];
-name.file_L2=           [name.file '.L2'];
-name.file_TL=           [name.file '.TL'];
-name.file_PW=           [name.file '.PW'];
-name.file_info=         [name.file '.info'];
-name.file_FEM=          [name.file '.FEM'];
+name.file_msh=          [name.project_directory 'FF/'   name.project_full '.msh'];
+name.file_edp=          [name.project_directory 'FF/'   name.project_full '.edp'];
+name.file_abs=          [name.project_directory 'out/'  name.project_full '.abs'];
+name.file_L2=           [name.project_directory 'out/'  name.project_full '.L2'];
+name.file_TL=           [name.project_directory 'out/'  name.project_full '.TL'];
+name.file_PW=           [name.project_directory 'out/'  name.project_full '.PW'];
+name.file_info=         [name.project_directory 'out/'  name.project_full '.info'];
+name.file_FEM=          [name.project_directory 'out/'  name.project_full '.FEM'];
 
-name.compute_error=['compute_error_' , project.name];
-if ((exist(name.compute_error)==2))
-    name.file_error=          [name.file '.error'];
-end
+% name.compute_error=['compute_error_' , project.name];
+% if ((exist(name.compute_error)==2))
+%     name.file_error=          [name.file '.error'];
+% end
+% 
+% name.solution=['solution_' , project.name];
 
-name.solution=['solution_' , project.name];
-
-
-if export.profiles==1
-    name.directory_profiles= [name.project_directory '/Profiles/'];
-    if ~exist(name.directory_profiles,'dir')
-        mkdir(name.directory_profiles)
-    end
-end
 
 set(0,'DefaultLineMarkerSize',15);
 set(0,'Defaultlinelinewidth',2);
 set(0,'DefaultAxesFontSize',15)
 set(0,'DefaultAxeslinewidth',2);
 
-
-
+air_properties_maine
 
 Gauss_points=compute_GaussLegendre_points(10);

@@ -44,7 +44,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         k_air=omega/air.c;
         
         if (nb.R+nb.T)~=0
-            [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period);
+            [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,data_model.theta_inc,period);
         end
         
         % Construction of the linear system
@@ -134,8 +134,8 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         end
         
         if nb.ZOD~=0
-            TT=build_FEM_transfer(k_air*sin(theta_ZOD),elem.ZOD_moins,elem.ZOD_plus,omega,multilayer_ZOD,k_air,air);
-            switch floor(elem.ZOD_moins/1000)
+ 
+           switch floor(elem.ZOD_moins/1000)
                 case {0 2 3}
                     switch floor(elem.ZOD_plus/1000)
                         case {0 2 3}
@@ -175,19 +175,21 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             periodicity_condition_application
         end
         
-        
+
         disp('Resolution of the system')
         X=A\F;
         disp('End of the resolution of the system')
         
         postprocess_solution
         
-        
+        if exist([name.project_full '_postprocess'])==2
+            eval([name.project_full '_postprocess']) 
+        end
     end
-    
     time_PLANES=toc;
 end
 
 if exist('multilayer')
+    
     PW_resolution
 end

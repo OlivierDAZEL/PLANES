@@ -33,9 +33,16 @@
 %%
 
 
-switch eqf_model
+switch data_model.porous_eqf
     case{'jca'}
         properties_jca
+    case{'JKD_Lafarge'}    
+    case{'Pride_Lafarge'}
+    case{'Delany_Bazley'}
+    case{'Horoshenkov'}
+    case{'Wilson'}    
+    otherwise
+        PLANES_INTERRUPTED_in_properties_eqf
 end
         
     

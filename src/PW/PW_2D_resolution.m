@@ -1,6 +1,6 @@
-% State_fluid.m
+% PW_resolution.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -32,8 +32,30 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+file_PW_id=fopen(name.file_PW,'w');
+compute_number_PW_2D
 
-function M=State_fluid(k_x,k_z,K)
 
-k=sqrt(k_x^2+k_z^2);
-M=[k_z -k_z;1j*K*k^2 1j*K*k^2];
+for i_f=1:abs(frequency.nb)
+    omega=2*pi*frequency.vec(i_f);
+    k_air=omega/air.c;
+    k_x=k_air*sin(data_model.theta_inc);
+    
+    Mat_PW=build_global_PW_matrices_2D(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
+    
+    
+    F_PW=-Mat_PW(:,1);
+    Mat_PW(:,1)=[];
+    
+    X_PW=Mat_PW\F_PW;
+    
+    abs_PW(i_f)=1-abs(X_PW(1))^2;
+    rflx_PW(i_f)=X_PW(1);
+    if termination~=0
+        TL_PW(i_f)=-20*log10(abs(X_PW(end)));
+    end
+    if termination
+        fprintf(file_PW_id,'%1.15e \t %1.15e \n',frequency.vec(i_f),TL_PW(i_f));
+    end
+end
+fclose(file_PW_id);

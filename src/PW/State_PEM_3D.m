@@ -1,4 +1,4 @@
-% PW_resolution.m
+% State_PEM.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,29 +30,36 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
+%
+% The State vector for a PEM material according to Dazel et al. JAP 2013
+% S={\hat{\sigma}_{xz},u_z^s,u_z^t,\hat{\sigma}_{zz},p,u_x^s}
+%
+%
+%
+
 %%
 
-file_PW_id=fopen(name.file_PW,'w');
 
-for i_f=1:abs(frequency.nb)
-    omega=2*pi*frequency.vec(i_f);
-    k_air=omega/air.c;
-    k_x=k_air*sin(data_model.theta_inc);
-    
-    Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
-    
-    
-    F_PW=-Mat_PW(:,1);
-    Mat_PW(:,1)=[];
-    
-    X_PW=Mat_PW\F_PW;
-    
-    abs_PW(i_f)=1-abs(X_PW(1))^2;
-    rflx_PW(i_f)=X_PW(1);
-    if termination~=0
-        TL_PW(i_f)=-20*log10(abs(X_PW(end)));
-    end
-    fprintf(file_PW_id,'%1.15e \t %1.15e \n',frequency.vec(i_f),TL_PW(i_f));
+function M=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til)
 
-end
-fclose(file_PW_id);
+
+
+k_z_1=sqrt(delta_1^2-k_x^2-k_y^2);
+k_z_2=sqrt(delta_2^2-k_x^2-k_y^2);
+k_z_3=sqrt(delta_3^2-k_x^2-k_y^2);
+
+
+M(1:8,1)=[k_x;k_y; k_z_1; mu_1*k_z_1;-1j*(A_hat*delta_1^2+2*N*k_z_1^2);-2*1j*N*k_z_1*k_y;-2*1j*N*k_z_1*k_x;1j*delta_1^2*K_eq_til*mu_1];
+M(1:8,5)=[k_x;k_y;-k_z_1;-mu_1*k_z_1;-1j*(A_hat*delta_1^2+2*N*k_z_1^2); 2*1j*N*k_z_1*k_y; 2*1j*N*k_z_1*k_x;1j*delta_1^2*K_eq_til*mu_1];
+M(1:8,2)=[k_x;k_y; k_z_2; mu_2*k_z_2;-1j*(A_hat*delta_2^2+2*N*k_z_2^2);-2*1j*N*k_z_2*k_y;-2*1j*N*k_z_2*k_x;1j*delta_2^2*K_eq_til*mu_2];
+M(1:8,6)=[k_x;k_y;-k_z_2;-mu_2*k_z_2;-1j*(A_hat*delta_2^2+2*N*k_z_2^2); 2*1j*N*k_z_2*k_y; 2*1j*N*k_z_2*k_x;1j*delta_2^2*K_eq_til*mu_2];
+M(1:8,3)=[k_z_3;0;-k_x;-mu_3*k_x;2*1j*N*k_z_3*k_x;-1j*N*k_x*k_y;-1j*N*(k_z_3^2-k_x^2);0];
+M(1:8,7)=[k_z_3;0; k_x; mu_3*k_x;2*1j*N*k_z_3*k_x; 1j*N*k_x*k_y; 1j*N*(k_z_3^2-k_x^2);0];
+M(1:8,4)=[0;k_z_3;-k_y;-mu_3*k_y;2*1j*N*k_z_3*k_y;-1j*N*(k_z_3^2-k_y^2);-1j*N*k_x*k_y;0];
+M(1:8,8)=[0;k_z_3; k_y; mu_3*k_y;2*1j*N*k_z_3*k_y; 1j*N*(k_z_3^2-k_y^2); 1j*N*k_x*k_y;0];
+
+
+
+
+
+

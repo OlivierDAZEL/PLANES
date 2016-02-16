@@ -33,7 +33,9 @@
 %%
 
 
-function Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air)
+function Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air)
+
+
 
 
 % Initialization of the matrix
@@ -44,6 +46,8 @@ number_of_eq=0;
 % Space shift for the first layer being x=0
 x_interface=-multilayer(1).d;
 % Loop on the layers
+
+
 for i_interface=1:nb_layers-1
     
     %Type of media on both sides and attribution of the dof
@@ -55,54 +59,56 @@ for i_interface=1:nb_layers-1
     if ismember(floor(medium_1/1000),[0 2 3])
         switch floor(medium_2/1000)
             case {0 2 3}
-                interface_fluid_fluid
+                interface_fluid_fluid_3D
             case 1
-                interface_fluid_elas
+                interface_fluid_elas_3D
             case {4 5}
-                interface_fluid_PEM
+                interface_fluid_PEM_3D                
         end
     elseif floor(medium_1/1000)==1
         switch floor(medium_2/1000)
             case {0 2 3}
-                interface_elas_fluid
+                interface_elas_fluid_3D
             case 1
-                interface_elas_elas
+                interface_elas_elas_3D
             case {4 5}
-                interface_elas_PEM
+                interface_elas_PEM_3D
         end
     elseif ismember(floor(medium_1/1000),[4 5])
         switch floor(medium_2/1000)
             case {0 2 3}
-                interface_PEM_fluid
+                interface_PEM_fluid_3D
             case 1
-                interface_PEM_elas
+                interface_PEM_elas_3D
             case {4 5}
-                interface_PEM_PEM
+                interface_PEM_PEM_3D
         end
     end
 end
+
+
 % Last interface
 % the last medium is #2 of the end of the loop
 if termination==0 % Rigid backing
     switch floor(medium_2/1000)
         case {0 2 3}
-            termination_rigid_fluid
+            termination_rigid_fluid_3D
         case 1
-            termination_rigid_elas
-        case 4
-            termination_rigid_PEM
+            termination_rigid_elas_3D
+        case {4 5}
+            termination_rigid_PEM_3D
     end
 else % transmission problem
     % Medium # 1= air last medium is #2
-    k_z_1=sqrt(k_air^2-k_x^2);
-    SV_1=State_fluid(k_x,k_z_1,air.K);
+    k_z_1=sqrt(k_air^2-k_x^2-k_y^2);
+    SV_1=State_fluid_3D(k_x,k_y,k_z_1,air.K);
     switch floor(medium_2/1000)
         case {0 2 3}
-            termination_trans_fluid
+            termination_trans_fluid_3D
         case 1
-            termination_trans_elas
+            termination_trans_elas_3D
         case {4 5}
-            termination_trans_PEM
+            termination_trans_PEM_3D
     end
     
 end

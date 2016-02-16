@@ -1,4 +1,4 @@
-% State_elas.m
+% Mat_PEM_3.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,20 +32,27 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+porous_model.eqf='jca';
+porous_model.frame='structural';
+porous_model.PW='general';
 
-function M=State_elas(k_x,delta_P,delta_s,lambda,mu)
 
-% Generate the State vector
-% SV= [\sigma_xz u_z \sigma_zz u_x]
+phi=0.95;
+sig=42000;
+alpha=1.100;
+LCV=1.50E-05;
+LCT=4.500E-05;
+rho_1=126.000;
+young=694400E+00;
+nu=0.24000E+00;
+eta=0.05;
 
-beta_P=sqrt(delta_P^2-k_x^2);
-beta_s=sqrt(delta_s^2-k_x^2);
+N=(young*(1+1i*eta))/(2*(1+nu));
+A_hat=(young*(1+1i*eta)*nu)/((1+nu)*(1-2*nu));
 
-alpha_P=-1j*lambda*delta_P^2-1j*2*mu*beta_P^2;
-alpha_s= 2*1j*mu*beta_s*k_x;
 
-M(1:4,1)=[-2*1j*mu*beta_P*k_x; beta_P;alpha_P;k_x];
-M(1:4,3)=[ 2*1j*mu*beta_P*k_x;-beta_P;alpha_P;k_x];
+C_hat_conservative=[A_hat+2*N A_hat A_hat 0 0 0;A_hat A_hat+2*N A_hat 0 0 0;A_hat A_hat A_hat+2*N 0 0 0; 0 0 0 N 0 0;0 0 0 0 N 0; 0 0 0 0 0 N ];
 
-M(1:4,2)=[1j*mu*(beta_s^2-k_x^2);k_x;-alpha_s;-beta_s];
-M(1:4,4)=[1j*mu*(beta_s^2-k_x^2);k_x; alpha_s; beta_s];
+alpha_hat=0.33348;
+beta_hat =812.69e3;
+b_hat=0.29620;

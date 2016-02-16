@@ -53,8 +53,24 @@ rho_s_til=rho_til+gamma_til.^2.*rho_eq_til;
 
 % Biot in-vacuo elastic coefficients
 
-N=(young*(1+1i*eta))/(2*(1+nu));
-A_hat=(young*(1+1i*eta)*nu)/((1+nu)*(1-2*nu));
+N=(young)/(2*(1+nu));
+A_hat=(young*nu)/((1+nu)*(1-2*nu));
+
+
+switch porous_model.frame
+    case{'anelastic'}
+        temp=1+(b_hat*(1i*omega/beta_hat)^alpha_hat)/(1+(1i*omega/beta_hat)^alpha_hat);
+        N=N*temp;
+        A_hat=A_hat*temp;
+        C_hat=C_hat_conservative*temp;
+    case{'structural'}
+        N=N*(1+1j*eta);
+        A_hat=A_hat*(1+1j*eta);
+end
+
+
+
+
 P_hat=A_hat+2*N;
 
 % Biot 1956 elastic coefficients

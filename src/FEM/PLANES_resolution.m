@@ -189,7 +189,10 @@ if (nb.dof_DGM+nb.dof_FEM)>0
     time_PLANES=toc;
 end
 
-if exist('multilayer')
-    
-    PW_resolution
+if exist('multilayer')  
+    PW_2D_resolution
+end
+
+if exist('multilayer_3D')  
+    PW_3D_resolution
 end

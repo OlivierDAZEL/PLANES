@@ -39,16 +39,18 @@ eval(['Mat_elas_' num2str(medium_1-1000*floor(medium_1/1000))])
 delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
 delta_s=omega*sqrt(rho_solide/mu_solide);
 k_z_1=sqrt([delta_P delta_s].^2-k_x^2);
-SV_1=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);
+SV_1=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
 
 
 
-eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_2/1000))])
+eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
 properties_jca
 properties_PEM
 compute_Biot_waves
 k_z_2=sqrt([delta_1 delta_2 delta_3].^2-k_x^2);
-SV_2=State_PEM(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
+SV_2=State_PEM_2D(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
+
+
 
 
 % sigma_xz=sigma_xz_hat

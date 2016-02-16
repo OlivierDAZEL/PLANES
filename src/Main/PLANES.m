@@ -35,11 +35,12 @@
 
 %function PLANES(projectname, expnb,data_model,frequency,profiles,export)
 clear all;
-%close all;
+close all;
 %clc;
 
 if ~exist('projectname')==1
-    project.name='David_ZOD';
+    %project.name='David_ZOD';
+    project.name='Multilayer_3D';
     nargin=0;
 else
     project.name=projectname;
@@ -47,7 +48,8 @@ end
 if exist('expnb')==1
     project.num=expnb;
 else
-    project.num=11;
+    %project.num=11;
+    project.num=0;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -60,7 +62,7 @@ PLANES_init
 %% Execution of the data File
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-eval([name.project_full '_data']) % 
+eval([name.project_full '_data']) %
 
 
 
@@ -84,15 +86,23 @@ PLANES_resolution
 
 PLANES_info
 
-if (nb.R~=0)
-    fclose(file_abs_id);
+if (nb.dof_FEM+nb.dof_DGM)>0
+    if (nb.R~=0)
+        fclose(file_abs_id);
+    end
+    if (nb.T~=0)
+        fclose(file_TL_id);
+    end
 end
-if (nb.T~=0)
-    fclose(file_TL_id);
-end
-
 system('rm FF.inp')
 
+
+maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
+figure
+semilogx(maine(:,1),maine(:,2))
+hold on 
+semilogx(frequency.vec,TL_PW,'r.')
+semilogx(frequency.vec,TL_PW_3D,'r+')
 %end
 
 

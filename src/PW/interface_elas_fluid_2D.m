@@ -39,16 +39,16 @@ eval(['Mat_elas_' num2str(medium_1-1000*floor(medium_1/1000))])
 delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
 delta_s=omega*sqrt(rho_solide/mu_solide);
 k_z_1=sqrt([delta_P delta_s].^2-k_x^2);
-SV_1=State_elas(k_x,k_z_1,delta_P,delta_s,lambda_solide,mu_solide);
+SV_1=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
 
 if medium_2==0
     k_z_2=sqrt(k_air^2-k_x^2);
-    SV_2=State_fluid(k_x,k_z_2,K_0);
+    SV_2=State_fluid_2D(k_x,k_z_2,air.K);
 else
     eval(['Mat_fluid_' num2str(medium_2-1000*floor(medium_2/1000))])
     properties_jca
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
-    SV_2=State_fluid(k_x,k_z_2,K_eq_til);
+    SV_2=State_fluid_2D(k_x,k_z_2,K_eq_til);
 end
 
 

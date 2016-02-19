@@ -62,4 +62,13 @@ end
 
 if strcmp(porous_model.aniso,'yes')
     C_hat=C_hat_conservative*structural_loss;
+    
+    Q=rotate_u3(angle_x,angle_y,angle_z)';
+
+    C_hat_conservative=rotate_S6(C_hat,Q);
+    C_tot=rotate_S6(C_tot_0,Q);
+    rho_eq_til=Q'*rho_eq_til*Q;
+    rho_s_til=Q'*rho_s_til*Q;
+    gamma_til=Q'*gamma_til*Q;
+    
 end

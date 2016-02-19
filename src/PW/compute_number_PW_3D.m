@@ -34,7 +34,7 @@
 
 
 for ii=1:nb_layers
-    switch floor(multilayer(ii).mat/1000)
+    switch floor(multilayer_3D(ii).mat/1000)
         case 1
             n_w(ii)=6;
         case {0 2 3}

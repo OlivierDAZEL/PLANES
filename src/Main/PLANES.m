@@ -35,7 +35,7 @@
 
 %function PLANES(projectname, expnb,data_model,frequency,profiles,export)
 clear all;
-%close all;
+close all;
 %clc;
 
 if ~exist('projectname')==1
@@ -106,7 +106,7 @@ figure
 semilogx(maine(:,1),maine(:,4))
 hold on
 semilogx(frequency.vec,abs_PW,'r.')
-semilogx(frequency.vec,abs_PW_3D,'r+')
+semilogx(frequency.vec,abs_PW_3D,'r')
 %end
 load('OD1')
 semilogx(f,1-abs(R).^2,'k--')

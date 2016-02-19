@@ -43,7 +43,7 @@ for i_f=1:abs(frequency.nb)
     k_x=k_air*sin(data_model.theta_x);
     k_y=k_air*sin(data_model.theta_y);
     
-    Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
+    Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer_3D,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
     
     
     F_PW=-Mat_PW(:,1);

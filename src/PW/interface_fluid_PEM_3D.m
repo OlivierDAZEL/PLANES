@@ -40,18 +40,19 @@ if medium_1==0
     SV_1=State_fluid_3D(k_x,k_y,k_z_1,air.K);
 else
     eval(['Mat_fluid_' num2str(medium_1-1000*floor(medium_1/1000))])
-    properties_jca
+    properties_eqf
     k_z_1=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2-k_y^2);
     SV_1=State_fluid_3D(k_x,k_y,k_z_1,K_eq_til);
 end
 eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
-properties_jca
-properties_PEM
-compute_Biot_waves
+properties_eqf
+properties_PEM_aniso
+
 switch porous_model.aniso
     case{'yes'}
         [k_z_2,SV_2]=State_PEM_general_3D(k_x,k_y,medium_2-1000*floor(medium_2/1000),omega,air);
     otherwise
+        compute_Biot_waves
         k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
         SV_2=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
 end

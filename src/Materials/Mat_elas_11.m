@@ -1,4 +1,4 @@
-% Mat_PEM_100.m
+% Mat_elas_1.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,9 +32,13 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-porous_model.eqf='air';
-porous_model.frame='structural';
-porous_model.PW='general';
-rho_eq_til=air.rho;
-K_eq_til=air.K;
-eqf_model='air';
+
+E_solide=67000000000.0;
+nu_solide=0.34E+00;
+eta_solide=0e10;
+rho_solide=-2700E+00;
+
+lambda_solide=(1+1i*eta_solide)*(E_solide*nu_solide)/((1+nu_solide)*(1-2*nu_solide));
+mu_solide=(1+1i*eta_solide)*(E_solide)/(2*(1+nu_solide));
+
+

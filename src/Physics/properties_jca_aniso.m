@@ -1,4 +1,4 @@
-% properties_PEM.m
+% properties_jca.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -35,54 +35,23 @@
 
 
 
-% Biot densities with tortuosity effects
-rho_12=-phi*air.rho*(alpha-1);
-rho_11=rho_1-rho_12;
-rho_2=phi*air.rho;
-rho_22=rho_2-rho_12;
+%%  Johnson et al model for rho_eq_til
 
-rho_22_til=phi^2*rho_eq_til;
-rho_12_til=rho_2-rho_22_til;
-rho_11_til=rho_1-rho_12_til;
-rho_til=rho_11_til-((rho_12_til.^2)./rho_22_til);
-
-gamma_til=phi*(rho_12_til./rho_22_til-(1-phi)/phi);
-rho_s_til=rho_til+gamma_til.^2.*rho_eq_til;
+omega_0=sig_tensor*phi*inv(air.rho*alpha_tensor);
+omega_infty=(sig_tensor*phi*LCV_tensor)^2*inv(4*air.mu*air.rho*alpha_tensor^2);
+F_JKD=sqrt(eye(3)+1j*omega*inv(omega_infty));
+rho_eq_til=(air.rho*alpha_tensor/phi)*(eye(3)+(omega_0/(1j*omega))*F_JKD);
+alpha_til_tensor=phi*rho_eq_til./air.rho;
 
 
 
-% Biot in-vacuo elastic coefficients
 
-N=(young)/(2*(1+nu));
-A_hat=(young*nu)/((1+nu)*(1-2*nu));
+%%  Champoux-Allard model for K_eq_til
 
-
-switch porous_model.frame
-    case{'anelastic'}
-        structural_loss=1+(b_hat*(1i*omega/beta_hat)^alpha_hat)/(1+(1i*omega/beta_hat)^alpha_hat);
-    case{'structural'}
-        structural_loss=1+1j*eta;
-end
-N=N*structural_loss;
-A_hat=A_hat*structural_loss;
-
-P_hat=A_hat+2*N;
-
-% Biot 1956 elastic coefficients
-
-R_til=K_eq_til*phi^2;
-Q_til=((1-phi)/phi)*R_til;
-P_til=P_hat+Q_til.^2./R_til;
+omega_prime_infty=(16*air.nu_prime)/(LCT^2);
+F_prime_CA=sqrt(1+1j*omega./omega_prime_infty);
+alpha_prime_til=1+omega_prime_infty.*F_prime_CA./(2*1j*omega);
+K_eq_til=(air.gamma*air.P./phi)./(air.gamma-(air.gamma-1)./alpha_prime_til);
 
 
-% Parameters for energies
 
-xi=(1-phi)/phi;
-b_til=(1j*omega)*(rho_12-rho_12_til);
-b_r=real(b_til);
-rho_f_til=rho_til-rho_1;
-
-
-if strcmp(porous_model.aniso,'yes')
-    C_hat=C_hat_conservative*structural_loss;
-end

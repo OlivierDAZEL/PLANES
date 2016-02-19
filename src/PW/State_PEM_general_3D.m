@@ -1,4 +1,4 @@
-% State_fluid_3D.m
+% State_PEM_general_3D.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -42,41 +42,39 @@
 %%
 
 
-function [k_z,SV]=State_general_3D(k_x,k_y,omega,air)
+function [k_z,SV]=State_PEM_general_3D(k_x,k_y,num_mat,omega,air)
 
-
-Mat_porous_3
+eval(['Mat_porous_' num2str(num_mat)])
 properties_eqf
-properties_PEM
-compute_Biot_waves
-% k_z_1=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2);
-% SV_1=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
+properties_PEM_aniso
+
+
+
+
+
 
 M=zeros(13,13);
 A_x=zeros(13,13);
 A_y=zeros(13,13);
 A_z=zeros(13,13);
 
-
-M(1:3,1:3)=-omega^2*rho_s_til*eye(3);
-M(1:3,4:6)=-omega^2*gamma_til*rho_eq_til*eye(3);
+M(1:3,1:3)=-omega^2*rho_s_til;
+M(1:3,4:6)=-omega^2*gamma_til*rho_eq_til;
 
 A_x(1,7)=-1;
 A_y(1,12)=-1;
 A_z(1,11)=-1;
 
-A_x(2,10)=-1;
+A_x(2,12)=-1;
 A_y(2,8)=-1;
-A_z(2,12)=-1;
+A_z(2,10)=-1;
 
 A_x(3,11)=-1;
 A_y(3,10)=-1;
 A_z(3,9)=-1;
 
-
-
-M(4:6,1:3)=-omega^2*gamma_til*rho_eq_til*eye(3);
-M(4:6,4:6)=-omega^2*rho_eq_til*eye(3);
+M(4:6,1:3)=-omega^2*gamma_til*rho_eq_til;
+M(4:6,4:6)=-omega^2*rho_eq_til;
 
 A_x(4,13)=1;
 A_y(5,13)=1;
@@ -85,7 +83,7 @@ A_z(6,13)=1;
 M(7:12,7:12)=-eye(6);
 
 
-L_x=[1 0 0; 0 0 0;0 0 0;0 0 0;0 0 1;0 0 1];
+L_x=[1 0 0; 0 0 0;0 0 0;0 0 0;0 0 1;0 1 0];
 L_y=[0 0 0; 0 1 0;0 0 0;0 0 1;0 0 0;1 0 0];
 L_z=[0 0 0; 0 0 0;0 0 1;0 1 0;1 0 0;0 0 0];
 
@@ -93,22 +91,19 @@ A_x(7:12,1:3)=C_hat*L_x;
 A_y(7:12,1:3)=C_hat*L_y;
 A_z(7:12,1:3)=C_hat*L_z;
 
-
-
 M(13,13)=1;
 A_x(13,4)=K_eq_til;
 A_y(13,5)=K_eq_til;
 A_z(13,6)=K_eq_til;
 
-
 R=M-1j*k_x*A_x-1j*k_y*A_y;
 [V,D]=eig(A_z,R);
 D=diag(D)*1j;
 dof_S=[1 2 3 6 9 10 11 13];
-dof_S_prime=[1 2];
-length_S=8;
-length_S_prime=5;
+
 [~,i_temp]=sort(real(D),'descend');
+
 k_z=1./D(i_temp([1:4]));
 SV=V(dof_S,i_temp([1:4 13:-1:10]));
+
 

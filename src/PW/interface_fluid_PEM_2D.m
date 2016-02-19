@@ -44,7 +44,7 @@ else
     k_z_1=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_1=State_fluid_2D(k_x,k_z_1,K_eq_til);
 end
-eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_2/1000))])
+eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
 properties_jca
 properties_PEM
 compute_Biot_waves

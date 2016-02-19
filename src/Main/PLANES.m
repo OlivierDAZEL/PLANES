@@ -35,11 +35,12 @@
 
 %function PLANES(projectname, expnb,data_model,frequency,profiles,export)
 clear all;
-close all;
+%close all;
 %clc;
 
 if ~exist('projectname')==1
-    %project.name='David_ZOD';
+    project.name='David_ZOD';
+    project.name='Article_ZOD';
     project.name='Multilayer_3D';
     nargin=0;
 else
@@ -48,7 +49,7 @@ end
 if exist('expnb')==1
     project.num=expnb;
 else
-    %project.num=11;
+    project.num=21;
     project.num=0;
 end
 
@@ -80,8 +81,6 @@ if nb.dof_FEM>0
     EF_global_build
 end
 
-
-
 PLANES_resolution
 
 PLANES_info
@@ -94,15 +93,28 @@ if (nb.dof_FEM+nb.dof_DGM)>0
         fclose(file_TL_id);
     end
 end
-system('rm FF.inp')
 
+if exist('FF.inp','file')
+    system('rm FF.inp')
+end
+
+
+%end
 
 maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
 figure
-semilogx(maine(:,1),maine(:,2))
-hold on 
-semilogx(frequency.vec,TL_PW,'r.')
-semilogx(frequency.vec,TL_PW_3D,'r+')
+semilogx(maine(:,1),maine(:,4))
+hold on
+semilogx(frequency.vec,abs_PW,'r.')
+semilogx(frequency.vec,abs_PW_3D,'r+')
 %end
+load('OD1')
+semilogx(f,1-abs(R).^2,'k--')
+
+
+% figure
+% semilogx(frequency.vec,abs(abs_PW_3D-maine(:,4)'),'r')
+% hold on
+%semilogx(f,abs(1-abs(R).^2-maine(:,4)'),'k')
 
 

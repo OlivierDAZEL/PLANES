@@ -1,4 +1,4 @@
-% build_FEM_transfer.m
+% build_FEM_transfer_2D.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,12 +33,12 @@
 %%
 
 
-function T=build_FEM_transfer(k_x,element_MMT_minus,element_MMT_plus,omega,multilayer,k_air,air)
+function T=build_FEM_transfer_2D(k_x,element_MMT_minus,element_MMT_plus,omega,multilayer,k_air,air)
 
 
 nb_layers=length(multilayer);
 termination=0;
-compute_number_PW_TMM
+compute_number_PW_2D
 
 
 switch floor(element_MMT_minus/1000)
@@ -55,23 +55,23 @@ switch floor(element_MMT_minus/1000)
         delta_s=omega*sqrt(rho_solide/mu_solide);
         
         k_z_minus=sqrt([delta_P delta_s].^2-k_x^2);
-        SV_minus=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
+        SV_minus=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
         nS_minus=4;
         dof_FEM=[4 2];
         boundary_FEM=[1 3];
     case 2
-        eval(['Mat_PEM_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
+        eval(['Mat_porous_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
         properties_eqf
         k_z_minus=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
         nS_minus=2;
         dof_FEM=[2];
         boundary_FEM=[1];
     case {4 5}
-        eval(['Mat_PEM_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
+        eval(['Mat_porous_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
         properties_jca
         properties_PEM
         compute_Biot_waves
-        SV_minus=State_PEM(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
+        SV_minus=State_PEM_2D(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
         nS_minus=6;
 end
 
@@ -79,7 +79,7 @@ switch floor(element_MMT_plus/1000)
     
     case 0
         k_z_plus=sqrt(k_air^2-k_x^2);
-        SV_plus=State_fluid(k_x,k_z_plus,air.K);
+        SV_plus=State_fluid_2D(k_x,k_z_plus,air.K);
         nS_plus=2;
         dof_FEM=[dof_FEM nS_minus+[2]];
         boundary_FEM=[boundary_FEM nS_minus+[1]];
@@ -88,14 +88,14 @@ switch floor(element_MMT_plus/1000)
         eval(['Mat_elas_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))])
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
-        SV_plus=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
+        SV_plus=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
         nS_plus=4;
         dof_FEM=[dof_FEM nS_minus+[4 2]];
         boundary_FEM=[boundary_FEM nS_minus+[1 3]];
 
         normale_plus=diag([-1 -1]);
     case 2
-        eval(['Mat_PEM_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
+        eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
         properties_eqf
         k_z_plus=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
         nS_plus=2;
@@ -103,11 +103,11 @@ switch floor(element_MMT_plus/1000)
         boundary_FEM=[boundary_FEM nS_minus+[1]];
         normale_plus=diag([-1]);
     case {4 5}
-        eval(['Mat_PEM_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
+        eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
         properties_jca
         properties_PEM
         compute_Biot_waves
-        SV_plus=State_PEM(k_x,k_z_plus,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
+        SV_plus=State_PEM_2D(k_x,k_z_plus,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
         nS_plus=6;
 end
 
@@ -121,20 +121,20 @@ number_of_eq=0;
 if ismember(floor(element_MMT_minus/1000),[0 2 3])
     switch floor(multilayer(1).mat/1000)
         case {0 2 3}
-            SminusA_fluid_fluid
+            SminusA_fluid_fluid_2D
         case 1
-            SminusA_fluid_elas
+            SminusA_fluid_elas_2D
         case {4 5}
-            SminusA_fluid_PEM
+            SminusA_fluid_PEM_2D
     end
 elseif floor(element_MMT_minus/1000)==1
     switch floor(multilayer(1).mat/1000)
         case {0 2 3}
             fhgfghhghgfgfh
         case 1
-            SminusA_elas_elas
+            SminusA_elas_elas_2D
         case {4 5}
-            SminusA_PEM_elas
+            SminusA_PEM_elas_2D
     end
 elseif ismember(floor(element_MMT_minus/1000),[4 5])
     switch floor(multilayer(1).mat/1000)
@@ -151,20 +151,20 @@ end
 if ismember(floor(element_MMT_plus/1000),[0 2 3])
     switch floor(multilayer(end).mat/1000)
         case {0 2 3}
-            ASplus_fluid_fluid
+            ASplus_fluid_fluid_2D
         case 1
-            ASplus_elas_fluid
+            ASplus_elas_fluid_2D
         case {4 5}
-            ASplus_PEM_fluid
+            ASplus_PEM_fluid_2D
     end
 elseif floor(element_MMT_plus/1000)==1
     switch floor(multilayer(end).mat/1000)
         case {0 2 3}
             fhgfghhghgfgfh
         case 1
-            ASplus_elas_elas
+            ASplus_elas_elas_2D
         case {4 5}
-            ASplus_PEM_elas
+            ASplus_PEM_elas_2D
     end
 elseif ismember(floor(element_MMT_plus/1000),[4 5])
     switch floor(multilayer(end).mat/1000)

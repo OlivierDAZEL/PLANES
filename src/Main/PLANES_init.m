@@ -44,9 +44,8 @@ if exist('name')~=1
 end
 addpath([name.project_directory '/m/']);
 
-name.project_directory
+
 if name.project_directory(end)~='/'
-    dqs
     name.project_directory = [name.project_directory '/'];
 end
 
@@ -55,6 +54,7 @@ if (project.num)==0
 else
     name.project_full=[project.name '_' num2str(project.num)];
 end
+
 
 name.file_msh=          [name.project_directory 'FF/'   name.project_full '.msh'];
 name.file_edp=          [name.project_directory 'FF/'   name.project_full '.edp'];

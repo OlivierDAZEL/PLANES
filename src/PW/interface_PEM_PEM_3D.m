@@ -39,12 +39,15 @@ eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_1/1000))])
 properties_jca
 properties_PEM
 compute_Biot_waves
-switch porous_model.PW
-    case{'analytic'}
+
+
+
+switch porous_model.aniso
+    case{'yes'}
+        [k_z_1,SV_1]=State_general_3D(k_x,k_y,omega,air);
+    otherwise
         k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
         SV_2=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
-    case{'general'}
-        [k_z_1,SV_1]=State_general_3D(k_x,k_y,omega,air)
 end
 
 eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_2/1000))])
@@ -52,12 +55,12 @@ properties_jca
 properties_PEM
 compute_Biot_waves
 
-switch porous_model.PW
-    case{'analytic'}
+switch porous_model.aniso
+    case{'yes'}
+        [k_z_2,SV_2]=State_general_3D(k_x,k_y,omega,air);
+    otherwise
         k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
         SV_2=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
-    case{'general'}
-        [k_z_2,SV_2]=State_general_3D(k_x,k_y,omega,air)
 end
 
 

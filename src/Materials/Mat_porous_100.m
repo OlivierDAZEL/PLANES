@@ -32,6 +32,9 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+porous_model.eqf='air';
+porous_model.frame='structural';
+porous_model.PW='general';
 
 rho_eq_til=air.rho;
 K_eq_til=air.K;

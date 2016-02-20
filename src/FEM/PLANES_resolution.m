@@ -110,7 +110,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                 end
             end
         end
-
+        
         if (nb.internal>0)
             apply_FSI
         end
@@ -123,7 +123,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             DtN_application
         end
         
-
+        
         
         if (nb.dirichlets>0)
             for ie=1:nb.dirichlets
@@ -134,8 +134,8 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         end
         
         if nb.ZOD~=0
- 
-           switch floor(elem.ZOD_moins/1000)
+            
+            switch floor(elem.ZOD_moins/1000)
                 case {0 2 3}
                     switch floor(elem.ZOD_plus/1000)
                         case {0 2 3}
@@ -148,7 +148,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                     end
             end
         end
-                
+        
         
         
         if nb.flux>0
@@ -170,12 +170,12 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             end
         end
         
- 
+        
         if (nb.periodicity>0)
             periodicity_condition_application
         end
         
-
+        
         disp('Resolution of the system')
         X=A\F;
         disp('End of the resolution of the system')
@@ -183,16 +183,16 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         postprocess_solution
         
         if exist([name.project_full '_postprocess'])==2
-            eval([name.project_full '_postprocess']) 
+            eval([name.project_full '_postprocess'])
         end
     end
     time_PLANES=toc;
 end
 
-if exist('multilayer')  
+if exist('multilayer')
     PW_2D_resolution
 end
 
-if exist('multilayer_3D')  
+if exist('multilayer_3D')
     PW_3D_resolution
 end

@@ -33,9 +33,9 @@
 %%
 
 
-%function PLANES(projectname, expnb,data_model,frequency,profiles,export)
-clear all;
-close all;
+function PLANES(projectname, expnb,data_model,frequency,profiles,export)
+%clear all;
+%close all;
 %clc;
 
 if ~exist('projectname')==1
@@ -107,9 +107,10 @@ semilogx(maine(:,1),maine(:,4))
 hold on
 semilogx(frequency.vec,abs_PW,'r.')
 semilogx(frequency.vec,abs_PW_3D,'r')
-%end
-load('OD1')
-semilogx(f,1-abs(R).^2,'k--')
+end
+
+% load('OD1')
+% semilogx(f,1-abs(R).^2,'k--')
 
 
 % figure

@@ -44,7 +44,7 @@
 
 function [k_z,SV]=State_PEM_general_3D(k_x,k_y,num_mat,omega,air)
 
-eval(['Mat_porous_' num2str(num_mat)])
+eval(['Mat_porous_' num2str(num_mat)]);
 properties_eqf
 properties_PEM_aniso
 
@@ -86,7 +86,6 @@ A_z(6,9+6)=-1;
 
 M(7:18,7:18)=-eye(12);
 
-
 L_x=[1 0 0; 0 0 0;0 0 0;0 0 0;0 0 1;0 1 0];
 L_y=[0 0 0; 0 1 0;0 0 0;0 0 1;0 0 0;1 0 0];
 L_z=[0 0 0; 0 0 0;0 0 1;0 1 0;1 0 0;0 0 0];
@@ -98,8 +97,6 @@ A_z(7:12,1:3)=C_hat*L_z;
 A_x(13:18,4:6)=K_eq_til*C_tot*L_x;
 A_y(13:18,4:6)=K_eq_til*C_tot*L_y;
 A_z(13:18,4:6)=K_eq_til*C_tot*L_z;
-
-
 
 R=M-1j*k_x*A_x-1j*k_y*A_y;
 [V,D]=eig(A_z,R);

@@ -62,7 +62,7 @@ name.file_abs=          [name.project_directory 'out/'  name.project_full '.abs'
 name.file_L2=           [name.project_directory 'out/'  name.project_full '.L2'];
 name.file_TL=           [name.project_directory 'out/'  name.project_full '.TL'];
 name.file_PW=           [name.project_directory 'out/'  name.project_full '.PW'];
-name.file_PW3D=           [name.project_directory 'out/'  name.project_full '.PW3D'];
+name.file_PW3D=         [name.project_directory 'out/'  name.project_full '.PW3D'];
 name.file_info=         [name.project_directory 'out/'  name.project_full '.info'];
 name.file_FEM=          [name.project_directory 'out/'  name.project_full '.FEM'];
 

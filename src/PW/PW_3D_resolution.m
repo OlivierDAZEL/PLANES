@@ -32,7 +32,6 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-file_PW_id=fopen(name.file_PW,'w');
 compute_number_PW_3D
 
 
@@ -56,8 +55,11 @@ for i_f=1:abs(frequency.nb)
     if termination~=0
         TL_PW_3D(i_f)=-20*log10(abs(X_PW(end)));
     end
-    if termination==1
-    fprintf(file_PW_id,'%1.15e \t %1.15e \n',frequency.vec(i_f),TL_PW(i_f));
+    if exist([name.project_full '_postprocess'])==2
+        eval([name.project_full '_postprocess'])
     end
+
+    
+    
+    
 end
-fclose(file_PW_id);

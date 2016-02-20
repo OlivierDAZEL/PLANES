@@ -429,3 +429,20 @@ else
     nb.dof_FEM=0;
     nb.dof_DGM=0;
 end
+
+if exist('multilayer')
+    % Addition of a new layer for the incident medium
+l0.d=0;
+l0.mat=0;
+multilayer=[l0 multilayer];
+nb_layers=nb_layers+1;
+end
+
+if exist('multilayer_3D')
+    % Addition of a new layer for the incident medium
+l0.d=0;
+l0.mat=0;
+multilayer_3D=[l0 multilayer_3D];
+nb_layers_3D=nb_layers_3D+1;
+end
+

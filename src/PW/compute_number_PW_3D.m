@@ -33,7 +33,7 @@
 %%
 
 
-for ii=1:nb_layers
+for ii=1:nb_layers_3D
     switch floor(multilayer_3D(ii).mat/1000)
         case 1
             n_w(ii)=6;

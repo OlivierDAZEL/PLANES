@@ -57,14 +57,17 @@ end
 %% Initialization of PLANES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+
 PLANES_init
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Execution of the data File
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-eval([name.project_full '_data']) %
 
+eval([name.project_full '_data']) %
 
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,12 +104,12 @@ end
 
 %end
 
-maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
-figure
-semilogx(maine(:,1),maine(:,4))
-hold on
-semilogx(frequency.vec,abs_PW,'r.')
-semilogx(frequency.vec,abs_PW_3D,'r')
+% maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
+% figure
+% semilogx(maine(:,1),maine(:,4))
+% hold on
+% semilogx(frequency.vec,abs_PW,'r.')
+% semilogx(frequency.vec,abs_PW_3D,'r')
 end
 
 % load('OD1')

@@ -1,4 +1,4 @@
-% Mat_PEM_3.m
+% Mat_porous_3.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %

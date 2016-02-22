@@ -111,6 +111,8 @@ for ie=1:nb.loads
                 tx=-ny;
                 ty= nx;
                 
+
+                
                 
                 F3=TR6_unit(length_edge);
                 index_force=dof_A(ux_TR(node));

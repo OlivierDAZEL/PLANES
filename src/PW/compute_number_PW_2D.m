@@ -32,21 +32,22 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
-for ii=1:nb_layers
-    switch floor(multilayer(ii).mat/1000)
-        case 1
-            n_w(ii)=4;
-        case {0 2 3}
-            n_w(ii)=2;
-        case {4 5}
-            n_w(ii)=6;
+for i_m=1:nb_multilayers
+    for ii=1:nb_layers(i_m)
+        switch floor(multilayer(ii,i_m).mat/1000)
+            case 1
+                n_w(ii,i_m)=4;
+            case {0 2 3}
+                n_w(ii,i_m)=2;
+            case {4 5}
+                n_w(ii,i_m)=6;
+        end
+    end
+    nb_amplitudes(i_m)=sum(n_w(:,i_m));
+    if termination(i_m)~=0
+        nb_amplitudes(i_m)=nb_amplitudes(i_m)+1;
     end
 end
 
-nb_amplitudes=sum(n_w);
 
 
-if termination~=0
-    nb_amplitudes=nb_amplitudes+1;
-end

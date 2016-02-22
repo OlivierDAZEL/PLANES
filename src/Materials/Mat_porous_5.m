@@ -32,6 +32,10 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+porous_model.eqf='jca';
+porous_model.frame='structural';
+porous_model.aniso='no';
+
 
 phi=0.989;
 sig=8060;

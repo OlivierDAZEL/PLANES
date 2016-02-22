@@ -42,24 +42,26 @@ for i_f=1:abs(frequency.nb)
     k_x=k_air*sin(data_model.theta_x);
     k_y=k_air*sin(data_model.theta_y);
     
-    Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer_3D,termination,nb_layers_3D,nb_amplitudes,n_w,k_air,air);
-    
-    
-    F_PW=-Mat_PW(:,1);
-    Mat_PW(:,1)=[];
+    for i_m=1:nb_multilayers_3D
+        
+        Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer_3D(:,i_m),termination_3D(i_m),nb_layers_3D(i_m),nb_amplitudes_3D(i_m),n_w_3D(:,i_m),k_air,air);
+        
 
-    X_PW=Mat_PW\F_PW;
-    
-    abs_PW_3D(i_f)=1-abs(X_PW(1))^2;
-    rflx_PW_3D(i_f)=X_PW(1);
-    if termination~=0
-        TL_PW_3D(i_f)=-20*log10(abs(X_PW(end)));
+        F_PW=-Mat_PW(:,1);
+        Mat_PW(:,1)=[];
+        
+        X_PW=Mat_PW\F_PW;
+        
+        abs_PW_3D(i_f,i_m)=1-abs(X_PW(1))^2;
+        rflx_PW_3D(i_f,i_m)=X_PW(1);
+        if termination~=0
+            TL_PW_3D(i_f,i_m)=-20*log10(abs(X_PW(end)));
+        end
+        if exist([name.project_full '_postprocess'])==2
+            eval([name.project_full '_postprocess'])
+        end
+        
     end
-    if exist([name.project_full '_postprocess'])==2
-        eval([name.project_full '_postprocess'])
-    end
-
-    
     
     
 end

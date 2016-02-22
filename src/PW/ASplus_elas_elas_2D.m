@@ -38,7 +38,7 @@
 eval(['Mat_elas_' num2str(multilayer(end).mat-1000*floor(multilayer(end).mat/1000))])
 delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
 delta_s=omega*sqrt(rho_solide/mu_solide);
-k_z_2=sqrt([delta_P delta_s].^2-k_x^2)
+k_z_2=sqrt([delta_P delta_s].^2-k_x^2);
 SV_2=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
 dof_medium_2=nS_minus+nb_amplitudes+1-[4:-1:1];
 

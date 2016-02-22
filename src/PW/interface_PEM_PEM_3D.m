@@ -35,30 +35,35 @@
 
 
 % Initialization of the State vectors in media 1 and 2
-eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_1/1000))])
-properties_jca
-properties_PEM
-compute_Biot_waves
+eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_1/1000))])
+properties_eqf
+
 
 
 
 switch porous_model.aniso
     case{'yes'}
+        properties_PEM_aniso
         [k_z_1,SV_1]=State_general_3D(k_x,k_y,omega,air);
     otherwise
-        k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
-        SV_2=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
+        properties_PEM
+        compute_Biot_waves
+        k_z_1=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
+        SV_1=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
 end
 
-eval(['Mat_PEM_' num2str(medium_2-1000*floor(medium_2/1000))])
-properties_jca
-properties_PEM
-compute_Biot_waves
+eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
+
 
 switch porous_model.aniso
     case{'yes'}
+        properties_eqf
+        properties_PEM_aniso
         [k_z_2,SV_2]=State_general_3D(k_x,k_y,omega,air);
     otherwise
+        properties_eqf
+        properties_PEM
+        compute_Biot_waves
         k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
         SV_2=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
 end

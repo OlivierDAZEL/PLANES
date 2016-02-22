@@ -432,17 +432,23 @@ end
 
 if exist('multilayer')
     % Addition of a new layer for the incident medium
-l0.d=0;
-l0.mat=0;
-multilayer=[l0 multilayer];
-nb_layers=nb_layers+1;
+    for ii=1:nb_multilayers
+    l0(1,ii).d=0;
+    l0(1,ii).mat=0;
+    end
+    
+    multilayer=[l0;multilayer];
+    nb_layers=nb_layers+1;
 end
 
 if exist('multilayer_3D')
     % Addition of a new layer for the incident medium
-l0.d=0;
-l0.mat=0;
-multilayer_3D=[l0 multilayer_3D];
-nb_layers_3D=nb_layers_3D+1;
+        for ii=1:nb_multilayers_3D
+    l0_3D(1,ii).d=0;
+    l0_3D(1,ii).mat=0;
+    end
+
+    multilayer_3D=[l0_3D;multilayer_3D];
+    nb_layers_3D=nb_layers_3D+1;
 end
 

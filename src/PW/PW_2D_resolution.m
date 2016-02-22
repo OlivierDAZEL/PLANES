@@ -41,21 +41,24 @@ for i_f=1:abs(frequency.nb)
     k_air=omega/air.c;
     k_x=k_air*sin(data_model.theta_inc);
     
-    Mat_PW=build_global_PW_matrices_2D(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air);
-    
-    
-    F_PW=-Mat_PW(:,1);
-    Mat_PW(:,1)=[];
-    
-    X_PW=Mat_PW\F_PW;
-    
-    abs_PW(i_f)=1-abs(X_PW(1))^2;
-    rflx_PW(i_f)=X_PW(1);
-    if termination~=0
-        TL_PW(i_f)=-20*log10(abs(X_PW(end)));
-    end
-    if termination
-        fprintf(file_PW_id,'%1.15e \t %1.15e \n',frequency.vec(i_f),TL_PW(i_f));
+    for i_m=1:nb_multilayers
+        
+        Mat_PW=build_global_PW_matrices_2D(k_x,omega,multilayer(:,i_m),termination(i_m),nb_layers(i_m),nb_amplitudes(i_m),n_w(:,i_m),k_air,air);
+        
+        
+        F_PW=-Mat_PW(:,1);
+        Mat_PW(:,1)=[];
+        
+        X_PW=Mat_PW\F_PW;
+        
+        abs_PW(i_f,i_m)=1-abs(X_PW(1))^2;
+        rflx_PW(i_f,i_m)=X_PW(1);
+        if termination~=0
+            TL_PW(i_f,i_m)=-20*log10(abs(X_PW(end,i_m)));
+        end
+        if termination
+            fprintf(file_PW_id,'%1.15e \t %1.15e \n',frequency.vec(i_f),TL_PW(i_f));
+        end
     end
 end
 fclose(file_PW_id);

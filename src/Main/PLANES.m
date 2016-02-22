@@ -33,10 +33,10 @@
 %%
 
 
-function PLANES(projectname, expnb,data_model,frequency,profiles,export)
-%clear all;
-%close all;
-%clc;
+%function PLANES(projectname, expnb,data_model,frequency,profiles,export)
+clear all;
+close all;
+clc;
 
 if ~exist('projectname')==1
     project.name='David_ZOD';
@@ -102,15 +102,29 @@ if exist('FF.inp','file')
 end
 
 
+
+
+sortie=load('../../Projects/Article_ZOD/out/Article_ZOD_30.dB');
+
+
+figure
+%semilogy(sortie(:,1),sortie(:,3))
 %end
 
-% maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
-% figure
-% semilogx(maine(:,1),maine(:,4))
-% hold on
-% semilogx(frequency.vec,abs_PW,'r.')
+maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
+ figure
+ semilogx(maine(:,1),maine(:,4))
+ hold on
+ semilogx(frequency.vec,abs_PW(:,1),'r.')
+ 
+semilogx(frequency.vec,abs_PW(:,2),'y+')
+
+
+ semilogx(frequency.vec,abs_PW_3D(:,1),'k.')
+ 
+semilogx(frequency.vec,abs_PW_3D(:,2),'k+')
 % semilogx(frequency.vec,abs_PW_3D,'r')
-end
+%end
 
 % load('OD1')
 % semilogx(f,1-abs(R).^2,'k--')

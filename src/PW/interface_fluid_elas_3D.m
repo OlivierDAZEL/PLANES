@@ -40,7 +40,7 @@ if medium_1==0
     SV_1=State_fluid_3D(k_x,k_y,k_z_1,air.K);
 else
     eval(['Mat_fluid_' num2str(medium_1-1000*floor(medium_1/1000))])
-    properties_jca
+    properties_eqf
     k_z_1=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2-k_y^2);
     SV_1=State_fluid_3D(k_x,k_z_1,K_eq_til);
 end

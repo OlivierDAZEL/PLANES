@@ -34,10 +34,10 @@
 
 
 switch porous_model.eqf
-    case{'jca'}
-        properties_jca
-    case{'jca_aniso'}
-        properties_jca_aniso
+    case{'JCA'}
+        properties_JCA
+    case{'JCA_aniso'}
+        properties_JCA_aniso
     case{'JKD_Lafarge'}    
     case{'Pride_Lafarge'}
     case{'Delany_Bazley'}
@@ -46,6 +46,10 @@ switch porous_model.eqf
     case{'air'}        
     otherwise
         PLANES_INTERRUPTED_in_properties_eqf
+end
+
+if typ_mat==3
+    eqf2limp
 end
         
     

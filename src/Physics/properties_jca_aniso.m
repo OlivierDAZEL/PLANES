@@ -44,8 +44,6 @@ rho_eq_til=(air.rho*alpha_tensor/phi)*(eye(3)+(omega_0/(1j*omega))*F_JKD);
 alpha_til_tensor=phi*rho_eq_til./air.rho;
 
 
-
-
 %%  Champoux-Allard model for K_eq_til
 
 omega_prime_infty=(16*air.nu_prime)/(LCT^2);

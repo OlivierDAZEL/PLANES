@@ -44,7 +44,7 @@ SV_1=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
 
 
 eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
-properties_jca
+properties_eqf
 properties_PEM
 compute_Biot_waves
 k_z_2=sqrt([delta_1 delta_2 delta_3].^2-k_x^2);

@@ -59,7 +59,7 @@ switch floor(element_MMT_minus/1000)
         nS_minus=4;
         dof_FEM=[4 2];
         boundary_FEM=[1 3];
-    case 2
+    case {2 3}
         eval(['Mat_porous_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
         properties_eqf
         k_z_minus=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
@@ -68,7 +68,7 @@ switch floor(element_MMT_minus/1000)
         boundary_FEM=[1];
     case {4 5}
         eval(['Mat_porous_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
-        properties_jca
+        properties_eqf
         properties_PEM
         compute_Biot_waves
         SV_minus=State_PEM_2D(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
@@ -94,7 +94,7 @@ switch floor(element_MMT_plus/1000)
         boundary_FEM=[boundary_FEM nS_minus+[1 3]];
 
         normale_plus=diag([-1 -1]);
-    case 2
+    case {2 3}
         eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
         properties_eqf
         k_z_plus=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
@@ -104,7 +104,7 @@ switch floor(element_MMT_plus/1000)
         normale_plus=diag([-1]);
     case {4 5}
         eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
-        properties_jca
+        properties_eqf
         properties_PEM
         compute_Biot_waves
         SV_plus=State_PEM_2D(k_x,k_z_plus,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);

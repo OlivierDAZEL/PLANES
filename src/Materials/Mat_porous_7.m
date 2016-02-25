@@ -1,4 +1,4 @@
-% materiau_JPG.m
+% Mat_porous_7.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,16 +33,21 @@
 %%
 
 
-clear all
-close all
-
-rho=7800
-cp=5100
-cs=1480
-
-mu=rho*cs^2
-lambda=rho*cp^2-2*mu
+porous_model.eqf='jca';
+porous_model.frame='structural';
+porous_model.aniso='no';
 
 
-young=mu*(3*lambda+2*mu)/(lambda+mu)
-nu=(lambda/2)/(lambda+mu)
+phi=0.99;
+sig=1000000;
+alpha=1.00;
+LCV=12.9E-06;
+LCT=38E-06;
+rho_1=126.000;
+young=694400E+00;
+nu=0.24000E+00;
+eta=0.05;
+
+N=(young)/(2*(1+nu));
+A_hat=(young*nu)/((1+nu)*(1-2*nu));
+

@@ -38,6 +38,8 @@
 
 init_vec_frequencies
 
+nb_multilayers=size(multilayer,2);
+
 if exist('nodes')
     segments=zeros(1,5); % Line 1 to be removed at the end
     
@@ -432,23 +434,21 @@ end
 
 if exist('multilayer')
     % Addition of a new layer for the incident medium
-    for ii=1:nb_multilayers
-    l0(1,ii).d=0;
-    l0(1,ii).mat=0;
+    l0=multilayer(1,:);
+    for i_m=1:nb_multilayers
+        l0(1,i_m).mat=0;
+        l0(1,i_m).d=0;
+        l0(1,i_m).nb=l0(1,i_m).nb+1;
     end
-    
     multilayer=[l0;multilayer];
-    nb_layers=nb_layers+1;
 end
 
 if exist('multilayer_3D')
     % Addition of a new layer for the incident medium
-        for ii=1:nb_multilayers_3D
-    l0_3D(1,ii).d=0;
-    l0_3D(1,ii).mat=0;
-    end
-
-    multilayer_3D=[l0_3D;multilayer_3D];
-    nb_layers_3D=nb_layers_3D+1;
+    l0=multilayer_3D(1,:);
+    l0(1,1:nb_multilayers).mat=0;
+    l0(1,1:nb_multilayers).d=0;
+    l0(1,1:nb_multilayers).nb=l0(1,1:nb_multilayers).nb+1;
+    multilayer_3D=[l0;multilayer_3D];
 end
 

@@ -33,7 +33,7 @@
 %%
 
 
-function Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,termination,nb_layers,nb_amplitudes,n_w,k_air,air)
+function Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,nb_amplitudes,n_w,k_air,air)
 
 
 % Initialization of the matrix
@@ -44,7 +44,7 @@ number_of_eq=0;
 % Space shift for the first layer being x=0
 x_interface=-multilayer(1).d;
 % Loop on the layers
-for i_interface=1:nb_layers-1
+for i_interface=1:multilayer(1,1).nb-1
     
     %Type of media on both sides and attribution of the dof
     medium_1=multilayer(i_interface).mat;
@@ -85,7 +85,7 @@ end
 % the last medium is #2 of the end of the loop
 
 
-if termination==0 % Rigid backing
+if multilayer(1,1).termination==0 % Rigid backing
     switch floor(medium_2/1000)
         case {0 2 3}
             termination_rigid_fluid_2D

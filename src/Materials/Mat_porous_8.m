@@ -1,4 +1,4 @@
-% Mat_fluid_3.m
+% Mat_porous_7.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,8 +33,21 @@
 %%
 
 
-phi=0.95;
-sig=42000;
-alpha=1.100;
-LCV=1.50E-05;
-LCT=4.500E-05;
+porous_model.eqf='limp_jca';
+porous_model.frame='structural';
+porous_model.aniso='no';
+
+
+phi=0.98;
+sig=15500;
+alpha=1.01;
+LCV=100E-06;
+LCT=250E-06;
+rho_1=11.000;
+young=200000E+00;
+nu=0.35000E+00;
+eta=0.1;
+
+N=(young)/(2*(1+nu));
+A_hat=(young*nu)/((1+nu)*(1-2*nu));
+

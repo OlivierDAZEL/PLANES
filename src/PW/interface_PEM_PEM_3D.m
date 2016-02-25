@@ -35,7 +35,7 @@
 
 
 % Initialization of the State vectors in media 1 and 2
-eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_1/1000))])
+eval(['Mat_porous_' num2str(medium_1-1000*floor(medium_1/1000))])
 properties_eqf
 
 
@@ -53,15 +53,13 @@ switch porous_model.aniso
 end
 
 eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
-
+        properties_eqf
 
 switch porous_model.aniso
     case{'yes'}
-        properties_eqf
         properties_PEM_aniso
         [k_z_2,SV_2]=State_general_3D(k_x,k_y,omega,air);
     otherwise
-        properties_eqf
         properties_PEM
         compute_Biot_waves
         k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);

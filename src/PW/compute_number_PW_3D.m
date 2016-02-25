@@ -32,20 +32,21 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-for i_m=1:nb_multilayers_3D
-    for ii=1:nb_layers_3D(i_m)
-        switch floor(multilayer_3D(ii,i_m).mat/1000)
+for i_m=1:nb_multilayers
+    for ii=1:multilayer(1,i_m).nb
+        switch floor(multilayer(ii,i_m).mat/1000)
             case 1
-                n_w_3D(ii,i_m)=6;
+                n_w(ii,i_m)=6;
             case {0 2 3}
-                n_w_3D(ii,i_m)=2;
+                n_w(ii,i_m)=2;
             case {4 5}
-                n_w_3D(ii,i_m)=8;
+                n_w(ii,i_m)=8;
         end
     end
-    nb_amplitudes_3D(i_m)=sum(n_w_3D(:,i_m));
-    if termination_3D(i_m)~=0
-        nb_amplitudes_3D(i_m)=nb_amplitudes_3D(i_m)+1;
+    nb_amplitudes(i_m)=sum(n_w(:,i_m));
+    if multilayer(1,i_m).termination~=0
+        nb_amplitudes(i_m)=nb_amplitudes(i_m)+1;
     end
 end
+
 

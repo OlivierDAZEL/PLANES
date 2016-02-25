@@ -33,10 +33,28 @@
 %%
 
 
-function PLANES(projectname, expnb,data_model,frequency,profiles,export)
-%clear all;
-%close all;
+%function PLANES_Multilayer_3D(projectname, expnb,data_model,multilayer,frequency)
+clear all;
+close all;
 clc;
+
+
+
+frequency.nb=-100;
+frequency.min=1;
+frequency.max=20000;
+
+
+multilayer(1,1).nb=1;
+multilayer(1,1).d=5e-2;
+multilayer(1,1).mat=5010;
+multilayer(1,1).termination=0;
+
+data_model.theta_1=45*pi/180;
+data_model.theta_2=62*pi/180;
+
+
+
 
 if ~exist('projectname')==1
     project.name='David_ZOD';
@@ -50,87 +68,31 @@ if exist('expnb')==1
     project.num=expnb;
 else
     project.num=21;
-    project.num=0;
+    project.num=101;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
 PLANES_init
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Execution of the data File
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-eval([name.project_full '_data']) %
-
-
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 PLANES_preprocess
 
 
-if profiles.mesh
-    display_mesh
-end
-
-if nb.dof_FEM>0
-    EF_global_build
-end
-
-PLANES_resolution
+PW_3D_resolution
 
 PLANES_info
 
-if (nb.dof_FEM+nb.dof_DGM)>0
-    if (nb.R~=0)
-        fclose(file_abs_id);
-    end
-    if (nb.T~=0)
-        fclose(file_TL_id);
-    end
-end
-
-if exist('FF.inp','file')
-    system('rm FF.inp')
-end
-
-
-
-end
-
-%sortie=load('../../Projects/Article_ZOD/out/Article_ZOD_30.dB');
-
-figure
-%semilogy(sortie(:,1),sortie(:,3))
-%end
-maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
-figure
-semilogx(maine(:,1),maine(:,4))
+figure 
+semilogx(frequency.vec,abs_PW_3D,'.-')
+load('../../Projects/Multilayer_3D/out/Multilayer_3D_101.PW3D')
+load('../../Projects/Multilayer_3D/test.mat');
 hold on
-% semilogx(frequency.vec,abs_PW(:,1),'r.')
-% semilogx(frequency.vec,abs_PW(:,2),'y+')
+semilogx(test(1).f,test(1).absorp,'r')
+
+maine=load('../../../../Programmation/Maine/TCLTK/out.dat')
+semilogx(maine(:,1),maine(:,4),'k')
 
 
-semilogx(frequency.vec,abs_PW_3D(:,1),'k.')
 
-semilogx(frequency.vec,abs_PW_3D(:,2),'k+')
-% semilogx(frequency.vec,abs_PW_3D,'r')
 %end
-
-% load('OD1')
-% semilogx(f,1-abs(R).^2,'k--')
-
-
-% figure
-% semilogx(frequency.vec,abs(abs_PW_3D-maine(:,4)'),'r')
-% hold on
-%semilogx(f,abs(1-abs(R).^2-maine(:,4)'),'k')
-
-

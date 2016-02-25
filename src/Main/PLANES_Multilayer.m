@@ -1,6 +1,6 @@
-% PEM_3.m
+% PLANES.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -11,9 +11,9 @@
 % LAUM (http://laum.univ-lemans.fr).
 %
 % You can download the latest version of PLANES at
-% https://github.com/OlivierDAZEL/PLANES
+%                 https://github.com/OlivierDAZEL/PLANES
 % or find more details on Olivier's webpage
-% http://perso.univ-lemans.fr/~odazel/
+%                  http://perso.univ-lemans.fr/~odazel/
 %
 % For any questions or if you want to
 % contribute to this project, contact Olivier.
@@ -25,20 +25,44 @@
 %
 % This program is distributed in the hope that it will be useful,
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.
 %
 % You should have received a copy of the GNU General Public License
-% along with this program. If not, see <http://www.gnu.org/licenses/>.
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %%
 
 
-phi=0.95;
-sig=42000;
-alpha=1.1000;
-LCV=15.00E-06;
-LCT=45.00E-06;
-rho_1=126.000;
-young=694400E+00;
-nu=0.24000E+00;
-eta=0.05;
+function PLANES_Multilayer(projectname, expnb,data_model,multilayer,frequency)
+%clear all;
+%close all;
+%clc;
+
+if ~exist('projectname')==1
+    project.name='David_ZOD';
+    project.name='Article_ZOD';
+    project.name='Multilayer_3D';
+    nargin=0;
+else
+    project.name=projectname;
+end
+if exist('expnb')==1
+    project.num=expnb;
+else
+    project.num=21;
+    project.num=0;
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Initialization of PLANES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PLANES_init
+PLANES_preprocess
+
+
+PW_2D_resolution
+
+PLANES_info
+
+end

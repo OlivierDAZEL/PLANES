@@ -47,8 +47,8 @@ if medium_2==0
     k_z_2=sqrt(k_air^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,air.K);
 else
-    eval(['Mat_fluid_' num2str(medium_2-1000*floor(medium_2/1000))])
-    properties_jca
+    eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
+    properties_eqf
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,K_eq_til);
 end

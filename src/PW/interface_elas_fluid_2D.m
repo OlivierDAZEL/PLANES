@@ -45,8 +45,9 @@ if medium_2==0
     k_z_2=sqrt(k_air^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,air.K);
 else
-    eval(['Mat_fluid_' num2str(medium_2-1000*floor(medium_2/1000))])
-    properties_jca
+    eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
+    typ_mat=floor(medium_2/1000);
+    properties_eqf
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,K_eq_til);
 end
@@ -58,8 +59,6 @@ Mat_PW(number_of_eq,dof_medium_1(1))= SV_1(1,1)*exp(-1j*k_z_1(1)*multilayer(i_in
 Mat_PW(number_of_eq,dof_medium_1(2))= SV_1(1,2)*exp(-1j*k_z_1(2)*multilayer(i_interface).d);
 Mat_PW(number_of_eq,dof_medium_1(3))= SV_1(1,3);
 Mat_PW(number_of_eq,dof_medium_1(4))= SV_1(1,4);
-
-
 
 % u_z=u_z
 number_of_eq=number_of_eq+1;

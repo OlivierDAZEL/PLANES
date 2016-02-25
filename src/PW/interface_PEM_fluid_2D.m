@@ -36,7 +36,7 @@
 
 % Initialization of the State vectors in media 1 and 2
 
-eval(['Mat_PEM_' num2str(medium_1-1000*floor(medium_1/1000))])
+eval(['Mat_porous_' num2str(medium_1-1000*floor(medium_1/1000))])
 properties_jca
 properties_PEM
 compute_Biot_waves
@@ -44,14 +44,13 @@ k_z_1=sqrt([delta_1 delta_2 delta_3].^2-k_x^2);
 SV_1=State_PEM_2D(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
 
 
-medium_2
 
 if medium_2==0
     k_z_2=sqrt(k_air^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,air.K);
 else
     eval(['Mat_fluid_' num2str(medium_2-1000*floor(medium_2/1000))])
-    properties_jca
+    properties_eqf
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,K_eq_til);
 end

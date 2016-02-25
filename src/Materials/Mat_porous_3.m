@@ -33,13 +33,13 @@
 %%
 
 
-porous_model.eqf='jca';
+porous_model.eqf='JCA';
 porous_model.frame='structural';
 porous_model.aniso='no';
 
 
 phi=0.95;
-sig=42000;
+sig=420000;
 alpha=1.100;
 LCV=1.50E-05;
 LCT=4.500E-05;
@@ -52,4 +52,3 @@ N=(young)/(2*(1+nu));
 A_hat=(young*nu)/((1+nu)*(1-2*nu));
 
 
-C_hat_conservative=[A_hat+2*N A_hat A_hat 0 0 0;A_hat A_hat+2*N A_hat 0 0 0;A_hat A_hat A_hat+2*N 0 0 0; 0 0 0 N 0 0;0 0 0 0 N 0; 0 0 0 0 0 N ];

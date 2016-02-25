@@ -24,4 +24,4 @@ R4 = [ Q(2,2).*Q(3,3)+Q(2,3).*Q(3,2) ...
 
 M_rot = [ R1  2*R2 ; R3   R4   ] ;
 
-C_out=M_rot * C * transpose(M_rot);
+C_out=M_rot * C * M_rot';

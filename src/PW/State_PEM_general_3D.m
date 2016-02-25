@@ -45,6 +45,7 @@
 function [k_z,SV]=State_PEM_general_3D(k_x,k_y,num_mat,omega,air)
 
 eval(['Mat_porous_' num2str(num_mat)]);
+typ_mat=5;
 properties_eqf
 properties_PEM_aniso
 

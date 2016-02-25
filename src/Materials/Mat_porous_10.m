@@ -32,26 +32,34 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-porous_model.eqf='jca_aniso';
+porous_model.eqf='JCA_aniso';
 porous_model.frame='structural';
 porous_model.aniso='yes';
 
 
-phi=0.95;
 sig=42000;
+phi=0.95;
 alpha=1.100;
 LCV=1.50E-05;
 LCT=4.500E-05;
 rho_1=126.000;
+
 young=694400E+00;
 nu=0.24000E+00;
 eta=0.05;
-angle_x=0*pi/2;
-angle_y=0;
-angle_z=0;
-sig_x=sig;
-sig_y=sig;
-sig_z=sig;
+
+angle_x=pi/3;
+angle_y=pi/9;
+angle_z=pi/4;
+
+sig_x=10000;
+sig_y=20000;
+sig_z=40000;
+
+% sig_x=sig;
+% sig_y=sig;
+% sig_z=sig;
+
 alpha_x=alpha;
 alpha_y=alpha;
 alpha_z=alpha;

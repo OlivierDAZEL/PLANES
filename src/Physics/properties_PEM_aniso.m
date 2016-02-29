@@ -59,22 +59,18 @@ switch porous_model.frame
         structural_loss=1+1j*eta;
 end
 
-
 if strcmp(porous_model.aniso,'yes')
     C_hat=C_hat_conservative*structural_loss;
     
-    Q=rotate_u3(angle_x,angle_y,angle_z)';
 
-%     C_hat=rotate_S6(C_hat,Q);
-%     C_tot=rotate_S6(C_tot_0,Q);
-    
-    
-    C_hat=C_hat_conservative*structural_loss;
-    C_tot=C_tot_0;
-    
-    
-    rho_eq_til=Q'*rho_eq_til*Q;
-    rho_s_til=Q'*rho_s_til*Q;    
-    gamma_til=Q'*gamma_til*Q;
+
+  %  C_hat=rotate_S6(C_hat,Q');
+        
+%     C_hat=C_hat_conservative*structural_loss;
+%     C_tot=C_tot_0;
+
+%     rho_eq_til=Q*rho_eq_til*Q.';
+%     rho_s_til= Q*rho_s_til *Q.';    
+%     gamma_til= Q*gamma_til *Q.';
 
 end

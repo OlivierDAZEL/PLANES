@@ -69,10 +69,10 @@ Mat_PW(number_of_eq,dof_medium_2(1))=-SV_2(4,1);
 Mat_PW(number_of_eq,dof_medium_2(2))=-SV_2(4,2);
 Mat_PW(number_of_eq,dof_medium_2(3))=-SV_2(4,3);
 Mat_PW(number_of_eq,dof_medium_2(4))=-SV_2(4,4);
-Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(4,5)*exp(-1j*k_z_2(1)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(4,6)*exp(-1j*k_z_2(2)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(4,7)*exp(-1j*k_z_2(3)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(4,8)*exp(-1j*k_z_2(4)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(4,5)*exp(-1j*k_z_2(5)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(4,6)*exp(-1j*k_z_2(6)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(4,7)*exp(-1j*k_z_2(7)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(4,8)*exp(-1j*k_z_2(8)*multilayer(i_interface+1).d);
 
 % Continuity of pressure
 number_of_eq=number_of_eq+1;
@@ -82,10 +82,10 @@ Mat_PW(number_of_eq,dof_medium_2(1))=-SV_2(8,1);
 Mat_PW(number_of_eq,dof_medium_2(2))=-SV_2(8,2);
 Mat_PW(number_of_eq,dof_medium_2(3))=-SV_2(8,3);
 Mat_PW(number_of_eq,dof_medium_2(4))=-SV_2(8,4);
-Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(8,5)*exp(-1j*k_z_2(1)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(8,6)*exp(-1j*k_z_2(2)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(8,7)*exp(-1j*k_z_2(3)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(8,8)*exp(-1j*k_z_2(4)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(8,5)*exp(-1j*k_z_2(5)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(8,6)*exp(-1j*k_z_2(6)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(8,7)*exp(-1j*k_z_2(7)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(8,8)*exp(-1j*k_z_2(8)*multilayer(i_interface+1).d);
 
 
 % Nullity of sigma_zz
@@ -94,10 +94,10 @@ Mat_PW(number_of_eq,dof_medium_2(1))=-SV_2(5,1);
 Mat_PW(number_of_eq,dof_medium_2(2))=-SV_2(5,2);
 Mat_PW(number_of_eq,dof_medium_2(3))=-SV_2(5,3);
 Mat_PW(number_of_eq,dof_medium_2(4))=-SV_2(5,4);
-Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(5,5)*exp(-1j*k_z_2(1)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(5,6)*exp(-1j*k_z_2(2)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(5,7)*exp(-1j*k_z_2(3)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(5,8)*exp(-1j*k_z_2(4)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(5,5)*exp(-1j*k_z_2(5)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(5,6)*exp(-1j*k_z_2(6)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(5,7)*exp(-1j*k_z_2(7)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(5,8)*exp(-1j*k_z_2(8)*multilayer(i_interface+1).d);
 
 
 % Nullity of sigma_zz
@@ -106,10 +106,10 @@ Mat_PW(number_of_eq,dof_medium_2(1))=-SV_2(6,1);
 Mat_PW(number_of_eq,dof_medium_2(2))=-SV_2(6,2);
 Mat_PW(number_of_eq,dof_medium_2(3))=-SV_2(6,3);
 Mat_PW(number_of_eq,dof_medium_2(4))=-SV_2(6,4);
-Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(6,5)*exp(-1j*k_z_2(1)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(6,6)*exp(-1j*k_z_2(2)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(6,7)*exp(-1j*k_z_2(3)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(6,8)*exp(-1j*k_z_2(4)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(6,5)*exp(-1j*k_z_2(5)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(6,6)*exp(-1j*k_z_2(6)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(6,7)*exp(-1j*k_z_2(7)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(6,8)*exp(-1j*k_z_2(8)*multilayer(i_interface+1).d);
 
 
 % Nullity of sigma_zz
@@ -118,9 +118,9 @@ Mat_PW(number_of_eq,dof_medium_2(1))=-SV_2(7,1);
 Mat_PW(number_of_eq,dof_medium_2(2))=-SV_2(7,2);
 Mat_PW(number_of_eq,dof_medium_2(3))=-SV_2(7,3);
 Mat_PW(number_of_eq,dof_medium_2(4))=-SV_2(7,4);
-Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(7,5)*exp(-1j*k_z_2(1)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(7,6)*exp(-1j*k_z_2(2)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(7,7)*exp(-1j*k_z_2(3)*multilayer(i_interface+1).d);
-Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(7,8)*exp(-1j*k_z_2(4)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(5))=-SV_2(7,5)*exp(-1j*k_z_2(5)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(6))=-SV_2(7,6)*exp(-1j*k_z_2(6)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(7))=-SV_2(7,7)*exp(-1j*k_z_2(7)*multilayer(i_interface+1).d);
+Mat_PW(number_of_eq,dof_medium_2(8))=-SV_2(7,8)*exp(-1j*k_z_2(8)*multilayer(i_interface+1).d);
 
 

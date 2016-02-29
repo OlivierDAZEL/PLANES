@@ -50,16 +50,15 @@ properties_eqf
 properties_PEM_aniso
 
 
-M=  zeros(18,18);
-A_x=zeros(18,18);
-A_y=zeros(18,18);
-A_z=zeros(18,18);
+M=  zeros(13,13);
+A_x=zeros(13,13);
+A_y=zeros(13,13);
+A_z=zeros(13,13);
 
 M(1:3,1:3)=-omega^2*rho_s_til;
 M(1:3,4:6)=-omega^2*gamma_til*rho_eq_til;
 M(4:6,1:3)=-omega^2*gamma_til*rho_eq_til;
 M(4:6,4:6)=-omega^2*rho_eq_til;
-
 
 A_x(1,7)=-1;
 A_y(1,12)=-1;
@@ -73,19 +72,11 @@ A_x(3,11)=-1;
 A_y(3,10)=-1;
 A_z(3,9)=-1;
 
-A_x(4,7+6)=-1;
-A_y(4,12+6)=-1;
-A_z(4,11+6)=-1;
+A_x(4,13)=-1;
+A_y(5,13)=-1;
+A_z(6,13)=-1;
 
-A_x(5,12+6)=-1;
-A_y(5,8+6)=-1;
-A_z(5,10+6)=-1;
-
-A_x(6,11+6)=-1;
-A_y(6,10+6)=-1;
-A_z(6,9+6)=-1;
-
-M(7:18,7:18)=-eye(12);
+M(7:13,7:13)=-eye(7);
 
 L_x=[1 0 0; 0 0 0;0 0 0;0 0 0;0 0 1;0 1 0];
 L_y=[0 0 0; 0 1 0;0 0 0;0 0 1;0 0 0;1 0 0];
@@ -95,20 +86,28 @@ A_x(7:12,1:3)=C_hat*L_x;
 A_y(7:12,1:3)=C_hat*L_y;
 A_z(7:12,1:3)=C_hat*L_z;
 
-A_x(13:18,4:6)=K_eq_til*C_tot*L_x;
-A_y(13:18,4:6)=K_eq_til*C_tot*L_y;
-A_z(13:18,4:6)=K_eq_til*C_tot*L_z;
+A_x(13,4)=K_eq_til;
+A_y(13,5)=K_eq_til;
+A_z(13,6)=K_eq_til;
+
+
 
 R=M-1j*k_x*A_x-1j*k_y*A_y;
+%[V,D]=eig(inv(R)*A_z,'nobalance');
 [V,D]=eig(A_z,R);
+
+
+
+
 D=diag(D)*1j;
-dof_S=[1 2 3 6 9 10 11 15];
+dof_S=[1 2 3 6 9 10 11 13];
 
 [~,i_temp]=sort(real(D),'descend');
 
-k_z=1./D(i_temp([1:4]));
+k_z=1./D(i_temp([1:4 13:-1:10]));
+k_z(5:8)=-k_z(5:8);
 
-SV=V(dof_S,i_temp([1:4 18:-1:15]));
+SV=V(dof_S,i_temp([1:4 13:-1:10]));
 SV(end,:)=-SV(end,:);
 
 

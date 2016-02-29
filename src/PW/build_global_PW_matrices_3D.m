@@ -33,7 +33,7 @@
 %%
 
 
-function Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer,nb_amplitudes,n_w,k_air,air)
+function [Mat_PW,k_z_2,SV_2]=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer,nb_amplitudes,n_w,k_air,air)
 
 
 

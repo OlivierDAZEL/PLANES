@@ -4,6 +4,7 @@
 *.jpg
 *.aux
 *.log
+*.mat
 *.m~
 *.info
 *.abs
@@ -12,6 +13,7 @@ src/Main/PLANES_IJNME.m
 src/Main/PLANES_CFM.m
 Projects/*
 !Projects/Kundt
+!Projects/Multilayer_3D
 TeX/
 src/Misc/
 .DS_*

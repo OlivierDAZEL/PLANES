@@ -1,4 +1,5 @@
 clear('sol')
+sol=zeros(12*nb.nodes,1);
 sol(dof_back)=X(1:nb.dof_FEM);
 
 % if ((exist(name.compute_error)==2))

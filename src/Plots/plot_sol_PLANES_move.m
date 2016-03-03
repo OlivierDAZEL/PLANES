@@ -34,7 +34,7 @@
 
 x=[];
 y=[];
-
+factor=0.05/max(abs(sol))
 
 if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0
     figure(5000)

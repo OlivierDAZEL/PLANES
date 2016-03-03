@@ -33,32 +33,30 @@
 %%
 
 
-function PLANES(projectname, expnb,data_model,frequency,profiles,export)
-%clear all;
+%function PLANES(projectname, expnb,data_model,frequency,profiles,export)
+clear all;
 %close all;
 clc;
 
 if ~exist('projectname')==1
     project.name='David_ZOD';
     project.name='Article_ZOD';
-    project.name='Multilayer_3D';
+    %project.name='Multilayer_3D';
     nargin=0;
 else
+    
     project.name=projectname;
 end
 if exist('expnb')==1
     project.num=expnb;
 else
     project.num=21;
-    project.num=0;
+    %project.num=0;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
 
 PLANES_init
 
@@ -69,11 +67,13 @@ PLANES_init
 
 eval([name.project_full '_data']) %
 
-
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 PLANES_preprocess
+
+
+
 
 
 if profiles.mesh
@@ -103,24 +103,24 @@ end
 
 
 
-end
+%end
 
 %sortie=load('../../Projects/Article_ZOD/out/Article_ZOD_30.dB');
 
-figure
-%semilogy(sortie(:,1),sortie(:,3))
-%end
-maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
-figure
-semilogx(maine(:,1),maine(:,4))
-hold on
-% semilogx(frequency.vec,abs_PW(:,1),'r.')
-% semilogx(frequency.vec,abs_PW(:,2),'y+')
-
-
-semilogx(frequency.vec,abs_PW_3D(:,1),'k.')
-
-semilogx(frequency.vec,abs_PW_3D(:,2),'k+')
+% figure
+% %semilogy(sortie(:,1),sortie(:,3))
+% %end
+% maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
+% figure
+% semilogx(maine(:,1),maine(:,4))
+% hold on
+% % semilogx(frequency.vec,abs_PW(:,1),'r.')
+% % semilogx(frequency.vec,abs_PW(:,2),'y+')
+% 
+% 
+% semilogx(frequency.vec,abs_PW_3D(:,1),'k.')
+% 
+% semilogx(frequency.vec,abs_PW_3D(:,2),'k+')
 % semilogx(frequency.vec,abs_PW_3D,'r')
 %end
 

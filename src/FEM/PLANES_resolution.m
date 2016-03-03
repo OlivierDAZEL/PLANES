@@ -134,19 +134,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         end
         
         if nb.ZOD~=0
-            
-            switch floor(elem.ZOD_moins/1000)
-                case {0 2 3}
-                    switch floor(elem.ZOD_plus/1000)
-                        case {0 2 3}
-                            ZOD_fluid_fluid
-                    end
-                case 1
-                    switch floor(elem.ZOD_plus/1000)
-                        case 1
-                            ZOD_elas_elas
-                    end
-            end
+            ZOD_application
         end
         
         

@@ -49,7 +49,6 @@ typ_mat=5;
 properties_eqf
 properties_PEM_aniso
 
-
 M=  zeros(13,13);
 A_x=zeros(13,13);
 A_y=zeros(13,13);
@@ -72,9 +71,9 @@ A_x(3,11)=-1;
 A_y(3,10)=-1;
 A_z(3,9)=-1;
 
-A_x(4,13)=-1;
-A_y(5,13)=-1;
-A_z(6,13)=-1;
+A_x(4,13)=1;
+A_y(5,13)=1;
+A_z(6,13)=1;
 
 M(7:13,7:13)=-eye(7);
 
@@ -86,20 +85,16 @@ A_x(7:12,1:3)=C_hat*L_x;
 A_y(7:12,1:3)=C_hat*L_y;
 A_z(7:12,1:3)=C_hat*L_z;
 
-A_x(13,4)=K_eq_til;
-A_y(13,5)=K_eq_til;
-A_z(13,6)=K_eq_til;
-
-
+A_x(13,4)=-K_eq_til;
+A_y(13,5)=-K_eq_til;
+A_z(13,6)=-K_eq_til;
 
 R=M-1j*k_x*A_x-1j*k_y*A_y;
-%[V,D]=eig(inv(R)*A_z,'nobalance');
 [V,D]=eig(A_z,R);
 
 
-
-
 D=diag(D)*1j;
+
 dof_S=[1 2 3 6 9 10 11 13];
 
 [~,i_temp]=sort(real(D),'descend');
@@ -108,6 +103,3 @@ k_z=1./D(i_temp([1:4 13:-1:10]));
 k_z(5:8)=-k_z(5:8);
 
 SV=V(dof_S,i_temp([1:4 13:-1:10]));
-SV(end,:)=-SV(end,:);
-
-

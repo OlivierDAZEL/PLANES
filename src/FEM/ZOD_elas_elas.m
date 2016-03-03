@@ -45,6 +45,37 @@ for ii=1:size(edges.ZOD_moins,1)
     a1(2)=nodes(node_moins(1),2);
     a2(1)=nodes(node_moins(2),1);
     a2(2)=nodes(node_moins(2),2);
+    
+    switch floor(elem.label(edges.ZOD_moins(ii,3)))
+        
+        case {0}
+        
+            FSIe=TR6_FSI(a1,a2);
+    
+    
+    index_force_p_moins=dof_A(p_TR(node_moins));
+    index_F_elem_p_moins=find(index_force_p_moins);
+    index_F_global_p_moins=index_force_p_moins(index_F_elem_p_moins);
+    
+    
+    index_force_p_plus=dof_A(p_TR(node_plus));
+    index_F_elem_p_plus=find(index_force_p_plus);
+    index_F_global_p_plus=index_force_p_plus(index_F_elem_p_plus);
+    
+    A(index_F_global_p_moins,index_F_global_p_moins)=A(index_F_global_p_moins,index_F_global_p_moins)-TT(1,1)*(FSIe(index_F_elem_p_moins,index_F_elem_p_moins));
+    A(index_F_global_p_moins,index_F_global_p_plus) =A(index_F_global_p_moins,index_F_global_p_plus) -TT(1,2)*(FSIe(index_F_elem_p_moins,index_F_elem_p_plus));
+    A(index_F_global_p_plus,index_F_global_p_moins) =A(index_F_global_p_plus,index_F_global_p_moins) -TT(2,1)*(FSIe(index_F_elem_p_plus,index_F_elem_p_moins));
+    A(index_F_global_p_plus,index_F_global_p_plus)  =A(index_F_global_p_plus,index_F_global_p_plus)  -TT(2,2)*(FSIe(index_F_elem_p_plus,index_F_elem_p_plus));
+        
+        
+        
+        case {1}
+            
+    
+    
+    
+    
+    
   
     vec_tangent=a2-a1;
     vec_normal=[vec_tangent(2) vec_tangent(1)];
@@ -106,5 +137,8 @@ for ii=1:size(edges.ZOD_moins,1)
     A(index_F_global_uy_plus ,index_F_global_uy_plus )=A(index_F_global_uy_plus ,index_F_global_uy_plus )-TTrot(4,4)*(FSIe(index_F_elem_uy_plus ,index_F_elem_uy_plus ));
     
     
-    
+        otherwise
+            plante_dans_ZOD_application
+            
+    end
 end

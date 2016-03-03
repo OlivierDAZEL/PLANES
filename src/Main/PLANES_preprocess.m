@@ -38,7 +38,7 @@
 
 init_vec_frequencies
 
-nb_multilayers=size(multilayer,2);
+
 
 if exist('nodes')
     segments=zeros(1,5); % Line 1 to be removed at the end
@@ -369,21 +369,21 @@ if exist('nodes')
             end
         end
         
-        temp=elem.label(edges.ZOD_moins(:,3));
-        temp=temp-temp(1)*ones(size(temp));
-        if norm(temp)==0
-            elem.ZOD_moins=elem.label(edges.ZOD_moins(1,3));
-        else
-            stop
-        end
-        
-        temp=elem.label(edges.ZOD_plus(:,3));
-        temp=temp-temp(1)*ones(size(temp));
-        if norm(temp)==0
-            elem.ZOD_plus=elem.label(edges.ZOD_plus(1,3));
-        else
-            stop
-        end
+%         temp=elem.label(edges.ZOD_moins(:,3));
+%         temp=temp-temp(1)*ones(size(temp));
+%         if norm(temp)==0
+%             elem.ZOD_moins=elem.label(edges.ZOD_moins(1,3));
+%         else
+%             stop
+%         end
+%         
+%         temp=elem.label(edges.ZOD_plus(:,3));
+%         temp=temp-temp(1)*ones(size(temp));
+%         if norm(temp)==0
+%             elem.ZOD_plus=elem.label(edges.ZOD_plus(1,3));
+%         else
+%             stop
+%         end
     end
     
     
@@ -433,6 +433,7 @@ else
 end
 
 if exist('multilayer')
+    nb_multilayers=size(multilayer,2);
     % Addition of a new layer for the incident medium
     l0=multilayer(1,:);
     for i_m=1:nb_multilayers

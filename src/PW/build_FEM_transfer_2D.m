@@ -37,7 +37,9 @@ function T=build_FEM_transfer_2D(k_x,element_MMT_minus,element_MMT_plus,omega,mu
 
 
 nb_layers=length(multilayer);
-termination=0;
+multilayer(1,1).nb=1; 
+nb_multilayers=1;
+multilayer(1,1).termination=0;
 compute_number_PW_2D
 
 

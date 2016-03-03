@@ -93,8 +93,9 @@ hold on
 % % maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
 % % semilogx(maine(:,1),maine(:,4),'k')
 % % 
-load('../../Projects/Multilayer_3D/test.mat')
-semilogx(test(1).f,test(1).absorp,'r')
+load('../../Projects/Multilayer_3D/160303_test8.mat');
+semilogx(frequency.vec,absorp,'r')
+%semilogx(test(1).f,test(1).absorp,'r')
 
 
 % 

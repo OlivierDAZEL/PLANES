@@ -44,7 +44,7 @@ properties_eqf
 switch porous_model.aniso
     case{'yes'}
         properties_PEM_aniso
-        [k_z_1,SV_1]=State_general_3D(k_x,k_y,omega,air);
+        [k_z_1,SV_1]=State_PEM_general_3D(k_x,k_y,medium_1-1000*floor(medium_1/1000),omega,air);
     otherwise
         properties_PEM
         compute_Biot_waves
@@ -53,12 +53,12 @@ switch porous_model.aniso
 end
 
 eval(['Mat_porous_' num2str(medium_2-1000*floor(medium_2/1000))])
-        properties_eqf
+properties_eqf
 
 switch porous_model.aniso
     case{'yes'}
         properties_PEM_aniso
-        [k_z_2,SV_2]=State_general_3D(k_x,k_y,omega,air);
+        [k_z_2,SV_2]=State_PEM_general_3D(k_x,k_y,medium_2-1000*floor(medium_2/1000),omega,air);
     otherwise
         properties_PEM
         compute_Biot_waves

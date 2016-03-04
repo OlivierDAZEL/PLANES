@@ -110,6 +110,8 @@ for ie=1:nb.loads
                 [nx,ny]=normal_edge_out_element(a,b,c_1);
                 tx=-ny;
                 ty= nx;
+                tx=nx;
+                ty=ny;
                 
 
                 

@@ -89,6 +89,14 @@ A_x(13,4)=-K_eq_til;
 A_y(13,5)=-K_eq_til;
 A_z(13,6)=-K_eq_til;
 
+% load('../../Projects/Multilayer_3D/160304_test9.mat');
+% 
+% M1=OD_M*omega^2
+% [M1(:,1) M(:,1)]
+% 
+% sdffdsdsfdsdsdfs
+
+
 R=M-1j*k_x*A_x-1j*k_y*A_y;
 [V,D]=eig(A_z,R);
 

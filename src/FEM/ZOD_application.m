@@ -95,6 +95,8 @@ for ii=1:size(edges.ZOD_moins,1)
             Mat_rotm1=[Mat_rotm1 0*Mat_rotm1;0*Mat_rotm1 Mat_rotm1];
             TTrot=Mat_rotm1*TT*Mat_rot;
             
+
+            
             FSIe=TR6_FSI(a1,a2);
             
             index_force_ux_moins=dof_A(ux_TR(node_moins));
@@ -113,7 +115,6 @@ for ii=1:size(edges.ZOD_moins,1)
             index_force_uy_plus=dof_A(uy_TR(node_plus));
             index_F_elem_uy_plus=find(index_force_uy_plus);
             index_F_global_uy_plus=index_force_uy_plus(index_F_elem_uy_plus);
-            
             
             
             A(index_F_global_ux_moins,index_F_global_ux_moins)=A(index_F_global_ux_moins,index_F_global_ux_moins)-TTrot(1,1)*(FSIe(index_F_elem_ux_moins,index_F_elem_ux_moins));

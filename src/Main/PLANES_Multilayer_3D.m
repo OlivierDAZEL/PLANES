@@ -33,10 +33,10 @@
 %%
 
 
-%function PLANES_Multilayer_3D(projectname, expnb,data_model,multilayer,frequency)
-clear all;
-close all;
-clc;
+function PLANES_Multilayer_3D(projectname, expnb,data_model,multilayer,frequency)
+% clear all;
+% close all;
+% clc;
 
 
 frequency.nb=-200;
@@ -82,20 +82,20 @@ PW_3D_resolution
 
 PLANES_info
 
-figure 
-semilogx(frequency.vec,abs_PW_3D,'.-')
-hold on
-% %toto=load('../../Projects/Multilayer_3D/out/Multilayer_3D_101.PW3D');
+% figure 
+% semilogx(frequency.vec,abs_PW_3D,'.-')
 % hold on
-% %semilogx(toto(:,1),toto(:,2),'k-')
-% 
-% 
-% % maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
-% % semilogx(maine(:,1),maine(:,4),'k')
+% % %toto=load('../../Projects/Multilayer_3D/out/Multilayer_3D_101.PW3D');
+% % hold on
+% % %semilogx(toto(:,1),toto(:,2),'k-')
 % % 
-load('../../Projects/Multilayer_3D/160303_test8.mat');
-semilogx(frequency.vec,absorp,'r')
-%semilogx(test(1).f,test(1).absorp,'r')
+% % 
+% % % maine=load('../../../../Programmation/Maine/TCLTK/out.dat');
+% % % semilogx(maine(:,1),maine(:,4),'k')
+% % % 
+% load('../../Projects/Multilayer_3D/160303_test8.mat');
+% semilogx(frequency.vec,absorp,'r')
+% %semilogx(test(1).f,test(1).absorp,'r')
 
 
 % 

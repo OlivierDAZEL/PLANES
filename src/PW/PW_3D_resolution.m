@@ -71,7 +71,6 @@ for i_f=1:abs(frequency.nb)
         
         abs_PW_3D(i_f,i_m)=1-abs(X_PW(1))^2;
         rflx_PW_3D(i_f,i_m)=X_PW(1);
-        vec_X(:,i_f)=X_PW;
         if multilayer(1,1).termination~=0
             TL_PW_3D(i_f,i_m)=-20*log10(abs(X_PW(end,i_m)));
             fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e \t',abs_PW_3D(i_f,i_m),real(rflx_PW_3D(i_f,i_m)),imag(rflx_PW_3D(i_f,i_m)),TL_PW_3D(i_f,i_m));

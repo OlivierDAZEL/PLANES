@@ -34,7 +34,7 @@
 
 % Biot densities with tortuosity effects
 
-rho_12=-phi*air.rho*(alpha_tensor-eye(3));
+rho_12=-phi*air.rho*(alpha-eye(3));
 rho_11=rho_1*eye(3)-rho_12;
 rho_2=phi*air.rho*eye(3);
 rho_22=rho_2-rho_12;
@@ -55,7 +55,7 @@ switch porous_model.frame
 end
 
 if strcmp(porous_model.aniso,'yes')
-    C_hat=C_hat_conservative*structural_loss;
+    C_hat=C_hat_0*structural_loss;
     C_hat=rotate_S6(C_hat,Q');
 end
 

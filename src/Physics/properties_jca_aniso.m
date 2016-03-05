@@ -32,17 +32,11 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-Q=rotate_u3(angle_x,angle_y,angle_z);
-
-sig_tensor=Q*sig_tensor_0*Q';
-LCV_tensor=Q*LCV_tensor_0*Q';
-alpha_tensor=Q*alpha_tensor_0*Q';
-
 
 %%  Johnson et al model for rho_eq_til
 
-q_0=air.mu*inv(sig_tensor);
-alpha_til=alpha_tensor+((air.mu*phi)/(1i*omega*air.rho*air.mu))*sig_tensor*sqrtm(eye(3)+((1j*4*omega*air.rho)/(air.mu*phi^2))*alpha_tensor^2*q_0^2*inv(LCV_tensor).^2);
+q_0=air.mu*inv(sig);
+alpha_til=alpha+((air.mu*phi)/(1i*omega*air.rho*air.mu))*sig*sqrtm(eye(3)+((1j*4*omega*air.rho)/(air.mu*phi^2))*alpha^2*q_0^2*inv(LCV).^2);
 rho_eq_til=(air.rho/phi)*alpha_til;
 
 

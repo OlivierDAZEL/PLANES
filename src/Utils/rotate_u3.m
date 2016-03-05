@@ -1,4 +1,4 @@
-function M=rotate_u3(angle_x,angle_y,angle_z)
+function M=rotate_u3(angle)
 
 
 % A       = cos(angle_x);
@@ -22,9 +22,9 @@ function M=rotate_u3(angle_x,angle_y,angle_z)
 % M(3,3) =   A * C;
 
 
-a_x=[1 0 0;0 cos(angle_x) sin(angle_x);0 -sin(angle_x) cos(angle_x)];
-a_y=[cos(angle_y) 0 -sin(angle_y);0 1 0;sin(angle_y) 0 cos(angle_y)];
-a_z=[cos(angle_z) sin(angle_z) 0;-sin(angle_z) cos(angle_z) 0;0 0 1];
+a_x=[1 0 0;0 cos(angle(1)) sin(angle(1));0 -sin(angle(1)) cos(angle(1))];
+a_y=[cos(angle(2)) 0 -sin(angle(2));0 1 0;sin(angle(2)) 0 cos(angle(2))];
+a_z=[cos(angle(3)) sin(angle(3)) 0;-sin(angle(3)) cos(angle(3)) 0;0 0 1];
 
 M=a_x*a_y*a_z;
 

@@ -36,11 +36,10 @@ porous_model.eqf='JCA_aniso';
 porous_model.frame='structural';
 porous_model.aniso='yes';
 
+angle_rot=[pi/3;4*pi/9;pi/4];
+Q=rotate_u3(angle_rot);
 
-sig=42000;
 phi=0.95;
-alpha=1.100;
-LCV=1.50E-05;
 LCT=4.500E-05;
 rho_1=126.000;
 
@@ -48,35 +47,19 @@ young=694400E+00;
 nu=0.24000E+00;
 eta=0.05;
 
-angle_x=pi/3;
-angle_y=4*pi/9;
-angle_z=pi/4;
 
-sig_x=10000;
-sig_y=20000;
-sig_z=40000;
+sig=Q*diag([10000;20000;40000])*Q';
+alpha=Q*diag([1.1;1.1;1.1])*Q';
+LCV=Q*diag([1.50E-05;1.50E-05;1.50E-05])*Q';
 
-% sig_x=sig;
-% sig_y=sig;
-% sig_z=sig;
-
-alpha_x=alpha;
-alpha_y=alpha;
-alpha_z=alpha;
-LCV_x=LCV;
-LCV_y=LCV; 
-LCV_z=LCV;
 
 
 N=(young)/(2*(1+nu));
 A_hat=(young*nu)/((1+nu)*(1-2*nu));
 F_hat=1*A_hat;
+C_hat_0= [A_hat+2*N A_hat F_hat 0 0 0;A_hat A_hat+2*N F_hat 0 0 0;F_hat F_hat A_hat+2*N 0 0 0; 0 0 0 N 0 0;0 0 0 0 N 0; 0 0 0 0 0 N ];
 
-C_hat_conservative= [A_hat+2*N A_hat F_hat 0 0 0;A_hat A_hat+2*N F_hat 0 0 0;F_hat F_hat A_hat+2*N 0 0 0; 0 0 0 N 0 0;0 0 0 0 N 0; 0 0 0 0 0 N ];
 
-sig_tensor_0=diag([sig_x sig_y sig_z]);
-alpha_tensor_0=diag([alpha_x alpha_y alpha_z]);
-LCV_tensor_0=diag([LCV_x LCV_y LCV_z]);
 
 alpha_hat=0.33348;
 beta_hat =812.69e3;

@@ -34,35 +34,22 @@
 
 
 function PLANES_Multilayer(projectname, expnb,data_model,multilayer,frequency)
-%clear all;
-%close all;
-%clc;
 
-if ~exist('projectname')==1
-    project.name='David_ZOD';
-    project.name='Article_ZOD';
-    project.name='Multilayer_3D';
-    nargin=0;
-else
-    project.name=projectname;
-end
-if exist('expnb')==1
-    project.num=expnb;
-else
-    project.num=21;
-    project.num=0;
-end
+project.name=projectname;
+project.num=expnb;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Initialization of PLANES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 PLANES_init
-PLANES_preprocess
+PLANES_preprocess_Multilayer
 
-
-PW_2D_resolution
-
-PLANES_info
-
+switch length(data_model.theta)
+    case {1}
+        PW_2D_resolution
+    case {2}
+        PW_3D_resolution
+    otherwise
+        errorinPLANES_Multilayer
 end
+
+
+

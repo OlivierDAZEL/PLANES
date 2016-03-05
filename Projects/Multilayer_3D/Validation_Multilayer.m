@@ -3,7 +3,7 @@ close all
 current_dir=pwd;
 
 
-frequency.nb=-100;
+frequency.nb=-200;
 frequency.min=1;
 frequency.max=20000;
 
@@ -11,10 +11,6 @@ frequency.max=20000;
 multilayer(1,1).nb=1;
 multilayer(1,1).d=5e-2;
 multilayer(1,1).mat=5010;
-% multilayer(2,1).d=1e-2;
-% multilayer(2,1).mat=5003;
-% multilayer(3,1).d=1e-2;
-% multilayer(3,1).mat=5003;
 % Termination condition // 0 for rigid backing 1 for radiation
 multilayer(1,1).termination=0;
 
@@ -23,7 +19,6 @@ multilayer(1,2).d=1e-2;
 multilayer(1,2).mat=5010;
 multilayer(2,2).d=4e-2;
 multilayer(2,2).mat=5010;
-% Termination condition // 0 for rigid backing 1 for radiation
 multilayer(1,2).termination=0;
 
 multilayer(1,3).nb=3;
@@ -33,10 +28,7 @@ multilayer(2,3).d=3e-2;
 multilayer(2,3).mat=5010;
 multilayer(3,3).d=1e-2;
 multilayer(3,3).mat=5010;
-% Termination condition // 0 for rigid backing 1 for radiation
 multilayer(1,3).termination=0;
-
-
 
 
 data_model.theta_1=23*pi/180;
@@ -49,7 +41,6 @@ cd(current_dir);
 
 load('160303_test8.mat')
 test1_JPPM=load('out/Multilayer_3D_101.PW3D');
-
 
 
 figure 

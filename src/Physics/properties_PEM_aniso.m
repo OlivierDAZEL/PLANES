@@ -54,10 +54,6 @@ switch porous_model.frame
         structural_loss=1+1j*eta;
 end
 
-
-
-
-
 if strcmp(porous_model.aniso,'yes')
     C_hat=C_hat_conservative*structural_loss;
     C_hat=rotate_S6(C_hat,Q');

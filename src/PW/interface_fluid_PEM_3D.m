@@ -58,6 +58,7 @@ switch porous_model.aniso
         properties_PEM
         compute_Biot_waves
         k_z_2=sqrt([delta_1 delta_2 delta_3 delta_3].^2-k_x^2-k_y^2);
+        k_z_2=[k_z_2 k_z_2];
         SV_2=State_PEM_3D(k_x,k_y,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
 end
 

@@ -444,12 +444,5 @@ if exist('multilayer')
     multilayer=[l0;multilayer];
 end
 
-if exist('multilayer_3D')
-    % Addition of a new layer for the incident medium
-    l0=multilayer_3D(1,:);
-    l0(1,1:nb_multilayers).mat=0;
-    l0(1,1:nb_multilayers).d=0;
-    l0(1,1:nb_multilayers).nb=l0(1,1:nb_multilayers).nb+1;
-    multilayer_3D=[l0;multilayer_3D];
-end
+
 

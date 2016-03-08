@@ -33,9 +33,9 @@
 %%
 
 
-E_solide=3e6;
+E_solide=3e8;
 nu_solide=0.25E+00;
-eta_solide=0e10;
+eta_solide=0;
 rho_solide=500E+00;
 
 lambda_solide=(1+1i*eta_solide)*(E_solide*nu_solide)/((1+nu_solide)*(1-2*nu_solide));

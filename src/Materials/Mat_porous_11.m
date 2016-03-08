@@ -1,4 +1,4 @@
-% State_elas.m
+% Mat_PEM_3.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,26 +30,37 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
-% The State vector for a PEM material according to Dazel et al. JAP 2013
-% S={u_x,u_y,u_z,\sigma_{zz},\sigma_{yz},\sigma_{xz}}
-%
-%
-%
 %%
 
+porous_model.eqf='JCA_aniso';
+porous_model.frame='none';
+porous_model.aniso='yes';
 
-function M=State_elas_3D(k_x,k_y,delta_P,delta_s,lambda,mu)
+angle_rot=[pi/3;4*pi/9;pi/4];
+Q=rotate_u3(angle_rot);
 
-k_z_P=sqrt(delta_P^2-k_x^2-k_y^2);
-k_z_S=sqrt(delta_s^2-k_x^2-k_y^2);
+phi=0.95;
+LCT=4.500E-05;
+rho_1=126.000;
 
-M(1:6,1)=[k_x;k_y; k_z_P;-1j*(lambda*delta_P^2+2*mu*k_z_P^2);-2*1j*mu*k_z_P*k_y;-2*1j*mu*k_z_P*k_x];
-M(1:6,4)=[k_x;k_y;-k_z_P;-1j*(lambda*delta_P^2+2*mu*k_z_P^2); 2*1j*mu*k_z_P*k_y; 2*1j*mu*k_z_P*k_x];
-
-M(1:6,2)=[k_z_S;0;-k_x;2*1j*mu*k_z_S*k_x; 1j*mu*k_x*k_y;-1j*mu*(k_z_S^2-k_x^2)];
-M(1:6,5)=[k_z_S;0; k_x;2*1j*mu*k_z_S*k_x;-1j*mu*k_x*k_y; 1j*mu*(k_z_S^2-k_x^2)];
- 
-M(1:6,3)=[0;k_z_S;-k_y;2*1j*mu*k_z_S*k_y;-1j*mu*(k_z_S^2-k_y^2); 1j*mu*k_x*k_y];
-M(1:6,6)=[0;k_z_S; k_y;2*1j*mu*k_z_S*k_y; 1j*mu*(k_z_S^2-k_y^2);-1j*mu*k_x*k_y];
+young=694400E+00;
+nu=0.24000E+00;
+eta=0.05;
 
 
+sig=Q*diag([10000;20000;40000])*Q';
+alpha=Q*diag([1.1;1.1;1.1])*Q';
+LCV=Q*diag([1.50E-05;1.50E-05;1.50E-05])*Q';
+
+
+C_hat_0=1e5*[
+13.7+0.13j 7.10+0.04j 6.7+0.04j 0 0 0; 7.10+0.04j 13.7+0.13j 6.7+0.04j 0 0 0;
+6.7+0.04j 6.7+0.04j 126+0.73j 0 0 0;
+0 0 0 5.8+0.73j 0 0;
+0 0 0 0 5.8+0.73j 0;
+0 0 0 0 0 3.3+0.05j];
+
+
+alpha_hat=0.33348;
+beta_hat =812.69e3;
+b_hat=0.29620;

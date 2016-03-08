@@ -1,4 +1,4 @@
-% State_elas.m
+% Mat_PEM_3.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,26 +30,47 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
-% The State vector for a PEM material according to Dazel et al. JAP 2013
-% S={u_x,u_y,u_z,\sigma_{zz},\sigma_{yz},\sigma_{xz}}
-%
-%
-%
 %%
 
+porous_model.eqf='JCA_aniso';
+porous_model.frame='anelastic';
+porous_model.aniso='yes';
 
-function M=State_elas_3D(k_x,k_y,delta_P,delta_s,lambda,mu)
 
-k_z_P=sqrt(delta_P^2-k_x^2-k_y^2);
-k_z_S=sqrt(delta_s^2-k_x^2-k_y^2);
 
-M(1:6,1)=[k_x;k_y; k_z_P;-1j*(lambda*delta_P^2+2*mu*k_z_P^2);-2*1j*mu*k_z_P*k_y;-2*1j*mu*k_z_P*k_x];
-M(1:6,4)=[k_x;k_y;-k_z_P;-1j*(lambda*delta_P^2+2*mu*k_z_P^2); 2*1j*mu*k_z_P*k_y; 2*1j*mu*k_z_P*k_x];
+angle_rot=[0;pi/4;0];
+Q=rotate_u3(angle_rot);
 
-M(1:6,2)=[k_z_S;0;-k_x;2*1j*mu*k_z_S*k_x; 1j*mu*k_x*k_y;-1j*mu*(k_z_S^2-k_x^2)];
-M(1:6,5)=[k_z_S;0; k_x;2*1j*mu*k_z_S*k_x;-1j*mu*k_x*k_y; 1j*mu*(k_z_S^2-k_x^2)];
+rho_1=9.200;
+phi=0.99;
+LCV=240E-06;
+LCT=490E-06;
+alpha=1.2;
+
+
+eigvec=[   0.97000   0.19000   0.12000;
+  -0.14000  -0.92000   0.36000;
+   0.18000   0.34000   0.92000];
+eigvalues=[9800 0 0; 0 10500 0; 0 0 11400];
  
-M(1:6,3)=[0;k_z_S;-k_y;2*1j*mu*k_z_S*k_y;-1j*mu*(k_z_S^2-k_y^2); 1j*mu*k_x*k_y];
-M(1:6,6)=[0;k_z_S; k_y;2*1j*mu*k_z_S*k_y; 1j*mu*(k_z_S^2-k_y^2);-1j*mu*k_x*k_y];
+sig_i=diag(diag(inv(eigvec)*(eigvalues*eigvec)));
 
 
+
+sig=Q*sig_i*Q';
+alpha=Q*diag([1.2;1.2;1.2])*Q';
+LCV=Q*diag([240E-06;240E-06;240E-06])*Q';
+
+
+C_hat_0=1e5*[
+   7.719353596027278   3.425199931688752  -0.022642853370394                   0                   0                   0
+   3.425199931688752   4.278234531826723   1.184528821838865                   0                   0                   0
+  -0.022642853370394   1.184528821838865   2.215513353247722                   0                   0                   0
+                   0                   0                   0   1.036365276907575                   0                   0
+                   0                   0                   0                   0   1.236840201799869                   0
+                   0                   0                   0                   0                   0   1.012310180008057];
+
+
+alpha_hat=0.33348;
+beta_hat =832.16e3;
+b_hat=0.29620;

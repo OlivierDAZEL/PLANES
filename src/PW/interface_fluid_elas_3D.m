@@ -42,7 +42,7 @@ else
     eval(['Mat_fluid_' num2str(medium_1-1000*floor(medium_1/1000))])
     properties_eqf
     k_z_1=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2-k_y^2);
-    SV_1=State_fluid_3D(k_x,k_z_1,K_eq_til);
+    SV_1=State_fluid_3D(k_x,k_y,k_z_1,K_eq_til);
 end
 eval(['Mat_elas_' num2str(medium_2-1000*floor(medium_2/1000))])
 delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));

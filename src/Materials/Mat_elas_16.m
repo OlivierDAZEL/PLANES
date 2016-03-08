@@ -1,4 +1,4 @@
-% State_elas.m
+% Mat_elas_1.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -30,26 +30,15 @@
 %
 % You should have received a copy of the GNU General Public License
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
-% The State vector for a PEM material according to Dazel et al. JAP 2013
-% S={u_x,u_y,u_z,\sigma_{zz},\sigma_{yz},\sigma_{xz}}
-%
-%
-%
 %%
 
 
-function M=State_elas_3D(k_x,k_y,delta_P,delta_s,lambda,mu)
+E_solide=7e10;
+nu_solide=0.33E+00;
+eta_solide=0.01;
+rho_solide=2700E+00;
 
-k_z_P=sqrt(delta_P^2-k_x^2-k_y^2);
-k_z_S=sqrt(delta_s^2-k_x^2-k_y^2);
-
-M(1:6,1)=[k_x;k_y; k_z_P;-1j*(lambda*delta_P^2+2*mu*k_z_P^2);-2*1j*mu*k_z_P*k_y;-2*1j*mu*k_z_P*k_x];
-M(1:6,4)=[k_x;k_y;-k_z_P;-1j*(lambda*delta_P^2+2*mu*k_z_P^2); 2*1j*mu*k_z_P*k_y; 2*1j*mu*k_z_P*k_x];
-
-M(1:6,2)=[k_z_S;0;-k_x;2*1j*mu*k_z_S*k_x; 1j*mu*k_x*k_y;-1j*mu*(k_z_S^2-k_x^2)];
-M(1:6,5)=[k_z_S;0; k_x;2*1j*mu*k_z_S*k_x;-1j*mu*k_x*k_y; 1j*mu*(k_z_S^2-k_x^2)];
- 
-M(1:6,3)=[0;k_z_S;-k_y;2*1j*mu*k_z_S*k_y;-1j*mu*(k_z_S^2-k_y^2); 1j*mu*k_x*k_y];
-M(1:6,6)=[0;k_z_S; k_y;2*1j*mu*k_z_S*k_y; 1j*mu*(k_z_S^2-k_y^2);-1j*mu*k_x*k_y];
+lambda_solide=(1+1i*eta_solide)*(E_solide*nu_solide)/((1+nu_solide)*(1-2*nu_solide));
+mu_solide=(1+1i*eta_solide)*(E_solide)/(2*(1+nu_solide));
 
 

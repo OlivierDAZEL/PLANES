@@ -39,7 +39,7 @@ porous_model.aniso='no';
 
 
 phi=0.95;
-sig=420000;
+sig=42000;
 alpha=1.100;
 LCV=1.50E-05;
 LCT=4.500E-05;
@@ -50,5 +50,3 @@ eta=0.05;
 
 N=(young)/(2*(1+nu));
 A_hat=(young*nu)/((1+nu)*(1-2*nu));
-
-

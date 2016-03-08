@@ -65,14 +65,6 @@ name.file_PW=           [name.project_directory 'out/'  name.project_full '.PW']
 name.file_info=         [name.project_directory 'out/'  name.project_full '.info'];
 name.file_FEM=          [name.project_directory 'out/'  name.project_full '.FEM'];
 
-% name.compute_error=['compute_error_' , project.name];
-% if ((exist(name.compute_error)==2))
-%     name.file_error=          [name.file '.error'];
-% end
-% 
-% name.solution=['solution_' , project.name];
-
-
 set(0,'DefaultLineMarkerSize',15);
 set(0,'Defaultlinelinewidth',2);
 set(0,'DefaultAxesFontSize',15)

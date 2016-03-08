@@ -33,7 +33,7 @@
 %%
 
 
-function Mat_PW=build_global_PW_matrices(k_x,omega,multilayer,nb_amplitudes,n_w,k_air,air)
+function Mat_PW=build_global_PW_matrices_2D(k_x,omega,multilayer,nb_amplitudes,n_w,k_air,air)
 
 
 % Initialization of the matrix

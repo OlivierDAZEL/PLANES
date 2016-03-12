@@ -69,7 +69,7 @@ end
 
 
 for ie=1:nb.dirichlets
-    if ismember(elem.model(ie),[1 3])
+    if ismember(elem.model(edges.dirichlets(ie,3)),[1 3])
         if (edges.dirichlets(ie,4)==5) % Sliding
             xx=abs(nodes(edges.dirichlets(ie,1),1)-nodes(edges.dirichlets(ie,2),1));
             yy=abs(nodes(edges.dirichlets(ie,1),2)-nodes(edges.dirichlets(ie,2),2));
@@ -83,7 +83,7 @@ for ie=1:nb.dirichlets
             isvalidof_FEM(uxy_TR(edges.dirichlets(ie,[1 2 6])))=0;
         end
     end
-    if ismember(elem.model(ie),[2])
+    if ismember(elem.model(edges.dirichlets(ie,3)),[2])
         if (edges.dirichlets(ie,4)==5) % Sliding
             xx=abs(nodes(edges.dirichlets(ie,1),1)-nodes(edges.dirichlets(ie,2),1));
             yy=abs(nodes(edges.dirichlets(ie,1),2)-nodes(edges.dirichlets(ie,2),2));

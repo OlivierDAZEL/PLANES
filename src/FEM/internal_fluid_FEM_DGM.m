@@ -159,7 +159,7 @@ switch elem.model(e_1)
         
 end
 
-index_2  =((1:theta_DGM.nb)-1)+dof_start_element(e_2);
+index_2  =((1:data_model.theta_DGM.nb)-1)+dof_start_element(e_2);
 
  
 
@@ -171,7 +171,7 @@ for i_test=1:nb_dof_1
         eval(['I_tilde=F_11_tilde(1)*vx_e1d',num2str(i_champs),'+F_11_tilde(2)*vy_e1d',num2str(i_champs),'+F_11_tilde(3)*p_e1d',num2str(i_champs),';']);
         A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(N_1,base_test,I_tilde,base_champs,a,b,Gauss_points);
     end
-    for i_champs=1:theta_DGM.nb
+    for i_champs=1:data_model.theta_DGM.nb
        jk=-1j*k_e*[cos(vec_theta(i_champs));sin(vec_theta(i_champs))];
        Phi_champs=Phi_fluid(cos(vec_theta(i_champs)),sin(vec_theta(i_champs)),Z_e);
        I_tilde=F_12_tilde*Phi_champs;
@@ -180,7 +180,7 @@ for i_test=1:nb_dof_1
 end
 
 
-for i_test=1:theta_DGM.nb
+for i_test=1:data_model.theta_DGM.nb
     Phi_test=Phi_fluid(cos(vec_theta(i_test)),sin(vec_theta(i_test)),Z_e);
     for i_champs=1:nb_dof_1
         base_champs=base_e1;

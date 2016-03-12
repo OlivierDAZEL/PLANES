@@ -98,7 +98,7 @@ for ie=1:nb.elements
         coord_elem=nodes(nonzeros(elem.nodes(ie,:)),1:2)';
         x_centre=mean(nodes(nonzeros(elem.nodes(ie,:)),1:2))';
         
-        q=X(dof_start_element(ie)+[0:ondes_element(ie)*theta_DGM.nb-1]);
+        q=X(dof_start_element(ie)+[0:ondes_element(ie)*data_model.theta_DGM.nb-1]);
         
         e_edge=ie;
         parameter_element
@@ -108,7 +108,7 @@ for ie=1:nb.elements
         else
             Phi_elem=zeros(3,4);
         end
-        for i_thetaphi=1:theta_DGM.nb
+        for i_thetaphi=1:data_model.theta_DGM.nb
             theta_phi=vec_theta(i_thetaphi);
             n_phi=[cos(theta_phi)*tau_x;sin(theta_phi)*tau_y];
             Phi_e=Phi_fluid(cos(theta_phi),sin(theta_phi),Z_e);

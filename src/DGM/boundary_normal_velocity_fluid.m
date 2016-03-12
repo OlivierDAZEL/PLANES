@@ -77,12 +77,12 @@ Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 
 II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[center_element center_element]);
 MM=kron(II,F_e_tilde);
-indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(num_element);  
-indice_champs=((1:theta_DGM.nb)-1)+dof_start_element(num_element);
+indice_test  =((1:data_model.theta_DGM.nb)-1)+dof_start_element(num_element);  
+indice_champs=((1:data_model.theta_DGM.nb)-1)+dof_start_element(num_element);
 A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
 
 
 II=int_edge_1vectorielle(1j*k_e*[nx;ny],a,b,center_element);
 MM=kron(II,S_e_tilde);
-indice_test  =((1:theta_DGM.nb)-1)+dof_start_element(num_element);  
-F(indice_test)=F(indice_test)-Phi.'*MM;
+indice_test  =((1:data_model.theta_DGM.nb)-1)+dof_start_element(num_element);  
+F(indice_test)=F(indice_test)+Phi.'*MM;

@@ -369,28 +369,22 @@ if exist('nodes')
             end
         end
         
-%         temp=elem.label(edges.ZOD_moins(:,3));
-%         temp=temp-temp(1)*ones(size(temp));
-%         if norm(temp)==0
-%             elem.ZOD_moins=elem.label(edges.ZOD_moins(1,3));
-%         else
-%             stop
-%         end
-%         
-%         temp=elem.label(edges.ZOD_plus(:,3));
-%         temp=temp-temp(1)*ones(size(temp));
-%         if norm(temp)==0
-%             elem.ZOD_plus=elem.label(edges.ZOD_plus(1,3));
-%         else
-%             stop
-%         end
+        %         temp=elem.label(edges.ZOD_moins(:,3));
+        %         temp=temp-temp(1)*ones(size(temp));
+        %         if norm(temp)==0
+        %             elem.ZOD_moins=elem.label(edges.ZOD_moins(1,3));
+        %         else
+        %             stop
+        %         end
+        %
+        %         temp=elem.label(edges.ZOD_plus(:,3));
+        %         temp=temp-temp(1)*ones(size(temp));
+        %         if norm(temp)==0
+        %             elem.ZOD_plus=elem.label(edges.ZOD_plus(1,3));
+        %         else
+        %             stop
+        %         end
     end
-    
-    
-    
-    
-    
-    
     
     period=max(nodes(:,1))-min(nodes(:,1));
     
@@ -410,12 +404,13 @@ if exist('nodes')
     TL_EF=zeros(frequency.nb,1);
     abs_EF=zeros(frequency.nb,1);
     
-    
-    if exist('theta_DGM')
-        vec_theta=tilt+linspace(0,2*pi,theta_DGM.nb+1);
+    data_model.theta_DGM.nb
+    if isfield(data_model,'theta_DGM')
+        vec_theta=data_model.tilt+linspace(0,2*pi,data_model.theta_DGM.nb+1);
         vec_theta(end)=[];
         vec_theta=vec_theta+pi/2;
     end
+    
     
     if data_model.profiles.mesh
         display_mesh

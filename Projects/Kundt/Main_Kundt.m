@@ -7,9 +7,10 @@ cd(PLANES_dir)
 
 frequency.nb=1;
 frequency.min=500;
+frequency.min=100;
 frequency.max=20000;
 
-data_model.profiles.mesh=0;
+data_model.profiles.mesh=1;
 data_model.profiles.solution=0;
 data_model.profiles.x=0;
 data_model.profiles.y=1;
@@ -26,11 +27,13 @@ data_model.nx=1;
 %data_model.ny=ceil(data_model.nx*data_model.ly/data_model.lx);
 data_model.ny=20;
 
-PLANES('Kundt',0,data_model,frequency)
+data_model.theta_DGM.nb=4;
+data_model.tilt=0*pi/data_model.theta_DGM.nb;
+
+
+PLANES('Kundt',7,data_model,frequency)
 
 cd(current_dir);
-
-
 
 % Computation of the analytical solution and superposition
 

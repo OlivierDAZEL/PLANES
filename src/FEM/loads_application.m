@@ -79,7 +79,7 @@ for ie=1:nb.loads
                 end
                 for i_test=1:4
                     eval(['Psi_test=Psi_',num2str(i_test),'_x;'])
-                    F(indice_test(i_test))=F(indice_test(i_test))+integrate_polynom(Psi_test,length_edge)/(1j*omega);
+                    F(indice_test(i_test))=F(indice_test(i_test))-integrate_polynom(Psi_test,length_edge)/(1j*omega);
                 end
             elseif  ismember(elem.model(edges.loads(ie,3)),[10 11])
                 boundary_normal_velocity_fluid

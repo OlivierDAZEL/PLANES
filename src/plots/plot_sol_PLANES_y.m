@@ -70,7 +70,7 @@ for ie=1:nb.elements
     if ismember(elem.model(ie),[1 3])
         if ismember(floor(elem.label(ie)/1000),[1 4 5])
             c=sol(uy_TR(nonzeros(elem.nodes(ie,:))));
-            y=nodes(elem.nodes(ie,:),2)
+            y=nodes(elem.nodes(ie,:),2);
             figure(2002)
             plot(y,abs(c),'m+');
             figure(4002)
@@ -93,17 +93,12 @@ for ie=1:nb.elements
             figure(4010)
             plot(y,angle(c(1:3:12)),'m.');
         end
-        
-        
-        
-        
-        
+              
     elseif ismember(elem.model(ie),[10 11])
         coord_elem=nodes(nonzeros(elem.nodes(ie,:)),1:2)';
         x_centre=mean(nodes(nonzeros(elem.nodes(ie,:)),1:2))';
         
         q=X(dof_start_element(ie)+[0:ondes_element(ie)*theta_DGM.nb-1]);
-        
         
         e_edge=ie;
         parameter_element
@@ -137,9 +132,10 @@ for ie=1:nb.elements
 end
 
 
-if export.profiles==1
+if data_model.export.profiles==1
+    figure(2010)
     shading interp
-    print('-djpeg',[name_directory_profiles, num2str(i_f)]);
+    print('-djpeg',[name.directory_profiles, num2str(i_f)]);
 end
 
 % if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0

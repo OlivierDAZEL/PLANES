@@ -417,7 +417,7 @@ if exist('nodes')
         vec_theta=vec_theta+pi/2;
     end
     
-    if profiles.mesh
+    if data_model.profiles.mesh
         display_mesh
     end
     

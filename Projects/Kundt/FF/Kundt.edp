@@ -24,7 +24,6 @@ border BC(t=0,1){ x=xB+(xC-xB)*t; y=yB+(yC-yB)*t;label=1;}
 border CD(t=0,1){ x=xC+(xD-xC)*t; y=yC;label=1;}
 border DA(t=0,1){ x=xD+(xA-xD)*t; y=yD+(yA-yD)*t;label=1;}
 
-
 mesh Thtube=buildmesh (AB(nx)+BC(ny)+CD(nx)+DA(ny),fixeborder=1);
 
 savemesh(Thtube,fileoutput);

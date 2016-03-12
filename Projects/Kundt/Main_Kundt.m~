@@ -1,0 +1,35 @@
+clear all
+close all
+current_dir=pwd;
+PLANES_dir='../../src/Main/';
+cd(PLANES_dir)
+
+
+frequency.nb=1;
+frequency.min=200;
+frequency.max=20000;
+
+data_model.profiles.mesh=0;
+data_model.profiles.solution=0;
+data_model.profiles.x=0;
+data_model.profiles.y=1;
+data_model.profiles.map=0;
+data_model.profiles.custom=0;
+%data_model.profiles.on=data_model.profiles.x+data_model.profiles.y+data_model.profiles.map;
+data_model.profiles.custom_plots = {};
+data_model.export.profiles=0;
+data_model.export.nrj=1;
+
+data_model.lx=1;
+data_model.ly=0.1;
+data_model.nx=10;
+data_model.ny=ceil(data_model.nx*data_model.ly/data_model.lx);
+
+PLANES('Kundt',0,data_model,frequency)
+
+cd(current_dir);
+
+hold on
+
+
+u=

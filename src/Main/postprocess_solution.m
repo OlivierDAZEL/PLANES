@@ -20,7 +20,7 @@ else
     trans=X(nb.dof_FEM+nb.dof_DGM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
 end
 
-if export.profiles==1
+if data_model.export.profiles==1
     name.directory_profiles= [name.project_directory '/Profiles/'];
     if (~exist(name.directory_profiles,'dir'))
         mkdir(name.directory_profiles)
@@ -37,7 +37,7 @@ if export.profiles==1
 end
 
 
-if export.nrj==1
+if data_model.export.nrj==1
     compute_L2
     I_inc(i_f)=(period/air.Z)/(2*frequency.vec(i_f));
     if num_media.pem01~=0
@@ -72,21 +72,21 @@ if nb.T~=0
     end
 end
 
-if profiles.y==1
+if data_model.profiles.y==1
     plot_sol_PLANES_y
 end
-if profiles.map==1
+if data_model.profiles.map==1
     disp('Creation of the 2D plot, this can take time')
     plot_sol_PLANES_map
 end
-if profiles.custom~=0
+if data_model.profiles.custom~=0
     eval(['plot_sol_TR6_custom_' , num2str(profiles.custom)]);
 end
 
 % custom plots
-if isfield(profiles, 'custom_plots') && length(profiles.custom_plots)~=0
-    for i=1:length(profiles.custom_plots)
-        eval(profiles.custom_plots{i});
+if isfield(data_model.profiles, 'custom_plots') && length(data_model.profiles.custom_plots)~=0
+    for i=1:length(data_model.profiles.custom_plots)
+        eval(data_model.profiles.custom_plots{i});
     end
 end
 

@@ -33,7 +33,7 @@
 %%
 
 
-function PLANES(projectname, expnb,data_model,frequency,profiles,export)
+function PLANES(projectname, expnb,data_model,frequency)
 %clear all;
 %close all;
 %clc;
@@ -44,7 +44,6 @@ if ~exist('projectname')==1
     %project.name='Multilayer_3D';
     nargin=0;
 else
-    
     project.name=projectname;
 end
 if exist('expnb')==1
@@ -72,7 +71,7 @@ eval([name.project_full '_data']) %
 
 PLANES_preprocess
 
-if profiles.mesh
+if data_model.profiles.mesh
     display_mesh
 end
 

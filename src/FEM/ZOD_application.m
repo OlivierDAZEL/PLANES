@@ -71,12 +71,7 @@ for ii=1:size(edges.ZOD_moins,1)
             
             
         case {1}
-            
-            
-            
-            
-            
-            
+                        
             
             vec_tangent=a2-a1;
             vec_normal=[vec_tangent(2) vec_tangent(1)];

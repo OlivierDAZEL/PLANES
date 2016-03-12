@@ -36,8 +36,6 @@
 function Mat_PW=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer,nb_amplitudes,n_w,k_air,air)
 
 
-
-
 % Initialization of the matrix
 Mat_PW=zeros(nb_amplitudes-1,nb_amplitudes);
 
@@ -48,7 +46,7 @@ x_interface=-multilayer(1).d;
 % Loop on the layers
 
 
-for i_interface=1:multilayer(1,1).nb-1
+for i_interface=  1:multilayer(1,1).nb-1
     
     %Type of media on both sides and attribution of the dof
     medium_1=multilayer(i_interface).mat;

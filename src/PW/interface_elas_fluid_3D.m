@@ -41,8 +41,6 @@ delta_s=omega*sqrt(rho_solide/mu_solide);
 k_z_1=sqrt([delta_P delta_s delta_s].^2-k_x^2-k_y^2);
 SV_1=State_elas_3D(k_x,k_y,delta_P,delta_s,lambda_solide,mu_solide);
 
-
-
 if medium_2==0
     k_z_2=sqrt(k_air^2-k_x^2);
     SV_2=State_fluid_2D(k_x,k_z_2,air.K);

@@ -1,4 +1,4 @@
-% PW_resolution.m
+ % PW_resolution.m
 %
 % Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %

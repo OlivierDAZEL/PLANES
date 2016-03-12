@@ -32,7 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-list_path=['''../DGM'',''../FEM'',''../Materials'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../PW'',''../Solutions'',''../Utils'',''../Validation'''];
+list_path=['''../DGM'',''../FEM'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../PW'',''../Solutions'',''../Utils'',''../Validation'''];
 eval(['addpath(' list_path ');'])
 
 
@@ -43,8 +43,7 @@ if exist('name')~=1
     name.project_directory=['../../Projects/' project.name '/'];
 end
 addpath([name.project_directory '/m/']);
-
-
+addpath([name.project_directory '/m/Materials']);
 if name.project_directory(end)~='/'
     name.project_directory = [name.project_directory '/'];
 end

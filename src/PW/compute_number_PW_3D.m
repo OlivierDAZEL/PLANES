@@ -35,12 +35,14 @@
 for i_m=1:nb_multilayers
     for ii=1:multilayer(1,i_m).nb
         switch floor(multilayer(ii,i_m).mat/1000)
-            case 1
+            case {1}
                 n_w(ii,i_m)=6;
             case {0 2 3}
                 n_w(ii,i_m)=2;
             case {4 5}
                 n_w(ii,i_m)=8;
+            otherwise
+                problem_in_compute_nuber_PW_3D
         end
     end
     nb_amplitudes(i_m)=sum(n_w(:,i_m));

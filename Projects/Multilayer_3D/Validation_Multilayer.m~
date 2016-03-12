@@ -22,23 +22,23 @@ PLANES_Multilayer('Multilayer_3D',101,data_model,multilayer_1,frequency)
 
 
 
-% Test 2
-multilayer_2=multilayer_1;
-multilayer_2(1,1).termination=1;
-PLANES_Multilayer('Multilayer_3D',102,data_model,multilayer_2,frequency)
+% % Test 2
+% multilayer_2=multilayer_1;
+% multilayer_2(1,1).termination=1;
+% PLANES_Multilayer('Multilayer_3D',102,data_model,multilayer_2,frequency)
 % 
-% % Test 3
-% data_model.theta=[1e-3 1e-3]*pi/180;
-% multilayer_3(1,1).nb=3;
-% multilayer_3(1,1).d=1e-3;
-% multilayer_3(1,1).mat=1016;
-% multilayer_3(2,1).d=88e-3;
-% multilayer_3(2,1).mat=5012;
-% multilayer_3(3,1).d=1e-3;
-% multilayer_3(3,1).mat=1016;
-% multilayer_3(1,1).termination=1;
-% PLANES_Multilayer('Multilayer_3D',103,data_model,multilayer_3,frequency)
-% % 
+% Test 3
+data_model.theta=[1e-3 1e-3]*pi/180;
+multilayer_3(1,1).nb=3;
+multilayer_3(1,1).d=1e-3;
+multilayer_3(1,1).mat=1016;
+multilayer_3(2,1).d=88e-3;
+multilayer_3(2,1).mat=5012;
+multilayer_3(3,1).d=1e-3;
+multilayer_3(3,1).mat=1016;
+multilayer_3(1,1).termination=1;
+PLANES_Multilayer('Multilayer_3D',103,data_model,multilayer_3,frequency)
+% 
 % % Test 4
 % 
 % multilayer_4=multilayer_3;
@@ -75,9 +75,9 @@ PLANES_Multilayer('Multilayer_3D',102,data_model,multilayer_2,frequency)
  load('160311_tests.mat')
 % 
  test1_JPPM=load('out/Multilayer_3D_101.PW');
- test2_JPPM=load('out/Multilayer_3D_102.PW');
-% test3_JPPM=load('out/Multilayer_3D_103.PW');
-%test4_JPPM=load('out/Multilayer_3D_104.PW');
+% test2_JPPM=load('out/Multilayer_3D_102.PW');
+ test3_JPPM=load('out/Multilayer_3D_103.PW');
+% test4_JPPM=load('out/Multilayer_3D_104.PW');
 % test5_JPPM=load('out/Multilayer_3D_105.PW');
 % % test6_JPPM=load('out/Multilayer_3D_106.PW');
 % % test7_JPPM=load('out/Multilayer_3D_107.PW');
@@ -87,10 +87,10 @@ semilogx(test(1).f,test(1).absorp)
 hold on
 semilogx(test1_JPPM(:,1),test1_JPPM(:,2),'r.')
 % 
-figure 
-semilogx(test(2).f,test(2).TL)
-hold on
-semilogx(test2_JPPM(:,1),test2_JPPM(:,5),'r.')
+% figure 
+% semilogx(test(2).f,test(2).TL)
+% hold on
+% semilogx(test2_JPPM(:,1),test2_JPPM(:,5),'r.')
 % 
 figure 
 semilogx(test(3).f,test(3).TL)

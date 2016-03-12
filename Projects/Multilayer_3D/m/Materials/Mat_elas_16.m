@@ -1,4 +1,4 @@
-% Mat_PEM_3.m
+% Mat_elas_1.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -32,31 +32,13 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-porous_model.eqf='JCA_aniso';
-porous_model.frame='none';
-porous_model.aniso='yes';
 
-angle_rot=[pi/3;4*pi/9;pi/4];
-Q=rotate_u3(angle_rot);
+E_solide=7e10;
+nu_solide=0.33E+00;
+eta_solide=0.01;
+rho_solide=2700E+00;
 
-phi=0.95;
-LCT=4.500E-05;
-rho_1=126.000;
+lambda_solide=(1+1i*eta_solide)*(E_solide*nu_solide)/((1+nu_solide)*(1-2*nu_solide));
+mu_solide=(1+1i*eta_solide)*(E_solide)/(2*(1+nu_solide));
 
-young=694400E+00;
-nu=0.24000E+00;
-eta=0.05;
-
-
-sig=Q*diag([10000;20000;40000])*Q';
-alpha=Q*diag([1.1;1.1;1.1])*Q';
-LCV=Q*diag([1.50E-05;1.50E-05;1.50E-05])*Q';
-
-
-C_hat_0=1e5*[
-13.7+0.13j 7.10+0.04j 6.7+0.04j 0 0 0; 7.10+0.04j 13.7+0.13j 6.7+0.04j 0 0 0;
-6.7+0.04j 6.7+0.04j 126+0.73j 0 0 0;
-0 0 0 5.8+0.73j 0 0;
-0 0 0 0 5.8+0.73j 0;
-0 0 0 0 0 3.3+0.05j];
 

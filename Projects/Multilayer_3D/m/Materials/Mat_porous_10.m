@@ -33,7 +33,7 @@
 %%
 
 porous_model.eqf='JCA_aniso';
-porous_model.frame='none';
+porous_model.frame='structural';
 porous_model.aniso='yes';
 
 angle_rot=[pi/3;4*pi/9;pi/4];
@@ -53,10 +53,14 @@ alpha=Q*diag([1.1;1.1;1.1])*Q';
 LCV=Q*diag([1.50E-05;1.50E-05;1.50E-05])*Q';
 
 
-C_hat_0=1e5*[
-13.7+0.13j 7.10+0.04j 6.7+0.04j 0 0 0; 7.10+0.04j 13.7+0.13j 6.7+0.04j 0 0 0;
-6.7+0.04j 6.7+0.04j 126+0.73j 0 0 0;
-0 0 0 5.8+0.73j 0 0;
-0 0 0 0 5.8+0.73j 0;
-0 0 0 0 0 3.3+0.05j];
 
+N=(young)/(2*(1+nu));
+A_hat=(young*nu)/((1+nu)*(1-2*nu));
+F_hat=1*A_hat;
+C_hat_0= [A_hat+2*N A_hat F_hat 0 0 0;A_hat A_hat+2*N F_hat 0 0 0;F_hat F_hat A_hat+2*N 0 0 0; 0 0 0 N 0 0;0 0 0 0 N 0; 0 0 0 0 0 N ];
+
+
+
+alpha_hat=0.33348;
+beta_hat =812.69e3;
+b_hat=0.29620;

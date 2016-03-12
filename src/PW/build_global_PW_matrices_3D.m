@@ -46,7 +46,7 @@ x_interface=-multilayer(1).d;
 % Loop on the layers
 
 
-for i_interface=  1:multilayer(1,1).nb-1
+for i_interface=  1:multilayer(1).nb-1
     
     %Type of media on both sides and attribution of the dof
     medium_1=multilayer(i_interface).mat;

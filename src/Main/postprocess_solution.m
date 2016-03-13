@@ -48,14 +48,14 @@ if data_model.export.nrj==1
         W_vis(i_f)=(-pi*omega^2)*(imag(rho_til)*X(1:nb.dof_FEM)'*M_pem01_1*X(1:nb.dof_FEM)-imag(1/(rho_eq_til*omega^4))*X(1:nb.dof_FEM)'*H_pem01_1*X(1:nb.dof_FEM)+(2/omega^2)*imag(phi/alpha_til)*real(X(1:nb.dof_FEM)'*C_pem01_1*X(1:nb.dof_FEM)));
         W_struct(i_f)=pi*(imag(P_hat)*X(1:nb.dof_FEM)'*K0_pem01_1*X(1:nb.dof_FEM)+imag(N)*X(1:nb.dof_FEM)'*K1_pem01_1*X(1:nb.dof_FEM));
         W_therm(i_f)=(pi*phi^2*imag(R_til)/abs(R_til)^2)*X(1:nb.dof_FEM)'*Q_pem01_1*X(1:nb.dof_FEM);
-        W_elas(i_f)=pi*(imag(lambda_solide+2*mu_solide)*X(1:nb.dof_FEM)'*K0_elas_1*X(1:nb.dof_FEM)+imag(mu_solide)*X(1:nb.dof_FEM)'*K1_elas_1*X(1:nb.dof_FEM));
+%        W_elas(i_f)=pi*(imag(lambda_solide+2*mu_solide)*X(1:nb.dof_FEM)'*K0_elas_1*X(1:nb.dof_FEM)+imag(mu_solide)*X(1:nb.dof_FEM)'*K1_elas_1*X(1:nb.dof_FEM));
         
         abs_vis(i_f)=W_vis(i_f)/I_inc(i_f);
         abs_struct(i_f)=W_struct(i_f)/I_inc(i_f);
         abs_therm(i_f)=W_therm(i_f)/I_inc(i_f);
-        abs_elas(i_f)=W_elas(i_f)/I_inc(i_f);
+%        abs_elas(i_f)=W_elas(i_f)/I_inc(i_f);
         
-        abs_dis(i_f)=(abs_vis(i_f)+abs_struct(i_f)+abs_therm(i_f)+abs_elas(i_f));
+        abs_dis(i_f)=(abs_vis(i_f)+abs_struct(i_f)+abs_therm(i_f));%+abs_elas(i_f));
         
     end
 end

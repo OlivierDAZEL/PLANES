@@ -90,7 +90,7 @@ for ie=1:nb.DtN
         case {13}
             DtN_plate_R=1;
             Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1;0];
-            Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,incident);
+            Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,data_model.incident);
             F3=TR6_PW(length_edge,k_x,a);
             index_force=dof_A(ux_TR(node));
             index_F_elem=find(index_force);
@@ -109,7 +109,7 @@ for ie=1:nb.DtN
                 F3=TR6_PW(length_edge,vec_k_x(i_R),a);
                 
                 Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
-                [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,incident);
+                [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident);
                 
 
                 index_force=dof_A(ux_TR(node));
@@ -220,7 +220,7 @@ for ie=1:nb.DtN
                 F3=TR6_PW(length_edge,vec_k_x_t(i_T),a);
                 
                 Omega_moins=[0 0;-1j*vec_k_z(i_T)/(air.rho*omega^2) 0;-1 0;0 1];
-                [Omega_plus]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,transmitted);
+                [Omega_plus]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,data_model.transmitted);
                 
                 index_force=dof_A(ux_TR(node));
                 index_F_elem=find(index_force);
@@ -264,7 +264,7 @@ end
 if exist('DtN_plate_R')
     
     Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1 ;0 ];
-    Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,incident);
+    Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,data_model.incident);
     
     F(nb_dof_temp+1)=F(nb_dof_temp+1)+period*Omega_plus(4);
     F(nb_dof_temp+2)=F(nb_dof_temp+2)+period*Omega_plus(2);
@@ -272,7 +272,7 @@ if exist('DtN_plate_R')
     for i_R=1:nb.R
         temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);    
         Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
-        [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,incident);
+        [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident);
         A(temp  ,temp  )=-period*Omega_plus(4,1);
         A(temp  ,temp+1)=-period*Omega_plus(4,2);
         A(temp+1,temp  )=-period*Omega_plus(2,1);
@@ -285,7 +285,7 @@ if exist('DtN_plate_T')
     for i_T=1:nb.T
         temp=nb_dof_temp+size_info_vector_R*nb.R+1+size_info_vector_T*(i_T-1);
         Omega_moins=[0 0;-1j*vec_k_z_t(i_T)/(air.rho*omega^2) 0;-1 0;0 1];
-        [Omega_plus]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,transmitted);
+        [Omega_plus]=transfer_unknowns(vec_k_x_t(i_T),omega,Omega_moins,-1,data_model.transmitted);
         A(temp  ,temp  )=-period*Omega_plus(4,1);
         A(temp  ,temp+1)=-period*Omega_plus(4,2);
         A(temp+1,temp  )=-period*Omega_plus(2,1);

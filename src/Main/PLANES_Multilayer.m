@@ -42,7 +42,7 @@ project.num=expnb;
 PLANES_init
 PLANES_preprocess_Multilayer
 
-switch length(data_model.theta)
+switch length(data_model.theta_inc)
     case {1}
         PW_2D_resolution
     case {2}

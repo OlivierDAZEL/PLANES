@@ -16,7 +16,7 @@ multilayer_1(1,1).mat=5011;
 multilayer_1(1,1).termination=0;
 
 
-data_model.theta=[23 62]*pi/180;
+data_model.theta_inc=[23 62]*pi/180;
 
 PLANES_Multilayer('Multilayer_3D',101,data_model,multilayer_1,frequency)
 

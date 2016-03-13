@@ -43,8 +43,8 @@ compute_number_PW_3D
 for i_f=1:abs(frequency.nb)
     omega=2*pi*frequency.vec(i_f);
     k_air=omega/air.c;
-    k_x=k_air*sin(data_model.theta(1))*cos(data_model.theta(2));
-    k_y=k_air*sin(data_model.theta(1))*sin(data_model.theta(2));
+    k_x=k_air*sin(data_model.theta_inc(1))*cos(data_model.theta_inc(2));
+    k_y=k_air*sin(data_model.theta_inc(1))*sin(data_model.theta_inc(2));
 
     
     

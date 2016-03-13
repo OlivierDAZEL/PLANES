@@ -67,7 +67,7 @@ end
 
 if nb.T~=0
     TL_EF(i_f)=full(-10*log10(abs(sum(real(vec_k_z_t).'.*abs(trans(1:size_info_vector_T:end)).^2)/real(k_z))));
-    if export.nrj~=0
+    if data_model.export.nrj~=0
         fprintf(file_TL_id,'%1.15e \t %1.15e \n',freq,TL_EF(i_f));
     end
 end

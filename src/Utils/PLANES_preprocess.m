@@ -404,7 +404,6 @@ if exist('nodes')
     TL_EF=zeros(frequency.nb,1);
     abs_EF=zeros(frequency.nb,1);
     
-    data_model.theta_DGM.nb
     if isfield(data_model,'theta_DGM')
         vec_theta=data_model.tilt+linspace(0,2*pi,data_model.theta_DGM.nb+1);
         vec_theta(end)=[];

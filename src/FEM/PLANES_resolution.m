@@ -85,14 +85,17 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             if (nb.media.limp~=0)
                 for i_mat=1:nb.media.limp
                     eval(['Mat_porous_' num2str(num_media.limp(i_mat))])
-                    properties_limp
+                    typ_mat=3;
+                    properties_eqf
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_limp_',num2str(i_mat),'/(rho_limp*omega^2)-Q_limp_',num2str(i_mat),'/(K_eq_til);']);
                 end
             end
             if (nb.media.pem98~=0)
                 for i_mat=1:nb.media.pem98
-                    eval(['Mat_PEM_' num2str(num_media.pem98(i_mat))])
+                    eval(['Mat_porous_' num2str(num_media.pem98(i_mat))])
+                     typ_mat=3;                   
                     properties_eqf
+                    
                     properties_PEM
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+P_hat*K0_pem98_',num2str(i_mat),'+N*K1_pem98_',num2str(i_mat),'-omega^2*rho_til*M_pem98_',num2str(i_mat),';']);
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_pem98_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem98_',num2str(i_mat),'/(K_eq_til);']);
@@ -102,7 +105,8 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             if (nb.media.pem01~=0)
                 for i_mat=1:nb.media.pem01
                     eval(['Mat_porous_' num2str(num_media.pem01(i_mat))])
-                    properties_jca
+                    typ_mat=5;
+                    properties_eqf
                     properties_PEM
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+P_hat*K0_pem01_',num2str(i_mat),'+N*K1_pem01_',num2str(i_mat),'-omega^2*rho_til*M_pem01_',num2str(i_mat),';']);
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_pem01_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem01_',num2str(i_mat),'/(K_eq_til);']);

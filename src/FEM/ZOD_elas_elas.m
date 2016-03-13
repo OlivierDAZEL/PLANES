@@ -52,7 +52,6 @@ for ii=1:size(edges.ZOD_moins,1)
             
             FSIe=TR6_FSI(a1,a2);
             
-            
             index_force_p_moins=dof_A(p_TR(node_moins));
             index_F_elem_p_moins=find(index_force_p_moins);
             index_F_global_p_moins=index_force_p_moins(index_F_elem_p_moins);
@@ -66,17 +65,9 @@ for ii=1:size(edges.ZOD_moins,1)
             A(index_F_global_p_moins,index_F_global_p_plus) =A(index_F_global_p_moins,index_F_global_p_plus) -TT(1,2)*(FSIe(index_F_elem_p_moins,index_F_elem_p_plus));
             A(index_F_global_p_plus,index_F_global_p_moins) =A(index_F_global_p_plus,index_F_global_p_moins) -TT(2,1)*(FSIe(index_F_elem_p_plus,index_F_elem_p_moins));
             A(index_F_global_p_plus,index_F_global_p_plus)  =A(index_F_global_p_plus,index_F_global_p_plus)  -TT(2,2)*(FSIe(index_F_elem_p_plus,index_F_elem_p_plus));
-            
-            
-            
+             
         case {1}
-            
-            
-            
-            
-            
-            
-            
+                        
             vec_tangent=a2-a1;
             vec_normal=[vec_tangent(2) vec_tangent(1)];
             vec_normal=vec_normal/norm(vec_normal);
@@ -113,8 +104,6 @@ for ii=1:size(edges.ZOD_moins,1)
             index_F_elem_uy_plus=find(index_force_uy_plus);
             index_F_global_uy_plus=index_force_uy_plus(index_F_elem_uy_plus);
             
-            
-            
             A(index_F_global_ux_moins,index_F_global_ux_moins)=A(index_F_global_ux_moins,index_F_global_ux_moins)-TTrot(1,1)*(FSIe(index_F_elem_ux_moins,index_F_elem_ux_moins));
             A(index_F_global_ux_moins,index_F_global_uy_moins)=A(index_F_global_ux_moins,index_F_global_uy_moins)-TTrot(1,2)*(FSIe(index_F_elem_ux_moins,index_F_elem_uy_moins));
             A(index_F_global_ux_moins,index_F_global_ux_plus )=A(index_F_global_ux_moins,index_F_global_ux_plus )-TTrot(1,3)*(FSIe(index_F_elem_ux_moins,index_F_elem_ux_plus ));
@@ -125,7 +114,6 @@ for ii=1:size(edges.ZOD_moins,1)
             A(index_F_global_uy_moins,index_F_global_ux_plus )=A(index_F_global_uy_moins,index_F_global_ux_plus )-TTrot(2,3)*(FSIe(index_F_elem_uy_moins,index_F_elem_ux_plus ));
             A(index_F_global_uy_moins,index_F_global_uy_plus )=A(index_F_global_uy_moins,index_F_global_uy_plus )-TTrot(2,4)*(FSIe(index_F_elem_uy_moins,index_F_elem_uy_plus ));
             
-            
             A(index_F_global_ux_plus ,index_F_global_ux_moins)=A(index_F_global_ux_plus ,index_F_global_ux_moins)-TTrot(3,1)*(FSIe(index_F_elem_ux_plus ,index_F_elem_ux_moins));
             A(index_F_global_ux_plus ,index_F_global_uy_moins)=A(index_F_global_ux_plus ,index_F_global_uy_moins)-TTrot(3,2)*(FSIe(index_F_elem_ux_plus ,index_F_elem_uy_moins));
             A(index_F_global_ux_plus ,index_F_global_ux_plus )=A(index_F_global_ux_plus ,index_F_global_ux_plus )-TTrot(3,3)*(FSIe(index_F_elem_ux_plus ,index_F_elem_ux_plus ));
@@ -135,7 +123,6 @@ for ii=1:size(edges.ZOD_moins,1)
             A(index_F_global_uy_plus ,index_F_global_uy_moins)=A(index_F_global_uy_plus ,index_F_global_uy_moins)-TTrot(4,2)*(FSIe(index_F_elem_uy_plus ,index_F_elem_uy_moins));
             A(index_F_global_uy_plus ,index_F_global_ux_plus )=A(index_F_global_uy_plus ,index_F_global_ux_plus )-TTrot(4,3)*(FSIe(index_F_elem_uy_plus ,index_F_elem_ux_plus ));
             A(index_F_global_uy_plus ,index_F_global_uy_plus )=A(index_F_global_uy_plus ,index_F_global_uy_plus )-TTrot(4,4)*(FSIe(index_F_elem_uy_plus ,index_F_elem_uy_plus ));
-            
             
         otherwise
             plante_dans_ZOD_application

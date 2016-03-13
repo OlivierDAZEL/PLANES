@@ -35,8 +35,6 @@
 function [Omega_plus]=transfer_unknowns(k_x,omega,Omega_moins,signe,media)
 
 eval(['Mat_elas_' num2str(media(1).mat-1000*floor(media(1).mat/1000))])
-
-
 lambda=lambda_solide;
 mu=mu_solide;
 rho=rho_solide;

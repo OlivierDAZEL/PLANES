@@ -173,18 +173,10 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         disp('End of the resolution of the system')
         
         postprocess_solution
-        
+
         if exist([name.project_full '_postprocess'])==2
             eval([name.project_full '_postprocess'])
         end
     end
     time_PLANES=toc;
-end
-
-if exist('multilayer')
-    PW_2D_resolution
-end
-
-if exist('multilayer_3D')
-    PW_3D_resolution
 end

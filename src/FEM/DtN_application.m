@@ -133,14 +133,14 @@ for ie=1:nb.DtN
             F3=TR6_PW(length_edge,k_x,a);
             
             % Terme p_a delta u_y champs incident
-            index_force=dof_A(uy(node));
+            index_force=dof_A(uy_TR(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
             F(index_F_global)=F(index_F_global)+F3(index_F_elem);
             %signe ok
             
             % Terme u_a delta p champs incident
-            index_force=dof_A(p(node));
+            index_force=dof_A(p_TR(node));
             index_F_elem=find(index_force);
             index_F_global=index_force(index_F_elem);
             F(index_F_global)=F(index_F_global)+F3(index_F_elem)*(1i*k_z)/(air.rho*omega^2);
@@ -152,7 +152,7 @@ for ie=1:nb.DtN
                 % Terme p_a delta u_y champs reflechi
                 
                 F3=TR6_PW(length_edge,vec_k_x(i_R),a);
-                index_force=dof_A(uy(node));
+                index_force=dof_A(uy_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 A(index_F_global,nb_dof_temp+i_R)=A(index_F_global,nb_dof_temp+i_R)-F3(index_F_elem);
@@ -160,7 +160,7 @@ for ie=1:nb.DtN
                 
                 % Terme u_a delta p champs reflechi
                 
-                index_force=dof_A(p(node));
+                index_force=dof_A(p_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 A(index_F_global,nb_dof_temp+i_R)=A(index_F_global,nb_dof_temp+i_R)+F3(index_F_elem)*(1i*vec_k_z(i_R))/(air.rho*omega^2);
@@ -177,11 +177,11 @@ for ie=1:nb.DtN
             FSIe=TR6_FSI(a1,a2);
             
             
-            index_force_p=dof_A(p(node));
+            index_force_p=dof_A(p_TR(node));
             index_F_elem_p=find(index_force_p);
             index_F_global_p=index_force_p(index_F_elem_p);
             
-            index_force_u=dof_A(uy(node));
+            index_force_u=dof_A(uy_TR(node));
             index_F_elem_u=find(index_force_u);
             index_F_global_u=index_force_u(index_F_elem_u);
             

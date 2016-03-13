@@ -83,14 +83,14 @@ PLANES_resolution
 
 PLANES_info
 
-if (nb.dof_FEM+nb.dof_DGM)>0
-    if (nb.R~=0)
-        fclose(file_abs_id);
-    end
-    if (nb.T~=0)
-        fclose(file_TL_id);
-    end
-end
+% if (nb.dof_FEM+nb.dof_DGM)>0
+%     if (nb.R~=0)
+%         fclose(file_abs_id);
+%     end
+%     if (nb.T~=0)
+%         fclose(file_TL_id);
+%     end
+% end
 
 if exist('FF.inp','file')
     system('rm FF.inp')

@@ -415,28 +415,14 @@ if exist('nodes')
         display_mesh
     end
     
-    if (nb.R~=0)
-        file_abs_id=fopen(name.file_abs,'w');
-    end
-    if (nb.T~=0)
-        file_TL_id=fopen(name.file_TL,'w');
-    end
+%     if (nb.R~=0)
+%         file_abs_id=fopen(name.file_abs,'w');
+%     end
+%     if (nb.T~=0)
+%         file_TL_id=fopen(name.file_TL,'w');
+%     end
 else
     nb.dof_FEM=0;
     nb.dof_DGM=0;
 end
-
-if exist('multilayer')
-    nb_multilayers=size(multilayer,2);
-    % Addition of a new layer for the incident medium
-    l0=multilayer(1,:);
-    for i_m=1:nb_multilayers
-        l0(1,i_m).mat=0;
-        l0(1,i_m).d=0;
-        l0(1,i_m).nb=l0(1,i_m).nb+1;
-    end
-    multilayer=[l0;multilayer];
-end
-
-
 

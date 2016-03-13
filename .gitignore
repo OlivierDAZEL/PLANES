@@ -11,6 +11,7 @@
 *.dat
 src/Main/PLANES_IJNME.m
 src/Main/PLANES_CFM.m
+src/Problems
 Projects/*
 !Projects/Kundt
 !Projects/Multilayer_3D

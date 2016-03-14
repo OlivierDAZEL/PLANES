@@ -35,7 +35,7 @@
 
 
 
-function f=evaluate_polynom_2D(P,x,y)
+function f=evaluate_polynom_2D_vectorial(P,x,y)
 
 
 nb_v=length(x);

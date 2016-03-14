@@ -14,11 +14,12 @@
 *.dat
 src/Main/PLANES_IJNME.m
 src/Main/PLANES_CFM.m
-src/Problems
+src/Problems/
 Projects/*
 !Projects/Kundt
 !Projects/Multilayer_3D
 src/Misc/
+src/Problems
 .DS_*
 sync_PLANES.m
 *.fig

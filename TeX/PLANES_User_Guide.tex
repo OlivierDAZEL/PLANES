@@ -1,0 +1,289 @@
+\documentclass[11pt,A4paper]{book}
+\usepackage{geometry}        
+ 
+\usepackage[parfill]{parskip}  
+\usepackage{amssymb}
+\usepackage{epstopdf}
+
+
+
+\usepackage[pdftex]{graphicx}         % graphiques de base
+% Include figure files
+%\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{amsmath,amsfonts}%
+\usepackage{bm}%
+\usepackage{psfrag}%
+\usepackage{pict2e}
+
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue, 
+            citecolor=blue, urlcolor=blue]{hyperref}
+
+\usepackage{dirtree}
+%\includeonly{Chapter1}
+
+% Nouvelles commandes
+\newcommand{\ds}{\displaystyle}
+\newcommand{\tb}{\textbf}
+\newcommand{\tr}{\textrm}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\tp}{^T}
+\newcommand{\mb}{\, \mathbb}
+\newcommand{\pt}{\textbf{.}}
+\newcommand{\esp}{, \quad}
+\newcommand{\D}{\textrm{D}}
+\newcommand{\p}{\partial}
+
+\newcommand{\virt}[1]{\widehat{\textbf{#1}}}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\abs}[1]{ \left\vert #1 \right\vert}
+\newcommand{\Gd}[1]{\,\boldsymbol{\nabla}#1\,}
+\newcommand{\Div}{\,\boldsymbol{\nabla}\textbf{.}}
+\newcommand{\gd}[1]{\,{\nabla}#1\,}
+\renewcommand{\div}{\, \nabla \textbf{.}}
+\newcommand{\Rot}{\,\boldsymbol{\nabla}\wedge}
+\newcommand{\rot}{\,\nabla \wedge}
+\newcommand{\wdt}[1]{\widetilde{#1}}
+\newcommand{\wtt}[1]{\breve{#1}}
+\newcommand{\cv}[1]{\ast}
+\renewcommand{\d}{\,\textrm{d}}
+\newcommand{\phys}[1]{\widetilde{#1}}
+\newcommand{\Four}[1]{\mc{F}\left(#1\right)}
+\newcommand{\Fouri}[1]{\mc{F}^*\left(#1\right)}
+
+
+\newcommand{\oiom}{\oint_{\partial \Omega}}
+\newcommand{\iom}{\int_{\Omega}}
+\newcommand{\iome}{\displaystyle{\int_{\Omega_e}}}
+
+\newcommand{\oiomO}{\oint_{\partial \Omega_0}}
+\newcommand{\iomO}{\int_{\Omega_0}}
+%\newcommand{\scal}[1][2]{\left<#1|#2\right>}
+\newcommand{\dev}[1]{\widehat{#1}}
+
+\newcommand{\mat}[1]{#1}
+\renewcommand{\mat}[1]{ \left[ \textbf{#1} \right]}
+\renewcommand{\:}{\tb{:}}
+\newcommand{\chapterm}[1]{\markboth{\chaptername \thechapter.
+ #1}{}}
+
+\newcommand{\np}{\newpage{\cleardoublepage}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\lb}[1]{\label{#1}}
+\newcommand{\refeq}[1]{(\ref{#1})}
+
+\newcommand{\w}[1]{textbf{#1}}
+
+\newcommand{\cj}{\overline}
+ \newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+ \newcommand{\essnorm}[1]{\norm{#1}_{\ess}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\re}[1]{\Re{(#1)}}
+\newcommand{\im}[1]{\Im{(#1)}}
+\newcommand{\scal}[2]{\left<#1|#2\right>}
+% Fin nouvelles commandes
+
+\newcommand{\espa}{\vspace*{10cm}}
+\renewcommand{\mat}[1]{#1}
+\newcommand{\mc}{\mathcal}
+\newcommand{\ov}{\overline}
+\newcommand{\etal}{\textit{et al.}\,}
+%Headers
+\newcommand{\Hunc}{\mc{H}^1(\Omega)}
+\newcommand{\Huncp}{\mc{H}^1_P(\Omega)}
+\newcommand{\st}{^*}
+\newcommand{\goodgap}{\hspace{\subfigtopskip}}
+
+\newcommand{\ut}{$\{\tb{u}^s,\tb{u}^t\}\,$}
+\newcommand{\uU}{$\{\tb{u}^s,\tb{u}^f\}\,$}
+\newcommand{\uP}{$\{\tb{u}^s,P\}\,$}
+\newcommand\flash[1]{\colorbox{yellow}{\textbf{#1}}}
+
+
+\setlength{\unitlength}{1cm}
+
+% ------------------- Title and Author -----------------------------
+\title{\tb{PLANES Users Guide}}
+\author{Olivier DAZEL\\
+LAUM UMR CNRS 6613\\
+olivier.dazel@univ-lemans.fr}
+\begin{document}
+
+
+\maketitle
+
+\tableofcontents
+
+
+\chapter{General overview}
+
+\section{Presentation}
+
+PLANES (Porous LAum NumErical Simulator) project is a collection of Matlab/Fortran scripts to simulate the vibroacoustics response of coupled systems including acoustic, elastic, porous materials, PML... 
+
+\section{General organisation}
+
+\dirtree{%
+.1 PLANES.
+.2 Projects.
+.3 m.
+.4 Materials.
+.3 out.
+.3 FF.
+.2 src.
+.3 Main.
+.2 TeX.
+}
+All the information relative to a project are in the \verb?Projects? folder. As a user, you do not need (theoretically) to modify the files in the other folders. 
+
+\subsection{Labels for materials \label{sec:label_materials}}
+
+The convention is as follows:  
+  
+  
+\begin{itemize}
+\item 0 AIR
+\item 1XXX Elastic medium
+\item 2XXX Equivalent fluid (rigid frame) material
+\item 3XXX Limp model
+\item 4XXX Poroelastic Material (or FEM: 1998 formulation)
+\item 5XXX BIOT (or FEM: 2001 formulation) 
+\item 80xy PML x and y boolean direction
+\end{itemize}
+
+
+\subsection{Type of boundaries}
+\begin{itemize}
+\item 1 RIGID WALL
+\item 2 UNIT PRESSURE (FLUID)
+\item 3 UNIT NORMAL VELOCITY
+\item 4 UNIT TANGENTIAL VELOCITY
+\item 5 SLIDING (PEM)
+\item 6 BONDED (PEM) or CLAMPED (elastic)
+\item 7 UNIT PRESSURE (PEM)
+\item 8 UNIT NORMAL VELOCITY (PEM)
+\item 9 UNIT NORMAL VELOCITY (PEM)
+\item 10 INCIDENT AIR PLANE WAVE on  ACOUSTIC/Biot98  ELEMENT 
+\item 11 INCIDENT AIR PLANE WAVE on ELASTIC ELEMENT 
+\item 12 INCIDENT AIR PLANE WAVE on Biot2001 ELEMENT
+\item 13 DtN Plate
+\item 20 TRANSMITTED AIR PLANE WAVE on  ACOUSTIC/Biot98  ELEMENT 
+\item 21 TRANSMITTED AIR PLANE WAVE on ELASTIC ELEMENT 
+\item 21 TRANSMITTED AIR PLANE WAVE on Biot2001 ELEMENT
+\item 60 UNIT NORMAL VELOCITY on H12 with FLUX APPLICATION
+\item 98 PERIODICITY LEFT
+\item 99 PERIODICITY RIGHT
+\item 4xx ZOD impair/pair
+\item 400 FSI
+\item 1xyz Excitation wave 1 angle xyz in degree(PEM)
+\item 2xyz Excitation wave 2 angle xyz in degree(PEM)
+\item 3xyz Excitation wave 3 angle xyz in degree(PEM)
+\item 500 VELOCITY DIFFRACION CYLINDRE EF
+\end{itemize}
+
+
+\subsection{Models for elements}
+\begin{itemize}
+\item 1 TR6
+\item 2 H12
+\item 3 TR3
+\item 10 DGM on TR
+\item 11 DGM on H
+\end{itemize}
+
+
+
+\chapter{How to use the Multilayer solver}
+
+
+The Multilayer solver can be launched with a call
+
+\begin{verbatim}PLANES_Multilayer(Name,Number,data_model,multilayer_1,frequency)
+\end{verbatim}
+
+\begin{itemize}
+	\item \verb?Name? is a string associated to the name of the project. This string is the same than the folder in The project area.
+	\item \verb?Number? is an integer. This is the number of the subproject
+	\item \verb?data_model? is a structure that contains the data of the model. In the present case, it only contains the angle of incidence.
+	\item \verb?multilayer? is a structure array which contains one or several multilayer structures. It is associated to several arrays
+	\begin{itemize}
+	\item \verb?multilayer.nb(1,#m)? correspond to the number of layer of multilayer structure\verb?#m?.
+	\item \verb?multilayer.termination(1,#m)? correspond to the termination condition of multilayer structure\verb?#m?. The value is 0 for rigid backing and 1 for a radiation condition
+	\item \verb?multilayer.d(#l,#m)? correspond to the thickness of the layer \verb?#l? of multilayer structure \verb?#m?. It is a real number.
+	\item \verb?multilayer.mat(#l,#m)? correspond to the material of the layer \verb?#l? of multilayer structure \verb?#m?. The label is an integer associated to the convention presented in section \ref{sec:label_materials}.
+	\end{itemize}
+		\item \verb?data_model? is a structure that contains the data of the model. In the present case, it only contains the angle of incidence. It can be either a real number or an array of two real numbers. 
+	\item  \verb?frequency? is the structure associated to frequency 
+\end{itemize}
+
+
+The result of the Multilayer solver is a File:
+\begin{center}
+	\begin{verbatim}
+		Name of the project_#subproject.PW
+	\end{verbatim}
+\end{center}
+It is a text file in which each line has $1+6l$ columns. The first one correspond to the frequency. The remaining $6l$ columns correspond to the result for multilayer structure $\#l$ and are ordered
+\begin{itemize}
+	\item Absorption coefficient
+	\item Real part of the reflexion coefficient
+	\item Imaginary part of the reflexion coefficient
+	\item Transmission loss
+	\item Real part of the transmission coefficient
+	\item Imaginary part of the transmission coefficient
+\end{itemize}
+
+
+\chapter{How to use the FEM/DGM solver}
+
+
+The result of the Multilayer solver is a File:
+\begin{center}
+	\begin{verbatim}
+		Name of the project_#subproject.PL
+	\end{verbatim}
+\end{center}
+
+
+
+
+
+\chapter{Benchmarks}
+
+\section{Kundt Tube}
+
+Sous projets
+\begin{itemize}
+	\item 0: TR6
+	\item 1: H12
+	\item 2: TR6/H12
+	\item 3: DGM on TR
+	\item 4: DGM on H
+	\item 5: DGM on TR / DGM on H
+	\item 6: H12 / DGM on H
+	\item 7: TR6 / DGM on H  
+\end{itemize}
+
+\begin{figure}[BTBP]
+\centering
+\setlength{\unitlength}{1cm}
+\begin{picture}(6,6)
+\linethickness{1mm}
+   \put(0,1){\line(1,0){4}}
+   \put(0,2){\line(0,1){4}}
+   \put(0 ,6){\line(1,0){4}}
+   \put(0 ,2){\line(0,1){4}}
+   \put(0.3,4){0}
+\end{picture}
+\caption{caption}
+\end{figure}
+
+\bibliographystyle{plain-annote}
+\bibliography{mybibliography}
+
+
+\end{document}
+

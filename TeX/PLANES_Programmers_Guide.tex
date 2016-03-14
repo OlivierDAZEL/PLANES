@@ -1,0 +1,1450 @@
+\documentclass[11pt,A4paper]{book}
+\usepackage{geometry}        
+ 
+\usepackage[parfill]{parskip}  
+\usepackage{amssymb}
+\usepackage{epstopdf}
+
+
+
+\usepackage[pdftex]{graphicx}         % graphiques de base
+% Include figure files
+%\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{amsmath,amsfonts}%
+\usepackage{bm}%
+\usepackage{psfrag}%
+\usepackage{pict2e}
+
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue, 
+            citecolor=blue, urlcolor=blue]{hyperref}
+
+%\includeonly{Chapter1}
+
+% Nouvelles commandes
+\newcommand{\ds}{\displaystyle}
+\newcommand{\tb}{\textbf}
+\newcommand{\tr}{\textrm}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\tp}{^T}
+\newcommand{\mb}{\, \mathbb}
+\newcommand{\pt}{\textbf{.}}
+\newcommand{\esp}{, \quad}
+\newcommand{\D}{\textrm{D}}
+\newcommand{\p}{\partial}
+
+\newcommand{\virt}[1]{\widehat{\textbf{#1}}}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\abs}[1]{ \left\vert #1 \right\vert}
+\newcommand{\Gd}[1]{\,\boldsymbol{\nabla}#1\,}
+\newcommand{\Div}{\,\boldsymbol{\nabla}\textbf{.}}
+\newcommand{\gd}[1]{\,{\nabla}#1\,}
+\renewcommand{\div}{\, \nabla \textbf{.}}
+\newcommand{\Rot}{\,\boldsymbol{\nabla}\wedge}
+\newcommand{\rot}{\,\nabla \wedge}
+\newcommand{\wdt}[1]{\widetilde{#1}}
+\newcommand{\wtt}[1]{\breve{#1}}
+\newcommand{\cv}[1]{\ast}
+\renewcommand{\d}{\,\textrm{d}}
+\newcommand{\phys}[1]{\widetilde{#1}}
+\newcommand{\Four}[1]{\mc{F}\left(#1\right)}
+\newcommand{\Fouri}[1]{\mc{F}^*\left(#1\right)}
+
+
+\newcommand{\oiom}{\oint_{\partial \Omega}}
+\newcommand{\iom}{\int_{\Omega}}
+\newcommand{\iome}{\displaystyle{\int_{\Omega_e}}}
+
+\newcommand{\oiomO}{\oint_{\partial \Omega_0}}
+\newcommand{\iomO}{\int_{\Omega_0}}
+%\newcommand{\scal}[1][2]{\left<#1|#2\right>}
+\newcommand{\dev}[1]{\widehat{#1}}
+
+\newcommand{\mat}[1]{#1}
+\renewcommand{\mat}[1]{ \left[ \textbf{#1} \right]}
+\renewcommand{\:}{\tb{:}}
+\newcommand{\chapterm}[1]{\markboth{\chaptername \thechapter.
+ #1}{}}
+
+\newcommand{\np}{\newpage{\cleardoublepage}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\lb}[1]{\label{#1}}
+\newcommand{\refeq}[1]{(\ref{#1})}
+
+\newcommand{\w}[1]{textbf{#1}}
+
+\newcommand{\cj}{\overline}
+ \newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+ \newcommand{\essnorm}[1]{\norm{#1}_{\ess}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\re}[1]{\Re{(#1)}}
+\newcommand{\im}[1]{\Im{(#1)}}
+\newcommand{\scal}[2]{\left<#1|#2\right>}
+% Fin nouvelles commandes
+
+\newcommand{\espa}{\vspace*{10cm}}
+\renewcommand{\mat}[1]{#1}
+\newcommand{\mc}{\mathcal}
+\newcommand{\ov}{\overline}
+\newcommand{\etal}{\textit{et al.}\,}
+%Headers
+\newcommand{\Hunc}{\mc{H}^1(\Omega)}
+\newcommand{\Huncp}{\mc{H}^1_P(\Omega)}
+\newcommand{\st}{^*}
+\newcommand{\goodgap}{\hspace{\subfigtopskip}}
+
+\newcommand{\ut}{$\{\tb{u}^s,\tb{u}^t\}\,$}
+\newcommand{\uU}{$\{\tb{u}^s,\tb{u}^f\}\,$}
+\newcommand{\uP}{$\{\tb{u}^s,P\}\,$}
+\newcommand\flash[1]{\colorbox{yellow}{\textbf{#1}}}
+
+
+\setlength{\unitlength}{1cm}
+
+% ------------------- Title and Author -----------------------------
+\title{PLANES Documentation}
+\author{Olivier DAZEL\\
+LAUM UMR CNRS 6613\\
+olivier.dazel@univ-lemans.fr}
+\begin{document}
+
+
+\maketitle
+
+\tableofcontents
+
+
+\chapter{General overview}
+
+\section{Presentation}
+
+PLANES (Porous LAum NumErical Simulator) project is a collection of Matlab/Fortran scripts to simulate the vibroacoustics response of coupled systems including acoustic, elastic, porous materials, PML... 
+
+
+
+
+
+\chapter{Tables}
+\begin{itemize}
+\item interface($n_1$,$n_2$,$e_1$,$e_2$,$n_{middle}$)
+\item boundary($n_1$,$n_2$,typ($e$),typ(boundary),0,$n_{middle}$)
+\end{itemize}
+
+
+\chapter{Figures}
+
+
+The number of the figure is xxxyyy. xxx is associated to the the type of display and yyy corresponds to the type of field
+
+Type of display xxx
+\begin{itemize}
+	\item  1yyy: Modulus of the projection on $x$ axis
+	\item  2yyy: Modulus of the projection on $y$ axis
+	\item  3yyy: Angle of the projection on $x$ axis
+	\item  4yyy: Angle of the projection on $y$ axis  
+	\item  5000: Shape of the displacement
+	\item 10yyy: Map of the modulus for FEM
+	\item 11yyy: Map of the angle for FEM
+	\item 20yyy: Map of the modulus for DGM
+	\item 21yyy: Map of the angle for DGM
+	\item 30yyy: Map of the modulus in case of a FEM/DGM model
+	\item 31yyy: Map of the angle in case of a FEM/DGM model
+\end{itemize}
+
+Type of fields xxx
+\begin{itemize}
+	\item xxx1: $v_x$ of the fluid or $v^{eq}_x$ for an equivalent fluid or $u^t_x$ for a Biot PEM.
+	\item xxx2: $v_y$ of the fluid or $v^{eq}_y$ for an equivalent fluid or $v^t_y$ for a Biot PEM
+	\item xxx3: $\abs{v}$ of the fluid or $\abs{v^{eq}}$ for an equivalent fluid or $u^t_y$ for a Biot PEM
+	\item xxx4: $v^s_x$ for a Biot PEM.
+	\item xxx5: $v^s_y$ for a Biot PEM	
+	\item xx10: $p$
+\end{itemize}
+
+\chapter{Weak forms}
+
+\section{Finite-Elements}
+
+\subsection{Fluid}
+Unknown: the pressure field $p$. $\rho$ is the density
+\begin{equation}
+\forall\, q\esp 	\iom \dfrac{\Gd p \Gd q}{\rho\,\omega^2} - \dfrac{p\, q}{\rho\, c^2}
+\d\Omega =\oiom \dfrac{1}{\rho\, \omega^2}\dfrac{\p p}{\p n} \d\Gamma
+\end{equation}
+
+\subsection{Elastic solid}
+Unknown: the solid displacement $\tb{u}$. 
+\begin{equation}
+\forall\, \tb{v}\esp 	\iom 
+\bs{\sigma}(\tb{u}):\bs{\eps}(\tb{v}) -\omega^2\rho_s \tb{u}\pt\tb{v}
+\d\Omega =\oiom [\bs{\sigma}(\tb{u})\pt\tb{n}]\pt \tb{v} \d\Gamma
+\end{equation}
+
+\section{Discontinuous Galerkin}
+
+\subsection{Abstract weak forms}
+\begin{equation}
+\left(j\omega[\tb{M}]+[\tb{B}_x]\dfrac{\p}{\p x}+[\tb{B}_y]\dfrac{\p}{\p y}\right)\tb{S}=\tb{0} \tr{ on } \Omega.
+\label{eq:System}
+\end{equation}
+$\tb{S}$ is the State Vector of the medium. 
+In a conservative form:
+\begin{equation}
+\left(j\omega+[\tb{A}_x]\dfrac{\p}{\p x}+[\tb{A}_y]\dfrac{\p}{\p y}\right)\tb{S}=\tb{0} \tr{ on } \Omega.
+\label{eq:System}
+\end{equation}
+\begin{equation}
+	[\tb{A}_x]=[\tb{M}]^{-1}[\tb{B}_x] \esp
+	[\tb{A}_y]=[\tb{M}]^{-1}[\tb{B}_y]. 
+\end{equation}
+
+
+$\Omega$ is partitioned in $n$ elements $\Omega_e$ with $e=1,...,n$.
+\begin{equation}
+\ds{\sum_{e=1}^n}\,
+\ds{\int_{\Omega_e}}\tb{T}_e\tp\left(j\omega[\tb{M}]\tb{S}_e+[\tb{B}_x]\dfrac{\p\tb{S}_e}{\p x}+[\tb{B}_y]\dfrac{\p\tb{S}_e}{\p y}\right) \, \d\Omega={0}. 
+\label{eq:System}
+\end{equation}
+$\tb{T}_e$ is the test field on each element.
+\begin{equation*}
+-\ds{\sum_{e=1}^n}\,\ds{\int_{\Omega_e}}
+\left(j\omega[\tb{M}]\tp\tb{T}_e+[\tb{B}_x]\tp\dfrac{\p \tb{T}_e}{\p x}+[\tb{B}_y]\tp\dfrac{\p\tb{T}_e}{\p y}\right)\tp\, \tb{S}_e\, \d\Omega+\ds{\sum_{e=1}^n}\,\ds{\int_{\p\Omega_e}} 
+\tb{T}_e\tp[\tb{G}_e]\tb{S}_e \d\Gamma
+={0}. 
+\end{equation*}
+where we have introduced the matrix $[\tb{G}_e]=[\tb{B}_x]n_x + [\tb{B}_y]n_y$ which represents the normal fluxes across the boundary of the element $\Omega_e$. The unit normal $\tb{n} = (n_x,n_y)$ on the element boundary $\p\Omega_e$ points out of element $e$. A key aspect of the wave-based DGM is to use test functions $\tb{T}$ whose restrictions $\tb{T}_e$ on each elements are solutions of the adjoint problem defined on each element:
+\begin{equation}
+\left(j\omega[\tb{M}]\tp\tb{T}_e+[\tb{B}_x]\tp\dfrac{\p \tb{T}_e}{\p x}+[\tb{B}_y]\tp\dfrac{\p\tb{T}_e}{\p y}\right)=\tb{0}
+={0}. 
+\end{equation}
+With this choice of test functions the integral over each element $\Omega_e$ vanishes and one is left with integrals on the interfaces between elements and on the boundary of the domain.
+\begin{equation}
+\ds{\sum_{e=1}^n}\,\ds{\int_{\p\Omega_e}} 
+\tb{T}_e\tp[\tb{G}_e]\tb{S}_e \d\Gamma
+={0}. 
+\end{equation}
+
+\begin{equation}
+	[\tb{F}_e]=[\tb{A}_x]n_x + [\tb{A}_y]n_y \,\Longrightarrow
+	[\tb{G}_e]=[\tb{M}_e][\tb{F}_e]
+\end{equation}
+
+\begin{equation}
+\ds{\sum_{e=1}^n}\,\ds{\int_{\p\Omega_e}} 
+\tb{T}_e\tp[\tb{M}_e][\tb{F}_e]\tb{S}_e \d\Gamma
+={0}. 
+\end{equation}
+
+\begin{equation}
+\ds{\sum_{e=1}^n}\,\ds{\int_{\p\Omega_e}} 
+\tb{V}_e [\tb{F}_e]\tb{S}_e \d\Gamma
+={0} \esp \tb{V}_e=[\tb{M}_e]\tb{T}_e. 
+\end{equation}
+
+
+\subsection{Characteristics}
+
+
+
+
+\begin{equation}
+	[\tb{F}_e][\tb{P}_e]=[\tb{P}_e][\bs{\Lambda}_e] \esp 
+	[\tb{F}_e]=[\tb{P}_e][\bs{\Lambda}_e][\tb{Q}_e] \esp
+	[\tb{Q}_e]=[\tb{P}_e]^{-1}
+\end{equation}
+
+\begin{equation}
+[\bs{\Lambda}_e]=\tr{diag}([\bs{\Lambda}_e^{in}],[\bs{\Lambda}_e^{out}],[\tb{0}]).	
+\end{equation}
+
+
+
+\begin{equation}
+	[\tb{F}_e]=[\tb{P}^{in}_e][\bs{\Lambda}^{in}_e][\tb{Q}^{in}_e]+[\tb{P}^{out}_e][\bs{\Lambda}^{out}_e][\tb{Q}^{out}_e]
+\end{equation}
+
+\subsection{Boundary term}
+
+
+
+
+\begin{equation}
+	\tb{S}_e=[\tb{P}^{in}_e]\tb{S}_e^{in}+[\tb{P}^{out}_e]\tb{S}_e^{out}
+\end{equation}
+
+\begin{equation}
+	[\tb{C}_e]\tb{S}_e=\tb{E}_e.
+\end{equation}
+
+
+\begin{equation}
+	[\tb{C}_e][\tb{P}^{out}]\tb{S}_e^{out}=\tb{E}_e-[\tb{C}_e][\tb{P}^{in}]\tb{S}_e^{in}
+\end{equation}
+
+\begin{equation}
+\tb{S}_e^{out}=[\wdt{\tb{R}}_e]\tb{S}_e^{in}+\wdt{\tb{E}}_e,
+\end{equation}
+
+\begin{equation}
+[\wdt{\tb{R}}_e]=-\left([\tb{C}_e][\tb{P}^{in}]\right)^{-1}[\tb{C}_e][\tb{P}^{in}] \esp 
+\wdt{\tb{E}}_e=\left([\tb{C}_e][\tb{P}^{in}]\right)^{-1}\tb{E}_e.
+\end{equation}
+
+
+\begin{equation}
+	\tb{S}_e=\left([\tb{P}^{in}]+[\tb{P}^{out}][\wdt{\tb{R}}_e]\right) \tb{S}_e^{in}+[\tb{P}^{out}]\wdt{\tb{E}}_e
+\end{equation}
+
+
+\begin{equation}
+	\tb{S}_e=\underbrace{\left([\tb{P}^{in}]+[\tb{P}^{out}][\wdt{\tb{R}}_e]\right) [\tb{Q}_e^{in}]}_{[\wdt{\tb{P}}_e]}\tb{S}_e+[\tb{P}^{out}]\wdt{\tb{E}}_e
+\end{equation}
+
+
+\begin{align}
+\ds{\int_{\p\Omega_e}} 
+\tb{T}_e\tp [\tb{M}_e][\tb{F}_e]\tb{S}_e \d\Gamma
+&=\ds{\int_{\p\Omega_e}} 
+\tb{T}_e\tp [\tb{M}_e] [\tb{F}_e] \left[
+[\wdt{\tb{P}}_e]\tb{S}_e+[\tb{P}^{out}]\wdt{\tb{E}}_e\right]\d\Gamma\\
+&=\ds{\int_{\p\Omega_e}} 
+\tb{T}_e\tp [\wdt{\tb{F}}_e] \tb{S}_e\d\Gamma +
+\ds{\int_{\p\Omega_e}}  \tb{T}_e\tp \wdt{\tb{S}}_e\d\Gamma
+\end{align}
+
+\begin{equation}
+[\wdt{\tb{F}}_e]=[\tb{M}_e] [\tb{F}_e] 
+[\wdt{\tb{P}}_e] \esp 	\wdt{\tb{S}}_e=[\tb{M}_e] [\tb{F}_e][\tb{P}^{out}]\wdt{\tb{E}}_e
+\end{equation}
+
+
+
+\subsection{Interfaces terms for DGM/DGM}
+
+
+\begin{equation}
+I_{12}=
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_1 [\tb{M}_1][\tb{F}_1]\tb{S}_1 \d\Gamma +
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2 [\tb{M}_2][\tb{F}_2]\tb{S}_2 \d\Gamma 
+\end{equation}
+
+
+
+
+\begin{align}
+	\tb{S}_1&=[\tb{P}^{in}_1]\tb{S}^{in}_1+[\tb{P}^{out}_1]\tb{S}_1^{out}\\
+	\tb{S}_2&=[\tb{P}^{in}_2]\tb{S}^{in}_2+[\tb{P}^{out}_2]\tb{S}_2^{out}.	
+\end{align}
+
+\begin{equation}
+	[\tb{C}_1]\tb{S}_1=[\tb{C}_2]\tb{S}_2.
+\end{equation}
+
+
+\begin{equation}
+	[\tb{C}_1][\tb{P}^{out}_1]\tb{S}_1^{out} -[\tb{C}_2][\tb{P}^{out}_2]\tb{S}_2^{out}=[\tb{C}_2][\tb{P}^{in}_2]\tb{S}_2^{in}-[\tb{C}_1][\tb{P}^{in}_1]\tb{S}_1^{in}
+\end{equation}
+
+\begin{equation}
+\left\{
+\begin{array}{c}
+{\tb{S}_1^{out}}\\
+{\tb{S}_2^{out}}
+\end{array}
+\right\}
+=[\wdt{\tb{R}}]
+\left\{
+\begin{array}{c}
+\tb{S}_1^{in}\\
+\tb{S}_2^{in}
+\end{array}
+\right\}.
+\end{equation}
+
+\begin{align}
+[\wdt{\tb{R}}]&=\left[[\tb{C}_1][\tb{P}^{out}_1] \, | -[\tb{C}_2][\tb{P}^{out}_2]\right]^{-1}\left[-[\tb{C}_1][\tb{P}^{in}_1] \, | [\tb{C}_2][\tb{P}^{in}_2]\right]\\
+&=\left[
+\begin{array}{cc}
+{[\wdt{\tb{R}}_{11}]} & {[\wdt{\tb{R}}_{12}]}\\
+{[\wdt{\tb{R}}_{21}]} & {[\wdt{\tb{R}}_{22}]}
+\end{array}	
+\right].
+\end{align}
+
+
+\begin{align}
+	\tb{S}_1&=\underbrace{\left([\tb{P}^{in}_1]+[\tb{P}^{out}_1][\wdt{\tb{R}}_{11}]\right) [\tb{Q}_1^{in}]}_{[\wdt{\tb{P}}_{11}]}\tb{S}_1+\underbrace{[\tb{P}_1^{out}][\wdt{\tb{R}}_{12}] [\tb{Q}_2^{in}]}_{[\wdt{\tb{P}}_{12}]}\tb{S}_2\\
+	\tb{S}_2&=\underbrace{[\tb{P}_2^{out}][\wdt{\tb{R}}_{21}] [\tb{Q}_1^{in}]}_{[\wdt{\tb{P}}_{21}]}\tb{S}_1+
+	\underbrace{\left([\tb{P}^{in}_2]+[\tb{P}^{out}_2][\wdt{\tb{R}}_{22}]\right) [\tb{Q}_2^{in}]}_{[\wdt{\tb{P}}_{22}]}\tb{S}_2
+\end{align}
+
+
+\begin{align}
+I_{12}&=
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_1 [\wdt{\tb{F}}_{11}]\tb{S}_1 \d\Gamma +
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_1 [\wdt{\tb{F}}_{12}]\tb{S}_2 \d\Gamma\\&+
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2 [\wdt{\tb{F}}_{21}]\tb{S}_1 \d\Gamma +
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2 [\wdt{\tb{F}}_{22}]\tb{S}_2 \d\Gamma
+\end{align}
+
+\begin{align}
+[\wdt{\tb{F}}_{11}]=[\tb{M}_1] [\tb{F}_1] 
+[\wdt{\tb{P}}_{11}] \esp [\wdt{\tb{F}}_{12}]=[\tb{M}_1] [\tb{F}_1] 
+[\wdt{\tb{P}}_{12}]\\
+[\wdt{\tb{F}}_{21}]=[\tb{M}_2] [\tb{F}_2] 
+[\wdt{\tb{P}}_{21}] \esp [\wdt{\tb{F}}_{22}]=[\tb{M}_2] [\tb{F}_2] 
+[\wdt{\tb{P}}_{22}]
+\end{align}
+
+
+\subsection{Interfaces terms for FEM/FEM}
+
+
+\begin{equation}
+I_{12}=
+-\ds{\int_{\Gamma_{12}}} 
+q_1 \dfrac{\tb{v}_1\pt\tb{n}_1}{j\omega}
+ \d\Gamma -
+\ds{\int_{\Gamma_{12}}} 
+q_2 \dfrac{\tb{v}_2\pt\tb{n}_2}{j\omega} 
+\d\Gamma 
+\end{equation}
+$-$ comes from the transposition of the right hand side integral. 
+
+Like in the previous section
+\begin{align}
+	\hat{\tb{S}}_1&=[\wdt{\tb{P}}_{11}]\tb{S}_1+[\wdt{\tb{P}}_{12}]\hat{\tb{S}}_2\\
+	\hat{\tb{S}}_2&=[\wdt{\tb{P}}_{21}]\tb{S}_1+[\wdt{\tb{P}}_{22}]\tb{S}_2
+\end{align}
+
+\begin{align}
+	-\dfrac{\tb{v}_1\pt\tb{n}_1}{j\omega}&=-\dfrac{1}{j\omega}
+	\left[\hat{\tb{S}}_1(1)\tb{n}_1(1)+\hat{\tb{S}}_1(2)\tb{n}_1(2)\right]\\
+	&=[\wdt{\tb{F}}_{11}]\tb{S}_1+[\wdt{\tb{F}}_{12}]\tb{S}_2
+\end{align}
+with
+
+
+\begin{align}
+ [\wdt{\tb{F}}_{11}]&=-\dfrac{1}{j\omega}
+	\left[[\wdt{\tb{P}}_{11}(1,:)]\tb{n}_1(1)+[\wdt{\tb{P}}_{11}(2,:)]\tb{n}_1(2)\right]\\
+	[\wdt{\tb{F}}_{12}]&=-\dfrac{1}{j\omega}
+	\left[[\wdt{\tb{P}}_{12}(1,:)]\tb{n}_1(1)+[\wdt{\tb{P}}_{12}(2,:)]\tb{n}_1(2)\right]
+\end{align}
+
+Concerning the second term
+\begin{align}
+	-\dfrac{\tb{v}_2\pt\tb{n}_2}{j\omega}&=\dfrac{1}{j\omega}
+	\left[\hat{\tb{S}}_2(1)\tb{n}_2(1)+\hat{\tb{S}}_2(2)\tb{n}_2(2)\right]\\
+	&=[\wdt{\tb{F}}_{21}]\tb{S}_1+[\wdt{\tb{F}}_{22}]\tb{S}_2
+\end{align}
+with
+
+
+\begin{align}
+ [\wdt{\tb{F}}_{21}]&=-\dfrac{1}{j\omega}
+	\left[[\wdt{\tb{P}}_{21}(1,:)]\tb{n}_2(1)+[\wdt{\tb{P}}_{21}(2,:)]\tb{n}_2(2)\right]\\
+	[\wdt{\tb{F}}_{22}]&=-\dfrac{1}{j\omega}
+	\left[[\wdt{\tb{P}}_{22}(1,:)]\tb{n}_2(1)+[\wdt{\tb{P}}_{22}(2,:)]\tb{n}_2(2)\right]
+\end{align}
+
+
+
+
+\begin{equation}
+p_1(x,y)\approx[\tb{N}_1(x,y)]\tb{p}_1 \esp \tb{p}_2(x,y)\approx[\tb{N}_2(x,y)]\tb{p}_2
+\end{equation}
+
+\begin{equation}
+\tb{S}_i\approx\left[
+\begin{array}{c}
+\left[\tb{V}_i^x(x,y)\right]\\
+\left[\tb{V}_i^y(x,y)\right]\\
+\left[\tb{N}_i(x,y)\right]
+\end{array}
+\right]\tb{p}_i
+\end{equation}
+
+\begin{equation}
+	\left[\tb{V}_i^x(x,y)\right]=-\dfrac{1}{j\omega \rho}\left[\dfrac{\p \tb{N}_i(x,y)}{\p x}\right]\esp
+\left[\tb{V}_i^y(x,y)\right]=
+-\dfrac{1}{j\omega \rho}\left[\dfrac{\p \tb{N}_i(x,y)}{\p y}\right]\\
+\end{equation}
+
+The boundary terms
+
+\begin{equation}
+	\ds{\int_{\Gamma_{12}}} 
+q_i [\wdt{\tb{F}}_{ij}]\tb{S}_j
+ \d\Gamma \approx \ds{\int_{\Gamma_{12}}} 
+\tb{q}_i\tp \left[\tb{N}_i(x,y)\right]
+\tp
+[\wdt{\tb{I}}_{ij}]
+\tb{p}_j
+ \d\Gamma 
+\end{equation}
+with
+\begin{equation}
+[\wdt{\tb{I}}_{ij}]=	\wdt{\tb{F}}_{ij}(1) \left[\tb{V}_j^x(x,y)\right]+\wdt{\tb{F}}_{ij}(2)\left[\tb{V}_j^y(x,y)\right]+\wdt{\tb{F}}_{ij}(3)\left[\tb{N}_j (x,y)
+\right]
+\end{equation}
+
+
+
+
+
+
+
+\subsection{Interfaces terms for FEM/DGM}
+
+
+\begin{equation}
+I_{12}=
+-\ds{\int_{\Gamma_{12}}} 
+q_1 \dfrac{\tb{v}_1\pt\tb{n}_1}{j\omega}
+ \d\Gamma +
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2 [\tb{M}_2][\tb{F}_2]\tb{S}_2 \d\Gamma 
+\end{equation}
+$-$ for the first comes from the transposition of the right hand side integral. 
+
+Like in the previous section
+\begin{align}
+	\hat{\tb{S}}_1&=[\wdt{\tb{P}}_{11}]\tb{S}_1+[\wdt{\tb{P}}_{12}]\hat{\tb{S}}_2\\
+	\hat{\tb{S}}_2&=[\wdt{\tb{P}}_{21}]\tb{S}_1+[\wdt{\tb{P}}_{22}]\tb{S}_2
+\end{align}
+
+
+\begin{align}
+	-\dfrac{\tb{v}_1\pt\tb{n}_1}{j\omega}&=\dfrac{1}{j\omega}
+	\left[\hat{\tb{S}}_1(1)\tb{n}_1(1)+\hat{\tb{S}}_1(2)\tb{n}_1(2)\right]\\
+	&=[\wdt{\tb{F}}_{11}]\tb{S}_1+[\wdt{\tb{F}}_{12}]\tb{S}_2
+\end{align}
+with
+
+
+\begin{align}
+ [\wdt{\tb{F}}_{11}]&=-\dfrac{1}{j\omega}
+	\left[[\wdt{\tb{P}}_{11}(1,:)]\tb{n}_1(1)+[\wdt{\tb{P}}_{11}(2,:)]\tb{n}_1(2)\right]\\
+	[\wdt{\tb{F}}_{12}]&=-\dfrac{1}{j\omega}
+	\left[[\wdt{\tb{P}}_{12}(1,:)]\tb{n}_1(1)+[\wdt{\tb{P}}_{12}(2,:)]\tb{n}_1(2)\right]
+\end{align}
+
+
+
+
+
+
+\begin{align}
+[\wdt{\tb{F}}_{21}]&=[\tb{M}_2] [\tb{F}_2] 
+[\wdt{\tb{P}}_{21}] \esp [\wdt{\tb{F}}_{22}]=[\tb{M}_2] [\tb{F}_2] 
+[\wdt{\tb{P}}_{22}]
+\end{align}
+
+
+
+\begin{align}
+I_{12}&=
+\ds{\int_{\Gamma_{12}}} 
+q_1 [\wdt{\tb{F}}_{11}]\tb{S}_1
+ \d\Gamma +\ds{\int_{\Gamma_{12}}} 
+q_1 [\wdt{\tb{F}}_{12}]\tb{S}_2
+ \d\Gamma\\
+ &+
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2\tp [\wdt{\tb{F}}_{21}]\tb{S}_1 \d\Gamma +
+\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2\tp [\wdt{\tb{F}}_{22}]\tb{S}_2 \d\Gamma
+\end{align}
+
+
+
+\begin{equation}
+p_1(x,y)\approx[\tb{N}_1(x,y)]\tb{p}_1 \esp \tb{S}_2(x,y)\approx[\tb{N}_2(x,y)]\tb{X}_2
+\end{equation}
+
+\begin{equation}
+\tb{S}_1\approx\left[
+\begin{array}{c}
+\left[\tb{V}_1^x(x,y)\right]\\
+\left[\tb{V}_1^y(x,y)\right]\\
+\left[\tb{N}_1(x,y)\right]
+\end{array}
+\right]\tb{p}_1
+\end{equation}
+
+\begin{equation}
+	\left[\tb{V}_1^x(x,y)\right]=-\dfrac{1}{j\omega \rho}\left[\dfrac{\p \tb{N}_1(x,y)}{\p x}\right]\esp
+\left[\tb{V}_1^y(x,y)\right]=
+-\dfrac{1}{j\omega \rho}\left[\dfrac{\p \tb{N}_1(x,y)}{\p y}\right]\\
+\end{equation}
+
+
+
+
+\begin{equation}
+	\ds{\int_{\Gamma_{12}}} 
+q_1 [\wdt{\tb{F}}_{11}]\tb{S}_1
+ \d\Gamma \approx \ds{\int_{\Gamma_{12}}} 
+\tb{q}_1\tp \left[\tb{N}_1(x,y)\right]
+\tp
+[\wdt{\tb{I}}_{11}]
+\tb{p}_1
+ \d\Gamma 
+\end{equation}
+with
+\begin{equation}
+[\wdt{\tb{I}}_{11}]=	\wdt{\tb{F}}_{11}(1) \left[\tb{V}_1^x(x,y)\right]+\wdt{\tb{F}}_{11}(2)\left[\tb{V}_1^y(x,y)\right]+\wdt{\tb{F}}_{11}(3)\left[\tb{N}_1(x,y)
+\right]
+\end{equation}
+
+\begin{equation}
+	\ds{\int_{\Gamma_{12}}} 
+q_1 [\wdt{\tb{F}}_{12}]\tb{S}_2
+ \d\Gamma \approx \ds{\int_{\Gamma_{12}}} 
+\tb{q}_1\tp [\wdt{\tb{I}}_{12}]
+\tb{X}_2
+ \d\Gamma 
+\end{equation}
+with
+\begin{equation}
+[\wdt{\tb{I}}_{12}]=	\left[\tb{N}_1(x,y)\right]
+\tp
+ \wdt{\tb{F}}_{12}\left[\tb{N}_2(x,y)\right]
+\end{equation}
+
+
+\begin{equation}
+	\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2\tp  [\wdt{\tb{F}}_{21}]\tb{S}_1
+ \d\Gamma \approx \ds{\int_{\Gamma_{12}}} 
+\tb{X}_2\tp  \left[\tb{N}_2(x,y)\right]\tp
+[\wdt{\tb{I}}_{21}]
+\tb{p}_1
+ \d\Gamma 
+\end{equation}
+with
+\begin{equation}
+[\wdt{\tb{I}}_{21}]=\wdt{\tb{F}}_{11}(:,1) \left[\tb{V}_1^x(x,y)\right]+\wdt{\tb{F}}_{11}(:,2)\left[\tb{V}_1^y(x,y)\right]+\wdt{\tb{F}}_{11}(:,3)\left[\tb{N}_1(x,y)
+\right]
+\end{equation}
+
+
+\begin{equation}
+	\ds{\int_{\Gamma_{12}}} 
+\tb{T}_2\tp  [\wdt{\tb{F}}_{22}]\tb{S}_2
+ \d\Gamma \approx \ds{\int_{\Gamma_{12}}} 
+\tb{X}_2 \tp [\wdt{\tb{I}}_{22}]
+\tb{X}_2
+ \d\Gamma 
+\end{equation}
+with
+\begin{equation}
+[\wdt{\tb{I}}_{22}]=	\left[\tb{N}_2(x,y)\right]\tp[\wdt{\tb{F}}_{22}]\left[\tb{N}_2(x,y)\right]\end{equation}
+
+
+
+
+\chapter{Plane waves}
+
+
+\section{Fluid}
+
+\begin{align}
+j\omega{\rho}v_x&=- \dfrac{\p p}{\p x}\\
+j\omega{\rho}v_y&=- \dfrac{\p p}{\p y}\\
+j\omega p&=-\rho c^2\left(\dfrac{\p v_x}{\p x}+
+\dfrac{\p v_y}{\p y}\right).
+\end{align}
+
+
+\begin{equation}
+\tb{S}=
+\left\{
+\begin{array}{c}
+v_x\\
+v_y\\
+p
+\end{array}
+\right\}.
+\end{equation}
+$[\tb{M}]$, $[\tb{A}_x]$ and $[\tb{A}_y]$ are square matrices of size $m$ defined as
+\begin{equation}
+[\tb{M}]=\left[
+\begin{array}{ccc}
+\rho&0&0\\
+0&\rho&0\\
+0&0&\dfrac{1}{\rho c^2}
+\end{array}
+\right]
+\;,
+\end{equation}
+and
+\begin{equation}
+[\tb{B}_x]=\left[
+\begin{array}{ccc}
+0&0&1\\
+0&0&0\\
+1&0&0\\
+\end{array}
+\right]\esp
+[\tb{B}_y]=\left[
+\begin{array}{ccc}
+0&0&0\\
+0&0&1\\
+0&1&0\\
+\end{array}
+\right]
+\;.
+\end{equation}
+
+
+
+
+
+
+
+
+\chapter{Finite-Element Matrices}
+
+\section{Global system}
+
+\subsection{Unknown vector}
+
+\begin{enumerate}
+\item $\tb{X}_{TR6}$
+\item $\tb{X}_{H12}$
+\item $\tb{X}_{DGM}$
+\item $\tb{X}_{Bloch}$
+\end{enumerate}
+
+
+
+\begin{equation}
+\left[
+\begin{array}{cccc|cc}
+{[\tb{K}_e]-\omega^2[\tb{M}_e]}&&&&{\tb{I}_R^e}&{\tb{I}_T^e}\\ 
+&{[\tb{K}]-\omega^2\wdt{\rho}[\tb{M}]}&{-\wdt{\gamma}[\tb{C}]}&&{\tb{I}_R^s}&{\tb{I}_T^s}\\ 
+&{-\wdt{\gamma}[\tb{C}]^t} & {\dfrac{[\tb{H}]}{\omega^2\wdt{\rho}_{eq}}-\dfrac{[\tb{Q}]}{\wdt{K}_{eq}}}&&{\tb{I}_R^p}&{\tb{I}_T^p} \\
+&{} & &{\dfrac{[\tb{H}]}{\omega^2{\rho}_{0}}-\dfrac{[\tb{Q}]}{{K}_{0}}} &{\tb{I}_R^a}&{\tb{I}_T^a}\\ \hline
+{\tb{J}_R^e}&{\tb{J}_R^s}&{\tb{J}_R^p}&{\tb{J}_R^a}\\
+{\tb{J}_T^e}&{\tb{J}_T^s}&{\tb{J}_T^p}&{\tb{J}_T^a}
+\end{array}
+\right]
+\left\{
+\begin{array}{c}
+\tb{u}^e\\
+\tb{u}^s\\
+\tb{p}\\
+\tb{p}^a\\ \hline
+\tb{R}\\
+\tb{T}
+\end{array}
+\right\}
+=
+\left\{
+\begin{array}{c}
+\tb{f}^e\\
+\tb{f}^s\\
+\tb{u}\\
+\tb{u}^a\\ \hline
+\tb{R}'\\
+\tb{T}'
+\end{array}
+\right\}
+\end{equation}
+
+
+
+
+
+\section{Number of coefficient in matrices}
+
+
+
+\section{DtN operators}
+
+\subsection{Fields properties in incident and transmission media}
+
+
+\begin{equation}
+p^{inc}(x,y,t)=1\, e^{j(\omega t- k_x x-k_y y)}+\ds{\sum_{l\in\mb{Z}}} 
+e^{j(\omega t- k_x x+k_y(l) y)}R_l
+\end{equation}
+\begin{equation}
+k_x=k_0\,\,sin(\theta)\esp k_y=k_0\,\cos(\theta) \esp \theta\in \,\left[0;\dfrac{\pi}{2}\right[ \esp k_x(l)=k_x^i+\dfrac{2\pi l}{D}
+\end{equation}
+
+\begin{equation}
+u^{inc}(x,y,t)=\dfrac{\Gd p^{inc}}{\rho_0\omega^2}=\left| 
+\begin{array}{c}
+{-\dfrac{j k_x}{\rho\omega^2}}\\
+{-\dfrac{j k_z}{\rho\omega^2}}
+\end{array}
+\right.
+e^{j(\omega t- k_x x-k_y y)}+
+\ds{\sum_{l\in\mb{Z}}}
+\left| 
+\begin{array}{c}
+{-\dfrac{j k_x}{\rho\omega^2}}\\
+{ \dfrac{j k_y(l)}{\rho\omega^2}}
+\end{array}
+\right. 
+e^{j(\omega t- k_x x+k_y(l) y)}R_l
+\end{equation}
+
+
+\begin{equation}
+p^{tr}(x,y,t)=\ds{\sum_{l\in\mb{Z}}} 
+e^{j(\omega t- k_x x-k_y(l) y)}T_l
+\end{equation}
+
+\begin{equation}
+u^{tr}(x,y,t)=\dfrac{\Gd p^{tr}}{\rho_0\omega^2}=
+\ds{\sum_{l\in\mb{Z}}}
+\left| 
+\begin{array}{c}
+{-\dfrac{j k_x}{\rho\omega^2}}\\
+{-\dfrac{j k_y(l)}{\rho\omega^2}}
+\end{array}
+\right. 
+e^{j(\omega t- k_x x-k_y(l) y)}T_l
+\end{equation}
+
+\subsection{Formalisation of the fields}
+
+Let $\tb{X}_l$ be an information vector associated to Bloch wave $l$.  
+
+\begin{equation}
+\tb{Y}=\left\{
+\begin{array}{c}
+1\\
+\tb{X}_1\\
+\vdots\\
+\tb{X}_n
+\end{array}
+\right\}
+\end{equation}
+
+On each interface with the FEM model a physical field $\varphi$ can be written
+
+\begin{equation}
+\varphi(x,y)=[\bs{\Omega}_F^\varphi]e^{-jk_x}+\ds{\sum_{l}}[\bs{\Omega}_l^\varphi]\tb{X}_le^{-jk_x(l)}.
+\end{equation}
+
+
+
+\section{Case of a interface with fluid/Biot 1998}
+
+\begin{subequations}
+\begin{align}
+I_{FEM}&=\ds{\int_{|\Gamma_R}} \dfrac{1}{\rho\omega^2}\dfrac{\p p^{inc}}{\p n} q \,\d\Gamma=\ds{\int_{|\Gamma_R}} -u_y(x) q(x) \,\d\Gamma\\
+&=\ds{\int_{|\Gamma_R}}
+[\bs{\Omega}_F^{u_y}]e^{-jk_x}q \,\d\Gamma\flash{-}\ds{\sum_{l}}\ds{\int_{|\Gamma_R}}[\bs{\Omega}_l^{u_y}]\tb{X}_le^{-jk_x(l)}
+q
+ \,\d\Gamma
+\end{align}
+$\flash{-}$ is highlighted as this term will end in the matrix system.
+
+The information vector is scalar $\tb{X}_l=R_l$ and correspond to the reflexion coefficient. 
+ 
+\begin{equation}
+[\bs{\Omega}_F^{u_y}]=\dfrac{jk_z}{\rho_0\omega^2} \esp
+[\bs{\Omega}_l^{u_y}]=\dfrac{jk_z(l)}{\rho_0\omega^2}
+\end{equation}
+
+\end{subequations}
+
+The additional equation is the projection of the pressure
+\begin{align}
+\ds{\int_{\Gamma_R}}p(x) e^{jk_x(n)x}\d\Gamma=
+\underbrace{\ds{\int_{\Gamma_R}}e^{j\dfrac{2\pi nx}{D}}\d\Gamma}_{D\delta_{n0}}+
+\underbrace{\ds{\int_{\Gamma_R}}
+\ds{\sum_{l\in\mb{Z}}}
+e^{-\dfrac{j2\pi (l-n)x}{D} }
+\d\Gamma}_{D\delta_{nl}}R_l
+\end{align}
+
+
+\section{Case of a interface with an elastic medium}
+
+\subsection{Reflexion side}
+
+\begin{subequations}
+\begin{align}
+I_{FEM}&=\ds{\int_{|\Gamma_R}} \sigma_{xy}v_x-\sigma_{yy}v_y \,\d\Gamma
+=\ds{\int_{|\Gamma_R}} pv_y \,\d\Gamma\\
+&=\ds{\int_{|\Gamma_R}}
+[\bs{\Omega}_F^{{p}}]e^{-jk_x}q \,\d\Gamma
+-\ds{\sum_{l}}\ds{\int_{|\Gamma_R}}[\bs{\Omega}_l^{{p}}]\tb{X}_le^{-jk_x(l)}
+v_y
+ \,\d\Gamma
+\end{align}
+
+The information vector is scalar $\tb{X}_l=R_l$ and correspond to the reflexion coefficient. 
+ 
+\begin{equation}
+[\bs{\Omega}_F^{{p}}]=1 \esp
+[\bs{\Omega}_l^{{p}}]=-1
+\end{equation}
+
+\end{subequations}
+
+The additional equation is the projection of the pressure
+\begin{align}
+\ds{\int_{\Gamma_R}}u_y(x) e^{jk_x(n)x}\d\Gamma=
+\dfrac{-jk_y}{\rho_0\omega^2}
+{D\delta_{n0}}+
+\dfrac{jk_y(l)}{\rho_0\omega^2}
+{D\delta_{nl}}R_l
+\end{align}
+
+\subsection{Transmission side}
+
+\begin{subequations}
+\begin{align}
+I_{FEM}&=\ds{\int_{|\Gamma_R}} \sigma_{xy}v_x+\sigma_{yy}v_y \,\d\Gamma
+=\ds{\int_{|\Gamma_R}} pv_y \,\d\Gamma\\
+&=\ds{\int_{|\Gamma_R}}
+[\bs{\Omega}_F^{{p}}]e^{-jk_x}q \,\d\Gamma
+-\ds{\sum_{l}}\ds{\int_{|\Gamma_R}}[\bs{\Omega}_l^{{p}}]\tb{X}_le^{-jk_x(l)}
+v_y
+ \,\d\Gamma
+\end{align}
+
+The information vector is scalar $\tb{X}_l=R_l$ and correspond to the reflexion coefficient. 
+ 
+\begin{equation}
+[\bs{\Omega}_F^{{p}}]=-1 \esp
+[\bs{\Omega}_l^{{p}}]= 1
+\end{equation}
+
+\end{subequations}
+
+The additional equation is the projection of the pressure
+\begin{align}
+\ds{\int_{\Gamma_T}}u_y(x) e^{jk_x(n)x}\d\Gamma=
+-
+\dfrac{jk_y(l)}{\rho_0\omega^2}
+{D\delta_{nl}}R_l
+\end{align}
+
+
+\section{Case of integration of a plate medium}
+
+\subsection{Reflexion side}
+
+\begin{align}
+I_{FEM}&=\ds{\int_{|\Gamma_R}} - \sigma_{xz}v_x-\sigma_{zz}v_z \,\d\Gamma
+\end{align}
+
+\begin{equation}
+\left\{
+\begin{array}{c}
+\sigma_{xz}\\
+u_z\\
+\sigma_{zz}\\
+u_x\\
+\end{array}
+\right\}=\left[
+\begin{array}{ccc}
+0 &0 &0\\
+{-\dfrac{jk_z}{\rho\omega^2}}
+&{\dfrac{jk_z}{\rho\omega^2}}&0\\
+-1&-1&0\\
+0&0&1
+\end{array}
+\right]\left\{
+\begin{array}{c}
+1\\
+R\\
+u_x
+\end{array}
+\right\}
+\end{equation}
+
+\begin{equation}
+\left\{
+\begin{array}{c}
+\sigma_{xz}\\
+u_z\\
+\sigma_{zz}\\
+u_x\\
+\end{array}
+\right\}_{\tb{F}}=[\tb{T}]\left\{
+\begin{array}{ccc}
+0 \\
+{-\dfrac{jk_z}{\rho\omega^2}}\\
+-1&\\
+0
+\end{array}
+\right\}\esp
+\left\{
+\begin{array}{c}
+\sigma_{xz}\\
+u_z\\
+\sigma_{zz}\\
+u_x\\
+\end{array}
+\right\}_{\tb{R}}=[\tb{T}]\left[
+\begin{array}{cc}
+0 &0\\
+{\dfrac{jk_z}{\rho\omega^2}}&0\\
+-1&0\\
+0&1
+\end{array}
+\right]\left\{
+\begin{array}{c}
+R\\
+u_x
+\end{array}
+\right\}
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\begin{align}
+p_{|\Gamma_R}(x,z)&=e^{-j(k_x^i x+k_z^i z)}+\ds{\sum_{l\in\mb{Z}}} e^{-j(k_x(l)x-k_z(l)z) } R_l\\
+{\dfrac{\p p }{\p z}}_{|\Gamma_R}(x,z)&=-jk_z^ie^{-j(k_x^i x+k_z^i z)}+\ds{\sum_{l\in\mb{Z}}} jk_y(l)e^{-j(k_x(l)x-k_z(l)z) } R_l
+\end{align}
+
+
+
+
+\begin{align}
+p_{|\Gamma_R}(x,z)&=\ds{\sum_{l\in\mb{Z}}} e^{-j(k_x(l)x+k_z(l)z) } T_l\\
+{\dfrac{\p p }{\p z}}_{|\Gamma_T}(x,z)&=\ds{\sum_{l\in\mb{Z}}} -jk_z(l)e^{-j(k_x(l)x+k_z(l)z) } T_l
+\end{align}
+
+Termes de surface
+\begin{align}
+\dfrac{1}{\rho_a\omega^2}\ds{\int_{\Gamma_R}} \dfrac{\p p}{\p n} q\d\Gamma=....
+\end{align}
+
+Equation supplémentaires
+
+\begin{align}
+\ds{\int_{\Gamma_R}}p(x) e^{jk_x(n)x}\d\Gamma=
+\underbrace{\ds{\int_{\Gamma_R}}e^{j\dfrac{2\pi nx}{D}}\d\Gamma}_{D\delta_{n0}}+
+\underbrace{\ds{\int_{\Gamma_R}}
+\ds{\sum_{l\in\mb{Z}}}
+e^{-\dfrac{j2\pi (l-n)x}{D} }
+\d\Gamma}_{D\delta_{nl}}R_l
+\end{align}
+
+\section{Elementary matrix}
+
+\subsection{\tb{I}}
+
+\begin{equation}
+\hat{I}=\ds{\int_a^b} (AX^2+BX+C)e^{-jk_x X}\d X
+\end{equation}
+$x=X-a$
+
+\begin{equation}
+\hat{I}=e^{-jk_x a} \ds{\int_0^h} {\Phi}(x)e^{-jk_x x}\d x
+\end{equation}
+
+$\xi=-1+\dfrac{2x}{h}\esp    x=\dfrac{h}{2}\left(
+\xi+1
+\right)$
+
+
+\begin{equation}
+\hat{I}=e^{-jk_x a} \dfrac{h}{2} \ds{\int_{-1}^1} {\Phi}(\xi)e^{-jk_x \frac{h(\xi+1)}{2}}\d \xi=
+e^{-jk_x \left(a+\frac{h}{2}\right)} \dfrac{h}{2} \ds{\int_{-1}^1} {\Phi}(\xi)e^{-jk_x \frac{h\xi}{2}}\d \xi
+\end{equation}
+
+
+
+
+
+%\begin{align*}
+%e^{jk_x a}\hat{I}&= \left[\dfrac{{\Phi}(x)e^{-jk_x}}{(-jk_x)}\right]_0^h -\ds{\int_0^h} \dfrac{{\Phi}'(x)}{(-jk_x)}e^{-jk_x x}\d x \\
+%&= \left[\dfrac{{\Phi}(x)e^{-jk_x}}{(-jk_x)}\right]_0^h -
+%\left[\dfrac{{\Phi}'(x)e^{-jk_x}}{(-jk_x)^2}\right]_0^h
+%+
+%\ds{\int_0^h} \dfrac{{\Phi}''(x)}{(-jk_x)^2}e^{-jk_x x}\d x \\
+%&=\left[\dfrac{{\Phi}(x)e^{-jk_x}}{(-jk_x)}\right]_0^h -
+%\left[\dfrac{{\Phi}'(x)e^{-jk_x}}{(-jk_x)^2}\right]_0^h
+%+
+%\left[ \dfrac{{\Phi}''(x)}{(-jk_x)^3}e^{-jk_x x} \right]_0^h
+%\end{align*}
+
+%\begin{align*}
+%e^{jk_x a}\hat{I}&=\left[\dfrac{\left\{(-jk_x)^2{\Phi}(x)-(-jk_x){\Phi}'(x)+{\Phi}''(x)\right\}e^{-jk_x}}{(-jk_x)^3}\right]_0^h\\
+%&=\left[\dfrac{\left\{-k_x^2{\Phi}(x)+jk_x{\Phi}'(x)+{\Phi}''(x)\right\}e^{-jk_x}}{-jk_x^3}\right]_0^h \\
+%-jk_x^3e^{jk_x a}\hat{I}&=\left[-k_x^2{\Phi}(0)+jk_x{\Phi}'(0)+{\Phi}''(0)\right]\\&-
+%\left[-k_x^2{\Phi}(h)+jk_x{\Phi}'(h)+{\Phi}''(h)
+%\right]e^{-jk_xh}
+%\\
+%-jk_x^3e^{jk_x a}\hat{I}&=-k_x^2\left({\Phi}(0)-{\Phi}(h)e^{-jk_xh}\right)+jk_x\left({\Phi}'(0)-{\Phi}'(h)e^{-jk_xh}\right)+\left({\Phi}''(0)-{\Phi}''(h)e^{-jk_xh}\right)\\
+%\hat{I}&=\dfrac{k_x^2\left({\Phi}(0)-{\Phi}(h)e^{-jk_xh}\right)-jk_x\left({\Phi}'(0)-{\Phi}'(h)e^{-jk_xh}\right)-\left({\Phi}''(0)-{\Phi}''(h)e^{-jk_xh}\right)}{jk_x^3e^{jk_x a}}
+%\end{align*}
+%\begin{align*}
+%\Phi_1(x)&=\dfrac{2}{h^2}\left(x-\dfrac{h}{2}\right)(x-h)=\dfrac{2\left(x^2-\dfrac{3h}{2}x+\dfrac{h^2}{2}
+%\right) }{h^2}\\
+%\Phi_1'(x)&=\dfrac{2\left(2x-\dfrac{3h}{2}
+%\right) }{h^2}\esp 
+%\Phi_1''(x)=\dfrac{4 }{h^2}\\
+%\end{align*}
+%\begin{align*}
+%\Phi_2(x)&=\dfrac{2}{h^2}\left(x-\dfrac{h}{2}\right)x=\dfrac{2\left(x^2-\dfrac{h}{2}x
+%\right) }{h^2}\\
+%\Phi_2'(x)&=\dfrac{2\left(2x-\dfrac{h}{2}
+%\right) }{h^2}\esp 
+%\Phi_2''(x)=\dfrac{4 }{h^2}\\
+%\end{align*}
+%\begin{align*}
+%\Phi_3(x)&=\dfrac{4 x(h-x)}{h^2}=\dfrac{4\left(-x^2+xh\right) }{h^2}\\
+%\Phi_3'(x)&=\dfrac{4\left(-2x+h
+%\right) }{h^2}\esp 
+%\Phi_3''(x)=-\dfrac{8 }{h^2}\\
+%\end{align*}
+
+
+
+% interfaces=[node1 node2 #element1 #element2 element_label1 element_label2 node_middle]
+
+\chapter{Benchmarks}
+
+\section{Kundt Tube}
+
+Sous projets
+\begin{itemize}
+	\item 0: TR6
+	\item 1: H12
+	\item 2: TR6/H12
+	\item 3: DGM on TR
+	\item 4: DGM on H
+	\item 5: DGM on TR / DGM on H
+	\item 6: H12 / DGM on H
+	\item 7: TR6 / DGM on H  
+\end{itemize}
+
+\begin{figure}[BTBP]
+\centering
+\setlength{\unitlength}{1cm}
+\begin{picture}(6,6)
+\linethickness{1mm}
+   \put(0,1){\line(1,0){4}}
+   \put(0,2){\line(0,1){4}}
+   \put(0 ,6){\line(1,0){4}}
+   \put(0 ,2){\line(0,1){4}}
+   \put(0.3,4){0}
+\end{picture}
+\caption{caption}
+\end{figure}
+
+\bibliographystyle{plain-annote}
+\bibliography{mybibliography}
+
+
+
+\chapter{Hermite Finite-Elements}
+
+\begin{align}
+\Psi_1(x)&=1-3\left(\dfrac{x}{l_x}\right)^2+2\left(\dfrac{x}{l_x}\right)^3\\
+\Psi_2(x)&=\left(\dfrac{x}{l_x}\right)-2\left(\dfrac{x}{l_x}\right)^2+\left(\dfrac{x}{l_x}\right)^3\\
+\Psi_3(x)&=-\left(\dfrac{x}{l_x}\right)^2+\left(\dfrac{x}{l_x}\right)^3\\
+\Psi_4(x)&=3\left(\dfrac{x}{l_x}\right)^2-2\left(\dfrac{x}{l_x}\right)^3
+\end{align}
+
+
+\begin{equation}
+\Psi_{ij}(x,y)=\Psi_{i}(x)\Psi_{j}(y)
+\end{equation}
+
+
+Valeurs 
+\begin{center}
+\begin{tabular}{|c||cccc|} \hline\hline
+&{$\Psi_1$} & {$\Psi_2$}& {$\Psi_3$} &  {$\Psi_4$}\\ \hline\hline
+{$f(0)$}    &{$1$} &{$0$} &{$0$} &{$0$} \\
+{$f(l_x)$}  &{$0$} &{$0$} &{$0$} &{$1$} \\
+{$f'(0)$}   &{$0$} &{$1/l$} &{$0$} &{$0$} \\
+{$f'(1_x)$} &{$0$} &{$0$} &{$1/l$} &{$0$} \\
+\hline\hline
+\end{tabular}
+\end{center}
+
+
+Ordre 
+\begin{center}
+\begin{tabular}{|c||cccc|} \hline\hline
+&{$p$} & {$\dfrac{\p p}{\p x}$}& {$\dfrac{\p p}{\p y}$} &  {$\emptyset$}\\ \hline\hline
+{$(0,0)$} &{$\Psi_{11}$} &{$\Psi_{21}$} &{$\Psi_{12}$} &{$\Psi_{22}$} \\
+& 1//1 &2//2&3//3&4//$\emptyset$\\
+{$(1,0)$} &{$\Psi_{41}$} &{$\Psi_{31}$} &{$\Psi_{42}$} &{$\Psi_{23}$} \\
+& 5//4 &6//5&7//6&8//$\emptyset$\\
+{$(1,1)$} &{$\Psi_{44}$} &{$\Psi_{34}$} &{$\Psi_{43}$} &{$\Psi_{33}$} \\
+& 9//7 &10//8&11//9&12//$\emptyset$\\
+{$(0,1)$} &{$\Psi_{14}$} &{$\Psi_{24}$} &{$\Psi_{13}$} &{$\Psi_{32}$} \\
+& 13//10 &14//11&15//12&16//$\emptyset$\\
+\hline\hline
+\end{tabular}
+\end{center}
+
+
+
+\chapter{Miscellaneous}
+
+
+\section{Integration of an exponential on one element}
+\begin{align}
+	\iom e^{j\tb{k}\pt(\tb{x}-\tb{x}_c)}\d\Omega&= \oint \div \left(-\left|\begin{array}{c}
+\dfrac{jk_x}{k_x^2+k_y^2}\\
+\dfrac{jk_y}{k_x^2+k_y^2}
+\end{array}	
+\right.
+ e^{j\tb{k}\pt(\tb{x}-\tb{x}_c)}\right) \d\Omega\\
+&=- \oiom  \left(
+\dfrac{jk_xn_x}{k_x^2+k_y^2}+
+\dfrac{jk_yn_y}{k_x^2+k_y^2}\right)
+ e^{j\tb{k}\pt(\tb{x}-\tb{x}_c)} \d\Omega
+\end{align}
+
+\chapter{Plane Waves 3D}
+
+
+\section{Fluid medium}
+
+\subsection{Compressional wave}
+
+
+\begin{equation}
+	\delta_P^2=k_x^2+k_y^2+k_z^2
+\end{equation}
+
+\begin{equation}
+u^{\eps}(x,y,z,t)=\left| 
+\begin{array}{c}
+{k_x}\\
+{k_y}\\
+{\eps k_z}
+\end{array}
+\right.
+e^{j(\omega t- k_x x-k_y y-\eps k_z z)}
+\end{equation}
+
+\begin{align}
+p&=(-K_0)(-j) (k_x^2+k_y^2+\eps^2 k_z^2)\\
+&=jK_0\delta_P^2
+\end{align}
+
+\section{Elastic Medium}
+
+\subsection{Compressional wave}
+
+\begin{equation}
+	\delta_P^2=k_x^2+k_y^2+k_z^2
+\end{equation}
+
+\begin{equation}
+u^{+}(x,y,z,t)=\left| 
+\begin{array}{c}
+{k_x}\\
+{k_y}\\
+{\eps k_z}
+\end{array}
+\right.
+e^{j(\omega t- k_x x-k_y y-\eps k_z z)}
+\end{equation}
+
+\begin{align}
+	\sigma_{zz}&=\lambda\left[
+	u_{x,x}+u_{y,y}+u_{z,z}
+	\right]+2\mu u_{z,z}\\
+	&=-j\lambda(k_x^2+k_y^2+\eps^2k_z^2)+2\mu(-j\eps^2k_z^2)\\
+	&=-j\left[\lambda(k_x^2+k_y^2)+(\lambda+2\mu)k_z^2 \right]
+\end{align}
+
+\begin{align}
+	\sigma_{yz}&=\mu \left[ u_{y,z}+u_{z,y}\right]=-j\left[ \eps k_yk_z+ \eps k_zk_y\right]=-2j\mu\eps k_yk_z
+\end{align}
+
+
+\begin{align}
+	\sigma_{xz}&=\mu \left[ u_{x,z}+u_{z,x}\right]=-j\mu\left[ \eps k_xk_z+ \eps k_zk_x\right]=-2j\mu\eps k_xk_z
+\end{align}
+
+
+\subsection{Shear wave 1}
+
+\begin{equation}
+	\delta_S^2=k_x^2+k_y^2+k_z^2
+\end{equation}
+
+\begin{equation}
+u^{\eps}(x,y,z,t)=\left| 
+\begin{array}{c}
+{k_z}\\
+{0}\\
+{-\eps k_x}
+\end{array}
+\right.
+e^{j(\omega t- k_x x-k_y y-\eps k_z z)}
+\end{equation}
+
+\begin{align}
+	\sigma_{zz}&=\lambda\left[
+	u_{x,x}+u_{y,y}+u_{z,z}
+	\right]+2\mu u_{z,z}\\
+	&=2\mu jk_xk_z
+\end{align}
+
+\begin{align}
+	\sigma_{yz}&=\mu \left[ u_{y,z}+u_{z,y}\right]=-j\mu\eps k_xk_y
+\end{align}
+
+
+\begin{align}
+	\sigma_{xz}&=\mu \left[ u_{x,z}+u_{z,x}\right]=-j\mu\left[ \eps k_xk_z- \eps k_zk_x\right]=-j\mu\eps (k_z^2-k_x^2)
+\end{align}
+
+
+\subsection{Shear wave 2}
+
+\begin{equation}
+	\delta_S^2=k_x^2+k_y^2+k_z^2
+\end{equation}
+
+\begin{equation}
+u^{\eps}(x,y,z,t)=\left| 
+\begin{array}{c}
+{0}\\
+{k_z}\\
+{-\eps k_y}
+\end{array}
+\right.
+e^{j(\omega t- k_x x-k_y y-\eps k_z z)}
+\end{equation}
+
+\begin{align}
+	\sigma_{zz}&=\lambda\left[
+	u_{x,x}+u_{y,y}+u_{z,z}
+	\right]+2\mu u_{z,z}\\
+	&=2\mu jk_yk_z
+\end{align}
+
+\begin{align}
+	\sigma_{yz}&=\mu \left[ u_{y,z}+u_{z,y}\right]=-j\mu\eps (k_z^2-k_y^2)
+\end{align}
+
+
+\begin{align}
+	\sigma_{xz}&=\mu \left[ u_{x,z}+u_{z,x}\right]=-j\eps k_xk_y
+\end{align}
+
+
+\chapter{Rotations}
+
+
+\begin{equation}
+	\begin{Bmatrix}
+		X_1\\
+		X_2\\
+		X_3
+	\end{Bmatrix}=[\tb{P}]	\begin{Bmatrix}
+		x_1\\
+		x_2\\
+		x_3
+	\end{Bmatrix}\esp
+	\begin{Bmatrix}
+		U_1\\
+		U_2\\
+		U_3
+	\end{Bmatrix}=[\tb{P}]	\begin{Bmatrix}
+		u_1\\
+		u_2\\
+		u_3
+	\end{Bmatrix}	
+\end{equation}
+
+\begin{align}
+\dfrac{\p f}{\p x_1}&=	\dfrac{\p F}{\p X_1}\dfrac{\p X_1}{\p x_1}+\dfrac{\p F}{\p X_1}\dfrac{\p X_1}{\p x_2}+
+\dfrac{\p F}{\p X_1}\dfrac{\p X_1}{\p x_3}\\
+&=
+\tb{P}(1,:)\begin{Bmatrix}
+	\dfrac{\p }{\p X_1}\\
+	\dfrac{\p }{\p X_2}\\
+	\dfrac{\p }{\p X_3}
+\end{Bmatrix}F(X_1,X_2,X_3)
+\end{align}
+
+
+
+
+\begin{equation}
+\begin{Bmatrix}
+	\dfrac{\p }{\p X_1}\\
+	\dfrac{\p }{\p X_2}\\
+	\dfrac{\p }{\p X_3}
+\end{Bmatrix}F(X_1,X_2,X_3)
+	=[\tb{Q}]\begin{Bmatrix}
+	\dfrac{\p }{\p x_1}\\
+	\dfrac{\p }{\p x_2}\\
+	\dfrac{\p }{\p x_3}
+\end{Bmatrix}f(x_1,x_2,x_3)
+\end{equation}
+
+
+\begin{align}
+	\dfrac{\p U_i}{\p X_j}&=\tb{Q}(i,:)\begin{Bmatrix}
+	\dfrac{\p }{\p x_1}\\
+	\dfrac{\p }{\p x_2}\\
+	\dfrac{\p }{\p x_3}
+\end{Bmatrix}\tb{Q}(j,:)\begin{Bmatrix}
+		u_1\\
+		u_2\\
+		u_3
+	\end{Bmatrix}
+	\\&=\tb{Q}(i,:)\begin{Bmatrix}
+	\dfrac{\p }{\p x_1}\\
+	\dfrac{\p }{\p x_2}\\
+	\dfrac{\p }{\p x_3}
+\end{Bmatrix}\left(
+\tb{Q}_{j1}u_1+\tb{Q}_{j2}u_2+\tb{Q}_{j3}u_3
+\right)\\
+&=\tb{Q}(i,:)\begin{Bmatrix}
+	\tb{Q}_{j1}\dfrac{\p u_1}{\p x_1}+\tb{Q}_{j2}\dfrac{\p u_2}{\p x_1}+\tb{Q}_{j3}\dfrac{\p u_3}{\p x_1}\\
+		\tb{Q}_{j1}\dfrac{\p u_1}{\p x_2}+\tb{Q}_{j2}\dfrac{\p u_2}{\p x_2}+\tb{Q}_{j3}\dfrac{\p u_3}{\p x_2}\\
+		\tb{Q}_{j1}\dfrac{\p u_1}{\p x_3}+\tb{Q}_{j2}\dfrac{\p u_2}{\p x_3}+\tb{Q}_{j3}\dfrac{\p u_3}{\p x_3}
+\end{Bmatrix}\\
+\dfrac{\p U_i}{\p X_j}&=\ds{\sum_{k=1}^3}\ds{\sum_{k'=1}^3} Q_{ik}Q_{jk'}u_{k',k}\end{align}
+ 
+
+\begin{equation}
+	E_{ii}=Q_{i1}^2\varepsilon_{11}+Q_{i2}^2\varepsilon_{22}+Q_{i3}^2\varepsilon_{33}+Q_{i1}Q_{i2} 2\varepsilon_{12}++Q_{i1}Q_{i3} 2\varepsilon_{13}+Q_{i2}Q_{i3} 2\varepsilon_{23}
+\end{equation}
+
+\begin{align}
+	2E_{ij}&=\left(Q_{i1}Q_{j1}+Q_{j1}Q_{i1}\right) \varepsilon_{11}+...\\
+	&+(Q_{i1}Q_{j2}+Q_{j1}Q_{i2})2\varepsilon_{12}+
+	...
+\end{align}
+
+
+
+\end{document}
+
+

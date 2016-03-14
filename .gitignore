@@ -1,5 +1,6 @@
 
 *~
+*.texpad*
 *.key
 *.jpg
 *.aux
@@ -17,7 +18,6 @@ src/Problems
 Projects/*
 !Projects/Kundt
 !Projects/Multilayer_3D
-TeX/
 src/Misc/
 .DS_*
 sync_PLANES.m

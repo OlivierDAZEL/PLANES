@@ -42,11 +42,11 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         freq=frequency.vec(i_f);
         omega=2*pi*freq;
         k_air=omega/air.c;
-        
+
         if (nb.R+nb.T)~=0
             [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,data_model.theta_inc,period);
         end
-        
+
         % Construction of the linear system
         nb.dof_total=nb.dof_FEM+nb.dof_DGM;
         if nb.R>0
@@ -58,6 +58,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         A=sparse(nb.dof_total,nb.dof_total);
         F=zeros(nb.dof_total,1);
         
+
         if nb.dof_FEM>0
             if (nb.media.acou~=0)
                 A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_acou/(air.rho*omega^2)-Q_acou/(air.K);

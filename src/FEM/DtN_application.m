@@ -200,7 +200,6 @@ for ie=1:nb.DtN
             
         case {21}
             DtN_elas_T=1;
-            F3=TR6_PW(length_edge,k_x,a);
             for i_T=1:nb.T
                 F3=TR6_PW(length_edge,vec_k_x(i_T),a);
                 index_force=dof_A(uy_TR(node));
@@ -210,6 +209,47 @@ for ie=1:nb.DtN
                 A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)+Omega.p*F3(index_F_elem);
                 A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)=A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)+        F3(index_F_elem)';
             end
+        case {22}
+            DtN_2001_T=1;
+            for i_T=1:nb.T
+                % Terme p_a delta u_y champs transmis
+                F3=TR6_PW(length_edge,vec_k_x_t(i_T),a);
+                index_force=dof_A(uy_TR(node));
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)+F3(index_F_elem);
+                
+                % Terme u_a delta p champs transmis
+                
+                index_force=dof_A(p_TR(node));
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)=A(index_F_global,nb_dof_temp+size_info_vector_R*nb.R+i_T)+F3(index_F_elem)*(1i*vec_k_z_t(i_T))/(air.rho*omega^2);
+                
+                %%%%%%% Equation suppl?mentare sur la pression
+                A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)=A(nb_dof_temp+size_info_vector_R*nb.R+i_T,index_F_global)+F3(index_F_elem)';
+            end
+                        
+            a1(1)=nodes(node(1),1);
+            a1(2)=nodes(node(1),2);
+            a2(1)=nodes(node(2),1);
+            a2(2)=nodes(node(2),2);
+            
+            FSIe=TR6_FSI(a1,a2);
+            
+            
+            index_force_p=dof_A(p_TR(node));
+            index_F_elem_p=find(index_force_p);
+            index_F_global_p=index_force_p(index_F_elem_p);
+            
+            index_force_u=dof_A(uy_TR(node));
+            index_F_elem_u=find(index_force_u);
+            index_F_global_u=index_force_u(index_F_elem_u);
+            
+            A(index_F_global_p,index_F_global_u)=A(index_F_global_p,index_F_global_u)+(FSIe(index_F_elem_p,index_F_elem_u));
+
+            
+            
         case {23}
             
             DtN_plate_T=1;
@@ -313,8 +353,11 @@ if exist('DtN_2001_R')
     end
 end
 
-
-
+if exist('DtN_2001_T')
+    for i_T=1:nb.T
+        A(size_info_vector_R*nb.R+i_T+nb_dof_temp,size_info_vector_R*nb.R+i_T+nb_dof_temp)=-period;
+    end
+end
 
 
 

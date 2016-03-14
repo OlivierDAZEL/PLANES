@@ -34,24 +34,24 @@
 
 
 function PLANES(projectname, expnb,data_model,frequency)
-%clear all;
-%close all;
-%clc;
-
-if ~exist('projectname')==1
-    project.name='David_ZOD';
-    project.name='Article_ZOD';
-    %project.name='Multilayer_3D';
-    nargin=0;
-else
-    project.name=projectname;
-end
-if exist('expnb')==1
-    project.num=expnb;
-else
-    project.num=23;
-    %project.num=0;
-end
+% %clear all;
+% %close all;
+% %clc;
+% 
+% if ~exist('projectname')==1
+%     project.name='David_ZOD';
+%     project.name='Article_ZOD';
+%     %project.name='Multilayer_3D';
+%     nargin=0;
+% else
+     project.name=projectname;
+% end
+% if exist('expnb')==1
+     project.num=expnb;
+% else
+%     project.num=23;
+%     %project.num=0;
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES

@@ -53,13 +53,15 @@ for i_f=1:abs(frequency.nb)
         
         X_PW=Mat_PW\F_PW;
         
-        abs_PW(i_f,i_m)=1-abs(X_PW(1))^2;
-        rflx_PW(i_f,i_m)=X_PW(1);
+        abs_PW=1-abs(X_PW(1))^2;
+        rflx_PW=X_PW(1);
+        
         if multilayer(1,1).termination~=0
-            TL_PW(i_f,i_m)=-20*log10(abs(X_PW(end,i_m)));
-            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e \t',abs_PW(i_f,i_m),real(rflx_PW(i_f,i_m)),imag(rflx_PW(i_f,i_m)),TL_PW(i_f,i_m));
+            trans_PW=X_PW(end);
+            TL_PW=-20*log10(abs(X_PW(end)));
+            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e\t%1.15e \t%1.15e \t',abs_PW,real(rflx_PW),imag(rflx_PW),TL_PW,real(trans_PW),imag(trans_PW));
         else
-            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e \t',abs_PW(i_f,i_m),real(rflx_PW(i_f,i_m)),imag(rflx_PW(i_f,i_m)),0);
+            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e\t%1.15e \t%1.15e \t',abs_PW,real(rflx_PW),imag(rflx_PW),0,0,0);
         end
     end
     fprintf(file_PW_id,'\n');

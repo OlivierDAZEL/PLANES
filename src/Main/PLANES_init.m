@@ -59,6 +59,7 @@ name.file_msh=          [name.project_directory 'FF/'   name.project_full '.msh'
 name.file_edp=          [name.project_directory 'FF/'   name.project_full '.edp'];
 name.file_abs=          [name.project_directory 'out/'  name.project_full '.abs'];
 name.file_L2=           [name.project_directory 'out/'  name.project_full '.L2'];
+name.file_PL=           [name.project_directory 'out/'  name.project_full '.PL'];
 name.file_TL=           [name.project_directory 'out/'  name.project_full '.TL'];
 name.file_PW=           [name.project_directory 'out/'  name.project_full '.PW'];
 name.file_info=         [name.project_directory 'out/'  name.project_full '.info'];

@@ -1,4 +1,4 @@
- % PW_resolution.m
+% PW_resolution.m
 %
 % Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -45,10 +45,10 @@ for i_f=1:abs(frequency.nb)
     k_air=omega/air.c;
     k_x=k_air*sin(data_model.theta_inc(1))*cos(data_model.theta_inc(2));
     k_y=k_air*sin(data_model.theta_inc(1))*sin(data_model.theta_inc(2));
-
     
     
-    fprintf(file_PW_id,'%1.15e \t',frequency.vec(i_f));    
+    
+    fprintf(file_PW_id,'%1.15e \t',frequency.vec(i_f));
     for i_m=1:nb_multilayers
         
         [Mat_PW]=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer(:,i_m),nb_amplitudes(i_m),n_w(:,i_m),k_air,air);
@@ -58,15 +58,17 @@ for i_f=1:abs(frequency.nb)
         
         X_PW=Mat_PW\F_PW;
         
-        abs_PW_3D(i_f,i_m)=1-abs(X_PW(1))^2;
-        rflx_PW_3D(i_f,i_m)=X_PW(1);
+        abs_PW=1-abs(X_PW(1))^2;
+        rflx_PW=X_PW(1);
+        
         if multilayer(1,1).termination~=0
-            TL_PW_3D(i_f,i_m)=-20*log10(abs(X_PW(end)));
-            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e \t',abs_PW_3D(i_f,i_m),real(rflx_PW_3D(i_f,i_m)),imag(rflx_PW_3D(i_f,i_m)),TL_PW_3D(i_f,i_m));
+            trans_PW=X_PW(end);
+            TL_PW=-20*log10(abs(X_PW(end)));
+            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e\t%1.15e \t%1.15e \t',abs_PW,real(rflx_PW),imag(rflx_PW),TL_PW,real(trans_PW),imag(trans_PW));
         else
-            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e \t',abs_PW_3D(i_f,i_m),real(rflx_PW_3D(i_f,i_m)),imag(rflx_PW_3D(i_f,i_m)),0);
+            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e\t%1.15e \t%1.15e \t',abs_PW,real(rflx_PW),imag(rflx_PW),0,0,0);
         end
-
+        
         
     end
     fprintf(file_PW_id,'\n');

@@ -1,4 +1,4 @@
-% PLANES.m
+% PLANES_PW.m
 %
 % Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,11 +33,10 @@
 %%
 
 
-function PLANES_Multilayer(projectname, expnb,data_model,multilayer,frequency)
+function PLANES_PW(projectname, expnb,data_model,multilayer,frequency)
 
 project.name=projectname;
 project.num=expnb;
-
 
 PLANES_init
 PLANES_preprocess_Multilayer

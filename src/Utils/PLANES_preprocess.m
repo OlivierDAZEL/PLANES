@@ -392,17 +392,18 @@ if exist('nodes')
     find_dof_FEM
     find_dof_DGM
     
-    I_inc=zeros(frequency.nb,1);
-    W_vis=zeros(frequency.nb,1);
-    W_struct=zeros(frequency.nb,1);
-    W_therm=zeros(frequency.nb,1);
-    W_elas=zeros(frequency.nb,1);
-    abs_vis=zeros(frequency.nb,1);
-    abs_struct=zeros(frequency.nb,1);
-    abs_therm=zeros(frequency.nb,1);
-    abs_elas=zeros(frequency.nb,1);
-    TL_EF=zeros(frequency.nb,1);
-    abs_EF=zeros(frequency.nb,1);
+    I_inc=zeros(abs(frequency.nb),1);
+    W_vis=zeros(abs(frequency.nb),1);
+    W_struct=zeros(abs(frequency.nb),1);
+    W_therm=zeros(abs(frequency.nb),1);
+    W_elas=zeros(abs(frequency.nb),1);
+    abs_vis=zeros(abs(frequency.nb),1);
+    abs_struct=zeros(abs(frequency.nb),1);
+    abs_therm=zeros(abs(frequency.nb),1);
+    abs_elas=zeros(abs(frequency.nb),1);
+    abs_dis=zeros(abs(frequency.nb),1);
+    TL_EF=zeros(abs(frequency.nb),1);
+    abs_EF=zeros(abs(frequency.nb),1);
     
     if isfield(data_model,'theta_DGM')
         vec_theta=data_model.tilt+linspace(0,2*pi,data_model.theta_DGM.nb+1);
@@ -415,12 +416,6 @@ if exist('nodes')
         display_mesh
     end
     
-%     if (nb.R~=0)
-%         file_abs_id=fopen(name.file_abs,'w');
-%     end
-%     if (nb.T~=0)
-%         file_TL_id=fopen(name.file_TL,'w');
-%     end
 else
     nb.dof_FEM=0;
     nb.dof_DGM=0;

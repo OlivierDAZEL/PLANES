@@ -135,7 +135,7 @@ end
 if data_model.export.profiles==1
     figure(2010)
     shading interp
-    print('-djpeg',[name.directory_profiles, num2str(i_f)]);
+    print('-djpeg',[name.directory_profiles, name.project_full ,'__' num2str(floor(frequency.vec(i_f))) ,'Hz']);
 end
 
 % if sum(ismember(floor(elem.label/1000),[1 4 5]))~=0

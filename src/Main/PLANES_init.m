@@ -36,8 +36,8 @@ list_path=['''../DGM'',''../FEM'',''../Mesh'',''../Physics'',''../Plots'',''../P
 eval(['addpath(' list_path ');'])
 
 
-
-warning('off','MATLAB:nearlySingularMatrix')
+warning('off','all');
+%warning('off','MATLAB:nearlySingularMatrix')
 
 if exist('name')~=1
     name.project_directory=['../../Projects/' project.name '/'];

@@ -10,10 +10,10 @@ frequency.min=500;
 frequency.min=100;
 frequency.max=20000;
 
-data_model.profiles.mesh=1;
+data_model.profiles.mesh=0;
 data_model.profiles.solution=0;
 data_model.profiles.x=0;
-data_model.profiles.y=1;
+data_model.profiles.y=0;
 data_model.profiles.map=0;
 data_model.profiles.custom=0;
 %data_model.profiles.on=data_model.profiles.x+data_model.profiles.y+data_model.profiles.map;

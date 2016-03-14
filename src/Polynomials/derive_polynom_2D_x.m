@@ -1,4 +1,4 @@
-function Q=derive_polynom_2D_x_2(P)
+function Q=derive_polynom_2D_x(P)
 
 
 nx=size(P,1);

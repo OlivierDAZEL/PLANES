@@ -32,7 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-list_path=['''../DGM'',''../FEM'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../PW'',''../Solutions'',''../Utils'',''../Validation'''];
+list_path=['''../DGM'',''../FEM'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../PW'',''../Solutions'',''../Utils'''];
 eval(['addpath(' list_path ');'])
 
 

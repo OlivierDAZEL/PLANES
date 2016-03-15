@@ -33,7 +33,7 @@
 %%
 
 
-function PLANES(projectname, expnb,data_model,frequency)
+function PLANES(projectname, expnb,data_model,frequency,name)
 % %clear all;
 % %close all;
 % %clc;

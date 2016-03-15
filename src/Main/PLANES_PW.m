@@ -33,7 +33,7 @@
 %%
 
 
-function PLANES_PW(projectname, expnb,data_model,multilayer,frequency)
+function PLANES_PW(projectname, expnb,data_model,multilayer,frequency,name)
 
 project.name=projectname;
 project.num=expnb;

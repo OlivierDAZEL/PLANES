@@ -92,7 +92,7 @@ for i_f=1:abs(frequency.nb)
         if (nb.media.eqf~=0)
             for i_mat=1:nb.media.eqf
                 eval(['Mat_PEM_' num2str(num_media.eqf(i_mat))])
-                properties_jca
+                properties_JCA
                 eval(['A=A+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
             end
         end
@@ -107,7 +107,7 @@ for i_f=1:abs(frequency.nb)
         if (nb.media.pem98~=0)
             for i_mat=1:nb.media.pem98
                 eval(['Mat_PEM_' num2str(num_media.pem98(i_mat))])
-                properties_jca
+                properties_JCA
                 properties_PEM
                 eval(['A=A+P_hat*K0_pem98_',num2str(i_mat),'+N*K1_pem98_',num2str(i_mat),'-omega^2*rho_til*M_pem98_',num2str(i_mat),';']);
                 eval(['A=A+H_pem98_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem98_',num2str(i_mat),'/(K_eq_til);']);
@@ -117,7 +117,7 @@ for i_f=1:abs(frequency.nb)
         if (nb.media.pem01~=0)
             for i_mat=1:nb.media.pem01
                 eval(['Mat_PEM_' num2str(num_media.pem01(i_mat))])
-                properties_jca
+                properties_JCA
                 properties_PEM
                 eval(['A=A+P_hat*K0_pem01_',num2str(i_mat),'+N*K1_pem01_',num2str(i_mat),'-omega^2*rho_til*M_pem01_',num2str(i_mat),';']);
                 eval(['A=A+H_pem01_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem01_',num2str(i_mat),'/(K_eq_til);']);

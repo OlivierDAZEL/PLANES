@@ -43,7 +43,7 @@ init_vec_frequencies
 if exist('nodes')
     segments=zeros(1,5); % Line 1 to be removed at the end
     
-    temp=find(ismember(elem.model,[1 3 10]));
+    temp=find(ismember(elem.model,[1 3 4 10]));
     temp=reshape(temp,length(temp),1);
     if length(temp)>0
         segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
@@ -180,7 +180,7 @@ if exist('nodes')
     % Find Dirichlet boundaries : label 1 not FEM or 5 6 9
     
     temp=      (ismember(boundaries(:,4),[1]));
-    temp=temp.*ismember(elem.model(boundaries(:,3)),[1 2 3]);
+    temp=temp.*ismember(elem.model(boundaries(:,3)),[1 2 3 4]);
     temp=find(temp);
     boundaries(temp,:)=[];
     
@@ -236,14 +236,14 @@ if exist('nodes')
     nb.DtN=size(edges.DtN,1);
     
     
-    if (sum(elem.model==1)~=0)
+    if ((sum(elem.model==1)~=0)|(sum(elem.model==4)~=0))
         [nb,nodes,elem,edges]=TR32TR6(nb,nodes,elem,edges);
     end
+ 
     
     if (sum(elem.model==2)~=0)
         [elem,H_elem_H12,Q_elem_H12]=create_elementary_H12(nb,nodes,elem);
     end
-    
     
     
     temp=unique(elem.label(find(floor(elem.label/1000)==1)));
@@ -388,7 +388,7 @@ if exist('nodes')
     
     period=max(nodes(:,1))-min(nodes(:,1));
     
-    
+
     find_dof_FEM
     find_dof_DGM
     
@@ -410,7 +410,6 @@ if exist('nodes')
         vec_theta(end)=[];
         vec_theta=vec_theta+pi/2;
     end
-    
     
     if data_model.profiles.mesh
         display_mesh

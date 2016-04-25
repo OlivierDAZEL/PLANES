@@ -43,9 +43,9 @@ nb=nb_in;
 edges=edges_in;
 elem=elem_in;
 
-elements_TR6=find(elem_in.model==1);
+elements_TR6=find(ismember(elem_in.model,[1 4]));
 nb_elements_TR6=length(elements_TR6);
-elements_not_TR6=find(elem_in.model~=1);
+elements_not_TR6=find(~ismember(elem_in.model,[1 4]));
 
 
 node_supp=[(nodes_in(elem_in.nodes(elements_TR6,1),1)+nodes_in(elem_in.nodes(elements_TR6,2),1))/2 (nodes_in(elem_in.nodes(elements_TR6,1),2)+nodes_in(elem_in.nodes(elements_TR6,2),2))/2; ...

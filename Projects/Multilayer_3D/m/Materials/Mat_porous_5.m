@@ -1,6 +1,6 @@
-% PW_resolution.m
+% Mat_PEM_5.m
 %
-% Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -32,39 +32,18 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-file_PW_id=fopen(name.file_PW,'w');
-compute_number_PW_2D
+porous_model.eqf='JCA';
+porous_model.frame='structural';
+porous_model.aniso='no';
 
 
-for i_f=1:abs(frequency.nb)
-    omega=2*pi*frequency.vec(i_f);
-    k_air=omega/air.c;
-    k_x=k_air*sin(data_model.theta_inc(1));
-    fprintf(file_PW_id,'%1.15e \t',frequency.vec(i_f));
-    for i_m=1:nb_multilayers
-        
-        
-        
-        Mat_PW=build_global_PW_matrices_2D(k_x,omega,multilayer(:,i_m),nb_amplitudes(i_m),n_w(:,i_m),k_air,air);
-        
-        
-        F_PW=-Mat_PW(:,1);
-        size(Mat_PW)
-        Mat_PW(:,1)=[];
-        size(Mat_PW)
-        X_PW=Mat_PW\F_PW;
-        
-        abs_PW=1-abs(X_PW(1))^2;
-        rflx_PW=X_PW(1);
-        
-        if multilayer(1,1).termination~=0
-            trans_PW=X_PW(end);
-            TL_PW=-20*log10(abs(X_PW(end)));
-            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e\t%1.15e \t%1.15e \t',abs_PW,real(rflx_PW),imag(rflx_PW),TL_PW,real(trans_PW),imag(trans_PW));
-        else
-            fprintf(file_PW_id,'%1.15e \t%1.15e \t%1.15e \t%1.15e\t%1.15e \t%1.15e \t',abs_PW,real(rflx_PW),imag(rflx_PW),0,0,0);
-        end
-    end
-    fprintf(file_PW_id,'\n');
-end
-fclose(file_PW_id);
+phi=0.989;
+sig=8060;
+alpha=1.00;
+LCV=2.15e-4;
+LCT=LCV;
+rho_1=6.1000;
+nu=0.24000E+00;
+cisaill=2.28e4;
+young=2*cisaill*(1+nu);
+eta=0.02;

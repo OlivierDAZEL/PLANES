@@ -66,7 +66,7 @@ end
 
 
 for ie=1:nb.elements
-    if ismember(elem.model(ie),[1])
+    if ismember(elem.model(ie),[1 4])
             plot_sol_TR6_on_element
    elseif ismember(elem.model(ie),[10 11])
             plot_sol_DGM_on_element
@@ -77,7 +77,7 @@ end
 
 
 
-if export.profiles==1
+if data_model.export.profiles==1
     figure(10002)    
     shading interp
     colormap jet

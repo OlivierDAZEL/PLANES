@@ -42,11 +42,11 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         freq=frequency.vec(i_f);
         omega=2*pi*freq;
         k_air=omega/air.c;
-
+        
         if (nb.R+nb.T)~=0
             [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,data_model.theta_inc,period);
         end
-
+        
         % Construction of the linear system
         nb.dof_total=nb.dof_FEM+nb.dof_DGM;
         if nb.R>0
@@ -58,17 +58,45 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         A=sparse(nb.dof_total,nb.dof_total);
         F=zeros(nb.dof_total,1);
         
-
         if nb.dof_FEM>0
             if (nb.media.acou~=0)
                 A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
             end
             
             if (nb.media.PML~=0)
-                A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_PML/(air.rho*omega^2)-Q_PML/(air.K);
+                H_PML=sparse(12*nb.nodes,12*nb.nodes);
+                Q_PML=sparse(12*nb.nodes,12*nb.nodes);
+                for ie=1:nb.elements
+                    nodes_elements = nodes(elem.nodes(ie,1:6),1:2)';
+                    if floor(elem.label(ie)/1000)==8
+                        temp=elem.label(ie);
+                        temp_x=floor((temp-8000)/100);
+                        temp_y=floor((temp-8000-100*temp_x)/10);
+
+                        if temp_x==0;
+                            PML_direction.x=0;
+                        else
+                            PML_direction.x=1;
+                        end
+                        if temp_y==0;
+                            PML_direction.y=0;
+                        else
+                            PML_direction.y=1;
+                        end
+                        if (elem.model(ie)==1)
+                            [vh,vq]=TR6_PML(nodes_elements,data_model.PML_parameter,PML_direction);
+                        elseif elem.model(ie)==4
+                            [vh,vq]=TR6_PML_axi(nodes_elements,data_model.PML_parameter,PML_direction);
+                        end
+                        index_p=p_TR(elem.nodes(ie,1:6));
+                        H_PML(index_p,index_p)=H_PML(index_p,index_p)+vh;
+                        Q_PML(index_p,index_p)=Q_PML(index_p,index_p)+vq;
+                    end
+                end
+                H_PML=H_PML(list_dof_valid,list_dof_valid);
+                Q_PML=Q_PML(list_dof_valid,list_dof_valid);
+                A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_PML/(air.rho*omega^2)-Q_PML/(air.K); 
             end
-            
-            
             if (nb.media.elas~=0)
                 for i_mat=1:nb.media.elas
                     eval(['Mat_elas_' num2str(num_media.elas(i_mat))])
@@ -94,7 +122,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             if (nb.media.pem98~=0)
                 for i_mat=1:nb.media.pem98
                     eval(['Mat_porous_' num2str(num_media.pem98(i_mat))])
-                     typ_mat=3;                   
+                    typ_mat=3;
                     properties_eqf
                     
                     properties_PEM
@@ -119,7 +147,6 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         if (nb.internal>0)
             apply_FSI
         end
-        
         
         if (nb.loads>0)
             loads_application
@@ -174,7 +201,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         disp('End of the resolution of the system')
         
         postprocess_solution
-
+        
         if exist([name.project_full '_postprocess'])==2
             eval([name.project_full '_postprocess'])
         end

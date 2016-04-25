@@ -12,13 +12,13 @@ frequency.max=20000;
 % Test 1
 multilayer_1(1,1).nb=1;
 multilayer_1(1,1).d=5e-2;
-multilayer_1(1,1).mat=5011;
+multilayer_1(1,1).mat=5005;
 multilayer_1(1,1).termination=0;
 
-
+data_model.theta_inc=[23]*pi/180
 % data_model.theta_inc=[23 62]*pi/180;
 % 
- PLANES_Multilayer('Multilayer_3D',101,data_model,multilayer_1,frequency)
+ PLANES_PW('Multilayer_3D',101,data_model,multilayer_1,frequency)
 % 
 % 
 % 

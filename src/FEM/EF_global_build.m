@@ -66,23 +66,23 @@ for ie=1:nb.elements
             index_p=p_TR(elem.nodes(ie,1:6));
             insert_temporary_matrices_pem2001
         elseif floor(elem.label(ie)/1000)==8
-            temp=element_label(ie);
-            temp_x=floor((temp-8000)/100);
-            temp_y=floor((temp-8000-100*temp_x)/10);
-            if temp_x==0;
-                tau_x=1;
-            else
-                tau_x=exp(1j*pi/4);
-            end
-            if temp_y==0;
-                tau_y=1;
-            else
-                tau_y=exp(1j*pi/4);
-            end
-            [vh,vq]=TR6_PML(nodes_elements,tau_x,tau_y);
-            index_p=p_TR(elements(ie,1:6));
-            H_PML(index_p,index_p)=H_PML(index_p,index_p)+vh;
-            Q_PML(index_p,index_p)=Q_PML(index_p,index_p)+vq;
+%             temp=elem.label(ie);
+%             temp_x=floor((temp-8000)/100);
+%             temp_y=floor((temp-8000-100*temp_x)/10);
+%             if temp_x==0;
+%                 tau_x=1;
+%             else
+%                 tau_x=exp(1j*pi/4);
+%             end
+%             if temp_y==0;
+%                 tau_y=1;
+%             else
+%                 tau_y=exp(1j*pi/4);
+%             end
+%             [vh,vq]=TR6_PML(nodes_elements,tau_x,tau_y);
+%             index_p=p_TR(elem.nodes(ie,1:6));
+%             H_PML(index_p,index_p)=H_PML(index_p,index_p)+vh;
+%             Q_PML(index_p,index_p)=Q_PML(index_p,index_p)+vq;
         else
             disp('Subroutine parameter_element')
             disp('Unknwon fluid type of element')
@@ -152,19 +152,55 @@ for ie=1:nb.elements
             H_acou(index_p,index_p)=H_acou(index_p,index_p)+H_elem_H12(:,:,elem.H12(ie));
             Q_acou(index_p,index_p)=Q_acou(index_p,index_p)+Q_elem_H12(:,:,elem.H12(ie));
         end
-    end   %if on elem.model(ie)    
+    elseif elem.model(ie)==4 % TR6 axi        
+        nodes_elements = nodes(elem.nodes(ie,1:6),1:2)';
+        if floor(elem.label(ie)/1000)==0
+            [vh,vq]=TR6_fluid_axi(nodes_elements);
+            index_p=p_TR(elem.nodes(ie,1:6));
+            H_acou(index_p,index_p)=H_acou(index_p,index_p)+vh;
+            Q_acou(index_p,index_p)=Q_acou(index_p,index_p)+vq;
+        elseif floor(elem.label(ie)/1000)==8
+%             temp=elem.label(ie);
+%             temp_x=floor((temp-8000)/100);
+%             temp_y=floor((temp-8000-100*temp_x)/10);
+%             if temp_x==0;
+%                 tau_x=1;
+%             else
+%                 tau_x=exp(1j*pi/4);
+%             end
+%             if temp_y==0;
+%                 tau_y=1;
+%             else
+%                 tau_y=exp(1j*pi/4);
+%             end
+%             [vh,vq]=TR6_PML_axi(nodes_elements,tau_x,tau_y);
+%             index_p=p_TR(elem.nodes(ie,1:6));
+%             H_PML(index_p,index_p)=H_PML(index_p,index_p)+vh;
+%             Q_PML(index_p,index_p)=Q_PML(index_p,index_p)+vq;
+        else
+            disp('Subroutine parameter_element')
+            disp('Unknwon fluid type of element')
+            stop
+        end
+        
+        
+        
+    end   %if on elem.model(ie)
+    
+    
+    
+    
 end
 
 size_global_matrices=12*nb.nodes;
 
 discard_l1_temporary_FEM_matrices
 
-
 H_acou=H_acou(list_dof_valid,list_dof_valid);
 Q_acou=Q_acou(list_dof_valid,list_dof_valid);
 
-H_PML=H_PML(list_dof_valid,list_dof_valid);
-Q_PML=Q_PML(list_dof_valid,list_dof_valid);
+% H_PML=H_PML(list_dof_valid,list_dof_valid);
+% Q_PML=Q_PML(list_dof_valid,list_dof_valid);
 
 for i_mat=1:nb.media.elas
     

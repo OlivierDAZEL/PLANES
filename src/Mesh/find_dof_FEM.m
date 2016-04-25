@@ -38,7 +38,7 @@ dof_A=zeros(12*nb.nodes,1);
 
 for ie=1:nb.elements
     typ=floor(elem.label(ie)/1000);
-    if ismember(elem.model(ie),[1 3])
+    if ismember(elem.model(ie),[1 3 4])
         switch typ
             case {0,2,3,8} %! Acoustic/EF/limp/PML
                 isvalidof_FEM(p_TR(nonzeros(elem.nodes(ie,1:6))))=1;
@@ -69,7 +69,7 @@ end
 
 
 for ie=1:nb.dirichlets
-    if ismember(elem.model(edges.dirichlets(ie,3)),[1 3])
+    if ismember(elem.model(edges.dirichlets(ie,3)),[1 3 4])
         if (edges.dirichlets(ie,4)==5) % Sliding
             xx=abs(nodes(edges.dirichlets(ie,1),1)-nodes(edges.dirichlets(ie,2),1));
             yy=abs(nodes(edges.dirichlets(ie,1),2)-nodes(edges.dirichlets(ie,2),2));

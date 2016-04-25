@@ -32,6 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+
 for ie=1:nb.loads
     typ=floor(edges.loads(ie,4));
     
@@ -43,8 +44,7 @@ for ie=1:nb.loads
     
     switch typ
         case {3}  % Unit velocity (classic)
-            
-            if elem.model(edges.loads(ie,3))==1
+            if ismember(elem.model(edges.loads(ie,3)),[1])
                 if (x1<x2)
                     a=x1;
                     node(1)=edges.loads(ie,1);
@@ -61,7 +61,23 @@ for ie=1:nb.loads
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
                 F(index_F_global)=F(index_F_global)-F3(index_F_elem)/(1j*omega);
-                
+            elseif  elem.model(edges.loads(ie,3))==4                
+                if (x1<x2)
+                    a=x1;
+                    node(1)=edges.loads(ie,1);
+                    node(2)=edges.loads(ie,2);
+                    node(3)=edges.loads(ie,6);
+                else
+                    a=x2;
+                    node(2)=edges.loads(ie,1);
+                    node(1)=edges.loads(ie,2);
+                    node(3)=edges.loads(ie,6);
+                end
+                F3=TR6_unit_axi(length_edge,nodes(node(1)),nodes(node(2)));
+                index_force=dof_A(p_TR(node));
+                index_F_elem=find(index_force);
+                index_F_global=index_force(index_F_elem);
+                F(index_F_global)=F(index_F_global)-F3(index_F_elem)/(1j*omega);                
             elseif  elem.model(edges.loads(ie,3))==2
                 lx=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),2),:));
                 ly=norm(nodes(elem.nodes(edges.loads(ie,3),1),:)-nodes(elem.nodes(edges.loads(ie,3),4),:));

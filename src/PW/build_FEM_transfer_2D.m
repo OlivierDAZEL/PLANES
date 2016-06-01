@@ -33,11 +33,10 @@
 %%
 
 
-function T=build_FEM_transfer_2D(k_x,element_MMT_minus,element_MMT_plus,omega,multilayer,k_air,air)
-
+function [ZOD_mat,nb_dof_minus,nb_dof_plus]=build_FEM_transfer_2D(k_x,element_MMT_minus,element_MMT_plus,omega,multilayer,k_air,air)
 
 nb_layers=length(multilayer);
-multilayer(1,1).nb=1; 
+multilayer(1,1).nb=1;
 nb_multilayers=1;
 multilayer(1,1).termination=0;
 compute_number_PW_2D
@@ -51,16 +50,18 @@ switch floor(element_MMT_minus/1000)
         nS_minus=2;
         dof_FEM=[2];
         boundary_FEM=[1];
+        index_ZOD=[3];
     case 1
         eval(['Mat_elas_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))])
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
         
         k_z_minus=sqrt([delta_P delta_s].^2-k_x^2);
-        SV_minus=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
+        SV_minus=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
         nS_minus=4;
         dof_FEM=[4 2];
         boundary_FEM=[1 3];
+        index_ZOD=[1;2];
     case {2 3}
         eval(['Mat_porous_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
         properties_eqf
@@ -68,6 +69,7 @@ switch floor(element_MMT_minus/1000)
         nS_minus=2;
         dof_FEM=[2];
         boundary_FEM=[1];
+        index_ZOD=[3];
     case {4 5}
         eval(['Mat_porous_' num2str(element_MMT_minus-1000*floor(element_MMT_minus/1000))]);
         properties_eqf
@@ -75,6 +77,9 @@ switch floor(element_MMT_minus/1000)
         compute_Biot_waves
         SV_minus=State_PEM_2D(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
         nS_minus=6;
+        dof_FEM=[6 2 5];
+        boundary_FEM=[1 4 3];
+        index_ZOD=[1;2;3];
 end
 
 switch floor(element_MMT_plus/1000)
@@ -86,16 +91,17 @@ switch floor(element_MMT_plus/1000)
         dof_FEM=[dof_FEM nS_minus+[2]];
         boundary_FEM=[boundary_FEM nS_minus+[1]];
         normale_plus=diag([-1]);
+        index_ZOD=[index_ZOD; 3+[3]];
     case 1
         eval(['Mat_elas_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))])
         delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
         delta_s=omega*sqrt(rho_solide/mu_solide);
-        SV_plus=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);    
+        SV_plus=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
         nS_plus=4;
         dof_FEM=[dof_FEM nS_minus+[4 2]];
         boundary_FEM=[boundary_FEM nS_minus+[1 3]];
-
         normale_plus=diag([-1 -1]);
+        index_ZOD=[index_ZOD; 3+[1;2]];
     case {2 3}
         eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
         properties_eqf
@@ -104,6 +110,7 @@ switch floor(element_MMT_plus/1000)
         dof_FEM=[dof_FEM nS_minus+[2]];
         boundary_FEM=[boundary_FEM nS_minus+[1]];
         normale_plus=diag([-1]);
+        index_ZOD=[index_ZOD; 3+[3]];
     case {4 5}
         eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
         properties_eqf
@@ -111,6 +118,10 @@ switch floor(element_MMT_plus/1000)
         compute_Biot_waves
         SV_plus=State_PEM_2D(k_x,k_z_plus,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til);
         nS_plus=6;
+        dof_FEM=[dof_FEM nS_minus+[6 2 5]];
+        boundary_FEM=[boundary_FEM nS_minus+[1 4 3]];
+        normale_plus=diag([-1 -1 -1]);
+        index_ZOD=[index_ZOD; 3+[1;2;3]];
 end
 
 
@@ -247,3 +258,11 @@ M_d=GGamma(:,dof_FEM);
 T=-inv(M_b)*M_d;
 
 T(nS_minus/2+[1:nS_plus/2],:)=normale_plus*T(nS_minus/2+[1:nS_plus/2],:);
+
+
+nb_dof_minus=nS_minus/2;
+nb_dof_plus=nS_plus/2;
+
+ZOD_mat=zeros(6,6);
+ZOD_mat(index_ZOD,index_ZOD)=T;
+% ZOD_mat=T;

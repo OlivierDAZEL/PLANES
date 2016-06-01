@@ -35,6 +35,7 @@
 
 tic
 
+
 if (nb.dof_DGM+nb.dof_FEM)>0
     for i_f=1:abs(frequency.nb)
         PLANES_resolution_progress=100*i_f/abs(frequency.nb)

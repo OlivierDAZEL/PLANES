@@ -127,23 +127,17 @@ for ie=1:nb.loads
                 [nx,ny]=normal_edge_out_element(a,b,c_1);
                 tx=-ny;
                 ty= nx;
-                tx=nx;
-                ty=ny;
-                
-
-                
                 
                 F3=TR6_unit(length_edge);
                 index_force=dof_A(ux_TR(node));
-                
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                F(index_F_global)=F(index_F_global)+F3(index_F_elem)*tx/(1j*omega);
+                F(index_F_global)=F(index_F_global)+F3(index_F_elem)*tx;
                 
                 index_force=dof_A(uy_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                F(index_F_global)=F(index_F_global)+F3(index_F_elem)*ty/(1j*omega);
+                F(index_F_global)=F(index_F_global)+F3(index_F_elem)*ty;
                 
       
             end    

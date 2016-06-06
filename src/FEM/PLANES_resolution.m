@@ -36,6 +36,7 @@
 tic
 
 
+
 if (nb.dof_DGM+nb.dof_FEM)>0
     for i_f=1:abs(frequency.nb)
         PLANES_resolution_progress=100*i_f/abs(frequency.nb)
@@ -107,6 +108,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             if (nb.media.eqf~=0)
                 for i_mat=1:nb.media.eqf
                     eval(['Mat_porous_' num2str(num_media.eqf(i_mat))])
+                    typ_mat=2;
                     properties_eqf
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
                 end
@@ -123,9 +125,8 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             if (nb.media.pem98~=0)
                 for i_mat=1:nb.media.pem98
                     eval(['Mat_porous_' num2str(num_media.pem98(i_mat))])
-                    typ_mat=3;
+                    typ_mat=4;
                     properties_eqf
-                    
                     properties_PEM
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+P_hat*K0_pem98_',num2str(i_mat),'+N*K1_pem98_',num2str(i_mat),'-omega^2*rho_til*M_pem98_',num2str(i_mat),';']);
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_pem98_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_pem98_',num2str(i_mat),'/(K_eq_til);']);

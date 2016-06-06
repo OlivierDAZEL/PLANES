@@ -40,11 +40,6 @@
 %%
 
 
-
-
-
-
-
 function M=State_PEM_2D(k_x,delta_1,delta_2,delta_3,mu_1,mu_2,mu_3,N,A_hat,K_eq_til)
 
 

@@ -39,7 +39,7 @@ eval(['Mat_elas_' num2str(multilayer(1).mat-1000*floor(multilayer(1).mat/1000))]
 delta_P=omega*sqrt(rho_solide/(lambda_solide+2*mu_solide));
 delta_s=omega*sqrt(rho_solide/mu_solide);
 k_z_2=sqrt([delta_P delta_s].^2-k_x^2);
-SV_2=State_elas(k_x,delta_P,delta_s,lambda_solide,mu_solide);
+SV_2=State_elas_2D(k_x,delta_P,delta_s,lambda_solide,mu_solide);
 dof_medium_2=nS_minus+[1:4];
 
 % Continuity of normal displacement
@@ -63,6 +63,5 @@ Mat_PW(number_of_eq,dof_medium_2(1))=SV_2(1,1);
 Mat_PW(number_of_eq,dof_medium_2(2))=SV_2(1,2);
 Mat_PW(number_of_eq,dof_medium_2(3))=SV_2(1,3)*exp(-1j*k_z_2(1)*multilayer(1).d);
 Mat_PW(number_of_eq,dof_medium_2(4))=SV_2(1,4)*exp(-1j*k_z_2(2)*multilayer(1).d);
-
 
 

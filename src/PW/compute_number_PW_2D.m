@@ -32,11 +32,9 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
-
-
 for i_m=1:nb_multilayers
     for ii=1:multilayer(1,i_m).nb
+        floor(multilayer(ii,i_m).mat/1000)
         switch floor(multilayer(ii,i_m).mat/1000)
             case 1
                 n_w(ii,i_m)=4;
@@ -51,6 +49,3 @@ for i_m=1:nb_multilayers
         nb_amplitudes(i_m)=nb_amplitudes(i_m)+1;
     end
 end
-
-
-

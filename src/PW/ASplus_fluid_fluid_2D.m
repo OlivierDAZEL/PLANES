@@ -36,13 +36,13 @@
 % Initialization of the State vectors in media 1 and 2
 if multilayer(end).mat==0
     k_z_2=sqrt(k_air^2-k_x^2);
-    SV_2=State_fluid(k_x,k_z_2,air.K);
+    SV_2=State_fluid_2D(k_x,k_z_2,air.K);
     dof_medium_2=nS_minus+nb_amplitudes+1-[2:-1:1];
 else
-    eval(['Mat_PEM_' num2str(multilayer(end).mat-1000*floor(multilayer(end).mat/1000))])
+    eval(['Mat_porous_' num2str(multilayer(end).mat-1000*floor(multilayer(end).mat/1000))])
     properties_eqf
     k_z_2=sqrt((omega*sqrt(rho_eq_til/K_eq_til))^2-k_x^2);
-    SV_2=State_fluid(k_x,k_z_2,K_eq_til);
+    SV_2=State_fluid_2D(k_x,k_z_2,K_eq_til);
     dof_medium_2=nS_minus+nb_amplitudes+1-[2:-1:1];
 end
 

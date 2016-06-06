@@ -117,6 +117,8 @@ if exist('nodes')
     temp_physical=(ismember(floor(elem.label(edges.internal(:,3))/1000),[0 2 3])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[0 2 3]));
     temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[1])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[1]));
     temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[4])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[4]));
+    temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[4])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[0]));
+    temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[0])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[4]));
     temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[5])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[5]));
     temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[1])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[5]));
     temp_physical=temp_physical+(ismember(floor(elem.label(edges.internal(:,3))/1000),[5])).*(ismember(floor(elem.label(edges.internal(:,4))/1000),[1]));

@@ -68,10 +68,7 @@ eval([name.project_full '_data']) %
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 PLANES_preprocess
-
-
 
 if data_model.profiles.mesh
     display_mesh

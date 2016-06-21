@@ -34,7 +34,7 @@
 
 
 for ie=1:nb.internal
-    
+
     x1=nodes(edges.internal(ie,1),1);
     y1=nodes(edges.internal(ie,1),2);
     x2=nodes(edges.internal(ie,2),1);

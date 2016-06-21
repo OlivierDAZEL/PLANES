@@ -43,7 +43,11 @@ switch porous_model.eqf
     case{'Delany_Bazley'}
     case{'Horoshenkov'}
     case{'Wilson'}  
-    case{'air'}        
+    case{'air'}    
+    case{'custom'} 
+        rho_eq_til=air.rho;
+        K_eq_til=air.K*0.5^2;
+        %K_eq_til=air.K;
     otherwise
         PLANES_INTERRUPTED_in_properties_eqf
 end

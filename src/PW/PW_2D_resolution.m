@@ -49,9 +49,7 @@ for i_f=1:abs(frequency.nb)
         
         
         F_PW=-Mat_PW(:,1);
-        size(Mat_PW)
         Mat_PW(:,1)=[];
-        size(Mat_PW)
         X_PW=Mat_PW\F_PW;
         
         abs_PW=1-abs(X_PW(1))^2;

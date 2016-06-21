@@ -36,6 +36,7 @@
 function Mat_PW=build_global_PW_matrices_2D(k_x,omega,multilayer,nb_amplitudes,n_w,k_air,air)
 
 
+
 % Initialization of the matrix
 Mat_PW=zeros(nb_amplitudes-1,nb_amplitudes);
 
@@ -109,4 +110,6 @@ else % transmission problem
     
 end
 
+
 end
+

@@ -65,6 +65,7 @@ for ii=1:size(edges.ZOD_moins,1)
     Mat_rotm1=[Mat_rotm1 0*Mat_rotm1;0*Mat_rotm1 Mat_rotm1];
     TTrot=Mat_rotm1*TT*Mat_rot;
 
+
     FSIe=TR6_FSI(a1,a2);
     
     switch floor(elem.label(edges.ZOD_moins(ii,3))/1000)
@@ -130,25 +131,7 @@ for ii=1:size(edges.ZOD_moins,1)
         otherwise
             plante_dans_ZOD_application
     end
-    
-% %             index_force_p_moins
-% %             index_F_elem_p_moins
-%              index_F_global_p_moins
-%              index_F_global_ux_moins
-% %             index_F_elem_ux_moins
-%              index_F_global_uy_moins
-% %             index_F_elem_uy_moins
-% %             
-% %             
-% %             index_force_p_plus
-% %             index_F_elem_p_plus
-%              index_F_global_p_plus
-%              index_F_global_ux_plus
-% %             index_F_elem_ux_plus
-%              index_F_global_uy_plus
-% %             index_F_elem_uy_plus
-% %             
-% %             lmkmklmkl             
+         
             
     
     A(index_F_global_ux_moins,index_F_global_ux_moins)=A(index_F_global_ux_moins,index_F_global_ux_moins)-TTrot(1,1)*(FSIe(index_F_elem_ux_moins,index_F_elem_ux_moins));

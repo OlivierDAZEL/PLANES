@@ -102,7 +102,3 @@ Mat_PW(number_of_eq,dof_medium_2(3))=SV_2(6,3);
 Mat_PW(number_of_eq,dof_medium_2(4))=SV_2(6,4)*exp(-1j*k_z_2(1)*multilayer(1).d);
 Mat_PW(number_of_eq,dof_medium_2(5))=SV_2(6,5)*exp(-1j*k_z_2(2)*multilayer(1).d);
 Mat_PW(number_of_eq,dof_medium_2(6))=SV_2(6,6)*exp(-1j*k_z_2(3)*multilayer(1).d);
-
-
-
-

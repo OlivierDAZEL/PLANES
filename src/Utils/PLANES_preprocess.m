@@ -365,7 +365,6 @@ if exist('nodes')
                 if node1_plus==2
                     edges.ZOD_plus(ii,1:2)=edges.ZOD_plus(ii,[2 1]);
                 end
-                
             else
                 stop
             end

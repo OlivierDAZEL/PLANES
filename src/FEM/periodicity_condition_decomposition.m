@@ -1,4 +1,4 @@
-% compute_number_PW_TMM.m
+% periodicity_condition_application.m
 %
 % Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,19 +33,59 @@
 %%
 
 
-for i_m=1:nb_multilayers
-    for ii=1:multilayer(1,i_m).nb
-        switch floor(multilayer(ii,i_m).mat/1000)
-            case 1
-                n_w(ii,i_m)=4;
-            case {0 2 3}
-                n_w(ii,i_m)=2;
-            case {4 5}
-                n_w(ii,i_m)=6;
-        end
-    end
-    nb_amplitudes(i_m)=sum(n_w(:,i_m));
-    if multilayer(1,i_m).termination~=0
-        nb_amplitudes(i_m)=nb_amplitudes(i_m)+1;
-    end
-end
+%disp('Applying periodicity condtions')
+
+edge_left= find(edges.periodicity(:,4)==98);
+edge_right=find(edges.periodicity(:,4)==99);
+
+node_left=unique([edges.periodicity(edge_left,1);edges.periodicity(edge_left,2);edges.periodicity(edge_left,6)]);
+[temp,i_left]=sort(nodes(node_left,2));
+node_left=node_left(i_left);
+
+node_right=unique([edges.periodicity(edge_right,1);edges.periodicity(edge_right,2);edges.periodicity(edge_right,6)]);
+[temp,i_right]=sort(nodes(node_right,2));
+node_right=node_right(i_right);
+
+dof_left= dof_A(uxyp_TR(node_left));
+dof_right=dof_A(uxyp_TR(node_right));
+
+dof_left= dof_left (find(dof_left));
+dof_right=dof_right(find(dof_right));
+
+dof_internal=1:nb.dof_total;
+dof_internal([dof_left dof_right])=[];
+
+
+AA=A(dof_left,dof_left);
+BB=A(dof_left,dof_internal);
+CC=A(dof_left,dof_right);
+DD=A(dof_internal,dof_left);
+EE=A(dof_internal,dof_internal);
+FF=A(dof_internal,dof_right);
+GG=A(dof_right,dof_left);
+HH=A(dof_right,dof_internal);
+II=A(dof_right,dof_right);
+
+Mat_M=[CC 0*HH;0*FF 0*EE]; % delta^2
+Mat_C=[AA+II BB;FF 0*EE];  %delta
+Mat_K=[GG HH;DD EE];
+
+AAA=[Mat_M 0*Mat_M;0*Mat_M -Mat_K];
+BBB=[Mat_C   Mat_K; Mat_K 0*Mat_K];
+
+
+delta=eigs(inv(BBB)*AAA,10,'SR')
+
+k=log(delta)/(-1j*data_model.L)
+
+
+
+fsddfdsfdsdsf
+
+
+
+
+
+
+
+

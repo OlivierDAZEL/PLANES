@@ -102,7 +102,6 @@ switch floor(element_MMT_plus/1000)
         nS_plus=4;
         dof_FEM=[dof_FEM nS_minus+[4 2]];
         boundary_FEM=[boundary_FEM nS_minus+[1 3]];
-        normale_plus=diag([-1 -1]);
         index_ZOD=[index_ZOD; 3+[1;2]];
     case {2 3}
         eval(['Mat_porous_' num2str(element_MMT_plus-1000*floor(element_MMT_plus/1000))]);
@@ -130,10 +129,11 @@ end
 
 % Initialization of the matrix
 Mat_PW=zeros(nS_minus/2+nb_amplitudes+nS_plus/2,nS_minus+nb_amplitudes+nS_plus);
-size(Mat_PW)
+
 % Creation of the equation
 
 number_of_eq=0;
+
 
 if ismember(floor(element_MMT_minus/1000),[0 2 3])
     switch floor(multilayer(1).mat/1000)
@@ -153,12 +153,12 @@ elseif floor(element_MMT_minus/1000)==1
         case {4 5}
             SminusA_PEM_elas_2D
     end
-elseif ismember(floor(element_MMT_minus/1000),[4 5])
+elseif ismember(floor(element_MMT_minus/1000),[4])
     switch floor(multilayer(1).mat/1000)
         case {0 2 3}
             fhgfghhghgfgfh
         case 1
-            fhgfghhghgfgfh
+            SminusA_PEM_elas_2D
         case {4 5}
             SminusA_PEM_PEM_2D
     end
@@ -183,12 +183,12 @@ elseif floor(element_MMT_plus/1000)==1
         case {4 5}
             ASplus_PEM_elas_2D
     end
-elseif ismember(floor(element_MMT_plus/1000),[4 5])
+elseif ismember(floor(element_MMT_plus/1000),[4])
     switch floor(multilayer(end).mat/1000)
         case {0 2 3}
             fhgfghhghgfgfh
         case 1
-            fhgfghhghgfgfh
+            ASplus_elas_PEM_2D
         case {4 5}
             ASplus_PEM_PEM_2D
     end
@@ -234,7 +234,6 @@ for i_interface=1:nb_layers-1
 end
 
 
-
 S_moins=1:nS_minus;
 dof_amplitudes=nS_minus+[1:nb_amplitudes];
 S_plus=nS_minus+nb_amplitudes+[1:nS_plus];
@@ -254,20 +253,17 @@ Gamma=-inv(M22)*[M21 M23];
 
 GGamma=[[M11 M13]+M12*Gamma;[M31 M33]+M32*Gamma];
 
-
 M_b=GGamma(:,boundary_FEM);
 M_d=GGamma(:,dof_FEM);
 
 T=-inv(M_b)*M_d;
 
-
 T(nS_minus/2+[1:nS_plus/2],:)=-T(nS_minus/2+[1:nS_plus/2],:);
-
 
 nb_dof_minus=nS_minus/2;
 nb_dof_plus=nS_plus/2;
 
-
 ZOD_mat=zeros(6,6);
 ZOD_mat(index_ZOD,index_ZOD)=T;
-% ZOD_mat=T;
+
+

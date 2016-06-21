@@ -1,4 +1,4 @@
-% PLANES_PW.m
+% PLANES.m
 %
 % Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
@@ -33,23 +33,60 @@
 %%
 
 
-function PLANES_PW(projectname, expnb,data_model,multilayer,frequency,name)
+function PLANES_dispersion(projectname, expnb,data_model,frequency,name)
+% %clear all;
+% %close all;
+% %clc;
+% 
+% if ~exist('projectname')==1
+%     project.name='David_ZOD';
+%     project.name='Article_ZOD';
+%     %project.name='Multilayer_3D';
+%     nargin=0;
+% else
+     project.name=projectname;
+% end
+% if exist('expnb')==1
+     project.num=expnb;
+% else
+%     project.num=23;
+%     %project.num=0;
+% end
 
-project.name=projectname;
-project.num=expnb;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Initialization of PLANES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 PLANES_init
-PLANES_preprocess_Multilayer
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Execution of the data File
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-switch length(data_model.theta_inc)
-    case {1}
-        PW_2D_resolution
-    case {2}
-        PW_3D_resolution
-    otherwise
-        errorinPLANES_Multilayer
+eval([name.project_full '_data']) %
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+PLANES_preprocess
+
+if data_model.profiles.mesh
+    display_mesh
 end
-eval(['rmpath(' list_path ');'])
-rmpath([name.project_directory '/m/']);
-rmpath([name.project_directory '/m/Materials']);
+
+if nb.dof_FEM>0
+    EF_global_build
+end
+
+PLANES_solve_dispersion
+
+
+
+if exist('FF.inp','file')
+    system('rm FF.inp')
+end
+
+
+
+end
+

@@ -151,7 +151,7 @@ elseif floor(element_MMT_minus/1000)==1
         case 1
             SminusA_elas_elas_2D
         case {4 5}
-            SminusA_PEM_elas_2D
+            SminusA_elas_PEM_2D
     end
 elseif ismember(floor(element_MMT_minus/1000),[4])
     switch floor(multilayer(1).mat/1000)

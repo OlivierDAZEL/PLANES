@@ -33,12 +33,13 @@
 %%
 
 
+
 for ii=1:size(edges.ZOD_moins,1)
     
     number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2;
 
-    [TT,nS_minus,nS_plus]=build_FEM_transfer_2D(k_air*sin(data_model.multilayer_ZOD(number_ZOD).theta_ZOD),elem.label(edges.ZOD(index_ZOD_moins(ii),3)),elem.label(edges.ZOD(index_ZOD_plus(ii),3)),omega,data_model.multilayer_ZOD(number_ZOD),k_air,air);
-    
+    [TT,nS_minus,nS_plus]=build_FEM_transfer_2D(k_air*sin(data_model.multilayer_ZOD(number_ZOD).theta_ZOD),elem.label(edges.ZOD_moins(ii,3)),elem.label(edges.ZOD_plus(ii,3)),omega,data_model.multilayer_ZOD(number_ZOD),k_air,air);
+  
     node_moins=edges.ZOD_moins(ii,[1 2 6]);
     node_plus=edges.ZOD_plus(ii,[1 2 6]);
 

@@ -336,24 +336,26 @@ if exist('nodes')
         size_info_vector_T=2;
     end
     
+    edges.ZOD
     
     if nb.ZOD~=0
         
-        index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1);
+        index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1)
         
-        edges.ZOD_moins=edges.ZOD(index_ZOD_moins,:);
+        edges.ZOD_moins=edges.ZOD(index_ZOD_moins,:)
         
         
         
         for ii=1:length(index_ZOD_moins);
-            number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2;
+            number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2
             % Association of boundaries on plus and on minus by the middle node
-            node_moins=edges.ZOD(index_ZOD_moins(ii),6);
-            [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-data_model.multilayer_ZOD(number_ZOD).delta_x)+1i*(nodes(:,2)-nodes(node_moins,2)-data_model.multilayer_ZOD(number_ZOD).delta_y)));
+            node_moins=edges.ZOD(index_ZOD_moins(ii),6)
+            [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-data_model.multilayer_ZOD(number_ZOD).delta_x)+1i*(nodes(:,2)-nodes(node_moins,2)-data_model.multilayer_ZOD(number_ZOD).delta_y)))
             
-            index_ZOD_plus=find(edges.ZOD(:,6)==node_plus);
+            index_ZOD_plus(ii)=find(edges.ZOD(:,6)==node_plus)
             
-            edges.ZOD_plus(ii,:)=edges.ZOD(index_ZOD_plus,:);
+            
+            edges.ZOD_plus(ii,:)=edges.ZOD(index_ZOD_plus(ii),:);
             
             
             node_moins=edges.ZOD(index_ZOD_moins(ii),1);
@@ -370,21 +372,7 @@ if exist('nodes')
             end
         end
         
-        %         temp=elem.label(edges.ZOD_moins(:,3));
-        %         temp=temp-temp(1)*ones(size(temp));
-        %         if norm(temp)==0
-        %             elem.ZOD_moins=elem.label(edges.ZOD_moins(1,3));
-        %         else
-        %             stop
-        %         end
-        %
-        %         temp=elem.label(edges.ZOD_plus(:,3));
-        %         temp=temp-temp(1)*ones(size(temp));
-        %         if norm(temp)==0
-        %             elem.ZOD_plus=elem.label(edges.ZOD_plus(1,3));
-        %         else
-        %             stop
-        %         end
+
     end
     
     period=max(nodes(:,1))-min(nodes(:,1));

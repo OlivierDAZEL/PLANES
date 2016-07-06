@@ -340,17 +340,17 @@ if exist('nodes')
     
     if nb.ZOD~=0
         
-        index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1)
+        index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1);
         
-        edges.ZOD_moins=edges.ZOD(index_ZOD_moins,:)
+        edges.ZOD_moins=edges.ZOD(index_ZOD_moins,:);
         
         
         
         for ii=1:length(index_ZOD_moins);
-            number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2
+            number_ZOD=1+(edges.ZOD(index_ZOD_moins(ii),4)-401)/2;
             % Association of boundaries on plus and on minus by the middle node
-            node_moins=edges.ZOD(index_ZOD_moins(ii),6)
-            [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-data_model.multilayer_ZOD(number_ZOD).delta_x)+1i*(nodes(:,2)-nodes(node_moins,2)-data_model.multilayer_ZOD(number_ZOD).delta_y)))
+            node_moins=edges.ZOD(index_ZOD_moins(ii),6);
+            [~,node_plus]=min(abs((nodes(:,1)-nodes(node_moins,1)-data_model.multilayer_ZOD(number_ZOD).delta_x)+1i*(nodes(:,2)-nodes(node_moins,2)-data_model.multilayer_ZOD(number_ZOD).delta_y)));
             
             index_ZOD_plus(ii)=find(edges.ZOD(:,6)==node_plus)
             

@@ -33,7 +33,8 @@
 function M=Phi_fluid_vector(nx,ny,Z_e,Shift)
 
 n=length(nx);
-M(1:3,1:n)=[nx;ny;Z_e*ones(1,n)];
+M(1:2,1:n)=[nx;ny];
+M(3,:)=Z_e;
 M=repmat(M,n,1);
 
 M=Shift.*M;

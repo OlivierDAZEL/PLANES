@@ -162,6 +162,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         if (nb.dirichlets>0)
             for ie=1:nb.dirichlets
                 if ismember(elem.model(edges.dirichlets(ie,3)),[10 11])
+                    % Case of a model by DGM (In the case of FEM, no interface term)
                     boundary_rigid_wall_fluid
                 end
             end
@@ -210,3 +211,4 @@ if (nb.dof_DGM+nb.dof_FEM)>0
     end
     time_PLANES=toc;
 end
+

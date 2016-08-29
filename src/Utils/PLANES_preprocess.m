@@ -335,9 +335,7 @@ if exist('nodes')
         nb.T=1;
         size_info_vector_T=2;
     end
-    
-    edges.ZOD
-    
+        
     if nb.ZOD~=0
         
         index_ZOD_moins=find(mod(edges.ZOD(:,4),2)==1);

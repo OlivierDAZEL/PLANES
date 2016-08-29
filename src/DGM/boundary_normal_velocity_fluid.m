@@ -70,7 +70,6 @@ F_e_tilde=M_e*F_e*P_e_tilde;
 S_e_tilde=M_e*F_e*P_e_out;
 
 
-
 nx=cos(vec_theta);
 ny=sin(vec_theta);
 Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);

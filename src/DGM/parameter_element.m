@@ -41,8 +41,7 @@ if floor(elem.label(num_element)/1000)==0
     tau_x=1;
     tau_y=1;
     
-    
-elseif floor(element_label(num_element)/1000)==2
+elseif floor(elem.label(num_element)/1000)==2
     
     tau_x=1;
     tau_y=1;
@@ -55,18 +54,18 @@ elseif floor(element_label(num_element)/1000)==2
     M_e=diag([Mat_parameter(1,index_element(num_element)),Mat_parameter(1,index_element(num_element)),1/Mat_parameter(2,index_element(num_element))]); 
     
 
-elseif floor(element_label(num_element)/1000)==8    
+elseif floor(elem.label(num_element)/1000)==8    
     c_e=air.c;
     
     tau_x=1;
     tau_y=1;
-    temp=(element_label(num_element)-8000);
+    temp=(elem.label(num_element)-8000);
     if (floor(temp/100)==1)
-        tau_x=exp(1j*pi/4);
+        tau_x=data_model.PML_parameter.tau;
     end
     temp=temp-100*floor(temp/100);
     if (floor(temp/10)==1)
-        tau_y=exp(1j*pi/4);
+        tau_y=data_model.PML_parameter.tau;
     end    
     
     k_e=omega/c_e;
@@ -75,7 +74,7 @@ elseif floor(element_label(num_element)/1000)==8
 
     M_e=diag([air.rho,air.rho,1/air.K]);    
     
-elseif floor(element_label(num_element)/1000)==4
+elseif floor(elem.label(num_element)/1000)==4
     
     tau_x=1;
     tau_y=1;

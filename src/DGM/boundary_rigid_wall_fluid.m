@@ -44,17 +44,24 @@ center_element=mean(nodes(nonzeros(elem.nodes(num_element,:)),1:2))';
 
 parameter_element
 
+
 % (nx,ny) normal vector 
 
 [nx,ny]=normal_edge_out_element(a,b,center_element);
 
 
-P_e_in=[nx;ny;air.Z];
-Q_e_in=[nx/2 ny/2 1/(2*air.Z)];
-P_e_out=[nx;ny;-air.Z];
-Q_e_out=[nx/2 ny/2 -1/(2*air.Z)];
-
+C_e=[nx/tau_x ny/tau_y 0];
 C_e=[nx ny 0];
+
+nx=nx/tau_x;
+ny=ny/tau_y;
+ne=sqrt(nx^2+ny^2);
+
+P_e_in=[nx;ny;air.Z*ne];
+Q_e_in=[nx/2/ne^2 ny/2/ne^2 1/(2*air.Z*ne)];
+P_e_out=[nx;ny;-air.Z*ne];
+Q_e_out=[nx/2/ne^2 ny/2/ne^2 -1/(2*air.Z*ne)];
+
 
 temp=inv(C_e*P_e_in);
 R_e_tilde=-temp*C_e*P_e_in;
@@ -62,18 +69,22 @@ P_e_tilde=(P_e_in+P_e_out*R_e_tilde)*Q_e_in;
 
 A_x=[0 0 1/rho_e;0 0 0; rho_e*c_e^2 0 0];
 A_y=[0 0 0;0 0 1/rho_e; 0 rho_e*c_e^2 0];
+
+F_e=(A_x*nx*tau_x^2+A_y*ny*tau_y^2);
+F_e=(A_x*nx*tau_x+A_y*ny*tau_y);
 F_e=(A_x*nx+A_y*ny);
 
 F_e_tilde=M_e*F_e*P_e_tilde;
 
-
 nx=cos(vec_theta);
 ny=sin(vec_theta);
+ne=sqrt(nx.^2+ny.^2);
+Phi=Phi_fluid_vector(nx/tau_x,ny/tau_y,Z_e*ne,Shift_fluid);
 Phi=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 
-II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[center_element center_element]);
+II=int_edge_2vectorielle(1j*k_e*[nx*tau_x;ny*tau_y],-1j*k_e*[nx*tau_x;ny*tau_y],a,b,[center_element center_element]);
 MM=kron(II,F_e_tilde);
 indice_test  =((1:data_model.theta_DGM.nb)-1)+dof_start_element(num_element);  
 indice_champs=((1:data_model.theta_DGM.nb)-1)+dof_start_element(num_element);
-A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi;
+A(indice_test,indice_champs)=A(indice_test,indice_champs)+Phi.'*MM*Phi*tau_x*tau_y;
 

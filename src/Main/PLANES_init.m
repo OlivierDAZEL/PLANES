@@ -70,6 +70,10 @@ set(0,'Defaultlinelinewidth',2);
 set(0,'DefaultAxesFontSize',15)
 set(0,'DefaultAxeslinewidth',2);
 
-air_properties_maine
+air_properties_generic
 
 Gauss_points=compute_GaussLegendre_points(10);
+
+if data_model.export.reset~=0;
+   system(['rm ' name.file_PL ';']); 
+end

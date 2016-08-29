@@ -78,6 +78,8 @@ if nb.dof_FEM>0
     EF_global_build
 end
 
+
+
 PLANES_resolution
 
 PLANES_info

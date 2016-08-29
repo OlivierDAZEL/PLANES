@@ -7,7 +7,7 @@ data_model.label=[3 1 label_boundary 1];
 
 % All the elements are H12
 
-elem.model=2*ones(nb.elements,1);
+elem.model=11*ones(nb.elements,1);
 
 label_elem_ajoute=0;
 model_elem_ajoute=11;

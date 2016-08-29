@@ -37,7 +37,7 @@ temp=find(ismember(elem.model,[10 11]));
 
 if length(temp)>0
     for ie=1:length(temp)
-        switch elem.label(ie)
+        switch floor(elem.label(ie)/1000)
             case {0,3,8}
                 ondes_element(temp(ie))=1;
             case {1}

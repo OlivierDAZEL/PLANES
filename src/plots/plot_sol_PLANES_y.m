@@ -101,6 +101,7 @@ for ie=1:nb.elements
         q=X(dof_start_element(ie)+[0:ondes_element(ie)*data_model.theta_DGM.nb-1]);
         
         e_edge=ie;
+        num_element=ie;
         parameter_element
         
         if elem.model(ie)==10

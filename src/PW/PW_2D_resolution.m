@@ -40,7 +40,11 @@ for i_f=1:abs(frequency.nb)
     omega=2*pi*frequency.vec(i_f);
     k_air=omega/air.c;
     k_x=k_air*sin(data_model.theta_inc(1));
+    if imag(frequency.vec(i_f))==0
     fprintf(file_PW_id,'%1.15e \t',frequency.vec(i_f));
+    else
+    fprintf(file_PW_id,'%1.15e \t%1.15e \t',real(frequency.vec(i_f)),imag(frequency.vec(i_f)));
+    end
     for i_m=1:nb_multilayers
         
         

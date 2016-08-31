@@ -16,11 +16,12 @@ data_model.profiles.x=0;
 data_model.profiles.y=1;
 data_model.profiles.map=0;
 data_model.profiles.custom=0;
+
 %data_model.profiles.on=data_model.profiles.x+data_model.profiles.y+data_model.profiles.map;
 data_model.profiles.custom_plots = {};
 data_model.export.profiles=0;
 data_model.export.nrj=1;
-
+data_model.export.reset=0;
 data_model.lx=0.1;
 data_model.ly=1;
 data_model.nx=1;

@@ -46,9 +46,11 @@ for i_f=1:abs(frequency.nb)
     k_x=k_air*sin(data_model.theta_inc(1))*cos(data_model.theta_inc(2));
     k_y=k_air*sin(data_model.theta_inc(1))*sin(data_model.theta_inc(2));
     
-    
-    
+    if imag(frequency.vec(i_f))==0
     fprintf(file_PW_id,'%1.15e \t',frequency.vec(i_f));
+    else
+    fprintf(file_PW_id,'%1.15e \t%1.15e \t',real(frequency.vec(i_f)),imag(frequency.vec(i_f)));
+    end
     for i_m=1:nb_multilayers
         
         [Mat_PW]=build_global_PW_matrices_3D(k_x,k_y,omega,multilayer(:,i_m),nb_amplitudes(i_m),n_w(:,i_m),k_air,air);

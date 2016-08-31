@@ -36,11 +36,9 @@
 tic
 
 
-
 if (nb.dof_DGM+nb.dof_FEM)>0
     for i_f=1:abs(frequency.nb)
         PLANES_resolution_progress=100*i_f/abs(frequency.nb)
-        
         freq=frequency.vec(i_f);
         omega=2*pi*freq;
         k_air=omega/air.c;
@@ -110,6 +108,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                     eval(['Mat_porous_' num2str(num_media.eqf(i_mat))])
                     typ_mat=2;
                     properties_eqf
+                   
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_eqf_',num2str(i_mat),'/(rho_eq_til*omega^2)-Q_eqf_',num2str(i_mat),'/(K_eq_til);']);
                 end
             end

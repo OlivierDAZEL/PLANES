@@ -32,13 +32,22 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
-if(frequency.nb>0)
-    if frequency.nb==1
-        frequency.vec=frequency.min;
+if length(frequency.nb)==1
+    if(frequency.nb>0)
+        if frequency.nb==1
+            frequency.vec=frequency.min;
+        else
+            frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
+        end
     else
-        frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
+        frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
     end
-else
-    frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
+else % Case of complex frequency
+    temp_1=linspace(frequency.min,frequency.max,frequency.nb(1));
+    temp_2=linspace(frequency.min_imag,frequency.max_imag,frequency.nb(2));
+    frequency.vec=[];
+    for ii=1:frequency.nb(2)
+        frequency.vec=[frequency.vec temp_1+1j*temp_2(ii)];
+    end
+    frequency.nb=frequency.nb(1)*frequency.nb(2);
 end

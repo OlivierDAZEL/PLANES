@@ -51,3 +51,8 @@ else % Case of complex frequency
     end
     frequency.nb=frequency.nb(1)*frequency.nb(2);
 end
+
+
+frequency.nb
+frequency.vec
+

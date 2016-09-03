@@ -70,7 +70,7 @@ set(0,'Defaultlinelinewidth',2);
 set(0,'DefaultAxesFontSize',15)
 set(0,'DefaultAxeslinewidth',2);
 
-air_properties_generic
+air_properties_JPG
 
 Gauss_points=compute_GaussLegendre_points(10);
 

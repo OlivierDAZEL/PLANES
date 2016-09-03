@@ -33,27 +33,26 @@
 %%
 
 
-% function void=display_mesh(nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,edges_MMT,loads,dirichlets,periodicity)
-
+function void=display_mesh_light(nb,nodes,elem,Linewidth)
 
 hold on
 for ie=1:nb.elements
     if elem.model(ie)==1
-        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,3),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','k','Linewidth',0.5);
+        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,3),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,5),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,5),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,5),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,5),2) nodes(elem.nodes(ie,1),2)],'Color','k','Linewidth',Linewidth);
     end
     if ismember(elem.model(ie),[2,11])
-        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,4),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,4),2) nodes(elem.nodes(ie,1),2)],'Color','k','Linewidth',0.5);
+        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,4),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,4),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,4),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,4),2) nodes(elem.nodes(ie,1),2)],'Color','k','Linewidth',Linewidth);
     end
     
     if ismember(elem.model(ie),[3,10])
-        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','k','Linewidth',0.5);
-        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,1),2)],'Color','k','Linewidth',0.5);
+        line([nodes(elem.nodes(ie,1),1) nodes(elem.nodes(ie,2),1)],[nodes(elem.nodes(ie,1),2) nodes(elem.nodes(ie,2),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,2),1) nodes(elem.nodes(ie,3),1)],[nodes(elem.nodes(ie,2),2) nodes(elem.nodes(ie,3),2)],'Color','k','Linewidth',Linewidth);
+        line([nodes(elem.nodes(ie,3),1) nodes(elem.nodes(ie,1),1)],[nodes(elem.nodes(ie,3),2) nodes(elem.nodes(ie,1),2)],'Color','k','Linewidth',Linewidth);
     end
 end
 

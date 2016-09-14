@@ -85,7 +85,7 @@ F_22_tilde=M_2*F_2*P_22_tilde;
 
 
 switch elem.model(e_1)
-    case 1 % TR1
+    case 1 % TR6
         index_p_1=dof_A(p_TR(elem.nodes(e_1,1:6)));
         nb_dof_1=6;
         vcor=nodes(nonzeros(elem.nodes(e_1,1:6)),1:2);
@@ -160,8 +160,6 @@ switch elem.model(e_1)
 end
 
 index_2  =((1:data_model.theta_DGM.nb)-1)+dof_start_element(e_2);
-
- 
 
 for i_test=1:nb_dof_1
     eval(['N_1=p_e1d',num2str(i_test),';']);

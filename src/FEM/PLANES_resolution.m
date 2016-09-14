@@ -172,7 +172,6 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         end
         
         
-        
         if nb.flux>0
             for ie=1:nb.flux
                 if ((ismember(elem.model(edges.flux(ie,3)),[1 2 3]))&&(ismember(elem.model(edges.flux(ie,4)),[1 2 3])))

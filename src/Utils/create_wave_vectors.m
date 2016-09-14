@@ -59,7 +59,7 @@ temp=[0 temp];
 vec_k_x=k_x+temp*(2*pi/period);
 vec_k_x_t=k_x+temp*(2*pi/period);
 
-vec_k_z=sqrt(k_air^2-vec_k_x.^2)
+vec_k_z=sqrt(k_air^2-vec_k_x.^2);
 % vec_k_z=real(vec_k_z)-1i*(imag(vec_k_z))
 % 
 % lkjljljklkj

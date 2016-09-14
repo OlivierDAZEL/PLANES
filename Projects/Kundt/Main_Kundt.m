@@ -10,7 +10,7 @@ frequency.min=500;
 frequency.min=100;
 frequency.max=20000;
 
-data_model.profiles.mesh=0;
+data_model.profiles.mesh=1;
 data_model.profiles.solution=0;
 data_model.profiles.x=0;
 data_model.profiles.y=1;
@@ -32,7 +32,7 @@ data_model.theta_DGM.nb=4;
 data_model.tilt=0*pi/data_model.theta_DGM.nb;
 
 
-PLANES('Kundt',6,data_model,frequency)
+PLANES('Kundt',7,data_model,frequency)
 
 cd(current_dir);
 

@@ -45,6 +45,7 @@ C_e2=[0 1 0;0 0 1];
 C_e1=[0 1 0;0 0 1];
 W_e2=[nx -ny -nx;ny nx -ny;air.Z 0 air.Z];
 Omega_e2=[nx/2 ny/2 1/(2*air.Z);-ny nx 0;-nx/2 -ny/2 1/(2*air.Z)];
+
 W_e2_plus=W_e2(:,1);
 W_e2_moins=W_e2(:,3);
 Omega_e2_plus=Omega_e2(1,:);

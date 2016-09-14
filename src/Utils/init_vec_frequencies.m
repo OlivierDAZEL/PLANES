@@ -39,7 +39,7 @@ if length(frequency.nb)==1
         else
             frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
         end
-    else
+    elseif (frequency.nb<0)
         frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
     end
 else % Case of complex frequency

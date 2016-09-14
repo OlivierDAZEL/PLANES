@@ -32,7 +32,6 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-
 % function void=display_mesh(nb,nodes,elements,element_label,edges,num_media,element_num_mat,interfaces,edges_MMT,loads,dirichlets,periodicity)
 
 figure (10)

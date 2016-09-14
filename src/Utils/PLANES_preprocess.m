@@ -221,6 +221,11 @@ if exist('nodes')
     temp=find(ismember(floor(boundaries(:,4)/100),[4]));
     edges.ZOD=boundaries(temp,:);
     boundaries(temp,:)=[];
+
+    temp=find(ismember(boundaries(:,4),[61]));
+    edges.radiative=boundaries(temp,:);
+    boundaries(temp,:)=[];
+    
     
     
     temp=find(ismember(boundaries(:,4),[0]));
@@ -229,6 +234,8 @@ if exist('nodes')
     
     
     edges.loads=boundaries;
+    
+
     clear boundaries;
     
     nb.dirichlets=size(edges.dirichlets,1);
@@ -236,7 +243,7 @@ if exist('nodes')
     nb.periodicity=size(edges.periodicity,1);
     nb.ZOD=size(edges.ZOD,1);
     nb.DtN=size(edges.DtN,1);
-    
+    nb.radiative=size(edges.radiative,1);
     
     if ((sum(elem.model==1)~=0)|(sum(elem.model==4)~=0))
         [nb,nodes,elem,edges]=TR32TR6(nb,nodes,elem,edges);

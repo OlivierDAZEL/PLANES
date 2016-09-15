@@ -32,6 +32,7 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
+
 temp=find(ismember(elem.model,[10 11]));
 
 
@@ -57,7 +58,17 @@ if length(temp)>0
         end
         nb.dof_DGM=dof_start_element(temp(ie))+data_model.theta_DGM.nb*ondes_element(temp(ie))-1-nb.dof_FEM;
     end
-
+    
+    
+    for ie=1:nb.radiative
+        vec_theta_DGM
+       cxwwcxcxw 
+    end
+    
+    
+    
+    
+    
     for ii=1:data_model.theta_DGM.nb
         Shift_fluid((ii-1)*3+(1:3),ii)=1;
         % Biot wave 1

@@ -42,7 +42,7 @@ k_z=k_air*cos(theta_inc);
 nb.Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
 
 %nb.Bloch_waves=0;
-nb.Bloch_waves=9
+%nb.Bloch_waves=15
 
 if nb.R~=0
     nb.R=2*nb.Bloch_waves+1;

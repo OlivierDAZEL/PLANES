@@ -121,6 +121,11 @@ for ii=1:nb.internal
     line([nodes(edges.internal(ii,1),1) nodes(edges.internal(ii,2),1)],[nodes(edges.internal(ii,1),2) nodes(edges.internal(ii,2),2)]);
     text((nodes(edges.internal(ii,1),1)+nodes(edges.internal(ii,2),1))/2,(nodes(edges.internal(ii,1),2)+nodes(edges.internal(ii,2),2))/2,num2str(edges.internal(ii,4)),'Fontsize',15);
 end
+for ii=1:nb.radiative
+    line([nodes(edges.radiative(ii,1),1) nodes(edges.radiative(ii,2),1)],[nodes(edges.radiative(ii,1),2) nodes(edges.radiative(ii,2),2)]);
+    text((nodes(edges.radiative(ii,1),1)+nodes(edges.radiative(ii,2),1))/2,(nodes(edges.radiative(ii,1),2)+nodes(edges.radiative(ii,2),2))/2,num2str(edges.radiative(ii,4)),'Fontsize',15);
+end
+
 axis equal
 
 

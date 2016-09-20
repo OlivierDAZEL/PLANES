@@ -63,8 +63,6 @@ if sum(ismember(floor(elem.label/1000),[0 2 3 4 5]))~=0
     ylabel('angle(P)')
 end
 
-
-
 for ie=1:nb.elements
     
     if ismember(elem.model(ie),[1 3])

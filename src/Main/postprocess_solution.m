@@ -69,7 +69,7 @@ end
 if nb.R~=0
     reflex_FEM(i_f)=rflx(1);
     abs_EF(i_f)=1-sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
-    R_EF(i_f)=sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
+    R_EF(i_f)=    sum(real(vec_k_z).'.*abs(rflx(1:size_info_vector_R:end)).^2)/real(k_z);
 end
 
 if nb.T~=0

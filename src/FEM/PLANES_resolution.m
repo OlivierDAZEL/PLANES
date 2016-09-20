@@ -1,6 +1,6 @@
 % PLANES_resolution.m
 %
-% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -192,12 +192,19 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         end
         
         
+
+        
+        
         if (nb.periodicity>0)
             periodicity_condition_application
         end
         
-        
+        if (nb.radiative>0)
+            radiative_boundary_application
+            nb
+        end        
         disp('Resolution of the system')
+
         X=A\F;
         disp('End of the resolution of the system')
         

@@ -1,6 +1,6 @@
 % PLANES_preprocess.m
 %
-% Copyright (C) 2015 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2016 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
 %
 % This file is part of PLANES.
 %
@@ -126,7 +126,7 @@ if exist('nodes')
     edges.internal(temp,:)=[];
     
     % internal=[node1 node2 #element1 #element2 0]
-    nb.internal=size(edges.internal,1);
+    nb.internal=size(edges.internal,1)
     
     clear temp_physical
     
@@ -192,8 +192,8 @@ if exist('nodes')
     edges.dirichlets=boundaries(temp,:);
     boundaries(temp,:)=[];
     
-    
-    
+
+%     
     temp=find(ismember(boundaries(:,4),[25]));
     edges.incompatible=boundaries(temp,:);
     
@@ -226,7 +226,7 @@ if exist('nodes')
     edges.radiative=boundaries(temp,:);
     boundaries(temp,:)=[];
     
-    
+    %edges.radiative
     
     temp=find(ismember(boundaries(:,4),[0]));
     boundaries(temp,:)=[];
@@ -245,6 +245,7 @@ if exist('nodes')
     nb.DtN=size(edges.DtN,1);
     nb.radiative=size(edges.radiative,1);
     
+
     if ((sum(elem.model==1)~=0)|(sum(elem.model==4)~=0))
         [nb,nodes,elem,edges]=TR32TR6(nb,nodes,elem,edges);
     end

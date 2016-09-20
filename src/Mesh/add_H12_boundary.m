@@ -47,7 +47,6 @@ if abs(Delta_x)>abs(Delta_y)
 else
     fit_y=polyfit(nodes_edge(:,2),nodes_edge(:,1),1);
     
-    rzerzeerzerz
     nodes_temp=nodes_edge;
     nodes_temp(:,1)=nodes_temp(:,1)-fit_y(2)-fit_y(1)*nodes_temp(:,2);
     [~,order_nodes]=sort(nodes_temp(:,2));

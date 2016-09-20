@@ -78,7 +78,7 @@ for ii=1:nb_trace
         coord_trace(1,:)
         coord_trace(2,:)
         Phi_elem(3,:)
-        patch(coord_trace(1,:),coord_trace(2,:)',abs(Phi_elem(3,:)))
+        patch(coord_trace(1,:),coord_trace(2,:)',abs(Phi_elem(3,:)'))
         
     end
 end

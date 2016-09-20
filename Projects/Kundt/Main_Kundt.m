@@ -32,7 +32,7 @@ data_model.theta_DGM.nb=4;
 data_model.tilt=0*pi/data_model.theta_DGM.nb;
 
 
-PLANES('Kundt',7,data_model,frequency)
+PLANES('Kundt',5,data_model,frequency)
 
 cd(current_dir);
 

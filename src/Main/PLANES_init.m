@@ -71,7 +71,7 @@ set(0,'Defaultlinelinewidth',2);
 set(0,'DefaultAxesFontSize',15)
 set(0,'DefaultAxeslinewidth',2);
 
-air_properties_JPG
+eval(['air_properties_' data_model.air_model ])
 
 if ~isfield(data_model, 'ngauss')
 	data_model.ngauss = 10;

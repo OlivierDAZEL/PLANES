@@ -64,6 +64,7 @@ name.file_TL=           [name.project_directory 'out/'  name.project_full '.TL']
 name.file_PW=           [name.project_directory 'out/'  name.project_full '.PW'];
 name.file_info=         [name.project_directory 'out/'  name.project_full '.info'];
 name.file_FEM=          [name.project_directory 'out/'  name.project_full '.FEM'];
+name.dir_out=           [name.project_directory 'out/'];
 
 set(0,'DefaultLineMarkerSize',15);
 set(0,'Defaultlinelinewidth',2);

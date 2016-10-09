@@ -48,8 +48,6 @@ a=nodes(edges.flux(ie,1),1:2)';
 b=nodes(edges.flux(ie,2),1:2)';
 
 %%%%% vector normal pointing out from e_1
-format long
-
 [nx,ny]=normal_edge_out_element(a,b,c_1);
 
 M_2=M_e;

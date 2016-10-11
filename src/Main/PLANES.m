@@ -41,14 +41,20 @@ function PLANES(projectname, expnb, data_model, frequency, name)
 % projectname -- (string) name of the project
 % expnb -- (int) identifier of the experiment (sub-project)
 % data_model -- (scalar struct) various information concerning
-% 								the model and tools to run
+%                   the model and tools to run
 % frequency -- (scalar struct) frequency range of interest
-% 								(min, max and number of steps)
+%                   (min, max and number of steps)
 % name -- (scalar struct, OPTIONAL ) f specified, name.project_directory must
-% 								be a string containing the full path to the project dir
+%                   be a string containing the full path to the project dir
 
 project.name=projectname;
 project.num=expnb;
+
+if !isfield(data_model, 'verbosity')
+    data_model.verbosity = 0;
+end
+
+project.logger = @(level, section, msg) logger(data_model.verbosity, level, section, msg);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES
@@ -60,7 +66,7 @@ PLANES_init
 %% Execution of the data File
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+project.logger(3, 'PLANES', 'Running user-defined data script.')
 eval([name.project_full '_data']) %
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -33,12 +33,14 @@
 %%
 
 
-tic
-
-
 if (nb.dof_DGM+nb.dof_FEM)>0
+
+    _overall_tic = tic;
+
+    project.logger(1, 'FEM', 'Starting frequency loop');
     for i_f=1:abs(frequency.nb)
-        PLANES_resolution_progress=100*i_f/abs(frequency.nb)
+        PLANES_resolution_progress=100*i_f/abs(frequency.nb);
+        project.logger(0, 'PLANES', ['Progress: ' num2str(PLANES_resolution_progress) '%']);
         freq=frequency.vec(i_f);
         omega=2*pi*freq;
         k_air=omega/air.c;
@@ -59,6 +61,9 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         F=zeros(nb.dof_total,1);
         
         if nb.dof_FEM>0
+            project.logger(1, 'FEM', 'FEM linear-system assembly')
+            _fem_assembly = tic;
+
             if (nb.media.acou~=0)
                 A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
             end
@@ -143,6 +148,9 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                     eval(['A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)-(gamma_til+1)*(C_pem01_',num2str(i_mat),'+C_pem01_',num2str(i_mat),'.'')-(Cp_pem01_',num2str(i_mat),'+Cp_pem01_',num2str(i_mat),'.'');']);
                 end
             end
+
+            _etime = toc(_fem_assembly);
+            project.logger(2, 'profiling', ['FEM Assembly ' num2str(_etime) 's.']);
         end
         
         if (nb.internal>0)
@@ -173,6 +181,9 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         
         
         if nb.flux>0
+            project.logger(1, 'DGM', 'Adding DGM degrees of freedom')
+            _dgm_assembly = tic;
+
             for ie=1:nb.flux
                 if ((ismember(elem.model(edges.flux(ie,3)),[1 2 3]))&&(ismember(elem.model(edges.flux(ie,4)),[1 2 3])))
                     internal_fluid_FEM_FEM
@@ -189,6 +200,8 @@ if (nb.dof_DGM+nb.dof_FEM)>0
                     internal_fluid_FEM_DGM
                 end
             end
+            _etime = toc(_dgm_assembly);
+            project.logger(2, 'profiling', ['DGM Assembly ' num2str(_etime) 's.']);
         end
         
         
@@ -202,10 +215,14 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         if (nb.radiative>0)
             radiative_boundary_application
         end        
-        disp('Resolution of the system')
+        project.logger(0, 'PLANES', 'Resolution of the system');
+        _resolution = tic;
 
         X=A\F;
-        disp('End of the resolution of the system')
+
+        _etime = toc(_resolution);
+        project.logger(0, 'PLANES', 'End of the resolution of the system');
+        project.logger(2, 'profiling', ['Resolution ' num2str(_etime) 's.']);
         
         postprocess_solution
         
@@ -213,6 +230,6 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             eval([name.project_full '_postprocess'])
         end
     end
-    time_PLANES=toc;
+    time_PLANES=toc(_overall_tic);
 end
 

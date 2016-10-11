@@ -53,6 +53,3 @@ else % Case of complex frequency
 end
 
 
-frequency.nb
-frequency.vec
-

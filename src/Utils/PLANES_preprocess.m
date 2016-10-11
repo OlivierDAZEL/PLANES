@@ -126,7 +126,7 @@ if exist('nodes')
     edges.internal(temp,:)=[];
     
     % internal=[node1 node2 #element1 #element2 0]
-    nb.internal=size(edges.internal,1)
+    nb.internal=size(edges.internal,1);
     
     clear temp_physical
     

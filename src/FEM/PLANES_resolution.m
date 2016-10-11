@@ -201,7 +201,6 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         
         if (nb.radiative>0)
             radiative_boundary_application
-            nb
         end        
         disp('Resolution of the system')
 

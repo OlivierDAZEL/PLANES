@@ -94,7 +94,7 @@ PLANES_info
 % end
 
 if exist('FF.inp','file')
-    system('rm FF.inp')
+    system('rm FF.inp');
 end
 
 

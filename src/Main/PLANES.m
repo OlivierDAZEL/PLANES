@@ -33,25 +33,22 @@
 %%
 
 
-function PLANES(projectname, expnb,data_model,frequency,name)
-% %clear all;
-% %close all;
-% %clc;
-% 
-% if ~exist('projectname')==1
-%     project.name='David_ZOD';
-%     project.name='Article_ZOD';
-%     %project.name='Multilayer_3D';
-%     nargin=0;
-% else
-     project.name=projectname;
-% end
-% if exist('expnb')==1
-     project.num=expnb;
-% else
-%     project.num=23;
-%     %project.num=0;
-% end
+function PLANES(projectname, expnb, data_model, frequency, name)
+%
+% Runs the PLANES solver for the experiment nb expnb of the
+% given project (named projectname, see doc for more info).
+%
+% projectname -- (string) name of the project
+% expnb -- (int) identifier of the experiment (sub-project)
+% data_model -- (scalar struct) various information concerning
+% 								the model and tools to run
+% frequency -- (scalar struct) frequency range of interest
+% 								(min, max and number of steps)
+% name -- (scalar struct, OPTIONAL ) f specified, name.project_directory must
+% 								be a string containing the full path to the project dir
+
+project.name=projectname;
+project.num=expnb;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES

@@ -416,6 +416,6 @@ else
     nb.dof_FEM=0;
     nb.dof_DGM=0;
 end
-_etime = toc;
-project.logger(2, 'profiling', ['PLANES_preprocess ' num2str(_etime) 's.'])
+etime = toc;
+project.logger(2, 'profiling', ['PLANES_preprocess ' num2str(etime) 's.'])
 

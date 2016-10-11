@@ -282,5 +282,5 @@ end
 
 clear_temporary_FEM_matrices
 
-_etime = toc;
-project.logger(2, 'profiling', ['EF_global_build ' num2str(_etime) 's.']);
+etime = toc;
+project.logger(2, 'profiling', ['EF_global_build ' num2str(etime) 's.']);

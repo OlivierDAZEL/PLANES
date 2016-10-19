@@ -83,11 +83,11 @@ if data_model.export.profiles==1
     colormap jet
     colorbar
     print('-djpeg',[name.directory_profiles, num2str(i_f) ,'without_mesh']);
-    display_mesh_light
+    display_mesh_light(nb,nodes,elem,1);
     print('-djpeg',[name.directory_profiles, num2str(i_f) ,'with_mesh']);
     close(10002) 
     figure(10002)    
-    display_mesh_light
+    display_mesh_light(nb,nodes,elem,1);
     print('-djpeg',[name.directory_profiles, num2str(i_f) ,'only_mesh']);
 
 end

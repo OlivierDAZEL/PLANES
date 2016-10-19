@@ -81,7 +81,7 @@ if data_model.profiles.y==1
     plot_sol_PLANES_y
 end
 if data_model.profiles.map==1
-    disp('Creation of the 2D plot, this can take time')
+    project.logger(0, 'postprocess', 'Creation of the 2D plot, this can take time');
     plot_sol_PLANES_map
 end
 

@@ -73,7 +73,11 @@ set(0,'DefaultAxeslinewidth',2);
 
 air_properties_JPG
 
-Gauss_points=compute_GaussLegendre_points(10);
+if !isfield(data_model, 'ngauss')
+	data_model.ngauss = 10;
+end
+Gauss_points=compute_GaussLegendre_points(data_model.ngauss);
+project.logger(1, 'init', ['Gauss quadrature using ' num2str(data_model.ngauss) ' points']);
 
 if data_model.export.reset~=0;
    system(['rm ' name.file_PL ';']); 

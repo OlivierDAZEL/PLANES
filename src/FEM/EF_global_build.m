@@ -34,6 +34,9 @@
 
 create_temporary_FEM_matrices
 
+project.logger(1, 'FEM', 'Beginning construction of FE related matrices');
+
+tic
 for ie=1:nb.elements
       
     if elem.model(ie)==1 % TR6
@@ -278,3 +281,6 @@ end
 
 
 clear_temporary_FEM_matrices
+
+etime = toc;
+project.logger(2, 'profiling', ['EF_global_build ' num2str(etime) 's.']);

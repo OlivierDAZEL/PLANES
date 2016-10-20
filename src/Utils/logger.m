@@ -1,6 +1,6 @@
-% init_vec_frequencies.m
+% logger.m
 %
-% Copyright (C) 2014 < Olivier DAZEL <olivier.dazel@univ-lemans.fr> >
+% Copyright (C) 2016 Mathieu GABORIT <gaborit@kth.se>
 %
 % This file is part of PLANES.
 %
@@ -32,26 +32,22 @@
 % along with this program. If not, see <http://www.gnu.org/licenses/>.
 %%
 
-project.logger(3, 'preprocess', 'Initializing frequency vector\n')
+function logger(verbosity, level, section, msg, wait)
+	% logging function for verbous runs
+	%
+	% verbosity -- current verbosity level
+	% level -- verbosity level required to show message
+	% section -- section of the programm trigging the logger
+	% msg -- message
 
-if length(frequency.nb)==1
-    if(frequency.nb>0)
-        if frequency.nb==1
-            frequency.vec=frequency.min;
-        else
-            frequency.vec=linspace(frequency.min,frequency.max,frequency.nb);
-        end
-    elseif (frequency.nb<0)
-        frequency.vec=logspace(log10(frequency.min),log10(frequency.max),abs(frequency.nb));
-    end
-else % Case of complex frequency
-    temp_1=linspace(frequency.min,frequency.max,frequency.nb(1));
-    temp_2=linspace(frequency.min_imag,frequency.max_imag,frequency.nb(2));
-    frequency.vec=[];
-    for ii=1:frequency.nb(2)
-        frequency.vec=[frequency.vec temp_1+1j*temp_2(ii)];
-    end
-    frequency.nb=frequency.nb(1)*frequency.nb(2);
+	if level==0
+		prefix = '=>';
+		out = stdout;
+	else
+		prefix = '[log]';
+		out = stderr;
+	end
+	if verbosity>=level
+		fprintf(out, '%s %s: %s\n', prefix, section, msg);
+	end
 end
-
-

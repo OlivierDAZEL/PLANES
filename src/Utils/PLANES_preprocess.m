@@ -39,7 +39,9 @@
 init_vec_frequencies
 
 
+project.logger(2, 'preprocess', 'Ordering and cleaning mesh.')
 
+tic
 if exist('nodes')
     segments=zeros(1,5); % Line 1 to be removed at the end
     
@@ -414,4 +416,6 @@ else
     nb.dof_FEM=0;
     nb.dof_DGM=0;
 end
+etime = toc;
+project.logger(2, 'profiling', ['PLANES_preprocess ' num2str(etime) 's.'])
 

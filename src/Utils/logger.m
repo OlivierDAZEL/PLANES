@@ -42,10 +42,18 @@ function logger(verbosity, level, section, msg, wait)
 
 	if level==0
 		prefix = '=>';
-		out = stdout;
+		if (is_octave)
+			out = stdout;
+		else
+			out = 1;
+		end
 	else
 		prefix = '[log]';
-		out = stderr;
+		if (is_octave)
+			out = stderr;
+		else
+			out = 2;
+		end
 	end
 	if verbosity>=level
 		fprintf(out, '%s %s: %s\n', prefix, section, msg);

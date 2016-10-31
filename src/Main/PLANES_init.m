@@ -73,7 +73,7 @@ set(0,'DefaultAxeslinewidth',2);
 
 air_properties_JPG
 
-if !isfield(data_model, 'ngauss')
+if ~isfield(data_model, 'ngauss')
 	data_model.ngauss = 10;
 end
 Gauss_points=compute_GaussLegendre_points(data_model.ngauss);

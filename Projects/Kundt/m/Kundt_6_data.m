@@ -9,7 +9,7 @@ data_model.label=[3 1 label_boundary 1];
 
 elem.model=11*ones(nb.elements,1);
 
-label_elem_ajoute=0;
+label_elem_ajoute=8010;
 model_elem_ajoute=11;
 l_supp=data_model.ly/2;
 [nb,nodes,elem,edge_msh] = add_H12_boundary(l_supp,label_boundary,label_elem_ajoute,model_elem_ajoute,edge_msh,nodes,elem,nb);

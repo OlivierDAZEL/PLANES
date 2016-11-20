@@ -55,8 +55,15 @@ else
 end
 
 
-name.file_msh=          [name.project_directory 'FF/'   name.project_full '.msh'];
-name.file_edp=          [name.project_directory 'FF/'   name.project_full '.edp'];
+if isfield(data_model,'number_edp')
+    name.file_msh=          [name.project_directory 'FF/'   project.name '_' num2str(data_model.number_edp) '.msh'];
+    name.file_msh_export=   [                               project.name '_' num2str(data_model.number_edp) '.msh'];
+    name.file_edp=          [name.project_directory 'FF/'   project.name '_' num2str(data_model.number_edp) '.edp'];
+else
+    name.file_msh=          [name.project_directory 'FF/'   name.project_full '.msh'];
+    name.file_msh_export=   [                               name.project_full '.msh'];
+    name.file_edp=          [name.project_directory 'FF/'   name.project_full '.edp'];
+end
 name.file_FF=           [name.project_directory 'FF/FF.inp'];
 name.file_abs=          [name.project_directory 'out/'  name.project_full '.abs'];
 name.file_L2=           [name.project_directory 'out/'  name.project_full '.L2'];

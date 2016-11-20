@@ -67,8 +67,12 @@ PLANES_init
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 project.logger(3, 'PLANES', 'Running user-defined data script.')
-eval([name.project_full '_data']) %
 
+if isfield(data_model,'number_m')
+    eval([project.name '_' num2str(data_model.number_m) '_data']) %
+else
+    eval([name.project_full '_data']) %
+end
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 PLANES_preprocess

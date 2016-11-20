@@ -12,10 +12,12 @@ air.NPR=0.710;
 air.lambda=0.0262;                              %[W.m^-1.K^-1]
 
 %% Air properties
-air.rho=1.213;                                %[kg.m^-3]
-air.c=341.9730829285405;                              %[m.s^-1]
+air.rho=1.213;             %[kg.m^-3]
 
-air.K=air.c^2*air.rho;
+
+air.K=air.gamma*air.P;
+air.c=sqrt(air.K/air.rho);
+
 air.Z=air.rho*air.c;
 
 air.C_p=1006;

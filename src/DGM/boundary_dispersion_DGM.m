@@ -65,18 +65,18 @@ if (elem.label(e_edge)==0)
     % OR
     % Imposing normal velocity continuity
     % for a Unit Pressure wave
-    % C = [ nx, ny, 0 ];
-    % B = inv(C*P_e_out);
-    % Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
-    % Etilde = M_e*F_e*P_e_out*B*[nx, ny]*n_excitation/air.Z;
+    C = [ nx, ny, 0 ];
+    B = inv(C*P_e_out);
+    Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
+    Etilde = M_e*F_e*P_e_out*B*[nx, ny]*n_excitation/air.Z;
 
 
     % Imposing normal velocity continuity
     % for a Unit Velocity wave
-    C = [ nx, ny, 0 ];
-    B = inv(C*P_e_out);
-    Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
-    Etilde = M_e*F_e*P_e_out*B*C*[n_excitation; 0];
+    % C = [ nx, ny, 0 ];
+    % B = inv(C*P_e_out);
+    % Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
+    % Etilde = M_e*F_e*P_e_out*B*C*[n_excitation; 0];
 
     nx=cos(vec_theta);
     ny=sin(vec_theta);

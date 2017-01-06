@@ -122,17 +122,17 @@ F_22_tilde= M_2*F_2*P_22_tilde;
 
 nx=cos(vec_theta);
 ny=sin(vec_theta);
-
-ne_1=sqrt(nx.^2/tau_x_1^2+ny.^2/tau_y_1^2);
-ne_2=sqrt(nx.^2/tau_x_2^2+ny.^2/tau_y_2^2);
-Phi_1=Phi_fluid_vector(nx/tau_x_1,ny/tau_y_1,Z_e*ne_1,Shift_fluid);
-Phi_2=Phi_fluid_vector(nx/tau_x_2,ny/tau_y_2,Z_e*ne_2,Shift_fluid);
-
+k_1=k_e*[nx*tau_x_1;ny*tau_y_1];
+k_2=k_e*[nx*tau_x_2;ny*tau_y_2];
 Phi_1=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 Phi_2=Phi_fluid_vector(nx,ny,Z_e,Shift_fluid);
 
-k_1=k_e*[nx*tau_x_1;ny*tau_y_1];
-k_2=k_e*[nx*tau_x_2;ny*tau_y_2];
+ne_1=sqrt(nx.^2/tau_x_1^2+ny.^2/tau_y_1^2);
+ne_2=sqrt(nx.^2/tau_x_2^2+ny.^2/tau_y_2^2);
+k_1=k_e*[nx./ne_1;ny./ne_1];
+k_2=k_e*[nx./ne_2;ny./ne_2];
+Phi_1=Phi_fluid_vector(nx/tau_x_1,ny/tau_y_1,Z_e*ne_1,Shift_fluid);
+Phi_2=Phi_fluid_vector(nx/tau_x_2,ny/tau_y_2,Z_e*ne_2,Shift_fluid);
 
 II=int_edge_2vectorielle(1j*k_2,-1j*k_2,a,b,[c_2 c_2]);
 MM=kron(II,F_22_tilde);

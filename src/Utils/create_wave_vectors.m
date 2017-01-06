@@ -43,6 +43,7 @@ nb.Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
 
 %nb.Bloch_waves=0;
 %nb.Bloch_waves=15
+%nb.Bloch_waves=3
 
 if nb.R~=0
     nb.R=2*nb.Bloch_waves+1;
@@ -60,7 +61,7 @@ vec_k_x=k_x+temp*(2*pi/period);
 vec_k_x_t=k_x+temp*(2*pi/period);
 
 vec_k_z=sqrt(k_air^2-vec_k_x.^2);
-% vec_k_z=real(vec_k_z)-1i*(imag(vec_k_z))
+vec_k_z=real(vec_k_z)-1i*(imag(vec_k_z));
 % 
 % lkjljljklkj
 

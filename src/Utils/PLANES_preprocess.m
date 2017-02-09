@@ -54,6 +54,7 @@ if exist('nodes')
     end
     temp=find(ismember(elem.model,[2 11]));
     temp=reshape(temp,length(temp),1);
+
     
     if length(temp)>0
         segments=[segments;elem.nodes(temp,1) elem.nodes(temp,2) temp 0*temp elem.label(temp)];
@@ -132,8 +133,17 @@ if exist('nodes')
     
     clear temp_physical
     
-    
-    
+    % identify FEM/DGM coupling edges
+		temp = (ismember(elem.model(edges.internal(:,3)),[1 2]).*ismember(elem.model(edges.internal(:,4)), 10));
+		temp = temp+(ismember(elem.model(edges.internal(:,3)), 10).*ismember(elem.model(edges.internal(:,4)),[1 2]));
+		temp = find(temp);
+		edges.FEM_DGM_TR_coupling = edges.internal(temp,1:4);
+		edges.internal(temp,:) = [];
+
+    nb.internal = size(edges.internal,1);
+    nb.FEM_DGM_TR_coupling = size(edges.FEM_DGM_TR_coupling,1);
+
+
     % Suppression of temporary values for boundaries
     boundaries(:,4:6)=[];
     % boundaries=[node1 node2 #element1]
@@ -194,21 +204,21 @@ if exist('nodes')
     edges.dirichlets=boundaries(temp,:);
     boundaries(temp,:)=[];
     
-
-%     
+    
     temp=find(ismember(boundaries(:,4),[25]));
     edges.incompatible=boundaries(temp,:);
-    
-    
     boundaries(temp,:)=[];
+%     
     
     
     identify_incompatible_mesh
-    
-    edges.flux=[edges.flux;edges.internal_DGM];
+
+    edges.flux=[edges.flux;edges.internal_DGM; edges.FEM_DGM_TR_coupling];
     nb.flux=size(edges.flux,1);
     nb.internal_DGM=0;
+    nb.FEM_DGM_TR_coupling=0;
     edges=rmfield(edges,'internal_DGM');
+    edges=rmfield(edges,'FEM_DGM_TR_coupling');
     
     
     temp=find(ismember(boundaries(:,4),[98 99]));

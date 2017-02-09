@@ -35,6 +35,12 @@
 list_path=['''../DGM'',''../FEM'',''../Mesh'',''../Physics'',''../Plots'',''../Polynomials'',''../PW'',''../Solutions'',''../Utils'''];
 eval(['addpath(' list_path ');'])
 
+if ~isfield(data_model, 'verbosity')
+    data_model.verbosity = 0;
+end
+
+% Initialize projet logger
+project.logger = @(level, section, msg) logger(data_model.verbosity, level, section, msg);
 
 warning('off','all');
 %warning('off','MATLAB:nearlySingularMatrix')

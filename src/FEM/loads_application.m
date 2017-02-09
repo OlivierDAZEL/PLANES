@@ -102,6 +102,12 @@ for ie=1:nb.loads
                 
             end
             
+        case {30}
+            if ismember(elem.model(edges.loads(ie,3)),[1])
+                boundary_dispersion_FEM
+            elseif  ismember(elem.model(edges.loads(ie,3)),[10 11])
+                boundary_dispersion_DGM
+            end
             
            case {4}  % Unit tangential
             

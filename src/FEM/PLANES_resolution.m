@@ -221,7 +221,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         X=A\F;
 
         etime = toc(resolution_tic);
-        project.logger(0, 'PLANES', 'End of the resolution of the system');
+        project.logger(0, 'PLANES', ['End of the resolution of the system (' num2str(etime) 's)']);
         project.logger(2, 'profiling', ['Resolution ' num2str(etime) 's.']);
         
         postprocess_solution

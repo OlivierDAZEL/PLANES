@@ -15,7 +15,7 @@
 
 k_e=omega/air.c;
 n_excitation=[cos(data_model.theta_inc); sin(data_model.theta_inc)];
-jk=-1j*k_e*n_excitation;
+jke=1j*k_e;
 
 e_edge=edges.loads(ie,3);
 c_e= mean(nodes(nonzeros(elem.nodes(e_edge,:)),1:2))';
@@ -31,22 +31,30 @@ switch elem.model(e_edge)
         index_p=dof_A(p_TR(elem.nodes(e_edge,1:6)));
         nb_dof_1=6;
         vcor=nodes(nonzeros(elem.nodes(e_edge,1:6)),1:2);
-        base_test=mean(vcor);
-        p_d1=Lagrange_TR6(vcor,1,base_test);
-        p_d2=Lagrange_TR6(vcor,2,base_test);
-        p_d3=Lagrange_TR6(vcor,3,base_test);
-        p_d4=Lagrange_TR6(vcor,4,base_test);
-        p_d5=Lagrange_TR6(vcor,5,base_test);
-        p_d6=Lagrange_TR6(vcor,6,base_test);
+        base_poly=mean(vcor);
+        p_d1=Lagrange_TR6(vcor,1,base_poly);
+        p_d2=Lagrange_TR6(vcor,2,base_poly);
+        p_d3=Lagrange_TR6(vcor,3,base_poly);
+        p_d4=Lagrange_TR6(vcor,4,base_poly);
+        p_d5=Lagrange_TR6(vcor,5,base_poly);
+        p_d6=Lagrange_TR6(vcor,6,base_poly);
     case 3 % TR3
         not implemented
     case 2
         not implemented
 end
 
-II = [nx, ny]*n_excitation*1/(1j*omega*air.Z);
+factor_rhs = 1j/(omega*air.Z)*(1-[nx, ny]*n_excitation);
+factor_lhs = 1j/(omega*air.Z);
 
 for i_test=1:nb_dof_1
-    eval(['N_1=p_d',num2str(i_test),';']);
-    F(index_p(i_test))=F(index_p(i_test))+II*integrate_polynom_exp_2D_edge(N_1,base_test,jk,[0;0],a,b,Gauss_points);
+    eval(['N_test=p_d',num2str(i_test),';']);
+
+		for i_field=1:nb_dof_1
+			eval(['N_field=p_d',num2str(i_field),';']);
+			A(index_p(i_field),index_p(i_test))=A(index_p(i_field),index_p(i_test))+factor_lhs*integrate_polynom_2D_edge(N_test,base_poly,N_field,base_poly,a,b,Gauss_points);
+		end
+
+    F(index_p(i_test))=F(index_p(i_test))+factor_rhs*integrate_polynom_exp_2D_edge(N_test,base_poly,-jke*n_excitation,[0;0],a,b,Gauss_points);
+
 end

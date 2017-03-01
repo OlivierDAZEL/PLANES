@@ -46,37 +46,29 @@ b=coord_edge(:,2);
 if (elem.label(e_edge)==0)
 
     M_e=diag([air.rho,air.rho,1/air.K]);
-    P_e_in=[nx;ny;air.Z];
-    Q_e_in=[nx/2 ny/2 1/(2*air.Z)];
-    P_e_out=[nx;ny;-air.Z];
-    Q_e_out=[nx/2 ny/2 -1/(2*air.Z)];
 
     A_x=[0 0 1/air.rho;0 0 0; air.rho*air.c^2 0 0];
     A_y=[0 0 0;0 0 1/air.rho; 0 air.rho*air.c^2 0];
+
     F_e=(A_x*nx+A_y*ny);
+		[P_e, Lambda_e]  = eig(F_e);
+		Q_e = inv(P_e);
 
-    % Imposing Pressure continuity
-    % for a Unit Pressure wave
-    % C = [ 0, 0, 1];
-    % B = inv(C*P_e_out);
-    % Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
-    % Etilde = M_e*F_e*P_e_out*B;
+		% upwinding
+		rlp_list = find(diag(Lambda_e)<=0);
+		rlm_list = find(diag(Lambda_e)>=0);
 
-    % OR
-    % Imposing normal velocity continuity
-    % for a Unit Pressure wave
-    C = [ nx, ny, 0 ];
-    B = inv(C*P_e_out);
-    Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
-    Etilde = M_e*F_e*P_e_out*B*[nx, ny]*n_excitation/air.Z;
+		lambda_minus = Lambda_e; lambda_minus(:,rlm_list) = 0;
+		lambda_plus = Lambda_e; lambda_plus(:,rlp_list) = 0;
 
+		P_e_in = P_e; P_e_in(:,rlp_list) = 0;
+		P_e_out = P_e; P_e_out(:,rlm_list) = 0;
 
-    % Imposing normal velocity continuity
-    % for a Unit Velocity wave
-    % C = [ nx, ny, 0 ];
-    % B = inv(C*P_e_out);
-    % Ftilde = M_e*F_e*(P_e_in - P_e_out*B*C*P_e_in)*Q_e_in;
-    % Etilde = M_e*F_e*P_e_out*B*C*[n_excitation; 0];
+		Q_e_in = Q_e; Q_e_in(rlp_list,:) = 0;
+		Q_e_out = Q_e; Q_e_out(rlm_list,:) = 0;
+
+		F_e_in = P_e*lambda_plus*Q_e;
+		F_e_out = P_e*lambda_minus*Q_e;
 
     nx=cos(vec_theta);
     ny=sin(vec_theta);
@@ -84,16 +76,15 @@ if (elem.label(e_edge)==0)
     Phi=Phi_fluid_vector(nx, ny, air.Z, Shift_fluid);
     k_e = omega/air.c;
 
+    % Modified Flux Matrix
+    II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_e c_e]);
+    A(indices,indices)=A(indices,indices)+Phi.'*kron(II,M_e*F_e_in)*Phi;
 
     % Forcing term
     % II=int_edge_1vectorielle_test(1j*k_e*[nx;ny],-1j*k_e*[n_excitation(1)*ones(1,length(nx)); n_excitation(2)*ones(1,length(ny))],a,b,c_e);
     II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*n_excitation,a,b,[c_e, [0;0]]);
-    F(indices)=F(indices)-Phi.'*kron(II, Etilde);
+    Phi_excit=Phi_fluid(n_excitation(1)/air.Z, n_excitation(2)/air.Z, 1);
+    F(indices)=F(indices)-Phi.'*kron(II, M_e*F_e_out)*Phi_excit;
 
-
-    % Modified Flux Matrix
-    II=int_edge_2vectorielle(1j*k_e*[nx;ny],-1j*k_e*[nx;ny],a,b,[c_e c_e]);
-    MM=kron(II,Ftilde);
-    A(indices,indices)=A(indices,indices)+Phi.'*MM*Phi;
 
 end

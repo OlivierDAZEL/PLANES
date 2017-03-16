@@ -73,7 +73,7 @@ for i_f=1:abs(frequency.nb)
     
     if nb.dof_FEM>0
         if (nb.media.acou~=0)
-            A=A+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
+            A=A+j*omega*H_acou/(air.rho*omega^2)-j*omega*Q_acou/(air.K);
         end
         
         if (nb.media.PML~=0)

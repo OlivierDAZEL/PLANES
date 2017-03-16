@@ -65,7 +65,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             fem_assembly_tic = tic;
 
             if (nb.media.acou~=0)
-                A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
+                A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+1j*omega*H_acou/(air.rho*omega^2)-1j*omega*Q_acou/(air.K);
             end
             
             if (nb.media.PML~=0)

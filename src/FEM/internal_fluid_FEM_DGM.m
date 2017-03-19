@@ -69,8 +69,8 @@ A_x=[0 0 1/air.rho;0 0 0; air.K 0 0];
 A_y=[0 0 0;0 0 1/air.rho; 0 air.K 0];
 F_2=-(A_x*nx+A_y*ny);
 
-F_11_tilde=-R_tilde(1,1)/(1j*omega);
-F_12_tilde=-R_tilde(1,2)*Q_2_in/(1j*omega);
+F_11_tilde=-R_tilde(1,1);%/(1j*omega);
+F_12_tilde=-R_tilde(1,2)*Q_2_in;%/(1j*omega);
 
 F_21_tilde=M_2*F_2*P_2_out*R_tilde(2,1);
 F_22_tilde=M_2*F_2*(P_2_in + P_2_out*R_tilde(2,2))*Q_2_in;

@@ -11,7 +11,7 @@ for ii=1:nb_mat
             Mat_parameter(2,ii)=air.K;
         case {4,5}
             num_mat=index_label(ii)-typ_elem*1000;
-            eval(['Mat_PEM_' num2str(num_mat)])
+            eval(['Mat_porous_' num2str(num_mat)])
             properties_JCA
             properties_PEM
             
@@ -26,7 +26,7 @@ for ii=1:nb_mat
             Mat_parameter(9,ii)=phi;
         case {2}
             num_mat=index_label(ii)-2000;
-            eval(['Mat_PEM_' num2str(num_mat)]);
+            eval(['Mat_porous_' num2str(num_mat)]);
             properties_JCA;
             Mat_parameter(1,ii)=rho_eq_til;
             Mat_parameter(2,ii)=K_eq_til;

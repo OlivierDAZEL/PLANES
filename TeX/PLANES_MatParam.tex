@@ -1,0 +1,42 @@
+\documentclass[a4paper, 13pt]{article}
+
+	\usepackage[T1]{fontenc}
+	\usepackage[french]{babel}
+	\usepackage{amsmath}
+	% fonts
+	\usepackage{fontspec}
+	\usepackage{tabularx}
+	\usepackage{array}
+
+
+	\setmainfont{FiraSans-Regular.otf}
+	\usepackage[landscape, top=1.5cm, bottom=1.5cm, left=1cm, right=1cm]{geometry}
+
+\begin{document}
+\Large
+\centering
+~
+\vspace{2cm}
+
+{\verb param=Mat_parameter(ID,i_mat); }
+
+\medskip
+
+{\verb i_mat } can be found in {\verb index_element(i_elem) }.
+
+\vspace{3cm}
+
+\begin{tabularx}{\textwidth}{|>{\centering}p{.7cm}|>{\centering}X|>{\centering}X|>{\centering}X|>{\centering\arraybackslash}X|}\hline
+	ID & PML/Air & PEM (Biot) & PEM (Eqf) & Elastic Solid\\\hline
+	1 & \multicolumn{3}{c|}{$\rho$ or $\tilde{\rho}_{eq}$} & $\lambda$\\
+	2 & \multicolumn{3}{c|}{$K$ or $\tilde{K}_{eq}$} & $\mu$\\\cline{2-4}
+	3 &&& $\tilde{\gamma}$ & $\rho$\\
+	4 &&& $\hat{A}$ & \\
+	5 &&& $\hat{P}$ & \\
+	6 &&& $N$ & \\
+	6 &&& $\tilde{\rho}_s$ & \\
+	7 &&& $\tilde{\rho}$ & \\
+	8 &&& $\phi$ & \\\hline
+\end{tabularx}
+
+\end{document}

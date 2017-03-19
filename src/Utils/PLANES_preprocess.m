@@ -426,6 +426,33 @@ else
     nb.dof_FEM=0;
     nb.dof_DGM=0;
 end
+
+index_element=zeros(nb.elements,1);
+index_label_temp=zeros(nb.elements,1);
+index_element(1)=1;
+index_label_temp(1)=elem.label(1);
+nb.mat=1;
+for ielem=2:nb.elements
+  for jj=1:(ielem-1)
+    bool_test=1;
+    if (elem.label(ielem)==elem.label(jj))
+      index_element(ielem)=index_element(jj);
+      bool_test=0;
+    end
+  end
+  if (bool_test)
+    nb.mat=nb.mat+1;
+    index_element(ielem)=nb.mat;
+    index_label_temp(nb.mat)=elem.label(ielem);
+  end
+end
+
+index_label=zeros(nb.mat,1);
+for ii=1:nb.mat
+  index_label(ii)=index_label_temp(ii);
+end
+
+
 etime = toc;
 project.logger(2, 'profiling', ['PLANES_preprocess ' num2str(etime) 's.'])
 

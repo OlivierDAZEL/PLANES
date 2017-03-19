@@ -45,6 +45,8 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         omega=2*pi*freq;
         k_air=omega/air.c;
         
+        Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
+
         if (nb.R+nb.T)~=0
             [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,data_model.theta_inc,period);
         end
@@ -65,7 +67,7 @@ if (nb.dof_DGM+nb.dof_FEM)>0
             fem_assembly_tic = tic;
 
             if (nb.media.acou~=0)
-                A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+H_acou/(air.rho*omega^2)-Q_acou/(air.K);
+                A(1:nb.dof_FEM,1:nb.dof_FEM)=A(1:nb.dof_FEM,1:nb.dof_FEM)+1j*omega*H_acou/(air.rho*omega^2)-1j*omega*Q_acou/(air.K);
             end
             
             if (nb.media.PML~=0)

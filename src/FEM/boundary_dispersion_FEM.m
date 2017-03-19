@@ -44,8 +44,8 @@ switch elem.model(e_edge)
         not implemented
 end
 
-factor_rhs = 1j/(omega*air.Z)*(1-[nx, ny]*n_excitation);
-factor_lhs = 1j/(omega*air.Z);
+factor_rhs = -1/air.Z*(1-[nx, ny]*n_excitation);
+factor_lhs = -1/air.Z;
 
 for i_test=1:nb_dof_1
     eval(['N_test=p_d',num2str(i_test),';']);

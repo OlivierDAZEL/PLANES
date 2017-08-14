@@ -112,15 +112,15 @@ for i_test=1:nb_dof_1
     base_test=base_e1;
     for i_champs=1:nb_dof_1
         base_champs=base_e1;
-				eval(['I_tilde = F_11_tilde*p_e1d', num2str(i_champs), ';']);
+        eval(['I_tilde = F_11_tilde*p_e1d', num2str(i_champs), ';']);
         A(index_p_1(i_test),index_p_1(i_champs))=A(index_p_1(i_test),index_p_1(i_champs))+integrate_polynom_2D_edge(N_1,base_test,I_tilde,base_champs,a,b,Gauss_points);
     end
     for i_champs=1:data_model.theta_DGM.nb
-       jk=-1j*k_e*[cos(vec_theta(i_champs));sin(vec_theta(i_champs))];
-       Phi_champs=Phi_fluid(cos(vec_theta(i_champs)),sin(vec_theta(i_champs)),Z_e);
-       I_tilde=F_12_tilde*Phi_champs;
-       A(index_p_1(i_test),index_2(i_champs))=A(index_p_1(i_test),index_2(i_champs))+I_tilde*integrate_polynom_exp_2D_edge(N_1,base_test,jk,c_2,a,b,Gauss_points);
-   end
+        jk=-1j*k_e*[cos(vec_theta(i_champs));sin(vec_theta(i_champs))];
+        Phi_champs=Phi_fluid(cos(vec_theta(i_champs)),sin(vec_theta(i_champs)),Z_e);
+        I_tilde=F_12_tilde*Phi_champs;
+        A(index_p_1(i_test),index_2(i_champs))=A(index_p_1(i_test),index_2(i_champs))+I_tilde*integrate_polynom_exp_2D_edge(N_1,base_test,jk,c_2,a,b,Gauss_points);
+    end
 end
 
 
@@ -131,7 +131,7 @@ for i_test=1:data_model.theta_DGM.nb
         delta_exp=exp(1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))]'*(a-c_2));
         jk=1j*k_e*[cos(vec_theta(i_test));sin(vec_theta(i_test))];
 
-				eval(['N_1 = p_e1d', num2str(i_champs), ';']);
+        eval(['N_1 = p_e1d', num2str(i_champs), ';']);
         I_tilde=Phi_test.'*F_21_tilde;
         A(index_2(i_test),index_p_1(i_champs))=A(index_2(i_test),index_p_1(i_champs))+I_tilde*integrate_polynom_exp_2D_edge(N_1,base_champs,jk,c_2,a,b,Gauss_points);
     end

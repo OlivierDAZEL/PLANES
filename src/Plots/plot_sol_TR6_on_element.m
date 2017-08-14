@@ -64,8 +64,6 @@ if ismember(floor(elem.label(ie)/1000),[1 4 5])
     figure(10001)
     c=sqrt(0*sol(ux_TR(nonzeros(elem.nodes(ie,:)))).^2+sol(uy_TR(nonzeros(elem.nodes(ie,:)))).^2);
     
-    size(mat_ksi_eta)
-    size(c.')
     val_int=mat_ksi_eta*c;
     for i_faces=1:size(faces,2)
         patch(vert(1,faces(:,i_faces))+vertices(1,1)',vert(2,faces(:,i_faces))+vertices(2,1)',abs(val_int(faces(:,i_faces))));

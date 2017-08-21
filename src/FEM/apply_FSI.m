@@ -98,8 +98,8 @@ for ie=1:nb.internal
     index_F_global_uy=index_force_uy(index_F_elem_uy);
 
 
-    A(index_F_global_p,index_F_global_ux)=A(index_F_global_p,index_F_global_ux)-n_acou(1)*FSIe(index_F_elem_p,index_F_elem_ux);    
-    A(index_F_global_p,index_F_global_uy)=A(index_F_global_p,index_F_global_uy)-n_acou(2)*FSIe(index_F_elem_p,index_F_elem_uy);
+    A(index_F_global_p,index_F_global_ux)=A(index_F_global_p,index_F_global_ux)-n_acou(1)*FSIe(index_F_elem_p,index_F_elem_ux)*1j*omega;
+    A(index_F_global_p,index_F_global_uy)=A(index_F_global_p,index_F_global_uy)-n_acou(2)*FSIe(index_F_elem_p,index_F_elem_uy)*1j*omega;
     A(index_F_global_ux,index_F_global_p)=A(index_F_global_ux,index_F_global_p)-n_elas(1)*FSIe(index_F_elem_ux,index_F_elem_p);    
     A(index_F_global_uy,index_F_global_p)=A(index_F_global_uy,index_F_global_p)-n_elas(2)*FSIe(index_F_elem_uy,index_F_elem_p);    
     

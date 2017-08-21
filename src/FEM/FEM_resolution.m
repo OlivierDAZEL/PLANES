@@ -194,7 +194,7 @@ for i_f=1:abs(frequency.nb)
         rflx=X(nb.dof_FEM+(1:size_info_vector_R*nb.R));
     end
     
-    if exist('DtN_plate_R')
+    if exist('DtN_plate_T')
         trans=T_back_T*X(nb.dof_FEM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));
     else
         trans=X(nb.dof_FEM+size_info_vector_R*nb.R+(1:size_info_vector_T*nb.T));

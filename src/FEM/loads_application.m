@@ -60,7 +60,7 @@ for ie=1:nb.loads
                 index_force=dof_A(p_TR(node));
                 index_F_elem=find(index_force);
                 index_F_global=index_force(index_F_elem);
-                F(index_F_global)=F(index_F_global)-F3(index_F_elem)/(1j*omega);
+                F(index_F_global)=F(index_F_global)-F3(index_F_elem);%/(1j*omega);
             elseif  elem.model(edges.loads(ie,3))==4                
                 if (x1<x2)
                     a=x1;

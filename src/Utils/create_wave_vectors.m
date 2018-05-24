@@ -34,13 +34,14 @@
 
 function [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,theta_inc,period)
 
-
 k_air=omega/air.c;
 k_x=k_air*sin(theta_inc);
 k_z=k_air*cos(theta_inc);
 
-nb.Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
 
+if ~isfield(nb, 'Bloch_waves')
+    nb.Bloch_waves=floor((period/(2*pi))*(3*real(k_air)-k_x))+5;
+end
 %nb.Bloch_waves=0;
 %nb.Bloch_waves=15
 %nb.Bloch_waves=3

@@ -48,6 +48,9 @@ if (nb.dof_DGM+nb.dof_FEM)>0
         Mat_parameter=initialize_Mat_parameter(index_label,index_element,air,omega);
 
         if (nb.R+nb.T)~=0
+            if isfield(data_model, 'Bloch_waves')
+                nb.Bloch_waves = data_model.Bloch_waves;
+            end
             [k_x,k_z,nb,vec_k_x,vec_k_x_t,vec_k_z,vec_k_z_t]=create_wave_vectors(omega,air,nb,data_model.theta_inc,period);
         end
         

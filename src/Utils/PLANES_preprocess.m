@@ -330,7 +330,14 @@ if exist('nodes')
     if sum(is_pw)~=0
         plot_abs=1;
         nb.R=1;
-        size_info_vector_R=2;
+		mat_typ = floor(data_model.incident(1).mat/1000);
+		if ismember(mat_typ, [1])
+			size_info_vector_R=2;
+		elseif ismember(mat_typ, [4, 5])
+			size_info_vector_R=3;
+		elseif ismember(mat_typ, [0, 2, 3])
+			size_info_vector_R=1;
+		end
     end
     
     

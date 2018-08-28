@@ -42,6 +42,7 @@ for ie=1:nb.DtN
     x2=nodes(edges.DtN(ie,2),1);
     y2=nodes(edges.DtN(ie,2),2);
     length_edge=sqrt((x2-x1)^2+(y2-y1)^2);
+	normal_edge = [y2-y1; x2-x1]/length_edge;
     if (x1<x2)
         a=x1;
         node(1)=edges.DtN(ie,1);
@@ -88,44 +89,160 @@ for ie=1:nb.DtN
                 A(nb_dof_temp+i_R,index_F_global)=A(nb_dof_temp+i_R,index_F_global)+F3(index_F_elem)';
             end
         case {13}
-            DtN_plate_R=1;
-            Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1;0];
-            Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,data_model.incident);
-            F3=TR6_PW(length_edge,k_x,a);
-            index_force=dof_A(ux_TR(node));
-            index_F_elem=find(index_force);
-            index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)-Omega_plus(1,1)*F3(index_F_elem);
+            DtN_plate_R = 1;
+            F3 = TR6_PW(length_edge, k_x,a);
 
-            index_force=dof_A(uy_TR(node));
-            index_F_elem=find(index_force);
-            index_F_global=index_force(index_F_elem);
-            F(index_F_global)=F(index_F_global)-Omega_plus(3,1)*F3(index_F_elem);
+            mat_typ = floor(data_model.incident(1).mat/1000);
+            switch (mat_typ)
+            case {0, 2, 3}
 
-            for i_R=1:nb.R
+                Omega_moins = [-1j*k_z/(air.rho*omega^2); 1];
+                Omega_plus = transfer_unknowns_fluid(k_x, omega, Omega_moins, 1, data_model.incident, air);
 
-                temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);
+                index_force = dof_A(uy_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) + Omega_plus(2,1)*F3(index_F_elem);
 
-                F3=TR6_PW(length_edge,vec_k_x(i_R),a);
+                index_force = dof_A(p_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) - Omega_plus(1,1)*F3(index_F_elem);
 
-                Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
-                [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident);
+                a1(1)=nodes(node(1),1);
+                a1(2)=nodes(node(1),2);
+                a2(1)=nodes(node(2),1);
+                a2(2)=nodes(node(2),2);
+                FSIe=TR6_FSI(a1,a2);
+
+                index_force_p=dof_A(p_TR(node));
+                index_F_elem_p=find(index_force_p);
+                index_F_global_p=index_force_p(index_F_elem_p);
+
+                index_force_u=dof_A(uy_TR(node));
+                index_F_elem_u=find(index_force_u);
+                index_F_global_u=index_force_u(index_F_elem_u);
+
+                A(index_F_global_p,index_F_global_u)=A(index_F_global_p,index_F_global_u) - FSIe(index_F_elem_p,index_F_elem_u);
 
 
-                index_force=dof_A(ux_TR(node));
-                index_F_elem=find(index_force);
-                index_F_global=index_force(index_F_elem);
+                for i_R=1:nb.R
 
-                A(index_F_global,temp  )=A(index_F_global,temp  )+Omega_plus(1,1)*F3(index_F_elem);
-                A(index_F_global,temp+1)=A(index_F_global,temp+1)+Omega_plus(1,2)*F3(index_F_elem);
-                A(temp  ,index_F_global)=A(temp,index_F_global)+F3(index_F_elem)';
+                    temp = nb_dof_temp+1+size_info_vector_R*(i_R-1);
 
-                index_force=dof_A(uy_TR(node));
-                index_F_elem=find(index_force);
-                index_F_global=index_force(index_F_elem);
-                A(index_F_global,temp  )=A(index_F_global,temp  )+Omega_plus(3,1)*F3(index_F_elem);
-                A(index_F_global,temp+1)=A(index_F_global,temp+1)+Omega_plus(3,2)*F3(index_F_elem);
-                A(temp+1,index_F_global)=A(temp+1,index_F_global)+F3(index_F_elem)';
+                    F3 = TR6_PW(length_edge, vec_k_x(i_R), a);
+
+                    Omega_moins = [1j*vec_k_z(i_R)/(air.rho*omega^2);1];
+                    [Omega_plus] = transfer_unknowns_fluid(vec_k_x(i_R), omega, Omega_moins, 1, data_model.incident, air);
+
+                    index_force = dof_A(uy_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+                    A(index_F_global,temp) = A(index_F_global,temp) - Omega_plus(2,1)*F3(index_F_elem);
+
+                    index_force = dof_A(p_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+                    A(index_F_global,temp) = A(index_F_global,temp) + Omega_plus(1,1)*F3(index_F_elem);
+                    A(temp, index_F_global) = A(temp, index_F_global) + F3(index_F_elem)';
+                end
+            case {1}
+                Omega_moins = [0;-1j*k_z/(air.rho*omega^2);-1;0];
+                Omega_plus = transfer_unknowns_elas(k_x, omega, Omega_moins, 1, data_model.incident);
+                index_force = dof_A(ux_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) - Omega_plus(1,1)*F3(index_F_elem);
+
+                index_force = dof_A(uy_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) - Omega_plus(3,1)*F3(index_F_elem);
+
+                for i_R=1:nb.R
+
+                    temp = nb_dof_temp+1+size_info_vector_R*(i_R-1);
+
+                    F3 = TR6_PW(length_edge, vec_k_x(i_R), a);
+
+                    Omega_moins = [0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
+                    [Omega_plus] = transfer_unknowns_elas(vec_k_x(i_R), omega, Omega_moins, 1, data_model.incident);
+
+                    index_force = dof_A(ux_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) + Omega_plus(1,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) + Omega_plus(1,2)*F3(index_F_elem);
+                    A(temp  ,index_F_global) = A(temp,index_F_global) + F3(index_F_elem)';
+
+                    index_force = dof_A(uy_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) + Omega_plus(3,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) + Omega_plus(3,2)*F3(index_F_elem);
+                    A(temp+1,index_F_global) = A(temp+1,index_F_global) + F3(index_F_elem)';
+                end
+            case {4, 5}
+                Omega_moins = [0;0;-1j*k_z/(air.rho*omega^2);0;1;0];
+                Omega_plus = transfer_unknowns_pem(k_x, omega, Omega_moins, 1, data_model.incident, air);
+
+                index_force = dof_A(ux_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) - Omega_plus(1,1)*F3(index_F_elem);
+
+                index_force = dof_A(uy_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) - Omega_plus(4,1)*F3(index_F_elem);
+                F(index_F_global) = F(index_F_global) + Omega_plus(5,1)*F3(index_F_elem);
+
+                index_force = dof_A(p_TR(node));
+                index_F_elem = find(index_force);
+                index_F_global = index_force(index_F_elem);
+                F(index_F_global) = F(index_F_global) - Omega_plus(3,1)*F3(index_F_elem);
+                F(index_F_global) = F(index_F_global) + Omega_plus(2,1)*F3(index_F_elem);
+
+                for i_R=1:nb.R
+
+                    temp = nb_dof_temp+1+size_info_vector_R*(i_R-1);
+
+                    F3 = TR6_PW(length_edge, vec_k_x(i_R), a);
+
+                    Omega_moins = [0 0 0;0 0 1;1j*vec_k_z(i_R)/(air.rho*omega^2) 0 0;0 0 0;1 0 0;0 1 0];
+                    [Omega_plus] = transfer_unknowns_pem(vec_k_x(i_R), omega, Omega_moins, 1, data_model.incident, air);
+
+                    index_force = dof_A(ux_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) + Omega_plus(1,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) + Omega_plus(1,2)*F3(index_F_elem);
+                    A(index_F_global,temp+2) = A(index_F_global,temp+2) + Omega_plus(1,3)*F3(index_F_elem);
+                    A(temp  ,index_F_global) = A(temp,index_F_global) + F3(index_F_elem)';
+
+                    index_force = dof_A(uy_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) + Omega_plus(4,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) + Omega_plus(4,2)*F3(index_F_elem);
+                    A(index_F_global,temp+2) = A(index_F_global,temp+2) + Omega_plus(4,3)*F3(index_F_elem);
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) - Omega_plus(5,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) - Omega_plus(5,2)*F3(index_F_elem);
+                    A(index_F_global,temp+2) = A(index_F_global,temp+2) - Omega_plus(5,3)*F3(index_F_elem);
+                    A(temp+1,index_F_global) = A(temp+1,index_F_global) + F3(index_F_elem)';
+
+                    index_force = dof_A(p_TR(node));
+                    index_F_elem = find(index_force);
+                    index_F_global = index_force(index_F_elem);
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) + Omega_plus(3,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) + Omega_plus(3,2)*F3(index_F_elem);
+                    A(index_F_global,temp+2) = A(index_F_global,temp+2) + Omega_plus(3,3)*F3(index_F_elem);
+                    A(index_F_global,temp  ) = A(index_F_global,temp  ) - Omega_plus(2,1)*F3(index_F_elem);
+                    A(index_F_global,temp+1) = A(index_F_global,temp+1) - Omega_plus(2,2)*F3(index_F_elem);
+                    A(index_F_global,temp+2) = A(index_F_global,temp+2) - Omega_plus(2,3)*F3(index_F_elem);
+                    A(temp+2,index_F_global) = A(temp+2,index_F_global) + F3(index_F_elem)';
+                end
             end
 
         case {12}
@@ -303,20 +420,59 @@ end
 
 if exist('DtN_plate_R')
 
-    Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1 ;0 ];
-    Omega_plus=transfer_unknowns(k_x,omega,Omega_moins,1,data_model.incident);
+    mat_typ = floor(data_model.incident(1).mat/1000);
+    switch (mat_typ)
+    case {0, 2, 3}
+        Omega_moins=[-1j*k_z/(air.rho*omega^2);1];
+        Omega_plus=transfer_unknowns_fluid(k_x,omega,Omega_moins,1,data_model.incident, air);
 
-    F(nb_dof_temp+1)=F(nb_dof_temp+1)+period*Omega_plus(4);
-    F(nb_dof_temp+2)=F(nb_dof_temp+2)+period*Omega_plus(2);
+        F(nb_dof_temp+1) = F(nb_dof_temp+1) + period*Omega_plus(2);
 
-    for i_R=1:nb.R
-        temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);
-        Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
-        [Omega_plus]=transfer_unknowns(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident);
-        A(temp  ,temp  )=-period*Omega_plus(4,1);
-        A(temp  ,temp+1)=-period*Omega_plus(4,2);
-        A(temp+1,temp  )=-period*Omega_plus(2,1);
-        A(temp+1,temp+1)=-period*Omega_plus(2,2);
+        for i_R=1:nb.R
+            temp = nb_dof_temp+1+size_info_vector_R*(i_R-1);
+            Omega_moins = [1j*vec_k_z(i_R)/(air.rho*omega^2);1];
+            [Omega_plus] = transfer_unknowns_fluid(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident, air);
+            A(temp, temp) = -period*Omega_plus(2,1);
+        end
+    case {1}
+        Omega_moins=[0;-1j*k_z/(air.rho*omega^2);-1 ;0 ];
+        Omega_plus=transfer_unknowns_elas(k_x,omega,Omega_moins,1,data_model.incident);
+
+        F(nb_dof_temp+1)=F(nb_dof_temp+1)+period*Omega_plus(4);
+        F(nb_dof_temp+2)=F(nb_dof_temp+2)+period*Omega_plus(2);
+
+        for i_R=1:nb.R
+            temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);
+            Omega_moins=[0 0;1j*vec_k_z(i_R)/(air.rho*omega^2) 0;-1 0;0 1];
+            [Omega_plus]=transfer_unknowns_elas(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident);
+            A(temp  ,temp  )=-period*Omega_plus(4,1);
+            A(temp  ,temp+1)=-period*Omega_plus(4,2);
+            A(temp+1,temp  )=-period*Omega_plus(2,1);
+            A(temp+1,temp+1)=-period*Omega_plus(2,2);
+        end
+    case {4, 5}
+        Omega_moins = [0;0;-1j*k_z/(air.rho*omega^2);0;1;0];
+        Omega_plus = transfer_unknowns_pem(k_x,omega,Omega_moins,1,data_model.incident, air);
+
+        F(nb_dof_temp+1) = F(nb_dof_temp+1) + period*Omega_plus(6);
+        F(nb_dof_temp+2) = F(nb_dof_temp+2) + period*Omega_plus(2);
+        F(nb_dof_temp+3) = F(nb_dof_temp+3) + period*Omega_plus(5);
+
+        for i_R=1:nb.R
+            temp=nb_dof_temp+1+size_info_vector_R*(i_R-1);
+            Omega_moins = [0 0 0;0 0 1;1j*vec_k_z(i_R)/(air.rho*omega^2) 0 0;0 0 0;1 0 0;0 1 0];
+            [Omega_plus] = transfer_unknowns_pem(vec_k_x(i_R),omega,Omega_moins,1,data_model.incident, air);
+
+            A(temp  ,temp  ) = -period*Omega_plus(6,1);
+            A(temp  ,temp+1) = -period*Omega_plus(6,2);
+            A(temp  ,temp+2) = -period*Omega_plus(6,3);
+            A(temp+1,temp  ) = -period*Omega_plus(2,1);
+            A(temp+1,temp+1) = -period*Omega_plus(2,2);
+            A(temp+1,temp+2) = -period*Omega_plus(2,3);
+            A(temp+2,temp  ) = -period*Omega_plus(5,1);
+            A(temp+2,temp+1) = -period*Omega_plus(5,2);
+            A(temp+2,temp+2) = -period*Omega_plus(5,3);
+        end
     end
 end
 

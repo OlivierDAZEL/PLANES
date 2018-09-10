@@ -50,6 +50,10 @@ function PLANES(projectname, expnb, data_model, frequency, name)
 project.name=projectname;
 project.num=expnb;
 
+if ~isfield(data_model, 'verbosity')
+    data_model.verbosity = 0;
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Initialization of PLANES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
